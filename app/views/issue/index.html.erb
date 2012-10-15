@@ -1,4 +1,5 @@
-<select>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<select name="version">
 		<% @version.each do |version|%>
 		<option value="<%= version.id %>"><%= version.name %></option>
 		<% end %>
@@ -16,4 +17,11 @@
 <% end %>
 
 
-
+<script>
+	$(document).ready(function(){ 
+		$("select[name=version]").change(function(){
+		var version_id =  $(this).val();
+		alert(version_id);
+		});
+	});
+</script>
