@@ -1,0 +1,17 @@
+<div class="div_version" id="version.<%= version.id %>">
+	<p class="version_name"><%= version.name %></p>
+	<div class="thead clearfix">
+		<img src="/images/toggle_check.png?1349682375" alt="Toggle_check">
+		<p class="id_issue">#</p>
+		<p class="tracker">Tracker</p>
+		<p class="status">Status</p>
+		<p class="priotity">Priority</p>
+		<p class="subject">Subject</p>
+		<p class="assignee">Assignee</p>
+		<p class="update">Updated</p>
+	</div>
+	<% version.fixed_issues.each do |issue|%>
+	<%= render :partial => "list_issues",  :locals => { :issue => issue} %>
+	<% end %>
+	
+</div>

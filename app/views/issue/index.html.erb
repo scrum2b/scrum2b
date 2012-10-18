@@ -1,27 +1,65 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-<select name="version">
-		<% @version.each do |version|%>
-		<option value="<%= version.id %>"><%= version.name %></option>
+<%= javascript_include_tag 'version.js', :plugin => 'scrum2b' %>
+<%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
+<p class="issues">
+	Issues
+</p>
+<div id="filters_s2b" class="clearfix">
+	<div id="seclectbox" class="clearfix">
+		<%= form_tag(:controller => "issue", :action => "index", :method => "post", :class => "form") do %>
+			<select name="member_issue">
+				<option value="0" selected="selected">None</option>
+				<option value="1">My Issues</option>
+				<option value="2">My completed Issues</option>
+			</select>
+			<select name="version" id="version">
+				<option value="all" selected="selected" >All</option>
+				<% @version.each do |version|%>
+				<option value="<%= version.id %>"><%= version.name %></option>
+				<% end %>
+			</select>
+			<p>
+				Select Issues:
+			</p>
 		<% end %>
-</select>
-<% if @issues.empty? %>
-<p class="nodata"><%= l(:label_no_data) %></p>
-<% else %>
-<%= render :partial => 'issue/list_issues', :locals => {:issues => @issues, :query => @query} %>
-<p class="pagination"><%= pagination_links_full @issue_pages, @issue_count %></p>
-<% end %>
-<% other_formats_links do |f| %>
-  <%= f.link_to 'Atom', :url => params.merge(:key => User.current.rss_key) %>
-  <%= f.link_to 'CSV', :url => params, :onclick => "showModal('csv-export-options', '330px'); return false;" %>
-  <%= f.link_to 'PDF', :url => params %>
-<% end %>
+	</div>
+	<div class="filter">
+		<p>Filters</p>
+	</div>
+</div>
+ 	<p class="buttons hide-when-print">
+		<%= link_to_function l(:button_apply), 'submit_query_form("query_form")', :class => 'icon icon-checked' %>
+	    <%= link_to l(:button_clear), { :set_filter => 1, :project_id => @project }, :class => 'icon icon-reload'  %>
+	</p>
+<div id="version_version">
+	<%= render :partial => "version", :collection => @version %>
 
-
+</div>
 <script>
-	$(document).ready(function(){ 
-		$("select[name=version]").change(function(){
-		var version_id =  $(this).val();
-		alert(version_id);
-		});
+	$(document).ready(function() {
+		$("#submit").click(function() {
+			var id = $("#version").val();
+			
 	});
+}); 
 </script>
+<style type="text/css">
+	#filters_s2b .filter{
+		width: 80%;
+		
+	}
+	
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+

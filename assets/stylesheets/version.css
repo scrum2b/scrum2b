@@ -1,0 +1,124 @@
+p.issues{
+	font-size: 20px;
+	font-weight: bold;
+	color: #555555;
+}
+.clearfix:after {
+		content: ".";
+		display: block;
+		clear: both;
+		visibility: hidden;
+		line-height: 0;
+		height: 0;
+	}
+
+	.clearfix {
+		display: inline-block;
+	}
+
+	html[xmlns] .clearfix {
+		display: block;
+	}
+
+	* html .clearfix {
+		height: 1%;
+	}
+	#filters_s2b{
+		border: 1px solid #e4e4e4;
+		width: 100%;
+	}
+	#seclectbox {
+		width: 20%;
+		float:right;
+		padding:5px;
+		
+	}
+	#seclectbox p {
+		text-align: right;
+		font-size: 15px;
+		margin-top: 5px;
+		
+	}
+	#seclectbox select#version {
+		float: right;
+		margin:auto 20px 5px;
+	}
+	.div_version{
+		padding:0 10px 10px 10px;
+		border:1px solid #e4e4e4;
+		margin:0 0 20px 0;
+	}
+	.div_version p.version_name{
+		font-size:15px;
+		font-weight:bold;
+	}
+	.thead{
+		border:1px solid #e4e4e4;
+		width: 100%;
+		background: #eeeeee;
+		height:20px;
+	}
+	.thead p{
+		line-height:0px;
+		float:left;
+		font-weight:bold;
+		color:#116699;
+		text-align: center;
+	}
+	.thead img{
+		padding:0 10px 0 10px;
+		float:left;
+		margin:5px auto;
+	}
+	.thead p.id_issue{
+		width: 70px;
+	}
+	.thead p.tracker{
+		width: 150px;
+	}
+	.thead p.status{
+		width: 150px;
+	}
+	.thead p.priotity{
+		width: 150px;
+	}
+	.thead p.subject{
+		width: 300px;
+	}
+	.thead p.assignee{
+		width: 300px;
+	}
+	.thead p.update{
+		width: 200px;
+	}
+	.view_issue{
+		width:100%;
+	}
+	.view_issue table#list_issues tr td{
+		text-align: center;
+	}
+	.view_issue table#list_issues tr td.id_issue{
+		width:60px;
+		
+	}
+	.view_issue table#list_issues tr td.tracker{
+		width:150px;
+		
+	}
+	.view_issue table#list_issues tr td.status{
+		width:150px;
+		
+	}
+	.view_issue table#list_issues tr td.priotity{
+		width:150px;
+	}
+	.view_issue table#list_issues tr td.assignee{
+		width:300px;
+	}
+	.view_issue table#list_issues tr td.update{
+		width:300px;
+	}
+	.view_issue table#list_issues tr td.subject{
+		width:300px;
+	}
+	
