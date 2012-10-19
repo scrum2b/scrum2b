@@ -6,60 +6,241 @@
 </p>
 <div id="filters_s2b" class="clearfix">
 	<div id="seclectbox" class="clearfix">
-		<%= form_tag(:controller => "issue", :action => "index", :method => "post", :class => "form") do %>
-			<select name="member_issue">
+		<%= form_tag :action => 'index', :project_id =>  params[:project_id] %>
+	<!-- <%= button_to "Submit", {:controller => :issue, :action => 'index', :project_id => params[:project_id] }, :method => :post,:class => "btn_submit" %>
+	 -->	<%=	submit_tag "ok",:class => "btn_submit" %>
+	 		<select name="member_issue" id="member_issue">
 				<option value="0" selected="selected">None</option>
 				<option value="1">My Issues</option>
 				<option value="2">My completed Issues</option>
 			</select>
-			<select name="version" id="version">
+			<select name="select_version" id="version">
 				<option value="all" selected="selected" >All</option>
-				<% @version.each do |version|%>
+				<% @list_version.each do |version|%>
 				<option value="<%= version.id %>"><%= version.name %></option>
 				<% end %>
 			</select>
-			<p>
-				Select Issues:
-			</p>
-		<% end %>
+			<%= @test %>
+			<%= form_tag %>
 	</div>
-	<div class="filter">
-		<p>Filters</p>
-	</div>
+
 </div>
- 	<p class="buttons hide-when-print">
-		<%= link_to_function l(:button_apply), 'submit_query_form("query_form")', :class => 'icon icon-checked' %>
-	    <%= link_to l(:button_clear), { :set_filter => 1, :project_id => @project }, :class => 'icon icon-reload'  %>
-	</p>
 <div id="version_version">
+	<div class="thead clearfix">
+		<img src="/images/toggle_check.png?1349682375" alt="Toggle_check">
+		<p class="id_issue">
+			#
+		</p>
+		<p class="status">
+			Status
+		</p>
+		<p class="subject">
+			Subject
+		</p>
+		<p class="assignee">
+			Assignee
+		</p>
+		<p class="update">
+			Updated
+		</p>
+		<p class="estimated">
+			Estimated time
+		</p>
+		<p class="done">
+			% Done
+		</p>
+	</div>
 	<%= render :partial => "version", :collection => @version %>
 
 </div>
-<script>
-	$(document).ready(function() {
-		$("#submit").click(function() {
-			var id = $("#version").val();
-			
+<div id="backlog">
+	<p class="backlog">Backlog</p>
+	<% @issues_backlog.each do |issue|%>
+	<%= render :partial => "list_issues",  :locals => { :issue => issue} %>
+	<% end %>
+	
+</div>
+<script type="text/javascript">
+		$(document).ready(function() {
+	$(".:even").addClass("bg_issue");
+		
 	});
-}); 
 </script>
 <style type="text/css">
-	#filters_s2b .filter{
-		width: 80%;
-		
+	.bg_issue{
+		background:#eeeeee;
 	}
-	
+	p.issues {
+		font-size: 20px;
+		font-weight: bold;
+		color: #555555;
+	}
+	.clearfix:after {
+		content: ".";
+		display: block;
+		clear: both;
+		visibility: hidden;
+		line-height: 0;
+		height: 0;
+	}
+
+	.clearfix {
+		display: inline-block;
+	}
+
+	html[xmlns] .clearfix {
+		display: block;
+	}
+
+	* html .clearfix {
+		height: 1%;
+	}
+	.btn_submit:hover{
+		text-decoration: none;
+	}
+	.btn_submit{
+		float:right;
+		margin:0 20px;
+		border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25);
+		 -moz-border-bottom-colors: none;
+	    -moz-border-left-colors: none;
+	    -moz-border-right-colors: none;
+	    -moz-border-top-colors: none;
+	    background-color: #F5F5F5;
+	    background-image: -moz-linear-gradient(center top , #FFFFFF, #E6E6E6);
+	    background-repeat: repeat-x;
+	    border-color: #E6E6E6 #E6E6E6 #A2A2A2;
+	    border-image: none;
+	    border-radius: 4px 4px 4px 4px;
+	    border-style: solid;
+	    border-width: 1px;
+	    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+	    color: #333333;
+	    cursor: pointer;
+	    display: inline-block;
+	    font-size: 14px;
+	    line-height: 15px;
+	    margin-bottom: 0;
+	    padding: 4px 14px;
+	    text-align: center;
+	    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+	    vertical-align: middle;
+	}
+	#filters_s2b {
+		border: 1px solid #e4e4e4;
+		width: 100%;
+	}
+	#seclectbox {
+		width: 100%;
+		padding: 5px;
+	}
+
+	#seclectbox select#version {
+
+		float: right;
+	}
+	#seclectbox select#member_issue {
+		float: right;
+	}
+	#version_version {
+		border: 1px solid #e4e4e4;
+	}
+	.div_list_issues {
+		border-top:1px solid #e4e4e4;
+	}
+
+	.div_version {
+		margin-bottom: 30px;
+	}
+	.div_version:last-child {
+		margin-bottom: 0;
+	}
+	.div_version p.version_name {
+		font-size: 10px;
+		font-weight: bold;
+		color: #116699;
+	}
+	.thead {
+		width: 100%;
+		background: #eeeeee;
+		height: 20px;
+	}
+	.thead p {
+		line-height: 0px;
+		font-weight: bold;
+		color: #116699;
+		text-align: center;
+		float: left;
+	}
+	.thead img {
+		padding: 0 10px 0 10px;
+		float: left;
+		margin: 5px auto;
+	}
+	.thead p.id_issue {
+		width: 40px;
+	}
+
+	.thead p.status {
+		width: 50px;
+	}
+
+	.thead p.subject {
+		width: 520px;
+	}
+	.thead p.assignee {
+		width: 200px;
+	}
+	.thead p.update {
+		width: 200px;
+	}
+	.thead p.estimated {
+		width: 150px;
+	}
+	.view_issue {
+		width: 100%;
+	}
+	.view_issue table#list_issues tr td {
+
+	}
+	.view_issue table#list_issues tr td.id_issue {
+		width: 40px;
+		text-align: center;
+		font-weight:bold
+	}
+
+	.view_issue table#list_issues tr td.status {
+		width: 50px;
+	}
+	.view_issue table#list_issues tr td.assignee {
+		width: 200px;
+		text-align: center;
+		color: #116699;
+		font-weight: bold;
+	}
+	.view_issue table#list_issues tr td.update {
+		width: 200px;
+		text-align: center;
+	}
+	.view_issue table#list_issues tr td.subject {
+		width: 500px;
+		color: #116699;
+		font-weight:bold
+	}
+	.view_issue table#list_issues tr td.estimated {
+		width: 150px;
+		text-align: center;
+	}
+	#backlog{
+		border:1px solid #e4e4e4;
+		width:100%;
+		margin-top: 10px;
+	}
+	#backlog p.backlog{
+		font-size: 10px;
+		font-weight: bold;
+		color: #116699;
+	}
+
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
 

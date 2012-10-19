@@ -3,12 +3,13 @@
 		<tr>
 			<td class="check_id"><input type="checkbox" id="check_<%= issue.id %>"></td>
 			<td class="id_issue"><%= link_to issue.id, "issues/#{issue.id}" %></td>
-			<td class="tracker"><%= issue.tracker %></td>
 			<td class="status"><%= issue.status %></td>
-			<td class="priotity"><%= issue.priority %></td>
 			<td class="subject"><%= link_to issue.subject, "issues/#{issue.id}" %></td>
-			<td class="assignee"><%= issue.assigned_to %></td>
+			<td class="assignee"><%= link_to issue.assigned_to,"users/#{issue.assigned_to.id}" %></td>
 			<td class="update"><%= issue.updated_on %></td>
+			<td class="estimated"><%= issue.estimated_hours %></td>
+			<td class="done"><%= issue.done_ratio %>%</td>
+			
 		</tr>
 	</table>
 </div>

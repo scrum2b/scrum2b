@@ -3,10 +3,20 @@ class IssueController < ApplicationController
   before_filter :find_project, :authorize, :only => :index
  
   def index
-    @version = Version.where(:id => params[:version]);
-   @version = @project.versions.all
-   
+   @list_version = @project.versions.all
+   @id_version  = nil
+   if @id_version
+     @version = Version.where(:id => @id_version);
+     
+   elsif
+    @version = @project.versions.all
+   end
+   @issues_backlog = @project.issues.where(:fixed_version_id => nil ).all
+  
   end
+
+
+  
   private
   
   def find_project
