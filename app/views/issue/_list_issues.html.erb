@@ -1,11 +1,15 @@
 <div class="view_issue">
-	<table id="list_issues" class="memberid.<%= User.current.id %> list_issue">
+	<table id="list_issues" class="list_issue">
 		<tr>
 			<td class="check_id"><input type="checkbox" id="check_<%= issue.id %>"></td>
 			<td class="id_issue"><%= link_to issue.id, "issues/#{issue.id}" %></td>
 			<td class="status"><%= issue.status %></td>
 			<td class="subject"><%= link_to issue.subject, "issues/#{issue.id}" %></td>
-			<td class="assignee"><%= link_to issue.assigned_to,"users/#{issue.assigned_to.id}" %></td>
+			<% if issue.assigned_to %>
+				<td class="assignee"><%= link_to issue.assigned_to,"users/#{issue.assigned_to.id}" %></td>
+			<% elsif %>
+				<td class="assignee">No Assignee</td>
+			<% end %>
 			<td class="update"><%= issue.updated_on %></td>
 			<td class="estimated"><%= issue.estimated_hours %></td>
 			<td class="done"><%= issue.done_ratio %>%</td>

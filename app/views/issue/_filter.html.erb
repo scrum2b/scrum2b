@@ -1,0 +1,28 @@
+<div id="filters_s2b" class="clearfix">
+	<div id="seclectbox" class="clearfix">
+		<%= form_tag :action => 'list',:project_id =>  params[:project_id] %>
+			<%=	button_tag "Submit",:class => "btn_submit" %>
+	 		<select name="select_issue" id="select_issue">
+				<option value="1" <% if params[:select_issue] && params[:select_issue].to_i == 1%><%= selected="selected" %><% end %>>All issues</option>
+				<option value="2" <% if params[:select_issue] && params[:select_issue].to_i == 2%><%= selected="selected" %><% end %>>My issues</option>
+				<option value="3" <% if params[:select_issue] && params[:select_issue].to_i == 3%><%= selected="selected" %><% end %>>My completed issues</option>
+				<option value="4" <% if params[:select_issue] && params[:select_issue].to_i == 4%><%= selected="selected" %><% end %>>All new issues</option>
+				<option value="5" <% if params[:select_issue] && params[:select_issue].to_i == 5%><%= selected="selected" %><% end %>>All completed issues</option>
+				
+			</select>
+			<select name="select_version" id="version">
+				<option value="all" >All Version</option>
+				<% @list_versions.each do |version|%>
+					<% if params[:select_version] && params[:select_version].to_i == version.id %>
+						<option value="<%= version.id %>" selected ><%= version.name %></option>
+					<% else %>
+						<option value="<%= version.id %>" ><%= version.name %></option>
+					<% end %>
+				<% end %>
+				<option value="backlog" <% if params[:select_version] && params[:select_version] == 'backlog'%><%= selected="selected" %><% end %>>Backlog</option>
+			</select>
+			
+			<%= form_tag %>
+	</div>
+
+</div>

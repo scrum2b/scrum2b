@@ -1,16 +1,10 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 <%= javascript_include_tag 'version.js', :plugin => 'scrum2b' %>
-<% content_for :header_tags do %>
-    <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
-<% end %>
 <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
 <p class="issues">
 	Issues
-	
 </p>
-<% if @list_versions %>
-<%= render :partial => "filter", :locals => { :list_version => @list_versions} %>
-<% end %>
+<%= render :partial => "filter", :locals => { :list_version => @list_versions,:issues => @issues} %>
 <div id="version_version">
 	<div class="thead clearfix">
 		<img src="/images/toggle_check.png?1349682375" alt="Toggle_check">
@@ -41,13 +35,6 @@
 	<% end %>
 
 </div>
-<div id="backlog">
-	<p class="backlog">Backlog</p>
-	<% if @issues_backlog %>
-		<% @issues_backlog.each do |issue|%>
-		<%= render :partial => "list_issues",  :locals => { :issue => issue} %>
-		<% end %>
-	<% end %>
-	
-</div>
-
+<% if params[:select_version] && params[:select_version] == 'backlog' || params[:select_version] == 'all'  %>
+<%= render :partial => "backlog", :locals =>{:issues_backlog => @issues_backlog }%>
+<% end %>

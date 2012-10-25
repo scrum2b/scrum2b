@@ -1,9 +1,6 @@
-<div class="div_version" id="version.<%= version.id %>">
-	<p class="version_name">
-		<%= version.name %>
-	</p>
-	<div class="div_list_issues">
-		<% version.fixed_issues.each do |issue|%>
+<div id="backlog">
+	<p class="backlog">Backlog</p>
+		<% issues_backlog.each do |issue|%>
 			<% if @issues %>
 				<% @issues.each do |select_issue|%>
 					<% if select_issue.id == issue.id %>
@@ -14,5 +11,4 @@
 				<%= render :partial => "list_issues", :locals => { :issue => issue} %>
 			<% end %>
 		<% end %>
-	</div>
 </div>
