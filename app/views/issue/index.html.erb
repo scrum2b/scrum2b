@@ -6,11 +6,9 @@
 <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
 <p class="issues">
 	Issues
-	
 </p>
-<% if @list_versions %>
-<%= render :partial => "filter", :locals => { :list_version => @list_versions} %>
-<% end %>
+<%=	button_to "Board",{:action => "board",:project_id =>  params[:project_id]},:name => "view_mode",:class => "btn_submit_board"%>
+<%= render :partial => "filter_list", :locals => { :list_version => @list_versions} %>
 <div id="version_version">
 	<div class="thead clearfix">
 		<img src="/images/toggle_check.png?1349682375" alt="Toggle_check">
@@ -41,13 +39,10 @@
 	<% end %>
 
 </div>
-<div id="backlog">
-	<p class="backlog">Backlog</p>
-	<% if @issues_backlog %>
-		<% @issues_backlog.each do |issue|%>
-		<%= render :partial => "list_issues",  :locals => { :issue => issue} %>
-		<% end %>
-	<% end %>
-	
-</div>
+<% if !params[:select_version] || params[:select_version] && params[:select_version] == 'backlog' || params[:select_version] == 'all'  %>
+<%= render :partial => "backlog", :locals =>{:issues_backlog => @issues_backlog }%>
+<% end %>
+
+
+
 

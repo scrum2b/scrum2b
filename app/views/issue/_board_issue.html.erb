@@ -1,0 +1,33 @@
+<div class="board_issue clearfix">
+		<div class="id">#<%= link_to issue.id,:controller => 'issues', :action => 'show', :id =>issue.id %></div>
+		<div class="subject"><%= issue.subject %></div>
+		<% if issue.assigned_to %>
+			<div class="assignee"><%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %></div>
+		<% elsif %>
+			<div class="assignee">No Assignee</div>
+		<% end %>
+		<% if issue.estimated_hours %>
+			<div class="estimated">Estimated time: <%= issue.estimated_hours %>h /</div>
+		<% elsif %>
+			<div class="estimated">Estimated time: 0h /</div>
+		<% end %>
+		<% if issue.done_ratio %>
+			<div class="done"> <%= issue.done_ratio %>% Done:
+				<table id="done">
+					<tr> <% if  issue.done_ratio == 100 %>
+						<td class="done"></td>
+						<% end %>
+						<% if  issue.done_ratio == 0 %>
+						<td class="todo"></td>
+						<% end %>
+						<% if  issue.done_ratio != 0 && issue.done_ratio != 100%>
+						<td class="done" style="width: <%= issue.done_ratio %>px"></td>
+						<td class="todo" style="width: <%= 100 - issue.done_ratio %>px"></td>
+						<% end %>
+					</tr>
+				</table>
+			</div>
+		<% elsif %>
+			<div class="done">Done:0%</div>
+		<% end %>
+</div>

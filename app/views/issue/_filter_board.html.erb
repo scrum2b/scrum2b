@@ -1,0 +1,30 @@
+<div id="filters_s2b" class="clearfix">
+	<div id="seclectbox" class="clearfix">
+		<%= form_tag :action => 'board',:project_id =>  params[:project_id] %>
+			<%=	button_tag "Submit",:class => "btn_submit" %>
+	 		<select name="select_member" id="select_issue">
+	 			<option value="all" >All member</option>
+	 			<option value="me" <% if params[:select_member] && params[:select_member] == "me" %><%= selected="selected" %><% end %>>Me</option>
+	 			<% @member.each do |member|%>
+	 			<% if params[:select_member] && params[:select_member].to_i == member.id %>
+	 			<option value="<%= member.id %>" selected ><%= member.firstname + ' ' + member.lastname %></option>
+				<% else %>
+				<option value="<%= member.id %>"><%= member.firstname + ' ' + member.lastname %></option>
+				<% end %>
+				<% end %>
+			</select>
+			<select name="select_version" id="version">
+				<option value="all" >All Version</option>
+				<% @list_versions.each do |version|%>
+					<% if params[:select_version] && params[:select_version].to_i == version.id %>
+						<option value="<%= version.id %>" selected ><%= version.name %></option>
+					<% else %>
+						<option value="<%= version.id %>" ><%= version.name %></option>
+					<% end %>
+				<% end %>
+			</select>
+			
+			<%= form_tag %>
+	</div>
+
+</div>

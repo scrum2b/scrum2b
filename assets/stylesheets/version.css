@@ -3,6 +3,7 @@ p.issues {
 	font-weight: bold;
 	color: #555555;
 	margin-top:0;
+	float: left;
 }
 .clearfix:after {
 	content: ".";
@@ -30,30 +31,13 @@ html[xmlns] .clearfix {
 .btn_submit {
 	float: right;
 	margin: 0 20px;
-	border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25);
-	-moz-border-bottom-colors: none;
-	-moz-border-left-colors: none;
-	-moz-border-right-colors: none;
-	-moz-border-top-colors: none;
-	background-color: #F5F5F5;
-	background-image: -moz-linear-gradient(center top , #FFFFFF, #E6E6E6);
-	background-repeat: repeat-x;
-	border-color: #E6E6E6 #E6E6E6 #A2A2A2;
-	border-radius: 4px 4px 4px 4px;
-	border-style: solid;
-	border-width: 1px;
-	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-	color: #333333;
-	cursor: pointer;
-	display: inline-block;
-	font-size: 14px;
-	line-height: 15px;
-	margin-bottom: 0;
-	padding: 4px 14px;
-	text-align: center;
-	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
-	vertical-align: middle;
+	
 }
+.btn_submit_board{
+	float:right;
+	margin:0px 15px 0 0;
+}
+
 #filters_s2b {
 	border: 1px solid #e4e4e4;
 	width: 100%;
@@ -119,19 +103,19 @@ html[xmlns] .clearfix {
 	width: 520px;
 }
 .thead p.assignee {
-	width: 200px;
+	width: 170px;
 }
 .thead p.update {
-	width: 200px;
+	width: 180px;
 }
 .thead p.estimated {
-	width: 150px;
+	width: 140px;
 }
 .view_issue {
 	width: 100%;
 }
 .view_issue table#list_issues tr td {
-
+	overflow:hidden;
 }
 .view_issue table#list_issues tr td.id_issue {
 	width: 40px;
@@ -143,22 +127,23 @@ html[xmlns] .clearfix {
 	width: 80px;
 }
 .view_issue table#list_issues tr td.assignee {
-	width: 200px;
+	width: 170px;
 	text-align: center;
 	color: #116699;
 	font-weight: bold;
 }
 .view_issue table#list_issues tr td.update {
-	width: 200px;
+	width: 180px;
 	text-align: center;
 }
 .view_issue table#list_issues tr td.subject {
 	width: 470px;
 	color: #116699;
-	font-weight: bold
+	font-weight: bold;
+	
 }
 .view_issue table#list_issues tr td.estimated {
-	width: 150px;
+	width: 140px;
 	text-align: center;
 }
 #backlog {
@@ -171,3 +156,70 @@ html[xmlns] .clearfix {
 	font-weight: bold;
 	color: #116699;
 }
+.board {
+	float:left;
+	background: #e3e3e3;
+	width:30%;
+	padding: 0 10px 10px 10px;
+	margin:10px;
+	border: 1px solid #000000;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	
+}
+.board p.status{
+	color:#606264;
+	font-size:17px;
+	font-weight:bold;
+	font-family: Trebuchet MS,Georgia,"Times New Roman",serif;
+	margin:5px 0 10px 0;
+}
+.board_issue{
+	border: 1px solid #000000;
+	padding:5px;
+	margin:0 0 5px 0;
+	background: #ffffff;
+	width:97%;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+}
+.board_issue .id{
+	float:left;
+	font-weight:bold;
+	margin-right:10px;
+}
+.board_issue .subject{
+	
+	margin-left:10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+    
+}
+.board_issue .estimated{
+	float:left
+	
+	
+}
+.board_issue .done{
+	float:left;
+	margin-left:5px;
+}
+table#done {
+	float: left
+}
+table#done tr td{
+	width: 100px;
+	height:10px;
+	float: left;
+}
+table#done tr td.todo{
+	
+	background: #eeeeee;
+}
+table#done tr td.done{
+	background: #bae0ba;
+}
+
