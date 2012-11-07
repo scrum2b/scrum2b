@@ -1,0 +1,225 @@
+p.issues {
+	font-size: 20px;
+	font-weight: bold;
+	color: #555555;
+	margin-top:0;
+	float: left;
+}
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+
+.clearfix {
+	display: inline-block;
+}
+
+html[xmlns] .clearfix {
+	display: block;
+}
+
+* html .clearfix {
+	height: 1%;
+}
+.btn_submit:hover {
+	text-decoration: none;
+}
+.btn_submit {
+	float: right;
+	margin: 0 20px;
+	
+}
+.btn_submit_board{
+	float:right;
+	margin:0px 15px 0 0;
+}
+
+#filters_s2b {
+	border: 1px solid #e4e4e4;
+	width: 100%;
+}
+#seclectbox {
+	width: 100%;
+	padding: 5px;
+}
+
+#seclectbox select#version {
+	padding: 2px;
+	float: right;
+}
+#seclectbox select#select_issue {
+	float: right;
+	padding: 2px;
+}
+#version_version {
+	border: 1px solid #e4e4e4;
+}
+
+.div_list_issues {
+	border-top: 1px solid #e4e4e4;
+}
+
+.div_version {
+	margin-bottom: 30px;
+}
+.div_version:last-child {
+	margin-bottom: 0;
+}
+.div_version p.version_name {
+	font-size: 10px;
+	font-weight: bold;
+	color: #116699;
+}
+.thead {
+	width: 100%;
+	background: #eeeeee;
+	height: 25px;
+}
+.thead p {
+	line-height: 0px;
+	font-weight: bold;
+	color: #116699;
+	text-align: center;
+	float: left;
+}
+.thead img {
+	padding: 0 10px 0 10px;
+	float: left;
+	margin: 5px auto;
+}
+.thead p.id_issue {
+	width: 40px;
+}
+
+.thead p.status {
+	width: 50px;
+}
+
+.thead p.subject {
+	width: 520px;
+}
+.thead p.assignee {
+	width: 170px;
+}
+.thead p.update {
+	width: 180px;
+}
+.thead p.estimated {
+	width: 140px;
+}
+.view_issue {
+	width: 100%;
+}
+.view_issue table#list_issues tr td {
+	overflow:hidden;
+}
+.view_issue table#list_issues tr td.id_issue {
+	width: 40px;
+	text-align: center;
+	font-weight: bold
+}
+
+.view_issue table#list_issues tr td.status {
+	width: 80px;
+}
+.view_issue table#list_issues tr td.assignee {
+	width: 170px;
+	text-align: center;
+	color: #116699;
+	font-weight: bold;
+}
+.view_issue table#list_issues tr td.update {
+	width: 180px;
+	text-align: center;
+}
+.view_issue table#list_issues tr td.subject {
+	width: 470px;
+	color: #116699;
+	font-weight: bold;
+	
+}
+.view_issue table#list_issues tr td.estimated {
+	width: 140px;
+	text-align: center;
+}
+#backlog {
+	border: 1px solid #e4e4e4;
+	width: 100%;
+	margin-top: 10px;
+}
+#backlog p.backlog {
+	font-size: 10px;
+	font-weight: bold;
+	color: #116699;
+}
+.board {
+	float:left;
+	background: #e3e3e3;
+	width:30%;
+	padding: 0 10px 10px 10px;
+	margin:10px;
+	border: 1px solid #000000;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	
+}
+.board p.status{
+	color:#606264;
+	font-size:17px;
+	font-weight:bold;
+	font-family: Trebuchet MS,Georgia,"Times New Roman",serif;
+	margin:5px 0 10px 0;
+}
+.board_issue{
+	border: 1px solid #000000;
+	padding:5px;
+	margin:0 0 5px 0;
+	background: #ffffff;
+	width:97%;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+}
+.board_issue .id{
+	float:left;
+	font-weight:bold;
+	margin-right:10px;
+}
+.board_issue .subject{
+	
+	margin-left:10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+    
+}
+.board_issue .estimated{
+	float:left
+	
+	
+}
+.board_issue .done{
+	float:left;
+	margin-left:5px;
+}
+table#done {
+	float: left
+}
+table#done tr td{
+	width: 100px;
+	height:10px;
+	float: left;
+}
+table#done tr td.todo{
+	
+	background: #eeeeee;
+}
+table#done tr td.done{
+	background: #bae0ba;
+}
+

@@ -1,0 +1,36 @@
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<%= javascript_include_tag 'version.js', :plugin => 'scrum2b' %>
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
+<% end %>
+<%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
+<p class="issues">
+	Issues
+</p>
+<%=	button_to "List",{:action => "index",:project_id =>  params[:project_id]},:name => "view_mode",:class => "btn_submit_board"%>
+<%= render :partial => "filter_board" %>
+<div class="board">
+	<p class="status">New</p>
+	<% @issues_new.each do |issue|%>
+		<%= render :partial => "board_issue", :locals => { :issue => issue} %>
+
+	<% end %>
+</div>
+<div class="board">
+	<p class="status">Started</p>
+	<% @issues_started.each do |issue|%>
+		<%= render :partial => "board_issue", :locals => { :issue => issue} %>
+
+	<% end %>
+</div>
+<div class="board">
+	<p class="status">completed</p>
+	<% @issues_completed.each do |issue|%>
+		<%= render :partial => "board_issue", :locals => { :issue => issue} %>
+
+	<% end %>
+</div>
+
+<style type="text/css">
+
+</style>
