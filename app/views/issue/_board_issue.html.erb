@@ -1,33 +1,54 @@
-<div class="board_issue clearfix">
-		<div class="id">#<%= link_to issue.id,:controller => 'issues', :action => 'show', :id =>issue.id %></div>
-		<div class="subject"><%= issue.subject %></div>
-		<% if issue.assigned_to %>
-			<div class="assignee"><%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %></div>
-		<% elsif %>
-			<div class="assignee">No Assignee</div>
-		<% end %>
-		<% if issue.estimated_hours %>
-			<div class="estimated">Estimated time: <%= issue.estimated_hours %>h /</div>
-		<% elsif %>
-			<div class="estimated">Estimated time: 0h /</div>
-		<% end %>
-		<% if issue.done_ratio %>
-			<div class="done"> <%= issue.done_ratio %>% Done:
-				<table id="done">
-					<tr> <% if  issue.done_ratio == 100 %>
-						<td class="done"></td>
-						<% end %>
-						<% if  issue.done_ratio == 0 %>
-						<td class="todo"></td>
-						<% end %>
-						<% if  issue.done_ratio != 0 && issue.done_ratio != 100%>
-						<td class="done" style="width: <%= issue.done_ratio %>px"></td>
-						<td class="todo" style="width: <%= 100 - issue.done_ratio %>px"></td>
-						<% end %>
-					</tr>
-				</table>
-			</div>
-		<% elsif %>
-			<div class="done">Done:0%</div>
-		<% end %>
+<div class="board_issue clearfix" id="<%= issue.id %>">
+    <div class="id">#<%= link_to issue.id,:controller => 'issues', :action => 'show', :id =>issue.id %></div>
+    <div class="subject"><%= issue.subject %></div>
+    <% if issue.assigned_to %>
+      <div class="assignee"><%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %></div>
+    <% elsif %>
+      <div class="assignee">No Assignee</div>
+    <% end %>
+    <% if issue.estimated_hours %>
+      <div class="estimated">Estimated time: <%= issue.estimated_hours %>h /</div>
+    <% elsif %>
+      <div class="estimated">Estimated time: 0h /</div>
+    <% end %>
+    <div id="slider-horizontal"></div>
+    <p>
+        <label for="amount">Completed(%):</label>
+        <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
+    </p>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/resources/demos/style.css" />
+    <script>
+    jQuery(function($) {
+        $( "#slider-horizontal" ).slider({
+            orientation: "horizontal",
+            range: "min",
+            min: 0,
+            max: 100,
+            value: <%= issue.done_ratio%>,
+            slide: function( event, ui ) {
+            $( "#amount" ).val( ui.value );
+            },
+          stop: function(e, ui) {
+          var issue_id = <%=issue.id%>;
+          var project_id = <%= @project.id%>;
+          console.debug(project_id);
+          var url_ajax = "/issue/ajax";
+          $.ajax({
+          url : url_ajax,
+          type : "POST",
+          data : 'done_ratio=' + ui.value + '&issue_id=' + issue_id + '&project_id='+project_id,
+          dataType : "text",
+          success : function(res) {  
+            console.debug(res);
+          }
+          }); 
+            }
+        });
+        $( "#amount" ).val( $( "#slider-horizontal" ).slider( "value" ) );
+        
+    });
+    </script>
 </div>
