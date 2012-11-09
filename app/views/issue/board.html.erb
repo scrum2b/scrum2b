@@ -1,4 +1,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+
+<%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
+<%= stylesheet_link_tag 'jquery-ui-slider', :plugin => 'scrum2b' %>
 <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
 <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
@@ -7,12 +10,14 @@
 </p>
 <%= button_to "List",{:action => "index",:project_id =>  params[:project_id]},:name => "view_mode",:class => "btn_submit_board"%>
 <%= render :partial => "filter_board" %>
+
 <div class="board">
 	<p class="status">
 		New
 	</p>
 	<div class="connectedSortable" id ="new" >
 		<% @issues_new.each do |issue|%>
+
 		<%= render :partial => "board_issue", :locals => { :issue => issue} %>
 
 		<% end %>
@@ -49,6 +54,7 @@
 		color: red;
 	}
 </style>
+
 <script>
 	jQuery(function($) {
 	$( "#new, #started, #completed").sortable({
@@ -75,4 +81,5 @@
 	}).disableSelection();
 	});
 </script>
+
 
