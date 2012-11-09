@@ -1,49 +1,74 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
- <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
 <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
 <p class="issues">
-	Issues <%= @default_not_start_status.id%>
+	Issues 
 </p>
-<%=	button_to "List",{:action => "index",:project_id =>  params[:project_id]},:name => "view_mode",:class => "btn_submit_board"%>
+<%= button_to "List",{:action => "index",:project_id =>  params[:project_id]},:name => "view_mode",:class => "btn_submit_board"%>
 <%= render :partial => "filter_board" %>
 <div class="board">
-	<p class="status">New</p>
+	<p class="status">
+		New
+	</p>
 	<div class="connectedSortable" id ="sortable1" >
-	<% @issues_new.each do |issue|%>
+		<% @issues_new.each do |issue|%>
 		<%= render :partial => "board_issue", :locals => { :issue => issue} %>
 
-	<% end %>
+		<% end %>
 	</div>
 </div>
 <div class="board">
-	<p class="status">Started</p>
+	<p class="status">
+		In progress
+	</p>
 	<div class="connectedSortable" id ="sortable2">
-	<% @issues_started.each do |issue|%>
+		<% @issues_started.each do |issue|%>
 		<%= render :partial => "board_issue", :locals => { :issue => issue} %>
 
-	<% end %>
+		<% end %>
 	</div>
 </div>
 <div class="board">
-	<p class="status">completed</p>
+	<p class="status">
+		completed
+	</p>
 	<div class="connectedSortable" id ="sortable3">
-	<% @issues_completed.each do |issue|%>
+		<% @issues_completed.each do |issue|%>
 		<%= render :partial => "board_issue", :locals => { :issue => issue} %>
 
-	<% end %>
+		<% end %>
 	</div>
 </div>
 
 <style type="text/css">
-.connectedSortable{
-	padding:0 0 10px;
-}
-.color{
-	color:red;
-	
-}
-
+	.connectedSortable {
+		padding: 0 0 5px;
+	}
 </style>
+<script>
+jQuery(function($) {
+	$( "#sortable1, #sortable2, #sortable3").sortable({
+		connectWith: ".connectedSortable",
+		receive: function(){
+		var status = $(this).attr("id")
+		var project_id = <%= @project.id %>
+		var url_ajax = '/issue/update_status'
+		var issue_id = 2
+		console.debug(status);
+		console.debug(issue_id);
+		console.debug(project_id);
+		$.ajax({
+			url : url_ajax,
+			type : "POST",
+			data : 'issue_id=' + issue_id + '&project_id=' + project_id + '&status=' + status,
+			dataType : "text",
+			success : function() {
+	
+			}
+		});
+		}
+		}).disableSelection();
+	});
+</script>
 
-    

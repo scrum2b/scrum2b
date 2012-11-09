@@ -1,7 +1,6 @@
 class IssueController < ApplicationController
   unloadable
   before_filter :find_project, :only => [:index,:board]
-
   before_filter :set_status_settings
  
 
@@ -87,9 +86,9 @@ class IssueController < ApplicationController
       @id_version.push(version.id)
     end
     @issues_select = @issues.where(:fixed_version_id => @id_version)
-    @issues_new = @project.issues.where(:assigned_to_id => nil)
+    @issues_new = @project.issues.where(:status_id => @default_not_start_status_id.to_i)
     @issues_completed = @issues_select.where(:done_ratio => 100)
-    @issues_started = @issues_select.where("done_ratio < 100 AND assigned_to_id != 0 ")
+    @issues_started = @issues_select.where(:status_id => @default_inprogress_status_id.to_i)
   end
 
   def update_status
@@ -97,6 +96,18 @@ class IssueController < ApplicationController
    if params[:status] == "sortable3"
     @issue = @project.issues.find(params[:issue_id])
     @issue.update_attribute(:done_ratio,100)
+    @issue.update_attribute(:status_id,@default_completed_status_id.to_i)
+    end
+    if params[:status] == "sortable2"
+    @issue = @project.issues.find(params[:issue_id])
+    @issue.update_attribute(:status_id,@default_inprogress_status_id.to_i)
+    if @issue.done_ratio = 100
+        @issue.update_attribute(:done_ratio,90)
+    end
+    end
+    if params[:status] == "sortable1"
+    @issue = @project.issues.find(params[:issue_id])
+    @issue.update_attribute(:status_id,@default_not_start_status_id.to_i)
     end
   end
 
@@ -124,16 +135,15 @@ class IssueController < ApplicationController
     @settings['status_no_start'].each do |setting|
      @not_start_statuses_id.push(setting[0])
      end
-      @not_start_statuses = IssueStatus.find(@not_start_statuses_id)
-      @default_not_start_status = @not_start_statuses.first  
+     @default_not_start_status_id = @not_start_statuses_id[0]
+     
     end
     
     @inprogress_statuses_id = []
     if @settings['status_inprogress'].each do |setting|
       @inprogress_statuses_id.push(setting[0])
     end
-      @inprogress_statuses= IssueStatus.find(@inprogress_statuses_id)
-      @default_inprogress_status = @inprogress_statuses.first
+      @default_inprogress_status_id = @inprogress_statuses_id[0]
     end
     
     @completed_statuses_id = []
@@ -141,8 +151,7 @@ class IssueController < ApplicationController
       @settings['status_completed'].each do |setting|
         @completed_statuses_id.push(setting[0])
       end
-      @completed_statuses = IssueStatus.find(@completed_statuses_id)
-      @default_completed_status = @completed_statuses.first
+     @default_completed_status_id = @completed_statuses_id[0]
     end
     
     @closed_statuses_id = []
@@ -150,8 +159,7 @@ class IssueController < ApplicationController
       @settings['status_closed'].each do |setting|
         @closed_statuses_id.push(setting[0])
       end
-      @closed_statuses = IssueStatus.find(@completed_statuses_id)
-      @default_closed_status = @closed_statuses.first
+     @default_closed_status_id = @closed_statuses_id[0]
     end
   end
   

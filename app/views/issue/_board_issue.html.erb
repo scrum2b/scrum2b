@@ -16,10 +16,6 @@
         <label for="amount">Completed(%):</label>
         <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
     </p>
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
-    <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
-    <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
-    <link rel="stylesheet" href="/resources/demos/style.css" />
     <script>
     jQuery(function($) {
         $( "#slider-horizontal" ).slider({
@@ -48,27 +44,7 @@
             }
         });
         $( "#amount" ).val( $( "#slider-horizontal" ).slider( "value" ) );
-        $( "#sortable1, #sortable2, #sortable3").sortable({
-            connectWith: ".connectedSortable"
-            ,receive: function(){
-            var status = $(this).attr("id")
-       		var project_id = <%= @project.id %>
-       		var url_ajax = '/issue/update_status'
-       		var issue_id = <%= issue.id %>
-       		console.debug(status);
-       		console.debug(issue_id);
-       		console.debug(project_id);
-       		 $.ajax({
-          url : url_ajax,
-          type : "POST",
-          data :  'issue_id=' + issue_id + '&project_id='+project_id + '&status='+status,
-          dataType : "text",
-          success : function() {  
-            
-          }
-          });
-         }
-        }).disableSelection();       
+          
        
     });
     </script>

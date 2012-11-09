@@ -226,4 +226,5 @@ table#done tr td.todo{
 table#done tr td.done{
 	background: #bae0ba;
 }
-
+.connectedSortable {
+		padding: 0 0 5px;
