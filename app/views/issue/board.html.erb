@@ -1,4 +1,6 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
+<%= stylesheet_link_tag 'jquery-ui-slider', :plugin => 'scrum2b' %>
 <%= javascript_include_tag 'version.js', :plugin => 'scrum2b' %>
 <% content_for :header_tags do %>
     <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
@@ -9,7 +11,7 @@
 </p>
 <%=	button_to "List",{:action => "index",:project_id =>  params[:project_id]},:name => "view_mode",:class => "btn_submit_board"%>
 <%= render :partial => "filter_board" %>
-<div class="board">
+<div class="board" span3>
 	<p class="status">New</p>
 	<% @issues_new.each do |issue|%>
 		<%= render :partial => "board_issue", :locals => { :issue => issue} %>
@@ -34,3 +36,4 @@
 <style type="text/css">
 
 </style>
+
