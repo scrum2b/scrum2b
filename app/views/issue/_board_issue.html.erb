@@ -1,4 +1,4 @@
-<div class="board_issue clearfix">
+<div class="board_issue clearfix" id="<%= issue.id %>">
 		<div class="id">#<%= link_to issue.id,:controller => 'issues', :action => 'show', :id =>issue.id %></div>
 		<div class="subject"><%= issue.subject %></div>
 		<% if issue.assigned_to %>
@@ -30,4 +30,30 @@
 		<% elsif %>
 			<div class="done">Done:0%</div>
 		<% end %>
-</div>
+<script>
+    $(function() {
+    	$( "#sortable1, #sortable2, #sortable3").sortable({
+            connectWith: ".connectedSortable"
+            ,receive: function(){
+            var status = $(this).attr("id")
+       		var project_id = <%= @project.id %>
+       		var url_ajax = '/issue/update_status'
+       		var issue_id = <%= issue.id %>
+       		console.debug(status);
+       		console.debug(issue_id);
+       		console.debug(project_id);
+       		 $.ajax({
+          url : url_ajax,
+          type : "POST",
+          data :  'issue_id=' + issue_id + '&project_id='+project_id + '&status='+status,
+          dataType : "text",
+          success : function() {  
+            
+          }
+          });
+         }
+        }).disableSelection();       
+       
+    });	
+ </script>
+ </div>

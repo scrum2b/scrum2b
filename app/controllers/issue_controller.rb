@@ -1,6 +1,7 @@
 class IssueController < ApplicationController
   unloadable
   before_filter :find_project, :only => [:index,:board]
+  before_filter :set_status_settings
  
   def index
     if session[:view_mode]&& session[:view_mode] = "board" && !params[:view_mode]
@@ -88,11 +89,59 @@ class IssueController < ApplicationController
     @issues_completed = @issues_select.where(:done_ratio => 100)
     @issues_started = @issues_select.where("done_ratio < 100 AND assigned_to_id != 0 ")
   end
-
+  def update_status
+    @project =  Project.find(params[:project_id])
+   if params[:status] == "sortable3"
+    @issue = @project.issues.find(params[:issue_id])
+    @issue.update_attribute(:done_ratio,100)
+    end
+  end
   private
 
   def find_project
     # @project variable must be set before calling the authorize filter
     @project = Project.find(params[:project_id])
   end
+  
+  def set_status_settings
+    @plugin = Redmine::Plugin.find("scrum2b")
+    @settings = Setting["plugin_#{@plugin.id}"]
+    
+    @not_start_statuses_id = []
+    if @settings['status_no_start']  
+    @settings['status_no_start'].each do |setting|
+     @not_start_statuses_id.push(setting[0])
+     end
+      @not_start_statuses = IssueStatus.find(@not_start_statuses_id)
+      @default_not_start_status = @not_start_statuses.first  
+    end
+    
+    @inprogress_statuses_id = []
+    if @settings['status_inprogress'].each do |setting|
+      @inprogress_statuses_id.push(setting[0])
+    end
+      @inprogress_statuses= IssueStatus.find(@inprogress_statuses_id)
+      @default_inprogress_status = @inprogress_statuses.first
+    end
+    
+    @completed_statuses_id = []
+    if @settings['status_completed']
+      @settings['status_completed'].each do |setting|
+        @completed_statuses_id.push(setting[0])
+      end
+      @completed_statuses = IssueStatus.find(@completed_statuses_id)
+      @default_completed_status = @completed_statuses.first
+    end
+    
+    @closed_statuses_id = []
+    if @settings['status_closed']
+      @settings['status_closed'].each do |setting|
+        @closed_statuses_id.push(setting[0])
+      end
+      @closed_statuses = IssueStatus.find(@completed_statuses_id)
+      @default_closed_status = @closed_statuses.first
+    end
+  end
+  
+  
 end
