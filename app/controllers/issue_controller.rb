@@ -1,8 +1,8 @@
 class IssueController < ApplicationController
   unloadable
   before_filter :find_project, :only => [:index,:board]
+
   before_filter :set_status_settings
- 
 
   def index
     if session[:view_mode]&& session[:view_mode] = "board" && !params[:view_mode]
@@ -111,6 +111,13 @@ class IssueController < ApplicationController
     end
   end
 
+  def ajax
+   @project =  Project.find(params[:project_id])
+   #@issue = @project.issues.where(:id => params[:issue_id])
+    @issue = @project.issues.find(params[:issue_id])
+    @issue.update_attribute(:done_ratio, params[:done_ratio])
+    Rails.logger.info "test object: #{@issue.done_ratio.to_s}"
+  end
   def ajax
    @project =  Project.find(params[:project_id])
    #@issue = @project.issues.where(:id => params[:issue_id])
