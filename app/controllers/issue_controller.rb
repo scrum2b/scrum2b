@@ -55,69 +55,35 @@ class IssueController < ApplicationController
     @id_version  = params[:select_version]
     @select_issues  = params[:select_member]
 
+    if @id_version
+      if @id_version == "all"
+        @issues_version =  @project.issues
+      elsif
+      @issues_version =  @project.issues.where(:fixed_version_id  => @id_version);
+      end
+    elsif
+    @issues_version =  @project.issues
+    end
     if @select_issues
 
       if @select_issues == "all"
-        @issues =  @project.issues
+        @issues_select =  @issues_version
 
       elsif @select_issues == "me"
-        @issues =  @project.issues.where(:assigned_to_id => User.current.id )
+        @issues_select =  @issues_version.where(:assigned_to_id => User.current.id )
 
       else
-        @issues =  @project.issues.where(:assigned_to_id => @select_issues)
+        @issues_select = @issues_version.where(:assigned_to_id => @select_issues)
       end
 
     else
-      @issues = @project.issues
+      @issues_select =  @issues_version
     end
 
-    if @id_version
-      if @id_version == "all"
-        @version = @project.versions
-      elsif
-      @version = Version.where(:id => @id_version);
-      end
-    elsif
-    @version = @project.versions
-    end
-    @id_version = Array.new
-    @version.each do |version|
-      @id_version.push(version.id)
-    end
-    if @id_version == []
-      @issues_select = @issues
-    else
-      @issues_select = @issues.where(:fixed_version_id => @id_version)
-    end
-    if @issues_no_version = @project.issues.where(:fixed_version_id => nil)
-      @issues_no_version_new = @issues_no_version.where(:status_id => @default_not_start_status_id.to_i)
-      @issues_no_version_started = @issues_no_version.where(:status_id => @default_inprogress_status_id.to_i)
-      @issues_no_version_completed = @issues_no_version.where(:status_id => @default_completed_status_id.to_i)
-      @issues_have_version_stsrted = @issues_select.where(:status_id => @default_inprogress_status_id.to_i)
-      @issues_have_version_completed = @issues_select.where(:status_id => @default_completed_status_id.to_i)
-      @id_issues_started = Array.new
-      @id_issues_completed = Array.new
-      @issues_no_version_started.each do|issue|
-        @id_issues_started.push(issue.id)
-      end
-      @issues_have_version_stsrted.each do|issue|
-        @id_issues_started.push(issue.id)
-      end
-      @issues_no_version_completed.each do|issue|
-        @id_issues_completed.push(issue.id)
-      end
-      @issues_have_version_completed.each do|issue|
-        @id_issues_completed.push(issue.id)
-      end
-      @issues_new = @project.issues.where(:status_id => @default_not_start_status_id.to_i)
-      @issues_started = @project.issues.where(:id => @id_issues_started)
-      @issues_completed =  @project.issues.where(:id => @id_issues_completed)
+    @issues_new = @issues_select.where(:status_id => @default_not_start_status_id.to_i)
+    @issues_started = @issues_select.where(:status_id => @default_inprogress_status_id.to_i)
+    @issues_completed = @issues_select.where(:status_id => @default_completed_status_id.to_i)
 
-    else
-      @issues_new = @project.issues.where(:status_id => @default_not_start_status_id.to_i)
-      @issues_started = @issues_select.where(:status_id => @default_inprogress_status_id.to_i)
-      @issues_completed = @issues_select.where(:status_id => @default_completed_status_id)
-    end
   end
 
   def update_status
