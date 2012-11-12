@@ -11,11 +11,16 @@
     <% elsif %>
       <div class="estimated">Estimated time: 0h /</div>
     <% end %>
-    <div id="slider-horizontal" class="ui-slider-horizontal"></div>
-    <p>
+    <% if issue.status_id == @default_inprogress_status_id.to_i%>
+    <div id="slider-horizontal" class="ui-slider-horizontal"> </div>
         <label for="amount">Completed(%):</label>
         <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
-    </p>
+    <% else %>
+    <%= issue.done_ratio%>
+    <div class="progress progress-striped active"></div>
+    <div class="bar" style="height: 10px;width: 100%"></div>
+    <% end %>
+
     <script>
     jQuery(function($) {
         $( "#slider-horizontal" ).slider({
@@ -28,9 +33,9 @@
             $( "#amount" ).val( ui.value );
             },
           stop: function(e, ui) {
-          var issue_id = <%=issue.id%>;
+          var issue_id = $(this).parent().attr('id');
           var project_id = <%= @project.id%>;
-          console.debug(project_id);
+          console.debug(issue_id);
           var url_ajax = "/issue/ajax";
           $.ajax({
           url : url_ajax,
@@ -43,7 +48,10 @@
           }); 
             }
         });
-        $( "#amount" ).val( $( "#slider-horizontal" ).slider( "value" ) );       
+        $( "#amount" ).val( $( "#slider-horizontal" ).slider( "value" ) ); 
+        $( ".bar" ).progressbar({
+            value: <%= issue.done_ratio%>
+        });      
     });
     </script>
 </div>
