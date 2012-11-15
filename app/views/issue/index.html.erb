@@ -10,12 +10,10 @@
 </p>
 <%=	button_to "Board",{:action => "board",:project_id =>  params[:project_id]},:name => "view_mode",:class => "btn_submit_board"%>
 <%= render :partial => "filter_list", :locals => { :list_version => @list_versions} %>
-<!-- <span class="close_issue btn">close</span> -->
 <%=	link_to "test",{:action => "close_issue",:project_id =>  params[:project_id]},:class => "close_issue_list"%>
-<div id="version_version">
-		<div class="thead clearfix">
-		<img src="/images/toggle_check.png?1349682375" alt="Toggle_check">
-		</th>
+<table class= "table">
+	<tr class="success">
+		<th><img src="/images/toggle_check.png?1349682375" alt="Toggle_check"></th>
 		<th>#</th>
 		<th>Status</th>
 		<th>Subject</th>
@@ -24,15 +22,17 @@
 		<th>Estimated time</th>
 		<th>% Done</th>
 	</tr>
+	</table>
+	<table class="table">
 	<% if @version %>
-	<%= render :partial => "version", :collection => @version %>
+	<%= render :partial => "version", :locals =>{:version => @version}  %>
 	<% end %>
-
-</div>
+</table>
+	<table class="table">
 <% if !params[:select_version] || params[:select_version] && params[:select_version] == 'backlog' || params[:select_version] == 'all'  %>
 <%= render :partial => "backlog", :locals =>{:issues_backlog => @issues_backlog }%>
 <% end %>
-
+</table>
 <script>
 	jQuery(function() {
 	$(".close_issue_list").live("click",function(){

@@ -1,16 +1,15 @@
-<table class="list issue" id="version.<%= version.id %>" style="border: 1px solid red;">
-		<%= version.name %>
-
+<% @version .each do |version|%>
+	<p class="success"><%= version.name %></p>
 		<% version.fixed_issues.each do |issue|%>
 			<% if @issues %>
 				<% @issues.each do |select_issue|%>
 					<% if select_issue.id == issue.id %>
-						<%= render :partial => "list_issues", :locals => { :issue => issue} %>
+						<tr><%= render :partial => "list_issues", :locals => { :issue => issue} %></tr>
 					<% end %>
 				<% end %>
 			<% else %>
-				<%= render :partial => "list_issues", :locals => { :issue => issue} %>
+				<tr><%= render :partial => "list_issues", :locals => { :issue => issue} %></tr>
 			<% end %>
 		<% end %>
-
-</table>
+	
+<% end %>

@@ -1,14 +1,13 @@
-<table class="list" id="backlog">
-	<p class="backlog">Backlog</p>
+
+		<p class="backlog">Backlog</p>
 		<% issues_backlog.each do |issue|%>
 			<% if @issues %>
 				<% @issues.each do |select_issue|%>
 					<% if select_issue.id == issue.id %>
-						<%= render :partial => "list_issues", :locals => { :issue => issue} %>
+						<tr><%= render :partial => "list_issues", :locals => { :issue => issue} %></tr>
 					<% end %>
 				<% end %>
 			<% else %>
-				<%= render :partial => "list_issues", :locals => { :issue => issue} %>
+				<tr><%= render :partial => "list_issues", :locals => { :issue => issue} %></tr>
 			<% end %>
 		<% end %>
-</table>
