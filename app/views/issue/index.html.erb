@@ -1,10 +1,9 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-<% html_title "scrum2b" %>
 <% content_for :header_tags do %>
-    <%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
-    <%= stylesheet_link_tag 'jquery-ui-slider', :plugin => 'scrum2b' %>
-    <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
+<%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
+<%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
 <% end %>
+<%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
 <p class="issues">
 	Issues
 </p>
@@ -13,17 +12,31 @@
 <!-- <span class="close_issue btn">close</span> -->
 <%=	link_to "test",{:action => "close_issue",:project_id =>  params[:project_id]},:class => "close_issue_list"%>
 <div id="version_version">
-		<div class="thead clearfix">
+	
+	<div class="thead clearfix">
 		<img src="/images/toggle_check.png?1349682375" alt="Toggle_check">
-		</th>
-		<th>#</th>
-		<th>Status</th>
-		<th>Subject</th>
-		<th>Assignee</th>
-		<th>Updated</th>
-		<th>Estimated time</th>
-		<th>% Done</th>
-	</tr>
+		<p class="id_issue">
+			#
+		</p>
+		<p class="status">
+			Status
+		</p>
+		<p class="subject">
+			Subject
+		</p>
+		<p class="assignee">
+			Assignee
+		</p>
+		<p class="update">
+			Updated
+		</p>
+		<p class="estimated">
+			Estimated time
+		</p>
+		<p class="done">
+			% Done
+		</p>
+	</div>
 	<% if @version %>
 	<%= render :partial => "version", :collection => @version %>
 	<% end %>
