@@ -1,7 +1,7 @@
-<div class="view_issue">
+<div class="view_issue" id="issue_list_<%= issue.id %>">
 	<table id="list_issues" class="list_issue">
 		<tr>
-			<td class="check_id"><input type="checkbox" id="check_<%= issue.id %>"></td>
+			<td class="check_id"><input name="check" type="checkbox" value="<%= issue.id %>"></td>
 			<td class="id_issue"><%= link_to issue.id,:controller => 'issues', :action => 'show', :id =>issue.id %></td>
 			<td class="status"><%= issue.status %></td>
 			<td class="subject"><%= link_to issue.subject, :controller => 'issues', :action => 'show', :id =>issue.id %></td>
