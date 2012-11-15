@@ -29,131 +29,38 @@ html[xmlns] .clearfix {
 	text-decoration: none;
 }
 
-#filters_s2b {
-	border: 1px solid #e4e4e4;
-	width: 100%;
-}
-#seclectbox {
-	width: 100%;
-	padding: 5px;
-}
 
-#seclectbox select#version {
-	padding: 2px;
-	float: right;
-}
-#seclectbox select#select_issue {
-	float: right;
-	padding: 2px;
-}
-#version_version {
-	border: 1px solid #e4e4e4;
-}
 
-.div_list_issues {
-	border-top: 1px solid #e4e4e4;
-}
 
-.div_version {
-	margin-bottom: 30px;
-}
-.div_version:last-child {
-	margin-bottom: 0;
-}
-.div_version p.version_name {
-	font-size: 10px;
-	font-weight: bold;
-	color: #116699;
-}
-.thead {
-	background: #eeeeee;
-	height: 30px;
-}
-.thead p {
-	line-height: 25px;
-	font-weight: bold;
-	color: #116699;
-	text-align: center;
-	float: left;
-}
-.thead img {
-	padding: 0 10px 0 10px;
-	float: left;
-	margin: 5px auto;
-}
-.thead p.id_issue {
-	width: 40px;
-}
-
-.thead p.status {
-	width: 50px;
-}
-
-.thead p.subject {
-	width: 520px;
-}
-.thead p.assignee {
-	width: 170px;
-}
-.thead p.update {
-	width: 180px;
-}
-.thead p.estimated {
-	width: 140px;
-}
 .view_issue {
 	width: 100%;
 }
-.view_issue table#list_issues tr td {
-	overflow:hidden;
-}
-.view_issue table#list_issues tr td.id_issue {
-	text-align: center;
-	font-weight: bold
-}
-  .btn_submit {
-  float: right;
-  margin: auto 10px 0;
-  
-}
-.btn_submit_board{
-  float:right;
-   width:35px;
-   margin: auto 10px 0;
+.head_issue {
+		background: #e4e4e4;
+		color: #0044CC;
+	}
+	select#select_version {
+		float: right;
+		margin: 0 5px 0;
+	}
+	select#select_issue {
+		float: right;
+	}
+	.btn_submit {
+		float: right;
+		margin: 0 0 0 5px;
+	}
+	.btn_submit_board {
+		float: right;
+	}
+	#filter {
 
-.view_issue table#list_issues tr td.status {
-	width: 180px;
-}
-.view_issue table#list_issues tr td.assignee {
-	width: 170px;
-	text-align: center;
-	color: #116699;
-	font-weight: bold;
-}
-.view_issue table#list_issues tr td.update {
-	width: 180px;
-	text-align: center;
-}
-.view_issue table#list_issues tr td.subject {
-	width: 470px;
-	color: #116699;
-	font-weight: bold;
-	
-}
-.view_issue table#list_issues tr td.estimated {
-	width: 140px;
-	text-align: center;
-}
-#backlog {
-	border: 1px solid #e4e4e4;
-	width: 100%;
-	margin-top: 10px;
-}
-#backlog p.backlog {
-	font-size: 10px;
-	font-weight: bold;
-	color: #116699;
-}
+	}
+	#check_all {
+		cursor: pointer
+	}
+
+
 .board {
 	background: #e3e3e3;
 	padding: 0 10px 10px 10px;
@@ -169,7 +76,7 @@ html[xmlns] .clearfix {
 	font-size:17px;
 	font-weight:bold;
 	font-family: Trebuchet MS,Georgia,"Times New Roman",serif;
-	margin:5px 0 10px 0;
+	margin:5px 0 10px 10px;
 	
 }
 .board_issue{
@@ -247,6 +154,18 @@ table#done tr td.done{
 		width: 70px;
 		display: none;
 		background: #e4e4e4;
+	}
+		.text_close_list {
+		position: absolute;
+		padding: 2px 3px;
+		top: -30px;
+		left: -30px;
+		width: 75px;
+		display: none;
+		background: #e4e4e4;
+	}
+		.close_issue:hover p.text_close_list {
+		display: inline;
 	}
 	.close_issue:hover p.text_close {
 		display: inline;
