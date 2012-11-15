@@ -15,14 +15,16 @@
 <%= render :partial => "filter_board" %>
 <div class="row-fluid">
 <div class="board span3">
+<div class="board">
 	<p class="status">
 		New
 	</p>
+	<p class="new_issue ">
+		<%= link_to "",{:controller => "issues", :action => "new",:project_id =>  params[:project_id]},:class => " icon-plus-sign" %><span class="text_new">New Issue</span>
+	</p>
 	<div class="connectedSortable" id ="new" >
 		<% @issues_new.each do |issue|%>
-
 		<%= render :partial => "board_issue", :locals => { :issue => issue} %>
-
 		<% end %>
 	</div>
 </div>
@@ -56,7 +58,22 @@
 </style>
 
 <script>
-	jQuery(function($) {
+	jQuery(function() {
+	$(".close_issue").live("click",function(){
+	var issue_id = $(this).parent().attr("id")
+	var project_id = <%= @project.id %>
+	var url_ajax = '/issue/close_issue'
+		$.ajax({
+		url : url_ajax,
+		type : "POST",
+		data : 'issue_id=' + issue_id + '&project_id=' + project_id,
+		dataType : "text",
+		success : function() {
+		$("#"+issue_id).hide();
+		}
+		});
+	
+	});
 	$( "#new, #started, #completed").sortable({
 	connectWith: ".connectedSortable",
 	sort: function(){
@@ -74,11 +91,11 @@
 		data : 'issue_id=' + issue_id + '&project_id=' + project_id + '&status=' + status,
 		dataType : "text",
 		success : function() {
+
 		}
 	});
 	}
 	}).disableSelection();
 	});
 </script>
-
 

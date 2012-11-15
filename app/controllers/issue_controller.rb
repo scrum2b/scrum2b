@@ -1,7 +1,6 @@
 class IssueController < ApplicationController
   unloadable
   before_filter :find_project, :only => [:index,:board]
-
   before_filter :set_status_settings
   def index
     if session[:view_mode]&& session[:view_mode] = "board" && !params[:view_mode]
@@ -81,10 +80,9 @@ class IssueController < ApplicationController
     end
     @issues_new = @issues_select.where(:status_id => @default_not_start_status_id.to_i)
     @issues_started = @issues_select.where(:status_id => @default_inprogress_status_id.to_i)
-    @issues_completed = @issues_select.where(:status_id => @default_completed_status_id.to_i)
+    @issues_completed = @issues_select.where(:status_id => @default_closed_status_id.to_i)
 
   end
-
   def update_status
     @project =  Project.find(params[:project_id])
     if params[:status] == "completed"
@@ -113,15 +111,21 @@ class IssueController < ApplicationController
     #@issue = @project.issues.where(:id => params[:issue_id])
     @issue = @project.issues.find(params[:issue_id])
     @issue.update_attribute(:done_ratio, params[:done_ratio])
-    Rails.logger.info "test object: #{@issue.done_ratio.to_s}"
+    
   end
 
-  def ajax
+  def close_issue
     @project =  Project.find(params[:project_id])
-    #@issue = @project.issues.where(:id => params[:issue_id])
-    @issue = @project.issues.find(params[:issue_id])
-    @issue.update_attribute(:done_ratio, params[:done_ratio])
-    Rails.logger.info "test object: #{@issue.done_ratio.to_s}"
+    @a = Array.new
+    params[:issue_id].each do |id|
+      @a.push(id)
+    end
+    #@issues = @project.issues.find(params[:issue_id])
+    
+    # @issues.each do |issues|    
+    Rails.logger.info "test params: #{params[:issue_id] .to_s}"
+    # issues.update_attributes(:status_id => @default_closed_status_id.to_i)
+    # end
   end
 
   private

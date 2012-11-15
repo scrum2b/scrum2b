@@ -2139,9 +2139,8 @@ table [class*=span],
 .table-hover tbody tr.info:hover td {
   background-color: #c4e3f3;
 }
-
 [class^="icon-"],
-[class*=" icon-"] {
+[class*="icon-"] {
   display: inline-block;
   width: 14px;
   height: 14px;
@@ -2149,7 +2148,7 @@ table [class*=span],
   *margin-right: .3em;
   line-height: 14px;
   vertical-align: text-top;
-  background-image: url("../img/glyphicons-halflings.png");
+  background-image: url("glyphicons-halflings.png");
   background-position: 14px 14px;
   background-repeat: no-repeat;
 }

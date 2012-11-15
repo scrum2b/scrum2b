@@ -70,7 +70,7 @@ html[xmlns] .clearfix {
 	height: 30px;
 }
 .thead p {
-
+	line-height: 25px;
 	font-weight: bold;
 	color: #116699;
 	text-align: center;
@@ -164,6 +164,7 @@ html[xmlns] .clearfix {
 	
 }
 .board p.status{
+	float:left;
 	color:#606264;
 	font-size:17px;
 	font-weight:bold;
@@ -190,8 +191,8 @@ html[xmlns] .clearfix {
 	margin-right:10px;
 }
 .board_issue .subject{
-	
 	margin-left:10px;
+	margin-right:30px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -223,3 +224,40 @@ table#done tr td.done{
 }
 .connectedSortable {
 		padding: 0 0 5px;
+}
+.close_issue {
+		position: relative;
+		float: right;
+		cursor: pointer;
+	}
+	.text_close {
+		position: absolute;
+		padding: 2px 3px;
+		top: -30px;
+		left: -30px;
+		width: 75px;
+		display: none;
+		background: #e4e4e4;
+	}
+	.text_new {
+		position: absolute;
+		padding: 2px 3px;
+		top: -30px;
+		right: -50px;
+		width: 70px;
+		display: none;
+		background: #e4e4e4;
+	}
+	.close_issue:hover p.text_close {
+		display: inline;
+	}
+	.new_issue {
+		position: relative;
+		float: right;
+		margin: 10px 0 10px 0;
+		cursor: pointer;
+	}
+	.new_issue:hover .text_new {
+		display: inline;
+	}
+	
