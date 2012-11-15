@@ -1,27 +1,15 @@
-    <tr>
-      <td ><input name="check" type="checkbox" value="<%= issue.id %>"></td>
-      <td ><%= link_to issue.id,:controller => 'issues', :action => 'show', :id =>issue.id %></td>
-      <td ><%= issue.status %></td>
-      <td ><%= link_to issue.subject, :controller => 'issues', :action => 'show', :id =>issue.id %></td>
-      <% if issue.assigned_to %>
-        <td ><%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %></td>
-      <% elsif %>
-        <td ></td>
-      <% end %>
-      <td ><%= issue.updated_on %></td>
-      <td ><%= issue.estimated_hours %></td>
-      <td><table id="done">
-          <tr> <% if  issue.done_ratio == 100 %>
-            <td class="done"></td>
-            <% end %>
-            <% if  issue.done_ratio == 0 %>
-            <td class="todo"></td>
-            <% end %>
-            <% if  issue.done_ratio != 0 && issue.done_ratio != 100%>
-            <td class="done" style="width: <%= issue.done_ratio %>px"></td>
-            <td class="todo" style="width: <%= 100 - issue.done_ratio %>px"></td>
-            <% end %>
-          </tr>
-        </table></td>
-    </tr>
+<td>
+<input name="check" type="checkbox" value="<%= issue.id %>">
+</td>
+<td><%= link_to issue.id,:controller => 'issues', :action => 'show', :id =>issue.id %></td>
+<td><%= issue.status %></td>
+<td><%= link_to issue.subject, :controller => 'issues', :action => 'show', :id =>issue.id %></td>
+<% if issue.assigned_to %>
+<td><%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %></td>
+<% elsif %>
+<td>No Assigned</td>
+<% end %>
+<td><%= issue.updated_on %></td>
+<td><%= issue.estimated_hours %></td>
+<td >aaaaaaaaaaaaa</td>
 

@@ -4,70 +4,69 @@
 <%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
 <% end %>
 <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
-<p class="issues">
-	Issues
-</p>
-<%=	button_to "Board",{:action => "board",:project_id =>  params[:project_id]},:name => "view_mode",:class => "btn_submit_board"%>
-<%= render :partial => "filter_list", :locals => { :list_version => @list_versions} %>
-<!-- <span class="close_issue btn">close</span> -->
-<%=	link_to "test",{:action => "close_issue",:project_id =>  params[:project_id]},:class => "close_issue_list"%>
-<div id="version_version">
-	
-	<div class="thead clearfix">
-		<img src="/images/toggle_check.png?1349682375" alt="Toggle_check">
-		<p class="id_issue">
-			#
-		</p>
-		<p class="status">
-			Status
-		</p>
-		<p class="subject">
-			Subject
-		</p>
-		<p class="assignee">
-			Assignee
-		</p>
-		<p class="update">
-			Updated
-		</p>
-		<p class="estimated">
-			Estimated time
-		</p>
-		<p class="done">
-			% Done
-		</p>
-	</div>
-	<% if @version %>
-	<%= render :partial => "version", :collection => @version %>
-	<% end %>
 
+<div class="container-fluid">
+	<p class="issues">
+		Issues
+	</p>
+	<%= button_to "Board",{:action => "board",:project_id =>  params[:project_id]},:class => "btn_submit_board btn-small"%>
 </div>
-<% if !params[:select_version] || params[:select_version] && params[:select_version] == 'backlog' || params[:select_version] == 'all'  %>
-<%= render :partial => "backlog", :locals =>{:issues_backlog => @issues_backlog }%>
-<% end %>
 
+<%= render :partial => "filter_list", :locals => { :list_version => @list_versions} %>
+<div class="container-fluid">
+	<table id="table_issues" class="table" style="border: 1px solid #e4e4e4">
+		<thead>
+			<tr class="head_issue">
+				<th id="check_all"><img src="/images/toggle_check.png?1349682375" alt="Toggle_check"></th>
+				<th>#</th>
+				<th>Status</th>
+				<th>Subject</th>
+				<th>Assignee</th>
+				<th>Updated</th>
+				<th>Estimated time</th>
+				<th>% Done</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<% if @version %>
+			<%= render :partial => "version", :locals =>{:version => @version}  %>
+			<% end %>
+			<% if !params[:select_version] || params[:select_version] && params[:select_version] == 'backlog' || params[:select_version] == 'all'  %>
+			<%= render :partial => "backlog", :locals =>{:issues_backlog => @issues_backlog }%>
+			<% end %>
+		</tbody>
+	</table>
+</div>
+<style>
+	
+</style>
 <script>
 	jQuery(function() {
-	$(".close_issue_list").live("click",function(){
-	var issue_id = [];
-	$('input[name="check"]').each(function() { 
-    if(this.checked==true) issue_id.push(parseInt($(this).val())); 
-  	});
-  	var project_id = <%= @project.id %>
+$("#check_all").toggle(function(){
+$("#table_issues tr td input:checkbox" ).attr( 'checked','checked');
+},function(){
+$("#table_issues tr td input:checkbox").removeAttr('checked');
+});
+$(".close_issue_list").live("click",function(){
+var issue_id = [];
+$('input[name="check"]').each(function() {
+if(this.checked==true) issue_id.push(parseInt($(this).val()));
+});
+var project_id = <%= @project.id %>
 	var url_ajax = '/issue/close_issue'
 	alert(issue_id)
-		$.ajax({
+	$.ajax({
 		url : url_ajax,
 		type : "POST",
 		data : 'issue_id=' + issue_id + '&project_id=' + project_id,
 		dataType : "text",
 		success : function() {
-		
+
 		}
-		});
-	
+	});
+
 	});
 	});
 </script>
-
 

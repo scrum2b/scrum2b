@@ -1,87 +1,85 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 <% html_title "scrum2b" %>
 <% content_for :header_tags do %>
-    <%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
-    <%= stylesheet_link_tag 'jquery-ui-slider', :plugin => 'scrum2b' %>
-    <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
+<%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
+<%= stylesheet_link_tag 'jquery-ui-slider', :plugin => 'scrum2b' %>
+<%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
 <% end %>
 <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
 <div class="container-fluid">
-<p class="issues">
-	Issues
-</p>
-<%= button_to "List",{:action => "index",:project_id =>  params[:project_id]},:name => "view_mode",:class => "btn btn-small btn_submit_board"%>
+	<p class="issues">
+		Issues
+	</p>
+	<%= button_to "List",{:action => "index",:project_id =>  params[:project_id]},:class => "btn-small btn_submit_board"%>
+</div>
 <%= render :partial => "filter_board" %>
+<div class="container-fluid">
 <div class="row-fluid">
-<div class="board span3">
-<div class="board">
-	<p class="status">
-		New
-	</p>
-	<p class="new_issue ">
-		<%= link_to "",{:controller => "issues", :action => "new",:project_id =>  params[:project_id]},:class => " icon-plus-sign" %><span class="text_new">New Issue</span>
-	</p>
-	<div class="connectedSortable" id ="new" >
-		<% @issues_new.each do |issue|%>
-		<%= render :partial => "board_issue", :locals => { :issue => issue} %>
-		<% end %>
+	<div class="board span4">
+			<p class="status">
+				New
+			</p>
+			<p class="new_issue ">
+				<%= link_to "",{:controller => "issues", :action => "new",:project_id =>  params[:project_id]},:class => " icon-plus-sign" %><span class="text_new">New Issue</span>
+			</p>
+			<div class="connectedSortable" id ="new" >
+				<% @issues_new.each do |issue|%>
+				<%= render :partial => "board_issue", :locals => { :issue => issue} %>
+				<% end %>
+			</div>
+	</div>
+	<div class="board span4">
+			<p class="status">
+				In progress
+			</p>
+			<div class="connectedSortable" id ="started">
+				<% @issues_started.each do |issue|%>
+				<%= render :partial => "board_issue", :locals => { :issue => issue} %>
+				<% end %>
+			</div>
+	</div>
+	<div class="board span4">
+			<p class="status">
+				completed
+			</p>
+			<div class="connectedSortable" id ="completed">
+				<% @issues_completed.each do |issue|%>
+				<%= render :partial => "board_issue", :locals => { :issue => issue} %>
+
+				<% end %>
+			</div>
 	</div>
 </div>
-<div class="board span3">
-	<p class="status">
-		In progress
-	</p>
-	<div class="connectedSortable" id ="started">
-		<% @issues_started.each do |issue|%>
-		<%= render :partial => "board_issue", :locals => { :issue => issue} %>
-
-		<% end %>
-	</div>
 </div>
-<div class="board span3">
-	<p class="status">
-		completed
-	</p>
-	<div class="connectedSortable" id ="completed">
-		<% @issues_completed.each do |issue|%>
-		<%= render :partial => "board_issue", :locals => { :issue => issue} %>
-
-		<% end %>
-	</div>
-</div>
-</div>
-</div>
-
 <style type="text/css">
-	
 </style>
 
 <script>
 	jQuery(function() {
-	$(".close_issue").live("click",function(){
-	var issue_id = $(this).parent().attr("id")
-	var project_id = <%= @project.id %>
+$(".close_issue").live("click",function(){
+var issue_id = $(this).parent().attr("id")
+var project_id = <%= @project.id %>
 	var url_ajax = '/issue/close_issue'
-		$.ajax({
-		url : url_ajax,
-		type : "POST",
-		data : 'issue_id=' + issue_id + '&project_id=' + project_id,
-		dataType : "text",
-		success : function() {
-		$("#"+issue_id).hide();
-		}
-		});
-	
-	});
-	$( "#new, #started, #completed").sortable({
-	connectWith: ".connectedSortable",
-	sort: function(){
-	$(this).find(".ui-sortable-helper").addClass("check");
-	},
-	receive: function(){
-	var status = $(this).attr("id")
-	var project_id = <%= @project.id %>
+$.ajax({
+url : url_ajax,
+type : "POST",
+data : 'issue_id=' + issue_id + '&project_id=' + project_id,
+dataType : "text",
+success : function() {
+$("#"+issue_id).hide();
+}
+});
+
+});
+$( "#new, #started, #completed").sortable({
+connectWith: ".connectedSortable",
+sort: function(){
+$(this).find(".ui-sortable-helper").addClass("check");
+},
+receive: function(){
+var status = $(this).attr("id")
+var project_id = <%= @project.id %>
 	var url_ajax = '/issue/update_status'
 	var issue_id = $(this).find(".check").attr("id")
 	$(this).find(".check").removeClass("check")
