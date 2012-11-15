@@ -1,58 +1,73 @@
 <div class="board_issue clearfix" id="<%= issue.id %>">
-    <div class="id">#<%= link_to issue.id,:controller => 'issues', :action => 'show', :id =>issue.id %></div>
-    <div class="subject"><%= issue.subject %></div>
-    <% if issue.assigned_to %>
-      <div class="assignee"><%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %></div>
-    <% elsif %>
-      <div class="assignee">No Assignee</div>
-    <% end %>
-    <% if issue.estimated_hours %>
-      <div class="estimated">Estimated time: <%= issue.estimated_hours %>h /</div>
-    <% elsif %>
-      <div class="estimated">Estimated time: 0h /</div>
-    <% end %>
-    <% if issue.status_id == @default_inprogress_status_id.to_i%>
-    <div id="slider-horizontal" class="ui-slider-horizontal"> </div>
-        <label for="amount">Completed(%):</label>
-        <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
-    <% else %>
-    <%= issue.done_ratio%>
-    <div class="progress progress-striped active"></div>
-    <div class="bar" style="height: 10px;width: 100%"></div>
-    <% end %>
+  <div class="id">
+    #<%= link_to issue.id,:controller => 'issues', :action => 'show', :id =>issue.id %>
+  </div>
+  <% if issue.status_id == @default_completed_status_id.to_i%>
+  <i class="close_issue icon-remove-circle">
+  <p class="text_close">
+    Close Issue
+  </p></i>
+  <%end%>
+  <div class="subject">
+    <%= issue.subject %>
+  </div>
+  <% if issue.assigned_to %>
+  <div class="assignee">
+    <%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %>
+  </div>
+  <% elsif %>
+  <div class="assignee">
+    No Assignee
+  </div>
+  <% end %>
+  <% if issue.estimated_hours %>
+  <div class="estimated">
+    Estimated time: <%= issue.estimated_hours %>h /
+  </div>
+  <% elsif %>
+  <div class="estimated">
+    Estimated time: 0h /
+  </div>
+  <% end %>
+  <% if issue.status_id == @default_inprogress_status_id.to_i%>
+  <div id="slider-horizontal" class="ui-slider-horizontal"></div>
+  <label for="amount">Completed(%):</label>
+  <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
+  <% else %>
+  <%= issue.done_ratio%>
+  <div class="bar" style="height: 10px;width: 100%"></div>
+  <% end %>
 
-    <script>
-    jQuery(function($) {
-        $( "#slider-horizontal" ).slider({
-            orientation: "horizontal",
-            range: "min",
-            min: 0,
-            max: 100,
-            value: <%= issue.done_ratio%>,
-            slide: function( event, ui ) {
-            $( "#amount" ).val( ui.value );
-            },
-          stop: function(e, ui) {
-          var issue_id = $(this).parent().attr('id');
-          var project_id = <%= @project.id%>;
-          console.debug(issue_id);
-          var url_ajax = "/issue/ajax";
-          $.ajax({
-          url : url_ajax,
-          type : "POST",
-          data : 'done_ratio=' + ui.value + '&issue_id=' + issue_id + '&project_id='+project_id,
-          dataType : "text",
-          success : function(res) {  
-            console.debug(res);
-          }
-          }); 
-            }
-        });
-        $( "#amount" ).val( $( "#slider-horizontal" ).slider( "value" ) ); 
-        $( ".bar" ).progressbar({
-            value: <%= issue.done_ratio%>
-        });      
+  <script>
+        jQuery(function($) {
+    $( "#slider-horizontal" ).slider({
+    orientation: "horizontal",
+    range: "min",
+    min: 0,
+    max: 100,
+    value: <%= issue.done_ratio%>,
+    slide: function( event, ui ) {
+    $( "#amount" ).val( ui.value );
+    },
+    stop: function(e, ui) {
+    var issue_id = $(this).parent().attr('id');
+    var project_id = <%= @project.id%>;
+    var url_ajax = "/issue/ajax";
+    $.ajax({
+    url : url_ajax,
+    type : "POST",
+    data : 'done_ratio=' + ui.value + '&issue_id=' + issue_id + '&project_id='+project_id,
+    dataType : "text",
+    success : function(res) {
+    console.debug(res);
+    }
     });
-    </script>
+    }
+    });
+    $( "#amount" ).val( $( "#slider-horizontal" ).slider( "value" ) );
+    $( ".bar" ).progressbar({
+    value: <%= issue.done_ratio%>
+      });
+      });
+  </script>
 </div>
-

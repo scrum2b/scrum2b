@@ -1,8 +1,8 @@
-<div id="filters_s2b" class="clearfix">
+<div id="filters_s2b" class=" container clearfix" style="border:1px solid red">
 	<div id="seclectbox" class="clearfix">
 		<%= form_tag :action => 'index',:project_id =>  params[:project_id] %>
-		<%= button_tag "Submit",:class => "btn_submit" %>
-		<select name="select_issue" id="select_issue">
+		<%= button_tag "Submit",:class => " btn btn-small btn_submit" %>
+		<select name="select_issue" id="select_issue" class="span2">
 			<option value="1" <% if params[:select_issue] && params[:select_issue].to_i == 1%><%= selected="selected" %><% end %>>All issues</option>
 			<option value="2" <% if params[:select_issue] && params[:select_issue].to_i == 2%><%= selected="selected" %><% end %>>My issues</option>
 			<option value="3" <% if params[:select_issue] && params[:select_issue].to_i == 3%><%= selected="selected" %><% end %>>My completed issues</option>

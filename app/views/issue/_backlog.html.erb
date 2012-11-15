@@ -1,4 +1,4 @@
-<div id="backlog">
+<table class="list" id="backlog">
 	<p class="backlog">Backlog</p>
 		<% issues_backlog.each do |issue|%>
 			<% if @issues %>
@@ -11,4 +11,4 @@
 				<%= render :partial => "list_issues", :locals => { :issue => issue} %>
 			<% end %>
 		<% end %>
-</div>
+</table>

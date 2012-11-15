@@ -1,17 +1,20 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-
-<%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
-<%= stylesheet_link_tag 'jquery-ui-slider', :plugin => 'scrum2b' %>
+<% html_title "scrum2b" %>
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
+    <%= stylesheet_link_tag 'jquery-ui-slider', :plugin => 'scrum2b' %>
+    <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
+<% end %>
 <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
-<%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
+<div class="container-fluid">
 <p class="issues">
 	Issues
 </p>
-<%= button_to "List",{:action => "index",:project_id =>  params[:project_id]},:name => "view_mode",:class => "btn_submit_board"%>
+<%= button_to "List",{:action => "index",:project_id =>  params[:project_id]},:name => "view_mode",:class => "btn btn-small btn_submit_board"%>
 <%= render :partial => "filter_board" %>
-
-<div class="board">
+<div class="row-fluid">
+<div class="board span3">
 	<p class="status">
 		New
 	</p>
@@ -23,7 +26,7 @@
 		<% end %>
 	</div>
 </div>
-<div class="board">
+<div class="board span3">
 	<p class="status">
 		In progress
 	</p>
@@ -34,7 +37,7 @@
 		<% end %>
 	</div>
 </div>
-<div class="board">
+<div class="board span3">
 	<p class="status">
 		completed
 	</p>
@@ -44,6 +47,8 @@
 
 		<% end %>
 	</div>
+</div>
+</div>
 </div>
 
 <style type="text/css">

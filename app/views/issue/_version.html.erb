@@ -1,8 +1,6 @@
-<div class="div_version" id="version.<%= version.id %>">
-	<p class="version_name">
+<table class="list issue" id="version.<%= version.id %>" style="border: 1px solid red;">
 		<%= version.name %>
-	</p>
-	<div class="div_list_issues">
+
 		<% version.fixed_issues.each do |issue|%>
 			<% if @issues %>
 				<% @issues.each do |select_issue|%>
@@ -14,5 +12,5 @@
 				<%= render :partial => "list_issues", :locals => { :issue => issue} %>
 			<% end %>
 		<% end %>
-	</div>
-</div>
+
+</table>
