@@ -1,68 +1,97 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 <% html_title "scrum2b" %>
 <% content_for :header_tags do %>
-    <%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
-    <%= stylesheet_link_tag 'jquery-ui-slider', :plugin => 'scrum2b' %>
-    <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
+	<%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
+	<%= stylesheet_link_tag 'jquery-ui-slider', :plugin => 'scrum2b' %>
+	<%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
 <% end %>
 <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
+  	<p class="issues">Issues</p>
+	<%= button_to "List",{:action => "index",:project_id =>  params[:project_id]},:name => "view_mode",:class => "btn btn-small btn_submit_board"%>
+	<%= render :partial => "filter_board" %>
 <div class="container-fluid">
-<p class="issues">
-	Issues
-</p>
-<%= button_to "List",{:action => "index",:project_id =>  params[:project_id]},:name => "view_mode",:class => "btn btn-small btn_submit_board"%>
-<%= render :partial => "filter_board" %>
-<div class="row-fluid">
-<div class="board span3">
-<div class="board">
-	<p class="status">
-		New
-	</p>
-	<p class="new_issue ">
-		<%= link_to "",{:controller => "issues", :action => "new",:project_id =>  params[:project_id]},:class => " icon-plus-sign" %><span class="text_new">New Issue</span>
-	</p>
-	<div class="connectedSortable" id ="new" >
-		<% @issues_new.each do |issue|%>
-		<%= render :partial => "board_issue", :locals => { :issue => issue} %>
-		<% end %>
+  <div class="row-fluid">
+	<div class=" board span4">
+	<p class="status">New</p>
+	<%= link_to "",{:controller => "issues", :action =>"new",:project_id =>  params[:project_id]},:class => " icon-plus-sign" %><span class="text_new">New Issue</span></p>
+		<div class="connectedSortable" id ="new">
+			<% @issues_new.each do |issue|%>
+			<%= render :partial => "board_issue", :locals => { :issue => issue} %>
+			<% end %>
+		</div>
+	</div>
+	<div class="board span4">
+		<p class="status">Is_progress</p>
+		<div class="connectedSortable" id ="started">
+			<% @issues_started.each do |issue|%>
+			<%= render :partial => "board_issue", :locals => { :issue => issue} %>
+			<% end %>
+		</div>
+	</div>
+	<div class="board span4">
+		<p class="status">Completed</p>
+		<div class="connectedSortable" id ="completed">
+			<% @issues_completed.each do |issue|%>
+			<%= render :partial => "board_issue", :locals => { :issue => issue} %>
+			<% end %>
+		</div>
+	</div>
 	</div>
 </div>
-<div class="board span3">
-	<p class="status">
-		In progress
-	</p>
-	<div class="connectedSortable" id ="started">
-		<% @issues_started.each do |issue|%>
-		<%= render :partial => "board_issue", :locals => { :issue => issue} %>
-
-		<% end %>
-	</div>
-</div>
-<div class="board span3">
-	<p class="status">
-		completed
-	</p>
-	<div class="connectedSortable" id ="completed">
-		<% @issues_completed.each do |issue|%>
-		<%= render :partial => "board_issue", :locals => { :issue => issue} %>
-
-		<% end %>
-	</div>
-</div>
-</div>
-</div>
-
 <style type="text/css">
+.board {
+	background: #e3e3e3;
+	padding: 0 10px 10px 10px;
+	border: 1px solid #000000;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
 	
+}
+.board_issue{
+	border: 1px solid #000000;
+	padding:5px;
+	margin:0 0 5px 0;
+	background: #ffffff;
+	width:97%;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+}
+.board_issue:hover{
+	border: 1px solid #628db6;
+}
+.board_issue .id{
+	float:left;
+	font-weight:bold;
+	margin-right:10px;
+}
+.board_issue .subject{
+	margin-left:10px;
+	margin-right:30px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+    
+}
+.board_issue .estimated{
+	float:left
+	
+	
+}
+.board_issue .done{
+	float:left;
+	margin-left:5px;
+}
 </style>
 
 <script>
-	jQuery(function() {
-	$(".close_issue").live("click",function(){
-	var issue_id = $(this).parent().attr("id")
-	var project_id = <%= @project.id %>
-	var url_ajax = '/issue/close_issue'
+jQuery(function() {
+  $(".close_issue").live("click",function(){
+		var issue_id = $(this).parent().attr("id")
+		var project_id = <%= @project.id %>
+			var url_ajax = '/issue/close_issue'
 		$.ajax({
 		url : url_ajax,
 		type : "POST",
@@ -72,9 +101,9 @@
 		$("#"+issue_id).hide();
 		}
 		});
-	
-	});
-	$( "#new, #started, #completed").sortable({
+
+  });
+  $( "#new, #started, #completed").sortable({
 	connectWith: ".connectedSortable",
 	sort: function(){
 	$(this).find(".ui-sortable-helper").addClass("check");
@@ -82,20 +111,20 @@
 	receive: function(){
 	var status = $(this).attr("id")
 	var project_id = <%= @project.id %>
-	var url_ajax = '/issue/update_status'
-	var issue_id = $(this).find(".check").attr("id")
-	$(this).find(".check").removeClass("check")
-	$.ajax({
-		url : url_ajax,
-		type : "POST",
-		data : 'issue_id=' + issue_id + '&project_id=' + project_id + '&status=' + status,
-		dataType : "text",
-		success : function() {
-
+		var url_ajax = '/issue/update_status'
+		var issue_id = $(this).find(".check").attr("id")
+		$(this).find(".check").removeClass("check")
+		$.ajax({
+			url : url_ajax,
+			type : "POST",
+			data : 'issue_id=' + issue_id + '&project_id=' + project_id + '&status=' + status,
+			dataType : "text",
+			success : function() {
+	
+			}
+		});
 		}
-	});
-	}
-	}).disableSelection();
+		}).disableSelection();
 	});
 </script>
 

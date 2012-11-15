@@ -115,24 +115,29 @@ class IssueController < ApplicationController
   end
 
   def close_issue
-    @project =  Project.find(params[:project_id])
-    @a = Array.new
-    params[:issue_id].each do |id|
-      @a.push(id)
-    end
+    #@project =  Project.find(params[:project_id])
     #@issues = @project.issues.find(params[:issue_id])
-    
-    # @issues.each do |issues|    
-    Rails.logger.info "test params: #{params[:issue_id] .to_s}"
-    # issues.update_attributes(:status_id => @default_closed_status_id.to_i)
-    # end
+    @project =  Project.find(params[:project_id])
+    Rails.logger.info "ISSUE_ID ARRAY #{params[:issue_id].to_s}"
+    hash = Hash[*params[:issue_id]]
+     Rails.logger.info "HASH ARRAY #{hash.to_s}"
+    conditional = hash.inject() do |hsh,field|
+      hsh[field] = params[field]unless params[field].blank?
+      hsh
+     end
+    @issues = @project.issues.where(conditional).all
+    Rails.logger.info "TEST_ISSUE: #{@issues.to_s}"
+     #@issues.each do |issues|    
+     #issues.update_attribute(:status_id,@default_closed_status_id.to_i)
+    #end
   end
 
   private
 
   def find_project
     # @project variable must be set before calling the authorize filter
-    @project = Project.find(params[:project_id])
+    project_id = params[:project_id] || (params[:issue] && params[:issue][:project_id])
+    @project = Project.find(project_id)
   end
 
   def set_status_settings

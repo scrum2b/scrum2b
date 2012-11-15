@@ -8,9 +8,9 @@
 <p class="issues">
 	Issues
 </p>
-<%=	button_to "Board",{:action => "board",:project_id =>  params[:project_id]},:name => "view_mode",:class => "btn_submit_board"%>
+<%=	button_to "Board",{:action => "board",:project_id =>  params[:project_id]},:name => "view_mode",:class => "btn btn-small btn_submit_board"%>
 <%= render :partial => "filter_list", :locals => { :list_version => @list_versions} %>
-<%=	link_to "test",{:action => "close_issue",:project_id =>  params[:project_id]},:class => "close_issue_list"%>
+<%=	link_to "X",{:action => "close_issue",:project_id =>  params[:project_id]},:class => " btn btn-danger close_issue_list"%>
 <table class= "table">
 	<tr class="success">
 		<th><img src="/images/toggle_check.png?1349682375" alt="Toggle_check"></th>
@@ -38,18 +38,18 @@
 	$(".close_issue_list").live("click",function(){
 	var issue_id = [];
 	$('input[name="check"]').each(function() { 
-    if(this.checked==true) issue_id.push(parseInt($(this).val())); 
+    if(this.checked==true) issue_id.push($(this).val()); 
   	});
   	var project_id = <%= @project.id %>
-	var url_ajax = '/issue/close_issue'
-	alert(issue_id)
+	var url_ajax = "/issue/close_issue";
 		$.ajax({
 		url : url_ajax,
 		type : "POST",
-		data : 'issue_id=' + issue_id + '&project_id=' + project_id,
+		console.debug(issue_id),
+		data : 'issue_id=' + issue_id + '&project_id='+project_id,
 		dataType : "text",
-		success : function() {
-		
+		success : function(res) {
+			console.debug(res);	
 		}
 		});
 	

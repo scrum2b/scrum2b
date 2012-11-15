@@ -4,9 +4,7 @@
   </div>
   <% if issue.status_id == @default_completed_status_id.to_i%>
   <i class="close_issue icon-remove-circle">
-  <p class="text_close">
-    Close Issue
-  </p></i>
+  <p class="text_close">Close Issue</p></i>
   <%end%>
   <div class="subject">
     <%= issue.subject %>
@@ -37,7 +35,7 @@
   <%= issue.done_ratio%>
   <div class="bar" style="height: 10px;width: 100%"></div>
   <% end %>
-
+</div>
   <script>
         jQuery(function($) {
     $( "#slider-horizontal" ).slider({
@@ -70,4 +68,4 @@
       });
       });
   </script>
-</div>>
+
