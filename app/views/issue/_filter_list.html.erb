@@ -1,5 +1,5 @@
 <div id="filter" class="container-fluid">
-	<%= link_to "X",{:action => "close_issue",:project_id =>  params[:project_id]},:class => "btn btn-danger close_issue_list"%>
+	<p> <button class="btn btn-danger close_issue_list">Close</button></p>
 	<%= form_tag :action => 'index',:project_id =>  params[:project_id] %>
 	<%= button_tag "Submit",:class => " btn btn-small btn_submit" %>
 	<select name="select_issue" id="select_issue">

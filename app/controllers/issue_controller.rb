@@ -2,6 +2,7 @@ class IssueController < ApplicationController
   unloadable
   before_filter :find_project, :only => [:index,:board]
   before_filter :set_status_settings
+  #layout false
   def index
     if session[:view_mode]&& session[:view_mode] = "board" && !params[:view_mode]
       session[:view_mode] = "board"
@@ -115,21 +116,17 @@ class IssueController < ApplicationController
   end
 
   def close_issue
-    #@project =  Project.find(params[:project_id])
-    #@issues = @project.issues.find(params[:issue_id])
     @project =  Project.find(params[:project_id])
     Rails.logger.info "ISSUE_ID ARRAY #{params[:issue_id].to_s}"
-    hash = Hash[*params[:issue_id]]
-     Rails.logger.info "HASH ARRAY #{hash.to_s}"
-    conditional = hash.inject() do |hsh,field|
-      hsh[field] = params[field]unless params[field].blank?
-      hsh
-     end
-    @issues = @project.issues.where(conditional).all
+    test= Array.new
+    test = params[:issue_id]
+    @int_array = test.split(',').collect(&:to_i)
+     Rails.logger.info "HASH ARRAY #{test.to_s}"
+    @issues = @project.issues.where(:id => @int_array)
     Rails.logger.info "TEST_ISSUE: #{@issues.to_s}"
-     #@issues.each do |issues|    
-     #issues.update_attribute(:status_id,@default_closed_status_id.to_i)
-    #end
+     @issues.each do |issues|    
+     issues.update_attribute(:status_id,@default_closed_status_id.to_i)
+    end
   end
 
   private

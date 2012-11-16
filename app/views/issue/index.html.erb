@@ -37,31 +37,31 @@
 	</table>
 </div>
 <style>
-	
+
 </style>
 <script>
-	jQuery(function() {
-  $("#check_all").toggle(function(){
-    $("#table_issues tr td input:checkbox" ).attr( 'checked','checked');
+  jQuery(function() {
+    $("#check_all").toggle(function(){
+     $("#table_issues tr td input:checkbox" ).attr( 'checked','checked');
 		},function(){
 		$("#table_issues tr td input:checkbox").removeAttr('checked');
 		});
   $(".close_issue_list").live("click",function(){
 	var issue_id = [];
 	$('input[name="check"]').each(function() {
-	if(this.checked==true) issue_id.push(parseInt($(this).val()));
+	if(this.checked==true) issue_id.push($(this).val());
 	});
+	console.debug(issue_id);
 	var project_id = <%= @project.id %>
 	var url_ajax = '/issue/close_issue'
-	alert(issue_id)
+	alert(issue_id);
 	$.ajax({
 		url : url_ajax,
 		type : "POST",
-		console.debug(issue_id),
 		data : 'issue_id=' + issue_id + '&project_id='+project_id,
 		dataType : "text",
-
 		success : function() {
+		
 		}
 	});
 

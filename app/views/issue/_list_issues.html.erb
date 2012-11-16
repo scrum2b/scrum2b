@@ -1,5 +1,5 @@
 <td>
-<input name="check" type="checkbox" value="<%= issue.id %>">
+<input class="check" name="check" type="checkbox" value="<%= issue.id %>">
 </td>
 <td><%= link_to issue.id,:controller => 'issues', :action => 'show', :id =>issue.id %></td>
 <td><%= issue.status %></td>
