@@ -4,7 +4,7 @@
 <%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
 <% end %>
 <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
-
+<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 <div class="container-fluid">
 	<p class="issues">
 		Issues
@@ -39,7 +39,6 @@
 	</table>
 </div>
 <style>
-	
 </style>
 <script>
 	jQuery(function() {
@@ -67,6 +66,14 @@ var project_id = <%= @project.id %>
 	});
 
 	});
+	$(".progressbar").each(function() {
+		var id = parseInt($(this).attr("id"))
+		$("#"+id).progressbar({
+			value:parseInt($(this).attr("value"))
+			
+		});
+		
+		});
 	});
 </script>
 

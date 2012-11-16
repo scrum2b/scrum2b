@@ -30,44 +30,11 @@
   </div>
   <% end %>
   <% if issue.status_id == @default_inprogress_status_id.to_i%>
-  <div id="slider-horizontal" class="ui-slider-horizontal"></div>
-  <label for="amount">Completed(%):</label>
-  <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
-  <% else %>
-  <%= issue.done_ratio%>
-  <div class="bar" style="height: 10px;width: 100%"></div>
+	  <div class="slider-horizontal" id="slider<%= issue.id%>" value="<%= issue.done_ratio%>" style="margin: 20px 50px 0 0;";></div>
+	  <input type="text" id="amount<%= issue.id%>" style="border: 0; color: #f6931f; font-weight: bold" />
+	  <label for="amount">Completed(%): <%= issue.done_ratio%></label>
+   <% else %>
+  	<div><%= issue.done_ratio%></div>
   <% end %>
 
-  <script>
-        jQuery(function($) {
-    $( "#slider-horizontal" ).slider({
-    orientation: "horizontal",
-    range: "min",
-    min: 0,
-    max: 100,
-    value: <%= issue.done_ratio%>,
-    slide: function( event, ui ) {
-    $( "#amount" ).val( ui.value );
-    },
-    stop: function(e, ui) {
-    var issue_id = $(this).parent().attr('id');
-    var project_id = <%= @project.id%>;
-    var url_ajax = "/issue/ajax";
-    $.ajax({
-    url : url_ajax,
-    type : "POST",
-    data : 'done_ratio=' + ui.value + '&issue_id=' + issue_id + '&project_id='+project_id,
-    dataType : "text",
-    success : function(res) {
-    console.debug(res);
-    }
-    });
-    }
-    });
-    $( "#amount" ).val( $( "#slider-horizontal" ).slider( "value" ) );
-    $( ".bar" ).progressbar({
-    value: <%= issue.done_ratio%>
-      });
-      });
-  </script>
 </div>

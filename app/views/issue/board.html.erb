@@ -94,6 +94,37 @@ var project_id = <%= @project.id %>
 	});
 	}
 	}).disableSelection();
+	
+    $(".slider-horizontal").each(function() {
+	    var id = parseInt($(this).parent().attr("id"))
+	    $("#slider"+id ).slider({
+	    orientation: "horizontal",
+	    range: "min",
+	    min: 0,
+	    max: 100,
+	    value: parseInt($(this).attr("value")),
+	    slide: function( event, ui ) {
+	          $("#amount"+id ).val( ui.value );
+	      },
+	      stop: function(e, ui) {
+		    var issue_id = parseInt($(this).parent().attr("id"));
+		    var project_id = <%= @project.id%>;
+		    var url_ajax = "/issue/ajax";
+		    $.ajax({
+		    url : url_ajax,
+		    type : "POST",
+		    data : 'done_ratio=' + ui.value + '&issue_id=' + issue_id + '&project_id='+project_id,
+		    dataType : "text",
+		    success : function(res) {
+		    console.debug(res);
+		    }
+		    });
+		  }
+	    
+	     
+	    	 });
+	    	 $( "#amount"+id ).val( $("#slider"+id).slider("value"));
 	});
+});
 </script>
 

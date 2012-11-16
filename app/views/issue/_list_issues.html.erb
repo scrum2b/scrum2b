@@ -11,5 +11,4 @@
 <% end %>
 <td><%= issue.updated_on %></td>
 <td><%= issue.estimated_hours %></td>
-<td >aaaaaaaaaaaaa</td>
-
+<td ><div class="progressbar" value="<%= issue.done_ratio%>" id="<%= issue.id%>"></div><%= issue.done_ratio%></td>

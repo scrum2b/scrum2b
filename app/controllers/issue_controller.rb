@@ -80,7 +80,7 @@ class IssueController < ApplicationController
     end
     @issues_new = @issues_select.where(:status_id => @default_not_start_status_id.to_i)
     @issues_started = @issues_select.where(:status_id => @default_inprogress_status_id.to_i)
-    @issues_completed = @issues_select.where(:status_id => @default_closed_status_id.to_i)
+    @issues_completed = @issues_select.where(:status_id => @default_completed_status_id.to_i)
 
   end
   def update_status
