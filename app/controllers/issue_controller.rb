@@ -2,6 +2,7 @@ class IssueController < ApplicationController
   unloadable
   before_filter :find_project, :only => [:index,:board]
   before_filter :set_status_settings
+  #layout false
   def index
     if session[:view_mode]&& session[:view_mode] = "board" && !params[:view_mode]
       session[:view_mode] = "board"
@@ -23,13 +24,16 @@ class IssueController < ApplicationController
         @issues =  @project.issues.where(:assigned_to_id => User.current.id)
       end
       if @select_issues == "3"
-        @issues =  @project.issues.where(:assigned_to_id => User.current.id , :done_ratio => 100)
+        @issues =  @project.issues.where(:assigned_to_id => User.current.id , :status_id => @default_completed_status_id.to_i)
       end
       if @select_issues == "4"
-        @issues =  @project.issues.where(:assigned_to_id => nil)
+        @issues =  @project.issues.where(:status_id => @default_not_start_status_id.to_i)
       end
       if @select_issues == "5"
-        @issues =  @project.issues.where(:done_ratio => 100 )
+        @issues =  @project.issues.where(:status_id => @default_completed_status_id.to_i )
+      end
+      if @select_issues == "6"
+        @issues =  @project.issues.where(:status_id => @default_closed_status_id.to_i )
       end
     elsif
     @issues = @project.issues.all
@@ -93,16 +97,10 @@ class IssueController < ApplicationController
     if params[:status] == "started"
       @issue = @project.issues.find(params[:issue_id])
       @issue.update_attribute(:status_id,@default_inprogress_status_id.to_i)
-      if @issue.done_ratio = 100
-        @issue.update_attribute(:done_ratio,90)
-      end
     end
     if params[:status] == "new"
       @issue = @project.issues.find(params[:issue_id])
       @issue.update_attribute(:status_id,@default_not_start_status_id.to_i)
-      if @issue.done_ratio = 100
-        @issue.update_attribute(:done_ratio,0)
-      end
     end
   end
 
@@ -116,23 +114,24 @@ class IssueController < ApplicationController
 
   def close_issue
     @project =  Project.find(params[:project_id])
-    @a = Array.new
-    params[:issue_id].each do |id|
-      @a.push(id)
+    Rails.logger.info "ISSUE_ID ARRAY #{params[:issue_id].to_s}"
+    test= Array.new
+    test = params[:issue_id]
+    @int_array = test.split(',').collect(&:to_i)
+     Rails.logger.info "HASH ARRAY #{test.to_s}"
+    @issues = @project.issues.where(:id => @int_array)
+    Rails.logger.info "TEST_ISSUE: #{@issues.to_s}"
+     @issues.each do |issues|    
+     issues.update_attribute(:status_id,@default_closed_status_id.to_i)
     end
-    #@issues = @project.issues.find(params[:issue_id])
-    
-    # @issues.each do |issues|    
-    Rails.logger.info "test params: #{params[:issue_id] .to_s}"
-    # issues.update_attributes(:status_id => @default_closed_status_id.to_i)
-    # end
   end
 
   private
 
   def find_project
     # @project variable must be set before calling the authorize filter
-    @project = Project.find(params[:project_id])
+    project_id = params[:project_id] || (params[:issue] && params[:issue][:project_id])
+    @project = Project.find(project_id)
   end
 
   def set_status_settings

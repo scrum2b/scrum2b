@@ -1,15 +1,15 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 <% content_for :header_tags do %>
 <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
 <%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
+<%= stylesheet_link_tag 'jquery-ui-slider', :plugin => 'scrum2b' %>
 <% end %>
-<%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
-<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 <div class="container-fluid">
 	<p class="issues">
 		Issues
 	</p>
-	<%= button_to "Board",{:action => "board",:project_id =>  params[:project_id]},:class => "btn_submit_board btn-small"%>
+	<%= button_to "Board",{:action => "board",:project_id =>  params[:project_id]},:class => "btn btn-small btn_submit_board "%>
 </div>
 
 <%= render :partial => "filter_list", :locals => { :list_version => @list_versions} %>
@@ -41,27 +41,27 @@
 <style>
 </style>
 <script>
-	jQuery(function() {
-$("#check_all").toggle(function(){
-$("#table_issues tr td input:checkbox" ).attr( 'checked','checked');
-},function(){
-$("#table_issues tr td input:checkbox").removeAttr('checked');
-});
-$(".close_issue_list").live("click",function(){
-var issue_id = [];
-$('input[name="check"]').each(function() {
-if(this.checked==true) issue_id.push(parseInt($(this).val()));
-});
-var project_id = <%= @project.id %>
+  jQuery(function() {
+    $("#check_all").toggle(function(){
+     $("#table_issues tr td input:checkbox" ).attr( 'checked','checked');
+		},function(){
+		$("#table_issues tr td input:checkbox").removeAttr('checked');
+		});
+  $(".close_issue_list").live("click",function(){
+	var issue_id = [];
+	$('input[name="check"]').each(function() {
+	if(this.checked==true) issue_id.push($(this).val());
+	});
+	console.debug(issue_id);
+	var project_id = <%= @project.id %>
 	var url_ajax = '/issue/close_issue'
-	alert(issue_id)
 	$.ajax({
 		url : url_ajax,
 		type : "POST",
-		data : 'issue_id=' + issue_id + '&project_id=' + project_id,
+		data : 'issue_id=' + issue_id + '&project_id='+project_id,
 		dataType : "text",
 		success : function() {
-
+		$("#table_issues tr td input:checkbox").removeAttr('checked');
 		}
 	});
 

@@ -6,12 +6,11 @@
 <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
 <% end %>
 <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
 <div class="container-fluid">
 	<p class="issues">
 		Issues
 	</p>
-	<%= button_to "List",{:action => "index",:project_id =>  params[:project_id]},:class => "btn-small btn_submit_board"%>
+	<%= button_to "List",{:action => "index",:project_id =>  params[:project_id]},:class => "btn btn-small btn_submit_board"%>
 </div>
 <%= render :partial => "filter_board" %>
 <div class="container-fluid">
@@ -125,6 +124,15 @@ var project_id = <%= @project.id %>
 	    	 });
 	    	 $( "#amount"+id ).val( $("#slider"+id).slider("value"));
 	});
+	
+	$(".progressbar").each(function() {
+		var id = parseInt($(this).parent().attr("id"))
+		$("#progress"+id).progressbar({
+			value:parseInt($(this).attr("value"))
+			
+		});
+		});
+		
+	
 });
 </script>
-

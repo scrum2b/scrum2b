@@ -155,6 +155,18 @@ table#done tr td.done{
 		display: none;
 		background: #e4e4e4;
 	}
+		.text_close_list {
+		position: absolute;
+		padding: 2px 3px;
+		top: -30px;
+		left: -30px;
+		width: 75px;
+		display: none;
+		background: #e4e4e4;
+	}
+		.close_issue:hover p.text_close_list {
+		display: inline;
+	}
 	.close_issue:hover p.text_close {
 		display: inline;
 	}
@@ -167,4 +179,5 @@ table#done tr td.done{
 	.new_issue:hover .text_new {
 		display: inline;
 	}
+
 	
