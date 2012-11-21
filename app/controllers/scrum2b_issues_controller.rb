@@ -1,18 +1,9 @@
-class IssueController < ApplicationController
+class Scrum2bIssuesController < ApplicationController
   unloadable
   before_filter :find_project, :only => [:index,:board]
   before_filter :set_status_settings
   #layout false
   def index
-    if session[:view_mode]&& session[:view_mode] = "board" && !params[:view_mode]
-      session[:view_mode] = "board"
-    end
-    if !session[:view_mode] && !params[:view_mode]
-      session[:view_mode] = "list"
-    end
-    if !session[:view_mode] || params[:view_mode] && params[:view_mode] == "List"
-      session[:view_mode] = "list"
-    end
     @list_versions = @project.versions.all
     @id_version  = params[:select_version]
     @select_issues  = params[:select_issue]
@@ -35,18 +26,25 @@ class IssueController < ApplicationController
       if @select_issues == "6"
         @issues =  @project.issues.where(:status_id => @default_closed_status_id.to_i )
       end
+      if @select_issues == "7"
+        @issues =  @project.issues.where("status_id NOT IN (?)", @default_closed_status_id.to_i )
+      end
     elsif
-    @issues = @project.issues.all
+    @issues = @project.issues.where("status_id NOT IN (?)", @default_closed_status_id.to_i )
     end
 
     if @id_version
       if @id_version == "all"
         @version = @project.versions.all
-      elsif
+      end
+      if @id_version == "version_working"
+        @version = @project.versions.where("status NOT IN (?)","closed")
+      end
+      if @id_version != "all" && @id_version != "version_working"
       @version = Version.where(:id => @id_version);
       end
     elsif
-    @version = @project.versions.all
+    @version = @project.versions.where("status NOT IN (?)","closed")
     end
     @issues_backlog = @project.issues.where(:fixed_version_id => nil).all
   end

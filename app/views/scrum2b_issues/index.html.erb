@@ -23,23 +23,21 @@
 				<th>Subject</th>
 				<th>Assignee</th>
 				<th>Updated</th>
-				<th>Estimated time</th>
+				<th>Est Time</th>
 				<th>% Done</th>
 			</tr>
 		</thead>
 
 		<tbody>
 			<% if @version %>
-			<%= render :partial => "version", :locals =>{:version => @version}  %>
+				<%= render :partial => "version", :locals =>{:version => @version}  %>
 			<% end %>
-			<% if !params[:select_version] || params[:select_version] && params[:select_version] == 'backlog' || params[:select_version] == 'all'  %>
-			<%= render :partial => "backlog", :locals =>{:issues_backlog => @issues_backlog }%>
+			<% if !params[:select_version] || params[:select_version] && params[:select_version] == 'all' ||  params[:select_version] == 'version_working'%>
+				<%= render :partial => "backlog", :locals =>{:issues_backlog => @issues_backlog }%>
 			<% end %>
 		</tbody>
 	</table>
 </div>
-<style>
-</style>
 <script>
   jQuery(function() {
     $("#check_all").toggle(function(){
@@ -71,10 +69,14 @@
 		var id = parseInt($(this).attr("id"))
 		$("#"+id).progressbar({
 			value:parseInt($(this).attr("value"))
-			
-		});
-		
 		});
 	});
+	$("tr.version_row").each(function() {
+		if($(this).next().attr("class") != "issue_row")
+		{
+			$(this).hide();
+		}
+	});
+});
 </script>
 

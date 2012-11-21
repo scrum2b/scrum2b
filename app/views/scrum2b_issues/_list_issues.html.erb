@@ -1,15 +1,13 @@
-<td>
-<input class="check" name="check" type="checkbox" value="<%= issue.id %>">
-</td>
+<td><input class="check" name="check" type="checkbox" value="<%= issue.id %>"></td>
 <td><%= link_to issue.id,:controller => 'issues', :action => 'show', :id =>issue.id %></td>
 <td><%= issue.status %></td>
 <td><%= link_to issue.subject, :controller => 'issues', :action => 'show', :id =>issue.id %></td>
 <% if issue.assigned_to %>
-<td><%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %></td>
+  <td><%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %></td>
 <% elsif %>
-<td>No Assigned</td>
+  <td>No Assigned</td>
 <% end %>
-<td><%= issue.updated_on %></td>
+<td><%= format_time(issue.updated_on) %></td>
 <td><%= issue.estimated_hours %></td>
 <td ><div class="progressbar" value="<%= issue.done_ratio%>" id="<%= issue.id%>" style="height:12px"></div></td>
 

@@ -2,21 +2,26 @@
   <div class="id">
     #<%= link_to issue.id,:controller => 'issues', :action => 'show', :id =>issue.id %>
   </div>
+   
   <% if issue.status_id == @default_completed_status_id.to_i%>
-  <i class="close_issue icon-remove-circle">
-  <p class="text_close">Close Issue</p></i>
+    <i class="close_issue icon-remove-circle">
+    <p class="text_close">Close Issue</p></i>
   <%end%>
+  <i class="edit_issue  icon-edit">
+    <p class="text_edit">Edit Issue</p>
+  </i>
   <div class="subject">
-    <%= issue.subject %>
+    <p class="subject_issue" id="subject_<%= issue.id%>"><%= issue.subject %></p>
+    <input class="input_issue" id="input_<%= issue.id%>" type="text" value="<%= issue.subject %>" name="subject_issue" />
   </div>
   <% if issue.assigned_to %>
-  <div class="assignee">
-    <%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %>
-  </div>
+    <div class="assignee">
+      <%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %>
+    </div>
   <% elsif %>
-  <div class="assignee">
-    No Assignee
-  </div>
+    <div class="assignee">
+      No Assignee
+    </div>
   <% end %>
   <% if issue.estimated_hours %>
   <div class="estimated">
@@ -29,8 +34,7 @@
   <% end %>
   <% if issue.status_id == @default_inprogress_status_id.to_i%>
 	  <div class="slider-horizontal" id="slider<%= issue.id%>" value="<%= issue.done_ratio%>" style="margin: 0 50px 0 0;"></div> 
-	  <input type="text" id="amount<%= issue.id%>" style="border: 0; color: #f6931f; font-weight: bold" />
-	 <label for="amount">Completed(%): <%= issue.done_ratio%></label>
+	  <label for="amount">Completed(%): <input type="text" id="amount<%= issue.id%>" style="border: 0; color: #f6931f; font-weight: bold" /></label>
    <% else %>
   	<div class="progressbar" value="<%= issue.done_ratio%>" id="progress<%= issue.id%>" style="height: 12px;margin: 0 50px 0 0"></div>
   <% end %>
