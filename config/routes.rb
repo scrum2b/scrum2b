@@ -7,6 +7,7 @@ match "scrum2b/ajax" => "scrum2b_issues#ajax"
 match 'scrum2b/update_status' => 'scrum2b_issues#update_status'
 match "scrum2b/ajax" => "scrum2b_issues#ajax"
 match "scrum2b/close_issue" => "scrum2b_issues#close_issue"
+match "scrum2b/edit_issue" => "scrum2b_issues#edit_issue"
 
 
 

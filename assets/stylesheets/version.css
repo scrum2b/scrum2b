@@ -98,9 +98,7 @@ select#select_issue {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
-.board_issue .estimated {
-	float: left
-}
+
 .board_issue .done {
 	float: left;
 	margin-left: 5px;

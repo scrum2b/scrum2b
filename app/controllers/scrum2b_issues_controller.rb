@@ -123,6 +123,13 @@ class Scrum2bIssuesController < ApplicationController
      issues.update_attribute(:status_id,@default_closed_status_id.to_i)
     end
   end
+  def edit_issue
+    @project =  Project.find(params[:project_id])
+    @issue = @project.issues.find(params[:id_issue])
+    @issue.update_attribute(:subject,params[:subject])
+    @issue.update_attribute(:assigned_to_id,params[:assignee])
+    @issue.update_attribute(:estimated_hours,params[:est_time])
+  end
 
   private
 
@@ -168,5 +175,5 @@ class Scrum2bIssuesController < ApplicationController
       @default_closed_status_id = @closed_statuses_id[0]
     end
   end
-
+  
 end

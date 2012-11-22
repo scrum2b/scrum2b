@@ -2,7 +2,6 @@
   <div class="id">
     #<%= link_to issue.id,:controller => 'issues', :action => 'show', :id =>issue.id %>
   </div>
-   
   <% if issue.status_id == @default_completed_status_id.to_i%>
     <i class="close_issue icon-remove-circle">
     <p class="text_close">Close Issue</p></i>
@@ -11,32 +10,38 @@
     <p class="text_edit">Edit Issue</p>
   </i>
   <div class="subject">
-    <p class="subject_issue" id="subject_<%= issue.id%>"><%= issue.subject %></p>
-    <input class="input_issue" id="input_<%= issue.id%>" type="text" value="<%= issue.subject %>" name="subject_issue" />
+    <p class="no_edit subject_issue" id="subject_<%= issue.id%>"><%= issue.subject %></p>
+    <input class="editing" id="input_subject_<%= issue.id%>" type="text" value="<%= issue.subject %>" name="subject_issue" />
   </div>
-  <% if issue.assigned_to %>
-    <div class="assignee">
-      <%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %>
-    </div>
-  <% elsif %>
-    <div class="assignee">
-      No Assignee
-    </div>
-  <% end %>
-  <% if issue.estimated_hours %>
-  <div class="estimated">
-    Estimated time: <%= issue.estimated_hours %>h 
+  <div class="assignee no_edit">
+    <% if issue.assigned_to %>
+     <p class="no_edit" id="assignee_<%= issue.id %>"> <%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %></p>
+    <% elsif %>
+     <p class="no_edit" id="assignee_<%= issue.id %>"> No Assignee</p>
+    <% end %>
+   <select class="editing" id="select_ass_<%= issue.id %>" name="select_ass">
+      <% @member.each do |member|%>
+          <% if member.id == issue.assigned_to_id %>
+              <option value="<%= member.id %>" selected="selected"><%= member.firstname + ' ' + member.lastname %></option>
+          <% else %>
+            <option value="<%= member.id %>"><%= member.firstname + ' ' + member.lastname %></option>
+          <% end %>
+      <% end %>
+   </select>
+   </div>
+   <div class="estimated clearfix">
+    <p style="float: left">time:<span class="no_edit" id="est_<%= issue.id %>"> <%= issue.estimated_hours %></span></p>
+     <input class="editing input-mini" id="input_est_<%= issue.id%>" type="text" name="input_est_issue" value="<%= issue.estimated_hours %>" />
   </div><br />
-  <% elsif %>
-  <div class="estimated">
-    Estimated time: 0h 
-  </div><br />
-  <% end %>
   <% if issue.status_id == @default_inprogress_status_id.to_i%>
-	  <div class="slider-horizontal" id="slider<%= issue.id%>" value="<%= issue.done_ratio%>" style="margin: 0 50px 0 0;"></div> 
+	  <div class="slider-horizontal" id="slider<%= issue.id%>" value="<%= issue.done_ratio%>" style="margin: 0 30px 0 0;"></div> 
 	  <label for="amount">Completed(%): <input type="text" id="amount<%= issue.id%>" style="border: 0; color: #f6931f; font-weight: bold" /></label>
    <% else %>
-  	<div class="progressbar" value="<%= issue.done_ratio%>" id="progress<%= issue.id%>" style="height: 12px;margin: 0 50px 0 0"></div>
+  	<div class="progressbar" value="<%= issue.done_ratio%>" id="progress<%= issue.id%>" style="height: 12px;margin: 0 30px 0 0"></div>
   <% end %>
+  <div id="div_submit_edit_<%= issue.id%>" class="editing" value="<%= issue.id%>"> 
+    <input type="submit" class="btn-success submit_edit" value="Submit">
+    <input type="submit" class="btn-danger cancel_edit" value="Cancel">
+  </div>
 </div>
 
