@@ -96,6 +96,7 @@ input.editing{
   
   });
   $( "#new, #started, #completed").sortable({
+  scroll: true, scrollSensitivity: 100, scrollSpeed: 100,
   connectWith: ".connectedSortable",
   sort: function(){
   $(this).find(".ui-sortable-helper").addClass("check");
@@ -105,7 +106,7 @@ input.editing{
   var project_id = <%= @project.id %>
 	var url_ajax = 'update_status'
 	var issue_id = $(this).find(".check").attr("id")
-	$(this).find(".check").removeClass("check")
+	
 	$.ajax({
 		url : url_ajax,
 		type : "POST",
@@ -115,9 +116,38 @@ input.editing{
 
 		}
 	});
-	}
-	}).disableSelection();
-	
+	},
+			axit: 'y',
+    	placeholder: "ui-state-highlight",
+    	opacity:'0.5',
+ 			stop: function(event, ui) {
+						  // $("#new,#started,#completed").each( function(e) {
+              // order.push( $(this).attr(issue_id)  + '=' + ( $(this).index() + 1 ) );
+              // });
+              // // join the array as single variable...
+              // var positions = order.join(';')
+               // //use the variable as you need!
+              // alert('show :'+ positions );
+        	// alert("New position: " + ui.item.index());
+        	var issue_id = $(".check").attr("id");
+        	var url_sort = 'sort_issues'
+        	var project_id = <%= @project.id %>;
+        	var position = $(ui.item).parent().children().index(ui.item);
+        	alert('show'+ position);
+        	// var position = ui.item.index()
+        	$(this).find(".check").removeClass("check")
+        	console.debug(position+1);
+	 	  $.ajax({
+					url : url_sort,
+					type : "POST",
+					data : 'position='+ position +'&issue_id=' + issue_id + '&project_id=' + project_id ,
+					dataType : "text",
+					success : function() {
+					}
+			});
+		   }
+		}).disableSelection();
+
     $(".slider-horizontal").each(function() {
 	    var id = parseInt($(this).parent().attr("id"))
 	    $("#slider"+id ).slider({

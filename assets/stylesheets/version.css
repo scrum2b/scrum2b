@@ -119,6 +119,9 @@ table#done tr td.done {
 	background: #bae0ba;
 }
 .connectedSortable {
+
+	padding: 5px 0;
+
 }
 .close_issue {
 	position: relative;
