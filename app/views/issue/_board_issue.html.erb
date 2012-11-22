@@ -1,4 +1,4 @@
-<div class="board_issue clearfix" id="<%= issue.id %>">
+<li class="board_issue clearfix" id="<%= issue.id %>">
   <div class="id">
     #<%= link_to issue.id,:controller => 'issues', :action => 'show', :id =>issue.id %>
   </div>
@@ -34,5 +34,5 @@
    <% else %>
   	<div class="progressbar" value="<%= issue.done_ratio%>" id="progress<%= issue.id%>" style="height: 12px;margin: 0 50px 0 0"></div>
   <% end %>
-</div>
+</li>
 

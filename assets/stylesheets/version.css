@@ -130,7 +130,8 @@ table#done tr td.done{
 	background: #bae0ba;
 }
 .connectedSortable {
-		padding: 0 0 5px;
+	padding: 5px 0;
+
 }
 .close_issue {
 		position: relative;

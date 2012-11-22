@@ -22,78 +22,111 @@
 			<p class="new_issue ">
 				<%= link_to "",{:controller => "issues", :action => "new",:project_id =>  params[:project_id]},:class => " icon-plus-sign" %><span class="text_new">New Issue</span>
 			</p>
-			<div class="connectedSortable" id ="new" >
+			<ul class="connectedSortable" id ="new" >
 				<% @issues_new.each do |issue|%>
 				<%= render :partial => "board_issue", :locals => { :issue => issue} %>
 				<% end %>
-			</div>
+			</ul>
 	</div>
 	<div class="board span4">
 			<p class="status">
 				In progress
 			</p>
-			<div class="connectedSortable" id ="started">
+			<ul class="connectedSortable" id ="started">
 				<% @issues_started.each do |issue|%>
 				<%= render :partial => "board_issue", :locals => { :issue => issue} %>
 				<% end %>
-			</div>
+			</ul>
 	</div>
 	<div class="board span4">
 			<p class="status">
 				completed
 			</p>
-			<div class="connectedSortable" id ="completed">
+			<ul class="connectedSortable" id ="completed">
 				<% @issues_completed.each do |issue|%>
-				<%= render :partial => "board_issue", :locals => { :issue => issue} %>
+			<%= render :partial => "board_issue", :locals => { :issue => issue} %> 
 
 				<% end %>
-			</div>
+			</ul>
 	</div>
 </div>
 </div>
 <style type="text/css">
+		
 </style>
 
 <script>
-	jQuery(function() {
-$(".close_issue").live("click",function(){
-var issue_id = $(this).parent().attr("id")
-var project_id = <%= @project.id %>
-	var url_ajax = '/issue/close_issue'
-$.ajax({
-url : url_ajax,
-type : "POST",
-data : 'issue_id=' + issue_id + '&project_id=' + project_id,
-dataType : "text",
-success : function() {
-$("#"+issue_id).hide();
-}
-});
-
-});
-$( "#new, #started, #completed").sortable({
-connectWith: ".connectedSortable",
-sort: function(){
-$(this).find(".ui-sortable-helper").addClass("check");
-},
-receive: function(){
-var status = $(this).attr("id")
-var project_id = <%= @project.id %>
-	var url_ajax = '/issue/update_status'
-	var issue_id = $(this).find(".check").attr("id")
-	$(this).find(".check").removeClass("check")
+  jQuery(function() {
+	$(".close_issue").live("click",function(){
+		var issue_id = $(this).parent().attr("id")
+		var project_id = <%= @project.id %>
+			var url_ajax = '/issue/close_issue'
 	$.ajax({
 		url : url_ajax,
 		type : "POST",
-		data : 'issue_id=' + issue_id + '&project_id=' + project_id + '&status=' + status,
+		data : 'issue_id=' + issue_id + '&project_id=' + project_id,
 		dataType : "text",
 		success : function() {
-
+		$("#"+issue_id).hide();
 		}
+		});
 	});
-	}
-	}).disableSelection();
 	
+	$( "#new, #started, #completed").sortable({
+		connectWith: ".connectedSortable",
+		sort: function(){
+	  $(this).find(".ui-sortable-helper").addClass("check");
+		},
+		receive: function(){
+		var status = $(this).attr("id")
+		var project_id = <%= @project.id %>
+			var url_ajax = '/issue/update_status'
+			var issue_id = $(this).find(".check").attr("id")
+	  $(this).find(".check").removeClass("check")
+	  $.ajax({
+				url : url_ajax,
+				type : "POST",
+				data : 'issue_id=' + issue_id + '&project_id=' + project_id + '&status=' + status,
+				dataType : "text",
+				success : function() {
+		
+				}
+			});
+			}
+			}).disableSelection();
+			
+   	$("#new,#started").sortable({
+			axit: 'y',
+    	placeholder: "ui-state-highlight",
+    	opacity:'0.5',
+ 			update: function(event, ui) {
+ 				 var order = []; 
+					var status = $(this).attr("id")
+					var project_id = <%= @project.id %>
+					var issue_id = parseInt($(this).parent().attr("id"))
+					var url_ajax = '/issue/update_status'
+					  $(this).each( function(e) {
+              order.push( $(this).attr(issue_id)  + '=' + ( $(this).index() + 1 ) );
+              });
+              // join the array as single variable...
+              var positions = order.join(';')
+               //use the variable as you need!
+              alert('show :'+ positions );
+        	// alert("New position: " + ui.item.index());
+        	var position = $(ui.item).parent().children().index(ui.item);
+        	// var position = ui.item.index()
+        	console.debug(position+1);
+	 	  $.ajax({
+				url : url_ajax,
+				type : "POST",
+				data : 'position='+ position +'&issue_id=' + issue_id + '&project_id=' + project_id ,
+				dataType : "text",
+				success : function() {
+				}
+			});
+		   }
+			}).disableSelection();
+
     $(".slider-horizontal").each(function() {
 	    var id = parseInt($(this).parent().attr("id"))
 	    $("#slider"+id ).slider({
@@ -119,12 +152,9 @@ var project_id = <%= @project.id %>
 		    }
 		    });
 		  }
-	    
-	     
 	    	 });
 	    	 $( "#amount"+id ).val( $("#slider"+id).slider("value"));
 	});
-	
 	$(".progressbar").each(function() {
 		var id = parseInt($(this).parent().attr("id"))
 		$("#progress"+id).progressbar({

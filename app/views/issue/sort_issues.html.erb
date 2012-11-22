@@ -1,0 +1,27 @@
+<h1>Listing issue</h1>
+<ul id="issues"> <% @issues.each do |issue| %>
+  <li id="issue_<%= issue.id %>"><span class="handle">[drag]</span><%= issue.description %></li>
+<% end %></ul>
+<script>
+$(document).ready(function(){
+		$('#issues').sortable({
+			axis: 'y',
+			dropOnEmpty: false,
+			handle: '.handle',
+			cursor: 'crosshair',
+			items: 'li',
+			opacity: 0.4,
+			scroll: true,
+		update: function(){
+		$.ajax({
+		type: 'post',
+			data: $('#issues').sortable('serialize'),
+			dataType: 'script',
+			complete: function(request){
+		$('#issues').effect('highlight');
+		},
+			url: '/issues/sort'})
+		}
+		});
+});
+</script>

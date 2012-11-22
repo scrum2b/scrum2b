@@ -3,6 +3,7 @@ class IssueController < ApplicationController
   before_filter :find_project, :only => [:index,:board]
   before_filter :set_status_settings
   #layout false
+  self.allow_forgery_protection = false
   def index
     if session[:view_mode]&& session[:view_mode] = "board" && !params[:view_mode]
       session[:view_mode] = "board"
@@ -87,21 +88,39 @@ class IssueController < ApplicationController
     @issues_completed = @issues_select.where(:status_id => @default_completed_status_id.to_i)
 
   end
+
   def update_status
     @project =  Project.find(params[:project_id])
+    @position = params[:position]
     if params[:status] == "completed"
       @issue = @project.issues.find(params[:issue_id])
       @issue.update_attribute(:done_ratio,100)
       @issue.update_attribute(:status_id,@default_completed_status_id.to_i)
+      @issue.update_attribute(:position,@position.to_i)
+      Rails.logger.info "PARAMS POSITION_COMPLETED #{@position.to_s}"
     end
     if params[:status] == "started"
       @issue = @project.issues.find(params[:issue_id])
       @issue.update_attribute(:status_id,@default_inprogress_status_id.to_i)
+      #@issue.update_attribute(:position,params[:position])
+      @issue.update_attribute(:position,@position.to_i)
+      Rails.logger.info "PARAM_POSITON_STARTED #{@position.to_i}"
     end
     if params[:status] == "new"
       @issue = @project.issues.find(params[:issue_id])
       @issue.update_attribute(:status_id,@default_not_start_status_id.to_i)
+      @issue.update_attribute(:position,@position.to_i)
+      Rails.logger.info "PARAM_POSITON_NEW #{@position.to_i}"
     end
+  end
+
+  def sort
+    @project =  Project.find(params[:project_id])
+    @issue = @project.issues.find(params[:issue_id])
+    @issue.update_attribute(:position,param['issue'].index(issue.id.to_s) + 1)
+  #issue.position = param['issue'].index(issue.id.to_s) + 1
+  #issue.save
+  #end
   end
 
   def ajax
@@ -109,7 +128,7 @@ class IssueController < ApplicationController
     #@issue = @project.issues.where(:id => params[:issue_id])
     @issue = @project.issues.find(params[:issue_id])
     @issue.update_attribute(:done_ratio, params[:done_ratio])
-    
+
   end
 
   def close_issue
@@ -118,11 +137,11 @@ class IssueController < ApplicationController
     test= Array.new
     test = params[:issue_id]
     @int_array = test.split(',').collect(&:to_i)
-     Rails.logger.info "HASH ARRAY #{test.to_s}"
+    Rails.logger.info "HASH ARRAY #{test.to_s}"
     @issues = @project.issues.where(:id => @int_array)
     Rails.logger.info "TEST_ISSUE: #{@issues.to_s}"
-     @issues.each do |issues|    
-     issues.update_attribute(:status_id,@default_closed_status_id.to_i)
+    @issues.each do |issues|
+      issues.update_attribute(:status_id,@default_closed_status_id.to_i)
     end
   end
 
