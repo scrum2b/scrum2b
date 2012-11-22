@@ -52,7 +52,7 @@
 	});
 	console.debug(issue_id);
 	var project_id = <%= @project.id %>
-	var url_ajax = '/issue/close_issue'
+	var url_ajax = 'close_issue'
 	$.ajax({
 		url : url_ajax,
 		type : "POST",

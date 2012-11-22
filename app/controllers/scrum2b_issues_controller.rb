@@ -112,7 +112,6 @@ class Scrum2bIssuesController < ApplicationController
 
   def close_issue
     @project =  Project.find(params[:project_id])
-    Rails.logger.info "ISSUE_ID ARRAY #{params[:issue_id].to_s}"
     test= Array.new
     test = params[:issue_id]
     @int_array = test.split(',').collect(&:to_i)
@@ -129,6 +128,8 @@ class Scrum2bIssuesController < ApplicationController
     @issue.update_attribute(:subject,params[:subject])
     @issue.update_attribute(:assigned_to_id,params[:assignee])
     @issue.update_attribute(:estimated_hours,params[:est_time])
+    @issue.update_attribute(:description,params[:description])
+    description
   end
 
   private

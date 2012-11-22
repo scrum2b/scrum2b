@@ -51,7 +51,7 @@
 }
 .connectedSortable {
   margin-top:25px;
- padding:5px 0;
+  padding:5px 0;
 }
 .edit_issue{
   position:relative;
@@ -83,14 +83,14 @@ input.editing{
   $(".close_issue").live("click",function(){
     var issue_id = $(this).parent().attr("id")
     var project_id = <%= @project.id %>
-    var url_ajax = '/scrum2b_issues/close_issue'
+    var url_ajax = 'close_issue'
     $.ajax({
     url : url_ajax,
     type : "POST",
     data : 'issue_id=' + issue_id + '&project_id=' + project_id,
     dataType : "text",
     success : function() {
-    $("#"+issue_id).hide();
+          $("#"+issue_id).hide()
     }
     });
   
@@ -103,7 +103,7 @@ input.editing{
   receive: function(){
   var status = $(this).attr("id")
   var project_id = <%= @project.id %>
-	var url_ajax = '/scrum2b_issues/update_status'
+	var url_ajax = 'update_status'
 	var issue_id = $(this).find(".check").attr("id")
 	$(this).find(".check").removeClass("check")
 	$.ajax({
@@ -132,7 +132,7 @@ input.editing{
 	      stop: function(e, ui) {
 		    var issue_id = parseInt($(this).parent().attr("id"));
 		    var project_id = <%= @project.id%>;
-		    var url_ajax = "/scrum2b_issues/ajax";
+		    var url_ajax = "ajax";
 		    $.ajax({
 		    url : url_ajax,
 		    type : "POST",
@@ -164,6 +164,7 @@ input.editing{
 	  $("#est_"+issue_id).hide();
     $("#input_est_"+issue_id).show();
     $("#div_submit_edit_"+issue_id).show();
+    $("#description_"+issue_id).show();
 	});
 	$(".cancel_edit").click(function(){
     var issue_id = parseInt($(this).parent().attr("id"))
@@ -176,11 +177,12 @@ input.editing{
 	  var subject = $("#input_subject_"+id_issue).val();
 	  var assignee = $("#select_ass_"+id_issue).val();
 	  var est_time = $("#input_est_"+id_issue).val();
+	  var description =  $("#text_description_"+id_issue).val();
 	  var url_ajax = "edit_issue";
 	  $.ajax({
         url : url_ajax,
         type : "POST",
-        data : 'subject=' +subject + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee='+assignee + '&est_time=' + est_time,
+        data : 'subject=' +subject + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee='+assignee + '&est_time=' + est_time +'&description=' + description,
         dataType : "text",
         success : function() {
     
