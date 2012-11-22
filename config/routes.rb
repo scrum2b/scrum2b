@@ -1,13 +1,15 @@
 # Plugin's routes
 # See: http://guides.rubyonrails.org/routing.html
 #resources :issue
-match '/issue/list' => 'issue#index'
-match '/issue/board' => 'issue#board'
-match "/issue/ajax" => "issue#ajax"
-match '/issue/update_status' => 'issue#update_status'
-match "/issue/ajax" => "issue#ajax"
-match "/issue/close_issue" => "issue#close_issue"
-match "/issue/sort_issues" => "issue#sort"
+
+match 'scrum2b/list' => 'scrum2b_issues#index'
+match 'scrum2b/board' => 'scrum2b_issues#board'
+match "scrum2b/ajax" => "scrum2b_issues#ajax"
+match 'scrum2b/update_status' => 'scrum2b_issues#update_status'
+match "scrum2b/ajax" => "scrum2b_issues#ajax"
+match "scrum2b/close_issue" => "scrum2b_issues#close_issue"
+match "scrum2b/edit_issue" => "scrum2b_issues#edit_issue"
+match "scrum2b/sort_issues" => "scrum2b_issues#sort_issues"
 
 
 

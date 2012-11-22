@@ -1,19 +1,10 @@
-class IssueController < ApplicationController
+class Scrum2bIssuesController < ApplicationController
   unloadable
   before_filter :find_project, :only => [:index,:board]
   before_filter :set_status_settings
   #layout false
   self.allow_forgery_protection = false
   def index
-    if session[:view_mode]&& session[:view_mode] = "board" && !params[:view_mode]
-      session[:view_mode] = "board"
-    end
-    if !session[:view_mode] && !params[:view_mode]
-      session[:view_mode] = "list"
-    end
-    if !session[:view_mode] || params[:view_mode] && params[:view_mode] == "List"
-      session[:view_mode] = "list"
-    end
     @list_versions = @project.versions.all
     @id_version  = params[:select_version]
     @select_issues  = params[:select_issue]
@@ -36,18 +27,25 @@ class IssueController < ApplicationController
       if @select_issues == "6"
         @issues =  @project.issues.where(:status_id => @default_closed_status_id.to_i )
       end
+      if @select_issues == "7"
+        @issues =  @project.issues.where("status_id NOT IN (?)", @default_closed_status_id.to_i )
+      end
     elsif
-    @issues = @project.issues.all
+    @issues = @project.issues.where("status_id NOT IN (?)", @default_closed_status_id.to_i )
     end
 
     if @id_version
       if @id_version == "all"
         @version = @project.versions.all
-      elsif
+      end
+      if @id_version == "version_working"
+        @version = @project.versions.where("status NOT IN (?)","closed")
+      end
+      if @id_version != "all" && @id_version != "version_working"
       @version = Version.where(:id => @id_version);
       end
     elsif
-    @version = @project.versions.all
+    @version = @project.versions.where("status NOT IN (?)","closed")
     end
     @issues_backlog = @project.issues.where(:fixed_version_id => nil).all
   end
@@ -91,33 +89,31 @@ class IssueController < ApplicationController
 
   def update_status
     @project =  Project.find(params[:project_id])
-    @position = params[:position]
+
     if params[:status] == "completed"
       @issue = @project.issues.find(params[:issue_id])
       @issue.update_attribute(:done_ratio,100)
       @issue.update_attribute(:status_id,@default_completed_status_id.to_i)
-      @issue.update_attribute(:position,@position.to_i)
-      Rails.logger.info "PARAMS POSITION_COMPLETED #{@position.to_s}"
+      
     end
     if params[:status] == "started"
       @issue = @project.issues.find(params[:issue_id])
       @issue.update_attribute(:status_id,@default_inprogress_status_id.to_i)
       #@issue.update_attribute(:position,params[:position])
-      @issue.update_attribute(:position,@position.to_i)
-      Rails.logger.info "PARAM_POSITON_STARTED #{@position.to_i}"
     end
     if params[:status] == "new"
       @issue = @project.issues.find(params[:issue_id])
       @issue.update_attribute(:status_id,@default_not_start_status_id.to_i)
-      @issue.update_attribute(:position,@position.to_i)
-      Rails.logger.info "PARAM_POSITON_NEW #{@position.to_i}"
+      
     end
   end
 
-  def sort
-    @project =  Project.find(params[:project_id])
-    @issue = @project.issues.find(params[:issue_id])
-    @issue.update_attribute(:position,param['issue'].index(issue.id.to_s) + 1)
+  def sort_issues
+  	@position = params[:position]
+   	Rails.logger.info "Test_PARAMS POSITION #{params[:position].to_s}"
+    @project = Project.find(params[:project_id])
+    @issue = @project.issues.find(params[:issue_id],:order => :position)
+    @issue.update_attribute(:position,@position.to_i)
   #issue.position = param['issue'].index(issue.id.to_s) + 1
   #issue.save
   #end
@@ -143,6 +139,13 @@ class IssueController < ApplicationController
     @issues.each do |issues|
       issues.update_attribute(:status_id,@default_closed_status_id.to_i)
     end
+  end
+  def edit_issue
+    @project =  Project.find(params[:project_id])
+    @issue = @project.issues.find(params[:id_issue])
+    @issue.update_attribute(:subject,params[:subject])
+    @issue.update_attribute(:assigned_to_id,params[:assignee])
+    @issue.update_attribute(:estimated_hours,params[:est_time])
   end
 
   private
@@ -189,5 +192,5 @@ class IssueController < ApplicationController
       @default_closed_status_id = @closed_statuses_id[0]
     end
   end
-
+  
 end

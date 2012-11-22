@@ -2,7 +2,7 @@ p.issues {
 	font-size: 20px;
 	font-weight: bold;
 	color: #555555;
-	margin-top:0;
+	margin-top: 0;
 	float: left;
 }
 .clearfix:after {
@@ -29,37 +29,33 @@ html[xmlns] .clearfix {
 	text-decoration: none;
 }
 
-
-
-
 .view_issue {
 	width: 100%;
 }
 .head_issue {
-		background: #e4e4e4;
-		color: #0044CC;
-	}
-	select#select_version {
-		float: right;
-		margin: 0 5px 0;
-	}
-	select#select_issue {
-		float: right;
-	}
-	.btn_submit {
-		float: right;
-		margin: 0 0 0 5px;
-	}
-	.btn_submit_board {
-		float: right;
-	}
-	#filter {
+	background: #e4e4e4;
+	color: #0044CC;
+}
+select#select_version {
+	float: right;
+	margin: 0 5px 0;
+}
+select#select_issue {
+	float: right;
+}
+.btn_submit {
+	float: right;
+	margin: 0 0 0 5px;
+}
+.btn_submit_board {
+	float: right;
+}
+#filter {
 
-	}
-	#check_all {
-		cursor: pointer
-	}
-
+}
+#check_all {
+	cursor: pointer
+}
 
 .board {
 	background: #e3e3e3;
@@ -68,117 +64,114 @@ html[xmlns] .clearfix {
 	border-radius: 2px;
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
-	
 }
-.board p.status{
+.board p.status {
 	float:left;
-	color:#606264;
-	font-size:17px;
-	font-weight:bold;
-	font-family: Trebuchet MS,Georgia,"Times New Roman",serif;
-	margin:5px 0 10px 10px;
-	
+	color: #606264;
+	font-size: 17px;
+	font-weight: bold;
+	font-family: Trebuchet MS, Georgia, "Times New Roman", serif;
+	margin: 5px 0 10px 10px;
 }
-.board_issue{
+.board_issue {
 	border: 1px solid #000000;
-	padding:5px;
-	margin:0 0 5px 0;
+	padding: 5px;
+	margin: 0 0 5px 0;
 	background: #ffffff;
-	width:97%;
+	width: 97%;
 	border-radius: 2px;
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
 }
-.board_issue:hover{
+.board_issue:hover {
 	border: 1px solid #628db6;
 }
-.board_issue .id{
-	float:left;
-	font-weight:bold;
-	margin-right:10px;
+.board_issue .id {
+	float: left;
+	font-weight: bold;
+	margin-right: 10px;
 }
-.board_issue .subject{
-	margin-left:10px;
-	margin-right:30px;
+.board_issue .subject p.subject_issue{
+	margin-left: 10px;
+	margin-right: 40px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-    
 }
-.board_issue .estimated{
-	float:left
-	
-	
-}
-.board_issue .done{
-	float:left;
-	margin-left:5px;
+
+.board_issue .done {
+	float: left;
+	margin-left: 5px;
 }
 table#done {
 	float: left
 }
-table#done tr td{
+table#done tr td {
 	width: 100px;
-	height:10px;
+	height: 10px;
 	float: left;
 }
-table#done tr td.todo{
-	
+table#done tr td.todo {
+
 	background: #eeeeee;
 }
-table#done tr td.done{
+table#done tr td.done {
 	background: #bae0ba;
 }
 .connectedSortable {
+
 	padding: 5px 0;
 
 }
 .close_issue {
-		position: relative;
-		float: right;
-		cursor: pointer;
-	}
-	.text_close {
-		position: absolute;
-		padding: 2px 3px;
-		top: -30px;
-		left: -30px;
-		width: 75px;
-		display: none;
-		background: #e4e4e4;
-	}
-	.text_new {
-		position: absolute;
-		padding: 2px 3px;
-		top: -30px;
-		right: -50px;
-		width: 70px;
-		display: none;
-		background: #e4e4e4;
-	}
-		.text_close_list {
-		position: absolute;
-		padding: 2px 3px;
-		top: -30px;
-		left: -30px;
-		width: 75px;
-		display: none;
-		background: #e4e4e4;
-	}
-		.close_issue:hover p.text_close_list {
-		display: inline;
-	}
-	.close_issue:hover p.text_close {
-		display: inline;
-	}
-	.new_issue {
-		position: relative;
-		float: right;
-		margin: 10px 0 10px 0;
-		cursor: pointer;
-	}
-	.new_issue:hover .text_new {
-		display: inline;
-	}
+	position: relative;
+	float: right;
+	cursor: pointer;
+}
+.text_close {
+	position: absolute;
+	padding: 2px 3px;
+	top: -30px;
+	left: -30px;
+	width: 75px;
+	display: none;
+	background: #e4e4e4;
+}
+.text_new {
+	position: absolute;
+	padding: 2px 3px;
+	top: -30px;
+	right: -50px;
+	width: 70px;
+	display: none;
+	background: #e4e4e4;
+}
+.text_close_list {
+	position: absolute;
+	padding: 2px 3px;
+	top: -30px;
+	left: -30px;
+	width: 75px;
+	display: none;
+	background: #e4e4e4;
+}
+.close_issue:hover p.text_close_list {
+	display: inline;
+}
+.close_issue:hover p.text_close {
+	display: inline;
+}
+.new_issue {
+  float:right;
+  position: relative;
+  cursor: pointer;
+  margin:5px 0 0 0;
+}
+.new_issue:hover .text_new {
+	display: inline;
+}
 
-	
+.version_row {
+	background-color: #DFF0D8;
+}
+

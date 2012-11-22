@@ -1,0 +1,21 @@
+<% @version .each do |version|%>
+  <tr class="version_row">
+		<td colspan="8"><%= version.name%></td>
+	</tr>
+
+<% version.fixed_issues.each do |issue|%>
+	<% if @issues %>
+		<% @issues.each do |select_issue|%>
+			<% if select_issue.id == issue.id %>
+			<tr class="issue_row">
+				<%= render :partial => "list_issues", :locals => { :issue => issue} %>
+			</tr>
+			<% end %>
+		<% end %>
+	<% else %>
+	<tr class="issue_row">
+		<%= render :partial => "list_issues", :locals => { :issue => issue} %>
+	</tr>
+	<% end %>
+	<% end %>
+<% end %>
