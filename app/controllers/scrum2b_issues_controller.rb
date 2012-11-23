@@ -82,9 +82,16 @@ class Scrum2bIssuesController < ApplicationController
       @issues_select =  @issues_version
     end
     @issues_new = @issues_select.where(:status_id => @default_not_start_status_id.to_i)
-    @issues_started = @issues_select.where(:status_id => @default_inprogress_status_id.to_i)
+    @issues_start = @issues_select.where(:status_id => @default_inprogress_status_id.to_i)
     @issues_completed = @issues_select.where(:status_id => @default_completed_status_id.to_i)
-
+		e = 0
+		@issues_start.each do |issue_position|
+			unless issue_position.position
+			issue_position.update_attribute(:position,e)
+			e = e+1
+			end
+		end
+		@issues_started = @issues_select.where(:status_id => @default_inprogress_status_id.to_i).order(:position)
   end
 
   def update_status
@@ -112,8 +119,18 @@ class Scrum2bIssuesController < ApplicationController
   	@position = params[:position]
    	Rails.logger.info "Test_PARAMS POSITION #{params[:position].to_s}"
     @project = Project.find(params[:project_id])
-    @issue = @project.issues.find(params[:issue_id],:order => :position)
+    @issue = @project.issues.find(params[:issue_id])
     @issue.update_attribute(:position,@position.to_i)
+    @sort_issue = @project.issues.where("status_id = ? AND position >= ?", @default_inprogress_status_id.to_i, @position.to_i)
+    Rails.logger.info "Test_PARAMS ISSUES_POSITION #{@issue.position.to_s}"
+    e = params[:position].to_i+1
+    @sort_issue.each do |sort|
+    	# unless sort.id == params[:issue_id]
+    		unless sort.id == @issue.id
+    		sort.update_attribute(:position,e)
+    	end
+    	 e = e+1
+    end
   #issue.position = param['issue'].index(issue.id.to_s) + 1
   #issue.save
   #end

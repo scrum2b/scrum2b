@@ -20,7 +20,7 @@
 			</p>
 			<div class="connectedSortable" id ="new" >
 				<% @issues_new.each do |issue|%>
-				  <%= render :partial => "board_issue", :locals => { :issue => issue} %>
+				 <li id ="<%= issue.id %>"> <%= render :partial => "board_issue", :locals => { :issue => issue} %></li>
 				<% end %>
 			</div>
 	</div>
@@ -28,7 +28,7 @@
 			<p class="status">In progress</p>
 			<div class="connectedSortable" id ="started">
 				<% @issues_started.each do |issue|%>
-				  <%= render :partial => "board_issue", :locals => { :issue => issue} %>
+				 <li id ="<%= issue.id %>">  <%= render :partial => "board_issue", :locals => { :issue => issue} %></li>
 				<% end %>
 			</div>
 	</div>
@@ -36,7 +36,7 @@
 			<p class="status">completed</p>
 			<div class="connectedSortable" id ="completed">
 				<% @issues_completed.each do |issue|%>
-				  <%= render :partial => "board_issue", :locals => { :issue => issue} %>
+				  <li id ="<%= issue.id %>"> <%= render :partial => "board_issue", :locals => { :issue => issue} %></li>
         <% end %>
 			</div>
 	</div>
@@ -133,10 +133,10 @@ input.editing{
         	var url_sort = 'sort_issues'
         	var project_id = <%= @project.id %>;
         	var position = $(ui.item).parent().children().index(ui.item);
-        	alert('show'+ position);
+        	//alert('show'+ position);
         	// var position = ui.item.index()
         	$(this).find(".check").removeClass("check")
-        	console.debug(position+1);
+        	console.debug(position);
 	 	  $.ajax({
 					url : url_sort,
 					type : "POST",
