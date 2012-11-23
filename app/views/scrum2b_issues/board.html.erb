@@ -20,7 +20,7 @@
 			</p>
 			<div class="connectedSortable" id ="new" >
 				<% @issues_new.each do |issue|%>
-				 <li id ="<%= issue.id %>"> <%= render :partial => "board_issue", :locals => { :issue => issue} %></li>
+				 <li id ="<%= issue.id %>" style="list-style: none"> <%= render :partial => "board_issue", :locals => { :issue => issue} %></li>
 				<% end %>
 			</div>
 	</div>
@@ -28,7 +28,7 @@
 			<p class="status">In progress</p>
 			<div class="connectedSortable" id ="started">
 				<% @issues_started.each do |issue|%>
-				 <li id ="<%= issue.id %>">  <%= render :partial => "board_issue", :locals => { :issue => issue} %></li>
+				 <li id ="<%= issue.id %>" style="list-style: none">  <%= render :partial => "board_issue", :locals => { :issue => issue} %></li>
 				<% end %>
 			</div>
 	</div>
@@ -36,7 +36,7 @@
 			<p class="status">completed</p>
 			<div class="connectedSortable" id ="completed">
 				<% @issues_completed.each do |issue|%>
-				  <li id ="<%= issue.id %>"> <%= render :partial => "board_issue", :locals => { :issue => issue} %></li>
+				  <li id ="<%= issue.id %>"style="list-style: none"> <%= render :partial => "board_issue", :locals => { :issue => issue} %></li>
         <% end %>
 			</div>
 	</div>
@@ -51,7 +51,7 @@
 }
 .connectedSortable {
   margin-top:25px;
- padding:5px 0;
+  padding:5px 0;
 }
 .edit_issue{
   position:relative;
@@ -90,7 +90,7 @@ input.editing{
     data : 'issue_id=' + issue_id + '&project_id=' + project_id,
     dataType : "text",
     success : function() {
-    $("#"+issue_id).hide();
+          $("#"+issue_id).hide()
     }
     });
   
@@ -133,8 +133,6 @@ input.editing{
         	var url_sort = 'sort_issues'
         	var project_id = <%= @project.id %>;
         	var position = $(ui.item).parent().children().index(ui.item);
-        	//alert('show'+ position);
-        	// var position = ui.item.index()
         	$(this).find(".check").removeClass("check")
         	console.debug(position);
 	 	  $.ajax({
@@ -194,6 +192,7 @@ input.editing{
 	  $("#est_"+issue_id).hide();
     $("#input_est_"+issue_id).show();
     $("#div_submit_edit_"+issue_id).show();
+    $("#description_"+issue_id).show();
 	});
 	$(".cancel_edit").click(function(){
     var issue_id = parseInt($(this).parent().attr("id"))
@@ -206,11 +205,12 @@ input.editing{
 	  var subject = $("#input_subject_"+id_issue).val();
 	  var assignee = $("#select_ass_"+id_issue).val();
 	  var est_time = $("#input_est_"+id_issue).val();
+	  var description =  $("#text_description_"+id_issue).val();
 	  var url_ajax = "edit_issue";
 	  $.ajax({
         url : url_ajax,
         type : "POST",
-        data : 'subject=' +subject + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee='+assignee + '&est_time=' + est_time,
+        data : 'subject=' +subject + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee='+assignee + '&est_time=' + est_time +'&description=' + description,
         dataType : "text",
         success : function() {
     
