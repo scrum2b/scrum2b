@@ -1,0 +1,44 @@
+<!-- confirmation popup -->
+<script type="text/javascript">
+  Event.observe(window, 'load', function() {
+    var confirm_msg = "<%= l(:text_are_you_sure) %>";
+    var date_range_error_msg = "<%=  l(:error_banner_date_range) %>";
+    Event.observe("plugin", "submit", function(event) {
+      checkDateRange(event, confirm_msg, date_range_error_msg);    
+    })
+  });
+</script>
+<p>
+  <%=content_tag(:label, "Not start")%>
+  <% all_issue_statuses = IssueStatus.sorted %>
+  <% all_issue_statuses.each do |status| %>
+    <%= check_box_tag "settings[status_no_start][#{status.id}]", status.name, @settings['status_no_start'] && @settings['status_no_start'].include?(status.id.to_s) %>
+  	<%= status.name %>
+  	<br/>	
+  <% end %>
+  <br/>
+  <%=content_tag(:label, "In progress")%>
+  <% all_issue_statuses = IssueStatus.sorted %>
+  <% all_issue_statuses.each do |status| %>
+    <%= check_box_tag "settings[status_inprogress][#{status.id}]", status.name, @settings['status_inprogress'] && @settings['status_inprogress'].include?(status.id.to_s) %>
+  	<%= status.name %>
+  	<br/>	
+  <% end %>
+  <br/>
+  <%=content_tag(:label, "Completed")%>
+  <% all_issue_statuses = IssueStatus.sorted %>
+  <% all_issue_statuses.each do |status| %>
+    <%= check_box_tag "settings[status_completed][#{status.id}]", status.name, @settings['status_completed'] && @settings['status_completed'].include?(status.id.to_s) %>
+  	<%= status.name %>
+  	<br/>	
+  <% end %>
+  <br/>
+  <%=content_tag(:label, "Closed")%>
+  <% all_issue_statuses = IssueStatus.sorted %>
+  <% all_issue_statuses.each do |status| %>
+    <%= check_box_tag "settings[status_closed][#{status.id}]", status.name, @settings['status_closed'] && @settings['status_closed'].include?(status.id.to_s) %>
+  	<%= status.name %>
+  	<br/>	
+  <% end %>
+</p>
+
