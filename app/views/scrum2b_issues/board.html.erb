@@ -1,31 +1,31 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 <% html_title "scrum2b" %>
-<% content_for :header_tags do %>
 <%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
 <%= stylesheet_link_tag 'jquery-ui-slider', :plugin => 'scrum2b' %>
 <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
-<% end %>
+<%= stylesheet_link_tag 'jquery-ui', :plugin => 'scrum2b' %>
+<%= javascript_include_tag 'jquery-ui.js', :plugin => 'scrum2b' %>
 <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 <div class="container-fluid">
-	<p class="issues">Issues</p>
-	<%= button_to "List",{:action => "index",:project_id =>  params[:project_id]},:class => "btn btn-small btn_submit_board"%>
+	<p class="issues"><%= l(:label_menu_issue)%></p>
+	<%= button_to l(:label_scrum2b_list),{:action => "index",:project_id =>  params[:project_id],:session => "list"},:class => "btn btn-small btn_submit_board"%>
 </div>
 <%= render :partial => "filter_board" %>
 <div class="container-fluid">
 <div class="row-fluid">
 	<div class="board span4">
-			<p class="status">New</p>
+			<p class="status"><%= l(:label_board_status_new)%></p>
 			<p class="new_issue ">
-				<%= link_to "",{:controller => "issues", :action => "new",:project_id =>  params[:project_id]},:class => " icon-plus-sign" %><span class="text_new">New Issue</span>
+				<%= link_to "",{:controller => "issues", :action => "new",:project_id =>  params[:project_id]},:class => " icon-plus-sign" %><span class="text_new"><%= l(:label_board_issue_new_issue)%></span>
 			</p>
 			<div class="connectedSortable" id ="new" >
 				<% @issues_new.each do |issue|%>
-				 <li id ="<%= issue.id %>" style="list-style: none"> <%= render :partial => "board_issue", :locals => { :issue => issue} %></li>
+				<li id ="<%= issue.id %>" style="list-style: none"> <%= render :partial => "board_issue", :locals => { :issue => issue} %></li>
 				<% end %>
 			</div>
 	</div>
 	<div class="board span4">
-			<p class="status">In progress</p>
+			<p class="status"><%= l(:label_board_status_inprogress)%></p>
 			<div class="connectedSortable" id ="started">
 				<% @issues_started.each do |issue|%>
 				 <li id ="<%= issue.id %>" style="list-style: none">  <%= render :partial => "board_issue", :locals => { :issue => issue} %></li>
@@ -33,7 +33,7 @@
 			</div>
 	</div>
 	<div class="board span4">
-			<p class="status">completed</p>
+			<p class="status"><%= l(:label_board_status_completed)%></p>
 			<div class="connectedSortable" id ="completed">
 				<% @issues_completed.each do |issue|%>
 				  <li id ="<%= issue.id %>"style="list-style: none"> <%= render :partial => "board_issue", :locals => { :issue => issue} %></li>
@@ -43,8 +43,21 @@
 </div>
 </div>
 <style>
-.board_issue .estimated {
- 
+.assignee{
+  width: 99.5%;
+}
+.description{
+
+}
+.description p{
+  margin:0 0 5px 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.div_description{
+  border: 1px solid #339BB9;
+  padding:3px;
+  margin:0 0 5px 0;
 }
 .estimated input.editing{
   float: left;
@@ -76,6 +89,9 @@
 }
 input.editing{
   display:none;
+}
+.submit_edit_issue{
+  
 }
 </style>
 <script>
@@ -183,6 +199,8 @@ input.editing{
 		});
 	$(".edit_issue").click(function(){
 	  var issue_id = parseInt($(this).parent().attr("id"))
+	  $("i.edit_issue").show();
+	  $(this).hide();
 	  $(".editing").hide();
 	  $(".no_edit").show();
 	  $("#subject_"+issue_id).hide();
@@ -192,12 +210,15 @@ input.editing{
 	  $("#est_"+issue_id).hide();
     $("#input_est_"+issue_id).show();
     $("#div_submit_edit_"+issue_id).show();
-    $("#description_"+issue_id).show();
+    $("#description_"+issue_id).hide();
+    $("#text_description_"+issue_id).show();
+    $("#date_"+issue_id).hide();
+    $("#edit_date_"+issue_id).show();
 	});
 	$(".cancel_edit").click(function(){
-    var issue_id = parseInt($(this).parent().attr("id"))
     $(".editing").hide();
     $(".no_edit").show();
+    $("i.edit_issue").show();
   });
 	$("input.submit_edit").click(function(){
 	  var project_id = <%= @project.id %>
@@ -206,11 +227,13 @@ input.editing{
 	  var assignee = $("#select_ass_"+id_issue).val();
 	  var est_time = $("#input_est_"+id_issue).val();
 	  var description =  $("#text_description_"+id_issue).val();
+	  var date_start =  $("#date_start_"+id_issue).val();
+	  var date_end =  $("#date_end_"+id_issue).val();
 	  var url_ajax = "edit_issue";
 	  $.ajax({
         url : url_ajax,
         type : "POST",
-        data : 'subject=' +subject + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee='+assignee + '&est_time=' + est_time +'&description=' + description,
+        data : 'subject=' +subject + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee='+assignee + '&est_time=' + est_time +'&description=' + description + '&date_start=' + date_start + '&date_end='+ date_end,
         dataType : "text",
         success : function() {
     
@@ -218,6 +241,11 @@ input.editing{
         });
 
 	});
+	$(".edit_date").each(function(){
+	  var id = $(this).attr("value");
+	  $( "#date_start_"+id ).datepicker();
+	   $( "#date_end_"+id ).datepicker();
+	})
 	
 });
 </script>

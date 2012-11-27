@@ -1,19 +1,18 @@
-<div id="filter" class="container-fluid">
-	
+<div class="container-fluid filter">
 	<%= form_tag :action => 'index',:project_id =>  params[:project_id] %>
-	<%= button_tag "Submit",:class => " btn btn-small btn_submit" %>
+	<%= button_tag l(:label_btn_submit_selected),:class => " btn btn-small btn_submit" %>
 	<select name="select_issue" id="select_issue">
-		<option value="7" <% if params[:select_issue] && params[:select_issue].to_i == 7%><%= selected="selected" %><% end %>>All issues working</option>
-		<option value="2" <% if params[:select_issue] && params[:select_issue].to_i == 2%><%= selected="selected" %><% end %>>My issues</option>
-		<option value="3" <% if params[:select_issue] && params[:select_issue].to_i == 3%><%= selected="selected" %><% end %>>My completed issues</option>
-		<option value="4" <% if params[:select_issue] && params[:select_issue].to_i == 4%><%= selected="selected" %><% end %>>All new issues</option>
-		<option value="5" <% if params[:select_issue] && params[:select_issue].to_i == 5%><%= selected="selected" %><% end %>>All completed issues</option>
-		<option value="6" <% if params[:select_issue] && params[:select_issue].to_i == 6%><%= selected="selected" %><% end %>>All closed issues</option>
-    <option value="1" <% if params[:select_issue] && params[:select_issue].to_i == 1%><%= selected="selected" %><% end %>>All issues</option>
+		<option value="7" <% if params[:select_issue] && params[:select_issue].to_i == 7%><%= selected="selected" %><% end %>><%= l(:label_select_all_issues_working)%></option>
+		<option value="2" <% if params[:select_issue] && params[:select_issue].to_i == 2%><%= selected="selected" %><% end %>><%= l(:label_select_my_issues)%></option>
+		<option value="3" <% if params[:select_issue] && params[:select_issue].to_i == 3%><%= selected="selected" %><% end %>><%= l(:label_select_my_issues_completed)%></option>
+		<option value="4" <% if params[:select_issue] && params[:select_issue].to_i == 4%><%= selected="selected" %><% end %>><%= l(:label_select_new_issues)%></option>
+		<option value="5" <% if params[:select_issue] && params[:select_issue].to_i == 5%><%= selected="selected" %><% end %>><%= l(:label_select_al_issuesl_completed)%></option>
+		<option value="6" <% if params[:select_issue] && params[:select_issue].to_i == 6%><%= selected="selected" %><% end %>><%= l(:label_select_all_issues_closed)%></option>
+    <option value="1" <% if params[:select_issue] && params[:select_issue].to_i == 1%><%= selected="selected" %><% end %>><%= l(:label_select_all_issues)%></option>
 
 	</select>
 	<select name="select_version" id="select_version">
-		<option value="version_working"<% if params[:select_version] && params[:select_version] == 'version_working'%><%= selected="selected" %><% end %> >All Version Working</option>
+		<option value="version_working"<% if params[:select_version] && params[:select_version] == 'version_working'%><%= selected="selected" %><% end %> ><%= l(:label_select_all_versions_working)%></option>
 		<% @list_versions.each do |version|%>
   		<% if params[:select_version] && params[:select_version].to_i == version.id %>
   		  <option value="<%= version.id %>" selected ><%= version.name %></option>
@@ -21,9 +20,9 @@
   		  <option value="<%= version.id %>" ><%= version.name %></option>
   		<% end %>
 		<% end %>
-		<option value="all" <% if params[:select_version] && params[:select_version] == 'all'%><%= selected="selected" %><% end %>>All Version</option>
-		<option value="backlog" <% if params[:select_version] && params[:select_version] == 'backlog'%><%= selected="selected" %><% end %>>Backlog</option>
+		<option value="all" <% if params[:select_version] && params[:select_version] == 'all'%><%= selected="selected" %><% end %>><%= l(:label_select_all_versions)%></option>
+		<option value="backlog" <% if params[:select_version] && params[:select_version] == 'backlog'%><%= selected="selected" %><% end %>><%= l(:label_select_backlog)%></option>
 	</select>
   <%= form_tag %>
-	<p> <button class="btn btn-danger close_issue_list">Close</button></p>
+	<p> <button class="btn btn-danger close_issue_list"><%= l(:label_close_all_issues)%></button></p>
 </div>

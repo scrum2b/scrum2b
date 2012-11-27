@@ -7,9 +7,9 @@
 <% end %>
 <div class="container-fluid">
 	<p class="issues">
-		Issues
+		<%= l(:label_menu_issue)%>
 	</p>
-	<%= button_to "Board",{:action => "board",:project_id =>  params[:project_id]},:class => "btn btn-small btn_submit_board "%>
+	<%= button_to l(:label_scrum2b_board),{:action => "board",:project_id =>  params[:project_id],:session => "board"},:class => "btn btn-small btn_submit_board "%>
 </div>
 
 <%= render :partial => "filter_list", :locals => { :list_version => @list_versions} %>
@@ -19,12 +19,12 @@
 			<tr class="head_issue">
 				<th id="check_all"><img src="/images/toggle_check.png?1349682375" alt="Toggle_check"></th>
 				<th>#</th>
-				<th>Status</th>
-				<th>Subject</th>
-				<th>Assignee</th>
-				<th>Updated</th>
-				<th>Est Time</th>
-				<th>% Done</th>
+				<th><%= l(:label_head_issue_status)%></th>
+				<th><%= l(:label_head_issue_subject)%></th>
+				<th><%= l(:label_head_issue_assignee)%></th>
+				<th><%= l(:label_head_issue_updated)%></th>
+				<th><%= l(:label_head_issue_est_time)%></th>
+				<th><%= l(:label_head_issue_done)%></th>
 			</tr>
 		</thead>
 
@@ -32,7 +32,7 @@
 			<% if @version %>
 				<%= render :partial => "version", :locals =>{:version => @version}  %>
 			<% end %>
-			<% if !params[:select_version] || params[:select_version] && params[:select_version] == 'all' ||  params[:select_version] == 'version_working'%>
+			<% if !params[:select_version] || params[:select_version] && params[:select_version] == 'all' ||  params[:select_version] == 'version_working' || params[:select_version] == 'backlog'%>
 				<%= render :partial => "backlog", :locals =>{:issues_backlog => @issues_backlog }%>
 			<% end %>
 		</tbody>
