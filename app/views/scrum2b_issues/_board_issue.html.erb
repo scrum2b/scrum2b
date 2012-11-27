@@ -73,9 +73,6 @@
     <textarea class="editing span12" id="text_description_<%= issue.id %>" style="display:none"><%= issue.description %></textarea>
      </div>
   <% end %>
-  
-  
-  
 
   <% if issue.status_id == @default_inprogress_status_id.to_i%>
   
@@ -99,6 +96,7 @@
   <div id="div_submit_edit_<%= issue.id%>" class="editing submit_edit_issue clearfix" value="<%= issue.id%>">
     <input type="submit" class="submit_edit" value=<%= l(:label_board_edit_btn_submit)%> >
     <input type="submit" class="cancel_edit" value=<%= l(:label_board_edit_btn_cancel)%> >
+
   </div>
 </div>
 

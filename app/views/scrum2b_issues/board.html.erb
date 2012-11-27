@@ -182,7 +182,8 @@ input.editing{
 		    type : "POST",
 		    data : 'done_ratio=' + ui.value + '&issue_id=' + issue_id + '&project_id='+project_id,
 		    dataType : "text",
-		    success : function(res) {
+		    success : function(data) {
+		    	
 		    console.debug(res);
 		    }
 		    });

@@ -134,20 +134,16 @@ class Scrum2bIssuesController < ApplicationController
     Rails.logger.info "Test_PARAMS ISSUES_POSITION #{@issue.position.to_s}"
     e = params[:position].to_i+1
     @sort_issue.each do |sort|
-    # unless sort.id == params[:issue_id]
-      unless sort.id == @issue.id
-        sort.update_attribute(:position,e)
-      end
-      e = e+1
+    		unless sort.id == @issue.id
+    		sort.update_attribute(:position,e)
+    	end
+    	 e = e+1
+
     end
-  #issue.position = param['issue'].index(issue.id.to_s) + 1
-  #issue.save
-  #end
   end
 
   def ajax
     @project =  Project.find(params[:project_id])
-    #@issue = @project.issues.where(:id => params[:issue_id])
     @issue = @project.issues.find(params[:issue_id])
     @issue.update_attribute(:done_ratio, params[:done_ratio])
 
