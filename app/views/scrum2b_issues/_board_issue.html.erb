@@ -37,12 +37,10 @@
      <p>Description</p>
      <textarea rows="2" id="text_description_<%= issue.id %>"><%= issue.description %></textarea>
    </div>
-  <% if issue.status_id == @default_inprogress_status_id.to_i%>
+
 	  <div class="slider-horizontal" id="slider<%= issue.id%>" value="<%= issue.done_ratio%>" style="margin: 0 30px 0 0;"></div> 
 	  <label for="amount">Completed(%): <input type="text" id="amount<%= issue.id%>" style="border: 0; color: #f6931f; font-weight: bold" /></label>
-  <% else %>
-  	<div class="progressbar" value="<%= issue.done_ratio%>" id="progress<%= issue.id%>" style="height: 12px;margin: 0 30px 0 0"></div>
-  <% end %>
+
   <div id="div_submit_edit_<%= issue.id%>" class="editing" value="<%= issue.id%>"> 
     <input type="submit" class="btn-success submit_edit" value="Submit">
     <input type="submit" class="btn-danger cancel_edit" value="Cancel">
