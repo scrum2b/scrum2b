@@ -9,7 +9,7 @@
 	<p class="issues">
 		<%= l(:label_menu_issue)%>
 	</p>
-	<%= button_to l(:label_scrum2b_board),{:action => "board",:project_id =>  params[:project_id],:session => "board"},:class => "btn btn-small btn_submit_board "%>
+	<%= button_to l(:label_scrum2b_board),{:action => "board",:project_id =>  params[:project_id],:session => "board"},:class => "btn btn-small btn_submit_board btn-primary"%>
 </div>
 
 <%= render :partial => "filter_list", :locals => { :list_version => @list_versions} %>

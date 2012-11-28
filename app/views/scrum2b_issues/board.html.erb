@@ -3,12 +3,10 @@
 <%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
 <%= stylesheet_link_tag 'jquery-ui-slider', :plugin => 'scrum2b' %>
 <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
-<%= stylesheet_link_tag 'jquery-ui', :plugin => 'scrum2b' %>
-<%= javascript_include_tag 'jquery-ui.js', :plugin => 'scrum2b' %>
 <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 <div class="container-fluid">
 	<p class="issues"><%= l(:label_menu_issue)%></p>
-	<%= button_to l(:label_scrum2b_list),{:action => "index",:project_id =>  params[:project_id],:session => "list"},:class => "btn btn-small btn_submit_board"%>
+	<%= button_to l(:label_scrum2b_list),{:action => "index",:project_id =>  params[:project_id],:session => "list"},:class => "btn btn-small btn_submit_board btn-primary"%>
 </div>
 <%= render :partial => "filter_board" %>
 <div class="container-fluid">
@@ -45,6 +43,7 @@
 <style>
 .assignee{
   width: 99.5%;
+  font-size: 12px;
 }
 .description{
 
@@ -55,9 +54,12 @@
   white-space: nowrap;
 }
 .div_description{
-  border: 1px solid #339BB9;
+  max-height:34px;
+  border-top: 1px solid #339BB9;
   padding:3px;
   margin:0 0 5px 0;
+  overflow: hidden;
+  font-size: 13px;
 }
 .estimated input.editing{
   float: left;
@@ -93,6 +95,25 @@ input.editing{
 .submit_edit_issue{
   
 }
+.newClass {
+ max-height: 1000px;
+  }
+.redmore{
+  text-decoration: none;
+  font-size:12px;
+}
+.redmore:hover{
+  text-decoration: none;
+}
+.hide:hover{
+  text-decoration: none;
+}
+.hide{
+  display:none;
+  text-decoration: none;
+  font-size:12px;
+}
+    
 </style>
 <script>
 	jQuery(function() {
@@ -204,6 +225,8 @@ input.editing{
 	  $(this).hide();
 	  $(".editing").hide();
 	  $(".no_edit").show();
+	  $("#redmore_"+issue_id).hide();
+    $("#hide_"+issue_id).hide();
 	  $("#subject_"+issue_id).hide();
 	  $("#input_subject_"+issue_id).show();
 	  $("#assignee_"+issue_id).hide();
@@ -221,11 +244,12 @@ input.editing{
     $(".no_edit").show();
     $("i.edit_issue").show();
   });
-	$("input.submit_edit").click(function(){
+	$(".submit_edit").click(function(){
 	  var project_id = <%= @project.id %>
 	  var id_issue = $(this).parent().attr("value");
 	  var subject = $("#input_subject_"+id_issue).val();
 	  var assignee = $("#select_ass_"+id_issue).val();
+	  var name_ass = $("#select_ass_"+id_issue).attr("name");
 	  var est_time = $("#input_est_"+id_issue).val();
 	  var description =  $("#text_description_"+id_issue).val();
 	  var date_start =  $("#date_start_"+id_issue).val();
@@ -234,19 +258,36 @@ input.editing{
 	  $.ajax({
         url : url_ajax,
         type : "POST",
-        data : 'subject=' +subject + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee='+assignee + '&est_time=' + est_time +'&description=' + description + '&date_start=' + date_start + '&date_end='+ date_end,
+        data : 'subject=' +subject + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee='+assignee+ '&date_start=' + date_start + '&date_end='+ date_end + '&est_time=' + est_time +'&description=' + description ,
         dataType : "text",
         success : function() {
-    
-        }
+         location.reload();
+         }
         });
 
 	});
 	$(".edit_date").each(function(){
 	  var id = $(this).attr("value");
 	  $( "#date_start_"+id ).datepicker();
-	   $( "#date_end_"+id ).datepicker();
+	  $( "#date_end_"+id ).datepicker();
+    $( "#date_start_"+id ).datepicker( "option", "dateFormat","yy-mm-dd" );
+      $( "#date_end_"+id ).datepicker( "option", "dateFormat", "yy-mm-dd" );
+
 	})
+	$( ".redmore" ).click(function() {
+	  var id = $(this).attr("value");
+	       $(this).hide();
+	         $("#hide_"+id).show();
+            $( "#description_"+id ).toggleClass( "newClass", 1000 );
+            return false;
+        });
+       $( ".hide" ).click(function() {
+    var id = $(this).attr("value");
+         $(this).hide();
+           $("#redmore_"+id).show();
+            $( "#description_"+id ).toggleClass( "newClass", 1000 );
+            return false;
+        });
 	
 });
 </script>

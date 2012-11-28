@@ -16,7 +16,7 @@
     <p class="no_edit subject_issue" id="subject_<%= issue.id%>">
       <%= issue.subject %>
     </p>
-    <input class="editing" id="input_subject_<%= issue.id%>" type="text" value="<%= issue.subject %>" name="subject_issue" />
+    <input class="editing" id="input_subject_<%= issue.id%>" type="text" value="<%= issue.subject %>" name="subject_issue" style="font-size: 12px" />
   </div>
   
   <div class="assignee no_edit clearfix">
@@ -26,7 +26,7 @@
       <%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %>
     </p>
     <% end %>
-    <select class="editing span5" id="select_ass_<%= issue.id %>" name="select_ass" style="float: left;margin: 0 5px 0;display: none">
+    <select class="editing span5" id="select_ass_<%= issue.id %>" name="select_ass" style="float: left;margin: 0 5px 0;display: none;font-size: 13px">
       <% @member.each do |member|%>
       <% if member.id == issue.assigned_to_id %>
       <option value="<%= member.id %>" selected="selected"><%= member.firstname + ' ' + member.lastname %></option>
@@ -41,32 +41,33 @@
        <i class=" icon-arrow-right" style="float: right;margin: 0 5px"></i>
       <% else%>
         <% if issue.fixed_version && issue.fixed_version.ir_end_date != "" %>
-           <%= issue.fixed_version.ir_end_date%>
+        <%= issue.fixed_version.ir_end_date%>
           <i class=" icon-arrow-right" style="float: right;margin: 0 5px"></i>
           <% else %>
-          <p  style="float: right"> &hellip;</p>
-        <% end %>
+         <% end %>
       <% end %>
      <% if issue.start_date != ""%>
-      <p style="float: right"><%= issue.start_date%></p>
+      <p style="float: right"><%=issue.start_date%></p>
       <% else %>
         <% if issue.fixed_version && issue.fixed_version.ir_start_date != "" %>
            <p style="float: right"><%= issue.fixed_version.ir_start_date%></p>
          <% else %>
-          <p  style="float: right"> &hellip;</p>
+          
         <% end %>
       <% end %>
     </div>
     <div class="editing edit_date clearfix" id="edit_date_<%= issue.id %>" value="<%= issue.id %>" style="">
-     <input type="text" id="date_start_<%= issue.id %>" class="span3" value="<%= issue.start_date%>"/>
-     <input type="text" id="date_end_<%= issue.id %>" class="span3" value="<%= format_date(issue.due_date)%>" />
+     <input type="text" id="date_start_<%= issue.id %>" class="span3" value="<%= format_date(issue.start_date)%>" style="font-size: 13px"/>
+     <input type="text" id="date_end_<%= issue.id %>" class="span3" value="<%= format_date(issue.due_date)%>" style="font-size: 13px" />
     </div>
   </div>
   
   <% if issue.description != "" %>
   <div class="description">
-    <div class="no_edit div_description" id="description_<%= issue.id %>" style="overflow: hidden"> <%= issue.description %></div>
-    <textarea class="editing span12" id="text_description_<%= issue.id %>" style="display:none"><%= issue.description %></textarea>
+    <div class="no_edit div_description" id="description_<%= issue.id %>"> <%= issue.description %></div>
+    <a href="#" id="redmore_<%= issue.id %>" class="redmore no_edit" value="<%= issue.id %>">Redmore</a>
+    <a href="#" id="hide_<%= issue.id %>" class="hide no_edit" value="<%= issue.id %>">Hide</a>
+    <textarea class="editing span12" id="text_description_<%= issue.id %>" style="display:none;font-size: 12px;"><%= issue.description %></textarea>
   </div>
   <% else %>
     <div class="description">
@@ -77,25 +78,25 @@
   <% if issue.status_id == @default_inprogress_status_id.to_i%>
   
     <div class="slider-horizontal" id="slider<%= issue.id%>" value="<%= issue.done_ratio%>" style="margin: 0 15px 5px 0"></div>
-        <p class="estimated" style="float: left">
+        <p class="estimated" style="float: left;font-size: 12px">
         <%= l(:label_board_issue_time)%><span class="no_edit" id="est_<%= issue.id %>"> <%= issue.estimated_hours %></span>
       </p>
-      <input class="editing input-mini" id="input_est_<%= issue.id%>" type="text" name="input_est_issue" value="<%= issue.estimated_hours %>"/>
+      <input class="editing input-mini" id="input_est_<%= issue.id%>" type="text" name="input_est_issue" value="<%= issue.estimated_hours %>" style="font-size: 12px"/>
       <input type="text" id="amount<%= issue.id%>" class="span2" style="border:0;color: #f6931f; font-weight: bold;float: right" />
 
    <% else %>
   <div class="progressbar" value="<%= issue.done_ratio%>" id="progress<%= issue.id%>" style="height: 12px;margin: 0 15px 5px 0"></div>
-    <p class="estimated" style="float: left">
+    <p class="estimated" style="float: left;font-size: 12px">
       <%= l(:label_board_issue_time)%><span class="no_edit" id="est_<%= issue.id %>"> <%= issue.estimated_hours %></span>
     </p>
-    <input class="editing input-mini" id="input_est_<%= issue.id%>" type="text" name="input_est_issue" value="<%= issue.estimated_hours %>" />
+    <input class="editing input-mini" id="input_est_<%= issue.id%>" type="text" name="input_est_issue" value="<%= issue.estimated_hours %>" style="font-size: 12px" />
   <br />
   <% end %>
   
   
   <div id="div_submit_edit_<%= issue.id%>" class="editing submit_edit_issue clearfix" value="<%= issue.id%>">
-    <input type="submit" class="submit_edit" value=<%= l(:label_board_edit_btn_submit)%> >
-    <input type="submit" class="cancel_edit" value=<%= l(:label_board_edit_btn_cancel)%> >
+    <button type="button" class="submit_edit btn-mini btn-primary" ><%= l(:label_board_edit_btn_submit)%></button>
+    <button type="button" class="cancel_edit btn-mini btn-danger" ><%= l(:label_board_edit_btn_cancel)%></button>
 
   </div>
 </div>

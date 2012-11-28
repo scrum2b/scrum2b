@@ -1,6 +1,6 @@
 <div class="container-fluid filter">
 		<%= form_tag :action => 'board',:project_id =>  params[:project_id] %>
-			<%=	button_tag l(:label_btn_submit_selected),:class => "btn btn-small btn_submit" %>
+			<%=	button_tag l(:label_btn_submit_selected),:class => "btn btn-small btn-primary btn_submit" %>
 	 		<select name="select_member" id="select_issue">
 	 			<option value="all" ><%= l(:label_select_all_member)%></option>
 	 			<option value="me" <% if params[:select_member] && params[:select_member] == "me" %><%= selected="selected" %><% end %>><%= l(:label_select_me)%></option>

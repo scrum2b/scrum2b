@@ -1,6 +1,6 @@
 <div class="container-fluid filter">
 	<%= form_tag :action => 'index',:project_id =>  params[:project_id] %>
-	<%= button_tag l(:label_btn_submit_selected),:class => " btn btn-small btn_submit" %>
+	<%= button_tag l(:label_btn_submit_selected),:class => " btn btn-small btn-primary btn_submit" %>
 	<select name="select_issue" id="select_issue">
 		<option value="7" <% if params[:select_issue] && params[:select_issue].to_i == 7%><%= selected="selected" %><% end %>><%= l(:label_select_all_issues_working)%></option>
 		<option value="2" <% if params[:select_issue] && params[:select_issue].to_i == 2%><%= selected="selected" %><% end %>><%= l(:label_select_my_issues)%></option>
@@ -24,5 +24,5 @@
 		<option value="backlog" <% if params[:select_version] && params[:select_version] == 'backlog'%><%= selected="selected" %><% end %>><%= l(:label_select_backlog)%></option>
 	</select>
   <%= form_tag %>
-	<p> <button class="btn btn-danger close_issue_list"><%= l(:label_close_all_issues)%></button></p>
+	<p> <button class="btn btn-danger close_issue_list btn-mini"><%= l(:label_close_all_issues)%></button></p>
 </div>
