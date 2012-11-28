@@ -24,5 +24,7 @@
 		<option value="backlog" <% if params[:select_version] && params[:select_version] == 'backlog'%><%= selected="selected" %><% end %>><%= l(:label_select_backlog)%></option>
 	</select>
   <%= form_tag %>
+  <% if User.current.name != "Anonymous" %>
 	<p> <button class="btn btn-danger close_issue_list btn-mini"><%= l(:label_close_all_issues)%></button></p>
+	<% end %>
 </div>
