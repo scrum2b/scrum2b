@@ -197,15 +197,11 @@ table#done tr td.todo {
 table#done tr td.done {
 	background: #bae0ba;
 }
-.connectedSortable {
-
-	padding: 5px 0;
-
-}
 .close_issue {
 	position: relative;
 	float: right;
 	cursor: pointer;
+	display: none;
 }
 .text_close {
 	position: absolute;

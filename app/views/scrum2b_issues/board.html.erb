@@ -34,12 +34,12 @@
       <p class="status">
         <%= l(:label_board_status_inprogress)%>
       </p>
-      <div class="connectedSortable" id ="<% if User.current.name != "Anonymous" %>started<% else %>started_nomember<% end %>">
-        <% @issues_started.each do |issue|%>
-        <li id ="<%= issue.id %>" style="list-style: none">
-          <%= render :partial => "board_issue", :locals => { :issue => issue} %>
-        </li>
-        <% end %>
+      <div class="connectedSortable" id ="<% if User.current.name != 'Anonymous' %>started<% else %>started_nomember<% end %>">
+         <% @issues_started.each do |issue|%>
+          <li id ="<%= issue.id %>" style="list-style: none">
+            <%= render :partial => "board_issue", :locals => { :issue => issue} %>
+          </li>
+         <% end %>
       </div>
     </div>
     <div class="board span4">
@@ -56,13 +56,9 @@
     </div>
   </div>
 </div>
-<style>
-
-</style>
 <script>
   jQuery(function() {
-    $("#new").find(".close_issue").hide();
-    $("#started").find(".close_issue").hide();
+    $("#completed").find(".close_issue").show();
     $(".close_issue").live("click",function(){
       var issue_id = $(this).parent().attr("id")
       var project_id = <%= @project.id %>
@@ -164,6 +160,7 @@
         var issue_id = parseInt($(this).parent().attr("id"))
         $("i.edit_issue").show();
         $(this).hide();
+        $("#close_"+issue_id).hide();
         $(".editing").hide();
         $(".no_edit").show();
         $("#readmore_"+issue_id).hide();
@@ -186,6 +183,7 @@
         $("i.edit_issue").show();
         $(".readmore").show();
         $(".hide").hide();
+        $(".close_issue").show();
       });
       $(".submit_edit").click(function(){
       var project_id = <%= @project.id %>
@@ -215,6 +213,7 @@
             $(".readmore").show();
             $(".hide").hide();
             $("i.edit_issue").show();
+            $(".close_issue").show();
           }
         });
   
