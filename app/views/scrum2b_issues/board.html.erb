@@ -1,223 +1,245 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 <% html_title "scrum2b" %>
-<% content_for :header_tags do %>
 <%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
 <%= stylesheet_link_tag 'jquery-ui-slider', :plugin => 'scrum2b' %>
 <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
-<% end %>
 <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 <div class="container-fluid">
-	<p class="issues">Issues</p>
-	<%= button_to "List",{:action => "index",:project_id =>  params[:project_id]},:class => "btn btn-small btn_submit_board"%>
+  <p class="issues">
+    <%= l(:label_menu_issue)%>
+  </p>
+  <%= button_to l(:label_scrum2b_list),{:action => "index",:project_id =>  params[:project_id],:session => "list"},:class => "btn btn-small btn_submit_board btn-primary"%>
 </div>
 <%= render :partial => "filter_board" %>
 <div class="container-fluid">
-<div class="row-fluid">
-	<div class="board span4">
-			<p class="status">New</p>
-			<p class="new_issue ">
-				<%= link_to "",{:controller => "issues", :action => "new",:project_id =>  params[:project_id]},:class => " icon-plus-sign" %><span class="text_new">New Issue</span>
-			</p>
-			<div class="connectedSortable" id ="new" >
-				<% @issues_new.each do |issue|%>
-				 <li id ="<%= issue.id %>" style="list-style: none"> <%= render :partial => "board_issue", :locals => { :issue => issue} %></li>
-				<% end %>
-			</div>
-	</div>
-	<div class="board span4">
-			<p class="status">In progress</p>
-			<div class="connectedSortable" id ="started">
-				<% @issues_started.each do |issue|%>
-				 <li id ="<%= issue.id %>" style="list-style: none">  <%= render :partial => "board_issue", :locals => { :issue => issue} %></li>
-				<% end %>
-			</div>
-	</div>
-	<div class="board span4">
-			<p class="status">completed</p>
-			<div class="connectedSortable" id ="completed">
-				<% @issues_completed.each do |issue|%>
-				  <li id ="<%= issue.id %>"style="list-style: none"> <%= render :partial => "board_issue", :locals => { :issue => issue} %></li>
+  <div class="row-fluid">
+    <div class="board span4">
+      <p class="status">
+        <%= l(:label_board_status_new)%>
+      </p>
+      <% if User.current.name != "Anonymous" %>
+        <p class="new_issue ">
+          <%= link_to "",{:controller => "issues", :action => "new",:project_id =>  params[:project_id]},:class => " icon-plus-sign" %><span class="text_new"><%= l(:label_board_issue_new_issue)%></span>
+        </p>
+      <% end %>
+      <div class="connectedSortable" id ="<% if User.current.name != "Anonymous" %>new<% else %>new_nomember<% end %>" >
+        <% @issues_new.each do |issue|%>
+        <li id ="<%= issue.id %>" style="list-style: none">
+          <%= render :partial => "board_issue", :locals => { :issue => issue} %>
+        </li>
         <% end %>
-			</div>
-	</div>
+      </div>
+    </div>
+    <div class="board span4">
+      <p class="status">
+        <%= l(:label_board_status_inprogress)%>
+      </p>
+      <div class="connectedSortable" id ="<% if User.current.name != 'Anonymous' %>started<% else %>started_nomember<% end %>">
+         <% @issues_started.each do |issue|%>
+          <li id ="<%= issue.id %>" style="list-style: none">
+            <%= render :partial => "board_issue", :locals => { :issue => issue} %>
+          </li>
+         <% end %>
+      </div>
+    </div>
+    <div class="board span4">
+      <p class="status">
+        <%= l(:label_board_status_completed)%>
+      </p>
+      <div class="connectedSortable" id ="<% if User.current.name != "Anonymous" %>completed<% else %>completed_nomember<% end %>">
+        <% @issues_completed.each do |issue|%>
+        <li id ="<%= issue.id %>"style="list-style: none">
+          <%= render :partial => "board_issue", :locals => { :issue => issue} %>
+        </li>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
-</div>
-<style>
-.board_issue .estimated {
- 
-}
-.estimated input.editing{
-  float: left;
-}
-.connectedSortable {
-  margin-top:25px;
-  padding:5px 0;
-}
-.edit_issue{
-  position:relative;
-  float:right;
-  margin-right: 5px;
-  cursor: pointer;
-}
-.text_edit {
-  position: absolute;
-  padding: 2px 3px;
-  top: -30px;
-  left: -30px;
-  width: 65px;
-  display: none;
-  background: #e4e4e4;
-}
-.edit_issue:hover p.text_edit {
-  display: inline;
-}
-.editing{
-  display:none;
-}
-input.editing{
-  display:none;
-}
-</style>
 <script>
-	jQuery(function() {
-  $(".close_issue").live("click",function(){
-    var issue_id = $(this).parent().attr("id")
-    var project_id = <%= @project.id %>
-    var url_ajax = 'close_issue'
-    $.ajax({
-    url : url_ajax,
-    type : "POST",
-    data : 'issue_id=' + issue_id + '&project_id=' + project_id,
-    dataType : "text",
-    success : function() {
-          $("#"+issue_id).hide()
-    }
-    });
-  
-  });
-  $( "#new, #started, #completed").sortable({
-  scroll: true, scrollSensitivity: 100, scrollSpeed: 100,
-  connectWith: ".connectedSortable",
-  sort: function(){
-  $(this).find(".ui-sortable-helper").addClass("check");
-  },
-  receive: function(){
-  var status = $(this).attr("id")
-  var project_id = <%= @project.id %>
-	var url_ajax = 'update_status'
-	var issue_id = $(this).find(".check").attr("id")
-	
-	$.ajax({
-		url : url_ajax,
-		type : "POST",
-		data : 'issue_id=' + issue_id + '&project_id=' + project_id + '&status=' + status,
-		dataType : "text",
-		success : function() {
-
-		}
-	});
-	},
-			axit: 'y',
-    	placeholder: "ui-state-highlight",
-    	opacity:'0.5',
- 			stop: function(event, ui) {
-						  // $("#new,#started,#completed").each( function(e) {
-              // order.push( $(this).attr(issue_id)  + '=' + ( $(this).index() + 1 ) );
-              // });
-              // // join the array as single variable...
-              // var positions = order.join(';')
-               // //use the variable as you need!
-              // alert('show :'+ positions );
-        	// alert("New position: " + ui.item.index());
-        	var issue_id = $(".check").attr("id");
-        	var url_sort = 'sort_issues'
-        	var project_id = <%= @project.id %>;
-        	var position = $(ui.item).parent().children().index(ui.item);
-        	$(this).find(".check").removeClass("check")
-        	console.debug(position);
-	 	  $.ajax({
-					url : url_sort,
-					type : "POST",
-					data : 'position='+ position +'&issue_id=' + issue_id + '&project_id=' + project_id ,
-					dataType : "text",
-					success : function() {
-					}
-			});
-		   }
-		}).disableSelection();
-
-    $(".slider-horizontal").each(function() {
-	    var id = parseInt($(this).parent().attr("id"))
-	    $("#slider"+id ).slider({
-	    orientation: "horizontal",
-	    range: "min",
-	    min: 0,
-	    max: 100,
-	    value: parseInt($(this).attr("value")),
-	    slide: function( event, ui ) {
-	          $("#amount"+id ).val( ui.value );
-	      },
-	      stop: function(e, ui) {
-		    var issue_id = parseInt($(this).parent().attr("id"));
-		    var project_id = <%= @project.id%>;
-		    var url_ajax = "ajax";
-		    $.ajax({
-		    url : url_ajax,
-		    type : "POST",
-		    data : 'done_ratio=' + ui.value + '&issue_id=' + issue_id + '&project_id='+project_id,
-		    dataType : "text",
-		    success : function(res) {
-		    console.debug(res);
-		    }
-		    });
-		  }
-	    });
-	   $( "#amount"+id ).val( $("#slider"+id).slider("value"));
-	});
-	
-	$(".progressbar").each(function() {
-		var id = parseInt($(this).parent().attr("id"))
-		$("#progress"+id).progressbar({
-			value:parseInt($(this).attr("value"))
-		});
-		});
-	$(".edit_issue").click(function(){
-	  var issue_id = parseInt($(this).parent().attr("id"))
-	  $(".editing").hide();
-	  $(".no_edit").show();
-	  $("#subject_"+issue_id).hide();
-	  $("#input_subject_"+issue_id).show();
-	  $("#assignee_"+issue_id).hide();
-	  $("#select_ass_"+issue_id).show();
-	  $("#est_"+issue_id).hide();
-    $("#input_est_"+issue_id).show();
-    $("#div_submit_edit_"+issue_id).show();
-    $("#description_"+issue_id).show();
-	});
-	$(".cancel_edit").click(function(){
-    var issue_id = parseInt($(this).parent().attr("id"))
-    $(".editing").hide();
-    $(".no_edit").show();
-  });
-	$("input.submit_edit").click(function(){
-	  var project_id = <%= @project.id %>
-	  var id_issue = $(this).parent().attr("value");
-	  var subject = $("#input_subject_"+id_issue).val();
-	  var assignee = $("#select_ass_"+id_issue).val();
-	  var est_time = $("#input_est_"+id_issue).val();
-	  var description =  $("#text_description_"+id_issue).val();
-	  var url_ajax = "edit_issue";
-	  $.ajax({
+  jQuery(function() {
+    $("#completed").find(".close_issue").show();
+    $(".close_issue").live("click",function(){
+      var issue_id = $(this).parent().attr("id")
+      var project_id = <%= @project.id %>
+      var url_ajax = 'close_issue'
+      $.ajax({
         url : url_ajax,
         type : "POST",
-        data : 'subject=' +subject + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee='+assignee + '&est_time=' + est_time +'&description=' + description,
+        data : 'issue_id=' + issue_id + '&project_id=' + project_id,
         dataType : "text",
         success : function() {
-    
+          $("#"+issue_id).hide()
         }
+      });
+    });
+    $( "#new, #started, #completed").sortable({
+      scroll: true, scrollSensitivity: 100, scrollSpeed: 100,
+      connectWith: ".connectedSortable",
+      sort: function(){
+      $(this).find(".ui-sortable-helper").addClass("check");
+      },
+      receive: function(){
+      var status = $(this).attr("id")
+      var project_id = <%= @project.id %>
+      var url_ajax = 'update_status'
+      var issue_id = $(this).find(".check").attr("id")
+      if (status == "completed"){
+        $(this).find(".close_issue").show();
+      }
+      if (status == "started" ){
+        $(this).find(".close_issue").hide();
+      }
+      if (status == "new"){
+        $(this).find(".close_issue").hide();
+      }
+      $.ajax({
+        url : url_ajax,
+        type : "POST",
+        data : 'issue_id=' + issue_id + '&project_id=' + project_id + '&status=' + status,
+        dataType : "text",
+        success : function() {
+           }
         });
+      },
+      axit: 'y',
+      stop: function(event, ui) {
+      var issue_id = $(".check").attr("id");
+      var url_sort = 'sort_issues'
+      var project_id = <%= @project.id %>;
+      var position = $(ui.item).parent().children().index(ui.item);
+      $(this).find(".check").removeClass("check")
+        console.debug(position);
+        $.ajax({
+        url : url_sort,
+        type : "POST",
+        data : 'position='+ position +'&issue_id=' + issue_id + '&project_id=' + project_id ,
+        dataType : "text",
+        success : function() {
+          }
+        });
+      }
+    }).disableSelection();
+    
+    $(".slider-horizontal").each(function() {
+      var id = parseInt($(this).parent().attr("id"))
+        $("#slider"+id ).slider({
+        orientation: "horizontal",
+        range: "min",
+        min: 0,
+        max: 100,
+        value: parseInt($(this).attr("value")),
+        slide: function( event, ui ) {
+        $("#amount"+id ).val( ui.value );
+      },
+      stop: function(e, ui) {
+        var issue_id = parseInt($(this).parent().attr("id"));
+        var project_id = <%= @project.id%>;
+        var url_ajax = "ajax";
+        $.ajax({
+        url : url_ajax,
+          type : "POST",
+          data : 'done_ratio=' + ui.value + '&issue_id=' + issue_id + '&project_id='+project_id,
+          dataType : "text",
+          success : function(data) {
+            console.debug(res);
+          }
+        });
+      }
+    });
+    $( "#amount"+id ).val( $("#slider"+id).slider("value"));
+    });
+    
+      $(".progressbar").each(function() {
+      var id = parseInt($(this).parent().attr("id"))
+      $("#progress"+id).progressbar({
+        value:parseInt($(this).attr("value"))
+       });
+      });
+      $(".edit_issue").click(function(){
+        var issue_id = parseInt($(this).parent().attr("id"))
+        $("i.edit_issue").show();
+        $(this).hide();
+        $("#close_"+issue_id).hide();
+        $(".editing").hide();
+        $(".no_edit").show();
+        $("#readmore_"+issue_id).hide();
+        $("#hide_"+issue_id).hide();
+        $("#subject_"+issue_id).hide();
+        $("#input_subject_"+issue_id).show();
+        $("#assignee_"+issue_id).hide();
+        $("#select_ass_"+issue_id).show();
+        $("#est_"+issue_id).hide();
+        $("#input_est_"+issue_id).show();
+        $("#div_submit_edit_"+issue_id).show();
+        $("#description_"+issue_id).hide();
+        $("#text_description_"+issue_id).show();
+        $("#date_"+issue_id).hide();
+        $("#edit_date_"+issue_id).show();
+      });
+      $(".cancel_edit").click(function(){
+        $(".editing").hide();
+        $(".no_edit").show();
+        $("i.edit_issue").show();
+        $(".readmore").show();
+        $(".hide").hide();
+        $(".close_issue").show();
+      });
+      $(".submit_edit").click(function(){
+      var project_id = <%= @project.id %>
+        var id_issue = $(this).parent().attr("value");
+        var subject = $("#input_subject_" + id_issue).val();
+        var assignee = $("#select_ass_" + id_issue).val();
+        var name_ass = $("#select_ass_" + id_issue + ' option:selected').text();
+        var est_time = $("#input_est_" + id_issue).val();
+        var description = $("#text_description_" + id_issue).val();
+        var date_start = $("#date_start_" + id_issue).val();
+        var date_end = $("#date_end_" + id_issue).val();
+        var url_ajax = "edit_issue";
+        $.ajax({
+          url : url_ajax,
+          type : "POST",
+          data : 'subject=' + subject + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee=' + assignee + '&date_start=' + date_start + '&date_end=' + date_end + '&est_time=' + est_time + '&description=' + description,
+          dataType : "text",
+          success : function() {
+            $(".editing").hide();
+            $(".no_edit").show();
+            $("#subject_" + id_issue).text(subject);
+            $("#assignee_" + id_issue).text(name_ass);
+            $("#start_date_" + id_issue).text(date_start);
+            $("#end_date_" + id_issue).text(date_end);
+            $("#description_" + id_issue).text(description);
+            $("#est_" + id_issue).text(est_time);
+            $(".readmore").show();
+            $(".hide").hide();
+            $("i.edit_issue").show();
+            $(".close_issue").show();
+          }
+        });
+  
+    });
+    $(".edit_date").each(function() {
+      var id = $(this).attr("value");
+      $("#date_start_" + id).datepicker();
+      $("#date_end_" + id).datepicker();
+      $("#date_start_" + id).datepicker("option", "dateFormat", "yy-mm-dd");
+      $("#date_end_" + id).datepicker("option", "dateFormat", "yy-mm-dd");
+  
+    })
+    $(".readmore").click(function() {
+      var id = $(this).attr("value");
+      $(this).hide();
+      $("#hide_" + id).show();
+      $("#description_" + id).toggleClass("newClass");
+      return false;
+    });
+    $(".hide").click(function() {
+      var id = $(this).attr("value");
+      $(this).hide();
+      $("#readmore_" + id).show();
+      $("#description_" + id).toggleClass("newClass");
+      return false;
+    });
 
-	});
-	
-});
+  });
 </script>

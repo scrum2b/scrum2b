@@ -159,7 +159,6 @@ textarea {
 
 body {
   margin: 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: #333333;
@@ -649,11 +648,6 @@ h6 small {
   font-weight: normal;
   line-height: 1;
   color: #999999;
-}
-
-h1 {
-  font-size: 36px;
-  line-height: 40px;
 }
 
 h2 {

@@ -5,7 +5,7 @@
 <% if issue.assigned_to %>
   <td><%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %></td>
 <% elsif %>
-  <td>No Assigned</td>
+  <td></td>
 <% end %>
 <td><%= format_time(issue.updated_on) %></td>
 <td><%= issue.estimated_hours %></td>

@@ -49,9 +49,11 @@ select#select_issue {
 }
 .btn_submit_board {
 	float: right;
+	margin: 0 0 10px 0;
+	border: 1px solid red;
 }
-#filter {
-
+.filter {
+  margin: 10px 0 0 0;
 }
 #check_all {
 	cursor: pointer
@@ -65,6 +67,95 @@ select#select_issue {
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
 }
+<<<<<<< HEAD
+=======
+ #ui-datepicker-div{
+    display: none;
+  }
+	.board_issue {
+		border: 1px solid #000000;
+		padding: 5px;
+		margin: 0 0 5px 0;
+		background: #ffffff;
+		width: 97%;
+		border-radius: 2px;
+		-moz-border-radius: 2px;
+		-webkit-border-radius: 2px;
+	}
+	.assignee {
+		width: 99.5%;
+		font-size: 12px;
+		margin:-8px 0 0 0;
+	}
+	.description {
+     margin:-5px 0 0 0;
+	}
+	.description p {
+		margin: 0;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.div_description {
+		max-height: 34px;
+		border-top: 1px solid #339BB9;
+		padding: 3px;
+		margin: 0 0 5px 0;
+		overflow: hidden;
+		font-size: 13px;
+	}
+	.estimated input.editing {
+		float: left;
+	}
+	.connectedSortable {
+		margin-top: 25px;
+		padding: 5px 0;
+	}
+	.edit_issue {
+		position: relative;
+		float: right;
+		margin-right: 5px;
+		cursor: pointer;
+	}
+	.text_edit {
+		position: absolute;
+		padding: 2px 3px;
+		top: -30px;
+		left: -30px;
+		width: 65px;
+		display: none;
+		background: #e4e4e4;
+	}
+	.edit_issue:hover p.text_edit {
+		display: inline;
+	}
+	.editing {
+		display: none;
+	}
+	input.editing {
+		display: none;
+	}
+	.submit_edit_issue {
+
+	}
+	.newClass {
+		max-height: 1000px;
+	}
+	.readmore {
+		text-decoration: none;
+		font-size: 12px;
+	}
+	.readmore:hover {
+		text-decoration: none;
+	}
+	.hide:hover {
+		text-decoration: none;
+	}
+	.hide {
+		display: none;
+		text-decoration: none;
+		font-size: 12px;
+	}
+>>>>>>> develop
 .board p.status {
 	float:left;
 	color: #606264;
@@ -73,6 +164,7 @@ select#select_issue {
 	font-family: Trebuchet MS, Georgia, "Times New Roman", serif;
 	margin: 5px 0 10px 10px;
 }
+<<<<<<< HEAD
 .board_issue {
 	border: 1px solid #000000;
 	padding: 5px;
@@ -83,6 +175,8 @@ select#select_issue {
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
 }
+=======
+>>>>>>> develop
 
 .board_issue:hover {
 	border: 1px solid #628db6;
@@ -119,22 +213,32 @@ table#done tr td.todo {
 table#done tr td.done {
 	background: #bae0ba;
 }
+<<<<<<< HEAD
 .connectedSortable {
 
 	padding: 5px 0;
 
 }
+=======
+>>>>>>> develop
 .close_issue {
 	position: relative;
 	float: right;
 	cursor: pointer;
+<<<<<<< HEAD
+=======
+	display: none;
+>>>>>>> develop
 }
 .text_close {
 	position: absolute;
 	padding: 2px 3px;
 	top: -30px;
 	left: -30px;
+<<<<<<< HEAD
 	width: 75px;
+=======
+>>>>>>> develop
 	display: none;
 	background: #e4e4e4;
 }
@@ -143,7 +247,10 @@ table#done tr td.done {
 	padding: 2px 3px;
 	top: -30px;
 	right: -50px;
+<<<<<<< HEAD
 	width: 70px;
+=======
+>>>>>>> develop
 	display: none;
 	background: #e4e4e4;
 }
@@ -152,7 +259,10 @@ table#done tr td.done {
 	padding: 2px 3px;
 	top: -30px;
 	left: -30px;
+<<<<<<< HEAD
 	width: 75px;
+=======
+>>>>>>> develop
 	display: none;
 	background: #e4e4e4;
 }
@@ -175,3 +285,7 @@ table#done tr td.done {
 .version_row {
 	background-color: #DFF0D8;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> develop
