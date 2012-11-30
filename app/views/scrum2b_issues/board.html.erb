@@ -56,6 +56,8 @@
     </div>
   </div>
 </div>
+<style>
+</style>
 <script>
   jQuery(function() {
     $("#completed").find(".close_issue").show();
@@ -163,8 +165,10 @@
         $("#close_"+issue_id).hide();
         $(".editing").hide();
         $(".no_edit").show();
+        $(".description_readmore").hide();
         $("#readmore_"+issue_id).hide();
         $("#hide_"+issue_id).hide();
+        $(".hide").hide();
         $("#subject_"+issue_id).hide();
         $("#input_subject_"+issue_id).show();
         $("#assignee_"+issue_id).hide();
@@ -176,18 +180,23 @@
         $("#text_description_"+issue_id).show();
         $("#date_"+issue_id).hide();
         $("#edit_date_"+issue_id).show();
+        $("#description_readmore_"+issue_id).hide();
+        $("#description_hide_"+issue_id).hide();
       });
       $(".cancel_edit").click(function(){
+        var issue_id = parseInt($(this).parent().attr("value"))
+        $("#completed").find("#close_"+issue_id).show();
         $(".editing").hide();
         $(".no_edit").show();
         $("i.edit_issue").show();
         $(".readmore").show();
         $(".hide").hide();
-        $(".close_issue").show();
+        $(".description_readmore").hide();
+        
       });
       $(".submit_edit").click(function(){
-      var project_id = <%= @project.id %>
-        var id_issue = $(this).parent().attr("value");
+        var project_id = <%= @project.id %>
+        var id_issue = parseInt($(this).parent().attr("value"));
         var subject = $("#input_subject_" + id_issue).val();
         var assignee = $("#select_ass_" + id_issue).val();
         var name_ass = $("#select_ass_" + id_issue + ' option:selected').text();
@@ -202,18 +211,7 @@
           data : 'subject=' + subject + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee=' + assignee + '&date_start=' + date_start + '&date_end=' + date_end + '&est_time=' + est_time + '&description=' + description,
           dataType : "text",
           success : function() {
-            $(".editing").hide();
-            $(".no_edit").show();
-            $("#subject_" + id_issue).text(subject);
-            $("#assignee_" + id_issue).text(name_ass);
-            $("#start_date_" + id_issue).text(date_start);
-            $("#end_date_" + id_issue).text(date_end);
-            $("#description_" + id_issue).text(description);
-            $("#est_" + id_issue).text(est_time);
-            $(".readmore").show();
-            $(".hide").hide();
-            $("i.edit_issue").show();
-            $(".close_issue").show();
+            location.reload();
           }
         });
   
@@ -230,15 +228,18 @@
       var id = $(this).attr("value");
       $(this).hide();
       $("#hide_" + id).show();
-      $("#description_" + id).toggleClass("newClass");
-      return false;
+      $("#description_readmore_" + id).show();
+      $("#description_hide_" + id).hide();
+       return false;
+     
     });
     $(".hide").click(function() {
       var id = $(this).attr("value");
       $(this).hide();
       $("#readmore_" + id).show();
-      $("#description_" + id).toggleClass("newClass");
-      return false;
+      $("#description_hide_" + id).show();
+      $("#description_readmore_" + id).hide();
+       return false;
     });
 
   });

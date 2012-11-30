@@ -16,13 +16,25 @@
 			</select>
 			<select name="select_version" id="select_version">
 				<option value="all" ><%= l(:label_select_all_versions)%></option>
-				<% @list_versions.each do |version|%>
+				<% @list_versions_open.each do |version|%>
 					<% if params[:select_version] && params[:select_version].to_i == version.id %>
 						<option value="<%= version.id %>" selected ><%= version.name %></option>
 					<% else %>
 						<option value="<%= version.id %>" ><%= version.name %></option>
 					<% end %>
 				<% end %>
-			</select>
+				<% if @list_versions_closed %>
+  				<optgroup label="Closed Sprint">
+    				<% @list_versions_closed.each do |version|%>
+              <% if params[:select_version] && params[:select_version].to_i == version.id %>
+                <option value="<%= version.id %>" selected style="color: red"><%= version.name %></option>
+              <% else %>
+                <option value="<%= version.id %>" ><%= version.name %></option>
+              <% end %>
+            <% end %>
+          </optgroup>
+  			</select>
+			<% end %>
 			<%= form_tag %>
+			
 </div>

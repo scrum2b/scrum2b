@@ -61,7 +61,8 @@ class Scrum2bIssuesController < ApplicationController
     if params[:session]
     session[:view_issue] = params[:session]
     end
-    @list_versions = @project.versions.all
+    @list_versions_open = @project.versions.where(:status => "open")
+    @list_versions_closed = @project.versions.where(:status => "closed")
     @member = @project.assignable_users
     @id_version  = params[:select_version]
     @select_issues  = params[:select_member]

@@ -93,14 +93,7 @@ margin:10px 0 0 0;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
-	.div_description {
-		max-height: 34px;
-		border-top: 1px solid #339BB9;
-		padding: 3px;
-		margin: 0 0 5px 0;
-		overflow: hidden;
-		font-size: 13px;
-	}
+
 	.estimated input.editing {
 		float: left;
 	}
@@ -135,9 +128,13 @@ margin:10px 0 0 0;
 	.submit_edit_issue {
 
 	}
-	.newClass {
-		max-height: 1000px;
-	}
+	 .div_description {
+    border-top: 1px solid #339BB9;
+    padding: 3px;
+    margin: 0 0 5px 0;
+    overflow: hidden;
+    font-size: 13px;
+  }
 	.readmore {
 		text-decoration: none;
 		font-size: 12px;
@@ -246,4 +243,3 @@ table#done tr td.done {
 .version_row {
 	background-color: #DFF0D8;
 }
-
