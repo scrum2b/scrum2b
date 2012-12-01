@@ -8,9 +8,7 @@ Scrum2B is developed by Scrum2B Team (www.scrum2b.com).
 
 1. The ScrumBoard: based on another Redmine plugin with a board, but we completed more features, allow teams could treat like a REAL BOARD.
 Users could drad and drop a task to sort/organizate the Sprint.
-
 2. The ListBoard: list all issues based on the sort from ScrumBoard and make it more simple than Issue Tracking in Redmine.
-
 3. The interface of screens based on Twitter Bootstrap, with better look and feeling.
 (You should get the theme: https://github.com/scrum2b/redmine-scrum2b-theme to install in Redmine)
 
@@ -74,6 +72,7 @@ FOR FURTURE FEATURES
 --------------------
 
 We want to implement new features in short term:
+
 1. Burndown chart based on Estimate Time and Spent Time.
 2. The check list for each issues.
 
