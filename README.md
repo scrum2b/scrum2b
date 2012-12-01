@@ -34,6 +34,8 @@ Scrum2B is open source and released under the terms of the GNU General Public Li
 INSTALLATION
 ------------
 
+The tool could run based on Redmine 2.3.x, 2.2.x, 2.1.x, 2.0.x.
+
 Go to the Redmine plugin folder. Clone the plugin from GitHub:
     
     $ git clone git@github.com:scrum2b/scrum2b.git
