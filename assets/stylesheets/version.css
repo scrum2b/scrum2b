@@ -67,7 +67,6 @@ margin:10px 0 0 0;
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
 }
-
  #ui-datepicker-div{
     display: none;
   }
@@ -94,17 +93,6 @@ margin:10px 0 0 0;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
-
-	.div_description {
-		max-height: 34px;
-		border-top: 1px solid #339BB9;
-		padding: 3px;
-		margin: 0 0 5px 0;
-		overflow: hidden;
-		font-size: 13px;
-	}
-
-
 
 	.estimated input.editing {
 		float: left;
@@ -140,7 +128,7 @@ margin:10px 0 0 0;
 	.submit_edit_issue {
 
 	}
- .div_description {
+	 .div_description {
     border-top: 1px solid #339BB9;
     padding: 3px;
     margin: 0 0 5px 0;
@@ -169,17 +157,6 @@ margin:10px 0 0 0;
 	font-weight: bold;
 	font-family: Trebuchet MS, Georgia, "Times New Roman", serif;
 	margin: 5px 0 10px 10px;
-}
-
-.board_issue {
-	border: 1px solid #000000;
-	padding: 5px;
-	margin: 0 0 5px 0;
-	background: #ffffff;
-	width: 97%;
-	border-radius: 2px;
-	-moz-border-radius: 2px;
-	-webkit-border-radius: 2px;
 }
 
 .board_issue:hover {
@@ -217,26 +194,17 @@ table#done tr td.todo {
 table#done tr td.done {
 	background: #bae0ba;
 }
-
-.connectedSortable {
-
-	padding: 5px 0;
-
-}
 .close_issue {
 	position: relative;
 	float: right;
 	cursor: pointer;
-
 	display: none;
-
 }
 .text_close {
 	position: absolute;
 	padding: 2px 3px;
 	top: -30px;
 	left: -30px;
-
 	display: none;
 	background: #e4e4e4;
 }
@@ -275,4 +243,3 @@ table#done tr td.done {
 .version_row {
 	background-color: #DFF0D8;
 }
-
