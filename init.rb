@@ -14,9 +14,9 @@ Redmine::Plugin.register :scrum2b do
   settings :default => {'status_no_start'=> [], 'status_inprogress' => [], 'status_completed' => [], 'status_closed' => [] }, :partial => 'settings/scrum2b'
   
   project_module :scrum2b do
-    permission :view_issue, :scrum2b_issues => :index
+    permission :view_issue, :scrum2b_issues => :board
   end
   
-  menu :project_menu, :scrum2b_issues, { :controller => :scrum2b_issues, :action => :index }, :caption => :label_scrum2b, :after => :activity, :param => :project_id
+  menu :project_menu, :scrum2b_issues, { :controller => :scrum2b_issues, :action => :board }, :caption => :label_scrum2b, :after => :activity, :param => :project_id
   
  end

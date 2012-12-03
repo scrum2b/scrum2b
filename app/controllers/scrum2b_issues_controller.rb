@@ -3,12 +3,12 @@ class Scrum2bIssuesController < ApplicationController
 
   before_filter :find_project, :only => [:index,:board]
   before_filter :set_status_settings
-
   #layout false
   self.allow_forgery_protection = false
-  
   def index
-    #redirect_to :action => "board" ,:project_id =>  params[:project_id]
+    @list_versions_open = @project.versions.where(:status => "open")
+    @list_versions_closed = @project.versions.where(:status => "closed")
+
     if params[:session]
       session[:view_issue] = params[:session]
     end
@@ -61,9 +61,11 @@ class Scrum2bIssuesController < ApplicationController
   end
 
   def board
-    session[:view_issue] = params[:session] if params[:session]
-
-    @list_versions = @project.versions.all
+    if params[:session]
+    session[:view_issue] = params[:session]
+    end
+    @list_versions_open = @project.versions.where(:status => "open")
+    @list_versions_closed = @project.versions.where(:status => "closed")
     @member = @project.assignable_users
     @id_version  = params[:select_version]
     @select_issues  = params[:select_member]
@@ -75,33 +77,34 @@ class Scrum2bIssuesController < ApplicationController
       @issues_version =  @project.issues.where(:fixed_version_id  => @id_version);
       end
     elsif
-      @issues_version =  @project.issues
+    @issues_version =  @project.issues
     end
-
     if @select_issues
+
       if @select_issues == "all"
         @issues_select =  @issues_version
+
       elsif @select_issues == "me"
         @issues_select =  @issues_version.where(:assigned_to_id => User.current.id )
+
       else
         @issues_select = @issues_version.where(:assigned_to_id => @select_issues)
       end
+
     else
       @issues_select =  @issues_version
     end
     @issues_new = @issues_select.where(:status_id => @default_not_start_status_id.to_i)
     @issues_start = @issues_select.where(:status_id => @default_inprogress_status_id.to_i)
     @issues_completed = @issues_select.where(:status_id => @default_completed_status_id.to_i)
-
-    new_position = 0
+    e = 0
     @issues_start.each do |issue_position|
       unless issue_position.position
-        issue_position.update_attribute(:position, new_position)
-        new_position += 1
+        issue_position.update_attribute(:position,e)
+      e = e+1
       end
     end
     @issues_started = @issues_select.where(:status_id => @default_inprogress_status_id.to_i).order(:position)
-
   end
 
   def update_status
@@ -111,15 +114,17 @@ class Scrum2bIssuesController < ApplicationController
       @issue = @project.issues.find(params[:issue_id])
       @issue.update_attribute(:done_ratio,100)
       @issue.update_attribute(:status_id,@default_completed_status_id.to_i)
+
     end
     if params[:status] == "started"
       @issue = @project.issues.find(params[:issue_id])
       @issue.update_attribute(:status_id,@default_inprogress_status_id.to_i)
-      #@issue.update_attribute(:position,params[:position])
+
     end
     if params[:status] == "new"
       @issue = @project.issues.find(params[:issue_id])
       @issue.update_attribute(:status_id,@default_not_start_status_id.to_i)
+
     end
   end
 
@@ -131,12 +136,12 @@ class Scrum2bIssuesController < ApplicationController
     @issue.update_attribute(:position,@position.to_i)
     @sort_issue = @project.issues.where("status_id = ? AND position >= ?", @default_inprogress_status_id.to_i, @position.to_i)
     Rails.logger.info "Test_PARAMS ISSUES_POSITION #{@issue.position.to_s}"
-    new_position = params[:position].to_i + 1
+    e = params[:position].to_i+1
     @sort_issue.each do |sort|
-  		unless sort.id == @issue.id
-  		  sort.update_attribute(:position, new_position)
+    		unless sort.id == @issue.id
+    		sort.update_attribute(:position,e)
     	end
-    	new_position += 1
+    	 e = e+1
     end
   end
 
@@ -144,6 +149,7 @@ class Scrum2bIssuesController < ApplicationController
     @project =  Project.find(params[:project_id])
     @issue = @project.issues.find(params[:issue_id])
     @issue.update_attribute(:done_ratio, params[:done_ratio])
+
   end
 
   def close_issue
