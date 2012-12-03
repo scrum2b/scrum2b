@@ -5,7 +5,8 @@ class Scrum2bIssuesController < ApplicationController
   #layout false
   self.allow_forgery_protection = false
   def index
-    #redirect_to :action => "board" ,:project_id =>  params[:project_id]
+    @list_versions_open = @project.versions.where(:status => "open")
+    @list_versions_closed = @project.versions.where(:status => "closed")
     if params[:session]
       session[:view_issue] = params[:session]
     end

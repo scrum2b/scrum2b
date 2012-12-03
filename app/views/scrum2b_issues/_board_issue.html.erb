@@ -22,9 +22,8 @@
   <div class="assignee no_edit clearfix">
     <i class="icon-arrow-right" style="float: left"></i>
     <% if issue.assigned_to %>
-    <div class="no_edit" id="assignee_<%= issue.id %>" style="float:left;margin: 0 5px;color: #3A87AD">
-      <!-- <%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %> -->
-      <%= issue.assigned_to %> 
+   <div class="no_edit" id="assignee_<%= issue.id %>" style="float:left;margin: 0 5px;color: #3A87AD">
+    <%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %>
     </div>
     <% end %>
     <select class="editing span5" id="select_ass_<%= issue.id %>" name="select_ass" style="display: none;font-size: 13px;float: left">
@@ -65,18 +64,25 @@
 
   <% if issue.description != "" %>
   <div class="description">
+     <% if issue.description.length >= 100 %>
+      <div class="no_edit div_description description_hide" id="description_hide_<%= issue.id %>">
+      <%= raw(issue.description.first(100).html_safe.gsub(/\n/, "<br/>")) %><br /> 
+      &hellip;
+    </div>
+    <a href="#" id="readmore_<%= issue.id %>" class="readmore no_edit" value="<%= issue.id %>"><%= l(:label_readmore)%></a>
+    
+    <% else%>
     <div class="no_edit div_description description_hide" id="description_hide_<%= issue.id %>">
       <%= raw(issue.description.first(100).html_safe.gsub(/\n/, "<br/>")) %>
     </div>
+    <% end %>
     <div class="no_edit div_description description_readmore" id="description_readmore_<%= issue.id %>" style="display: none">
       <%= raw(issue.description.html_safe.gsub(/\n/, "<br/>")) %>
     </div>
-   <% if issue.description.length >= 100 %>
-    <a href="#" id="readmore_<%= issue.id %>" class="readmore no_edit" value="<%= issue.id %>"><%= l(:label_readmore)%></a>
-    <a href="#" id="hide_<%= issue.id %>" class="hide no_edit" value="<%= issue.id %>"><%= l(:label_hide)%></a>
-    <% end %>
+     <a href="#" id="hide_<%= issue.id %>" class="hide no_edit" value="<%= issue.id %>"><%= l(:label_hide)%></a>
+ 
     <textarea class="editing span12" id="text_description_<%= issue.id %>" style="display:none;font-size: 12px;height: 150px;"><%= issue.description %></textarea>
-  </div>
+    </div>
   <% else %>
   <div class="description">
     <textarea class="editing span12" id="text_description_<%= issue.id %>" style="display:none;height: 150px;"><%= issue.description %></textarea>

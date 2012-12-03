@@ -23,8 +23,11 @@
         </p>
       <% end %>
       <div class="connectedSortable" id ="<% if User.current.name != "Anonymous" %>new<% else %>new_nomember<% end %>" >
+        <li>
+          
+        </li>
         <% @issues_new.each do |issue|%>
-        <li id ="<%= issue.id %>" style="list-style: none">
+        <li id ="<%= issue.id %>">
           <%= render :partial => "board_issue", :locals => { :issue => issue} %>
         </li>
         <% end %>
@@ -36,7 +39,7 @@
       </p>
       <div class="connectedSortable" id ="<% if User.current.name != 'Anonymous' %>started<% else %>started_nomember<% end %>">
          <% @issues_started.each do |issue|%>
-          <li id ="<%= issue.id %>" style="list-style: none">
+          <li id ="<%= issue.id %>">
             <%= render :partial => "board_issue", :locals => { :issue => issue} %>
           </li>
          <% end %>
@@ -48,7 +51,7 @@
       </p>
       <div class="connectedSortable" id ="<% if User.current.name != "Anonymous" %>completed<% else %>completed_nomember<% end %>">
         <% @issues_completed.each do |issue|%>
-        <li id ="<%= issue.id %>"style="list-style: none">
+        <li id ="<%= issue.id %>">
           <%= render :partial => "board_issue", :locals => { :issue => issue} %>
         </li>
         <% end %>
@@ -57,6 +60,9 @@
   </div>
 </div>
 <style>
+li{
+  list-style: none;
+}
 </style>
 <script>
   jQuery(function() {
