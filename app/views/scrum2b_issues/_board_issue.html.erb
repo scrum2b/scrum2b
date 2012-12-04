@@ -2,7 +2,7 @@
   <p class="id" style="font-size: 13px;float: left">
     #<%= link_to issue.id,:controller => 'issues', :action => 'show', :id =>issue.id %>
   </p>
-  <% if User.current.name != "Anonymous" %>
+  <% if User.current.name != "Anonymous"  && @id_member.include?(User.current.id)|| User.current.admin %>
     <i class="close_issue icon-remove-circle" id="close_<%= issue.id %>">
     <p class="text_close">
       <%= l(:label_board_issue_text_close_issue)%>
@@ -16,7 +16,7 @@
     <p class="no_edit subject_issue" id="subject_<%= issue.id%>">
       <%= issue.subject %>
     </p>
-    <input class="editing" id="input_subject_<%= issue.id%>" type="text" value="<%= issue.subject %>" name="subject_issue" style="font-size: 12px;width: 82%" />
+    <input class="editing" id="input_subject_<%= issue.id%>" type="text" value="<%= issue.subject %>" name="subject_issue" style="font-size: 12px;width: 82%;float: right" />
   </div>
 
   <div class="assignee no_edit clearfix">
@@ -89,7 +89,7 @@
     <textarea class="editing span12" id="text_description_<%= issue.id %>" style="display:none;height: 150px;"><%= issue.description %></textarea>
   </div>
   <% end %>
-  <% if User.current.name != "Anonymous" %>
+  <% if User.current.name != "Anonymous"  && @id_member.include?(User.current.id)|| User.current.admin %>
     <div class="slider-horizontal" id="slider<%= issue.id%>" value="<%= issue.done_ratio%>" style="margin: 0 15px 5px 0"></div>
     <p style="float: right;color: #f6931f; font-weight: bold">% </p>
     <input type="text" id="amount<%= issue.id%>" style="border:0;color: #f6931f; font-weight: bold;float: right;margin-bottom: 0;font-size: 13px;width: 25px;padding:0px;" />

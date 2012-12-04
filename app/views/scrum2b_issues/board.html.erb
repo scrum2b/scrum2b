@@ -17,15 +17,13 @@
       <p class="status">
         <%= l(:label_board_status_new)%>
       </p>
-      <% if User.current.name != "Anonymous" %>
+      <% if User.current.name != "Anonymous" && @id_member.include?(User.current.id)|| User.current.admin%>
         <p class="new_issue ">
-          <%= link_to "",{:controller => "issues", :action => "new",:project_id =>  params[:project_id]},:class => " icon-plus-sign" %><span class="text_new"><%= l(:label_board_issue_new_issue)%></span>
+        <%= link_to "",{:controller => "issues", :action => "new",:project_id =>  params[:project_id]},:class => " icon-plus-sign" %><span class="text_new "><%= l(:label_board_issue_new_issue)%></span> 
+       <!--  <i class="icon-plus-sign icon_new_issue"><span class="text_new "><%= l(:label_board_issue_new_issue)%></span></i> -->
         </p>
       <% end %>
-      <div class="connectedSortable" id ="<% if User.current.name != "Anonymous" %>new<% else %>new_nomember<% end %>" >
-        <li>
-          
-        </li>
+      <div class="connectedSortable" id ="<% if User.current.name != "Anonymous"  && @id_member.include?(User.current.id)|| User.current.admin%>new<% else %>new_nomember<% end %>" >
         <% @issues_new.each do |issue|%>
         <li id ="<%= issue.id %>">
           <%= render :partial => "board_issue", :locals => { :issue => issue} %>
@@ -37,7 +35,7 @@
       <p class="status">
         <%= l(:label_board_status_inprogress)%>
       </p>
-      <div class="connectedSortable" id ="<% if User.current.name != 'Anonymous' %>started<% else %>started_nomember<% end %>">
+      <div class="connectedSortable" id ="<% if User.current.name != 'Anonymous'  && @id_member.include?(User.current.id)|| User.current.admin%>started<% else %>started_nomember<% end %>">
          <% @issues_started.each do |issue|%>
           <li id ="<%= issue.id %>">
             <%= render :partial => "board_issue", :locals => { :issue => issue} %>
@@ -49,7 +47,7 @@
       <p class="status">
         <%= l(:label_board_status_completed)%>
       </p>
-      <div class="connectedSortable" id ="<% if User.current.name != "Anonymous" %>completed<% else %>completed_nomember<% end %>">
+      <div class="connectedSortable" id ="<% if User.current.name != "Anonymous"  && @id_member.include?(User.current.id)|| User.current.admin%>completed<% else %>completed_nomember<% end %>">
         <% @issues_completed.each do |issue|%>
         <li id ="<%= issue.id %>">
           <%= render :partial => "board_issue", :locals => { :issue => issue} %>
@@ -61,6 +59,13 @@
 </div>
 
 <style>
+#create_issue{
+  display:none;
+}
+#create_issue label{
+  font-size:13px;
+  font-weight: bold;
+}
 li{
   list-style: none;
 }
@@ -198,7 +203,7 @@ li{
         $("i.edit_issue").show();
         $(".readmore").show();
         $(".hide").hide();
-        $(".close_issue").show();
+        $(".description_readmore").hide();
       });
       $(".submit_edit").click(function(){
       var project_id = <%= @project.id %>
@@ -257,6 +262,38 @@ li{
        return false;
 
     });
-
+    $( "#new_start_date").datepicker();
+    $( "#new_due_date").datepicker();
+    $( "#new_start_date").datepicker("option", "dateFormat", "yy-mm-dd");
+    $( "#new_due_date").datepicker("option", "dateFormat", "yy-mm-dd");
+    
+    $(".icon_new_issue").click(function(){
+      $("#create_issue").show();
+    });
+    $("#cancel_new_issue").click(function(){
+      $("#create_issue").hide();
+    });
+     $("#submit_new_issue").click(function(){
+       var tracker = $("#new_tracker").val();
+       var est_time = $("#new_est_time").val();
+       var subject = $("#new_issue").val();
+       var description = $("#new_description").val();
+       var status = $("#new_status").val();
+       var assignee = $("#new_assignee").val();
+       var priority = $("#new_priority").val();
+       var sprint = $("#new_sprint").val();
+       var start_date = $("#new_start_date").val();
+       var due_date = $("#new_due_date").val();
+       alert(assignee);
+      $.ajax({
+          url : url_ajax,
+          type : "POST",
+          data : 'subject=' + subject + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee=' + assignee + '&date_start=' + date_start + '&date_end=' + date_end + '&est_time=' + est_time + '&description=' + description,
+          dataType : "text",
+          success : function() {
+            
+          }
+        });
+    });
   });
 </script>

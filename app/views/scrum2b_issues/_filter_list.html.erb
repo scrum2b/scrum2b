@@ -36,7 +36,7 @@
     
   </select>
   <%= form_tag %>
-  <% if User.current.name != "Anonymous" %>
+  <% if User.current.name != "Anonymous"  && @id_member.include?(User.current.id)|| User.current.admin %>
   <p>
     <button class="btn btn-danger close_issue_list btn-mini">
       <%= l(:label_close_all_issues)%>

@@ -2,8 +2,8 @@
 en:
   label_scrum2b: "Scrum2B"
   label_menu_issue: "Issues"
-  label_scrum2b_board: "Board"
-  label_scrum2b_list: "List"
+  label_scrum2b_board: "Scrum Board"
+  label_scrum2b_list: "Sprint Backlogs"
   label_close_all_issues: "Close"
   label_select_all_issues_working: "All Issues Working"
   label_select_my_issues: "My Issues"
@@ -13,8 +13,8 @@ en:
   label_select_all_issues_closed: "All Issues Closed"
   label_select_all_issues: "All Issues"
   
-  label_select_all_versions_working: "All Versions Working" 
-  label_select_all_versions: "All Versions"
+  label_select_all_versions_working: "All Sprints Working" 
+  label_select_all_versions: "All Sprints"
   label_select_backlog: "Backlog" 
   label_btn_submit_selected: "Filter"
   

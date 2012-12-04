@@ -7,16 +7,17 @@ class Scrum2bIssuesController < ApplicationController
   self.allow_forgery_protection = false
   def index
     @list_versions_open = @project.versions.where(:status => "open")
-    @list_versions_closed = @project.versions.where(:status => "closed")
+    @list_versions_closed = @project.versions.where(:status => "closed") 
+    @id_member = @project.assignable_users.collect{|id_member| id_member.id}
 
     if params[:session]
       session[:view_issue] = params[:session]
     end
     if  session[:view_issue] == "board"
       redirect_to :action => "board" ,:project_id =>  params[:project_id]
-    else
+    else  
       @list_versions = @project.versions.all
-      @id_version  = params[:select_version]
+      @id_version  = params[:select_version]  
       @select_issues  = params[:select_issue]
       if @select_issues
         if @select_issues == "1"
@@ -64,12 +65,16 @@ class Scrum2bIssuesController < ApplicationController
     if params[:session]
     session[:view_issue] = params[:session]
     end
+    @tracker = Tracker.all
+    @status = IssueStatus.all
+    @priority =IssuePriority.all
     @list_versions_open = @project.versions.where(:status => "open")
     @list_versions_closed = @project.versions.where(:status => "closed")
     @member = @project.assignable_users
+    @id_member = @member.collect{|id_member| id_member.id}
     @id_version  = params[:select_version]
     @select_issues  = params[:select_member]
-
+    @sprints = @project.versions.where(:status => "open")
     if @id_version
       if @id_version == "all"
         @issues_version =  @project.issues
@@ -219,6 +224,17 @@ class Scrum2bIssuesController < ApplicationController
       end
       @default_closed_status_id = @closed_statuses_id[0]
     end
+  end
+  def create
+    @issues = Issue.new(params[:issue])
+    respond_to do |format|
+    if @post.save
+      format.html  { redirect_to :action => "board" ,:project_id =>  params[:project_id],
+                    :notice => 'Post was successfully created.' }
+    else
+      format.html  { render :action => "board" }
+    end
+  end
   end
 
 end
