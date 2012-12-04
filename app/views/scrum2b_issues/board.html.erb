@@ -234,6 +234,10 @@ li{
             //location.reload();
            $(".editing").hide(); $(".no_edit").show(); $("#subject_" + id_issue).text(subject); $("#assignee_" + id_issue).text(name_ass); $("#start_date_" + id_issue).text(date_start); if(date_end == "" && date_end_ver != ""){ $("#end_date_" + id_issue).text(date_end_ver+"(v)"); }else{ $("#end_date_" + id_issue).text(date_end); } $("#description_readmore_" + id_issue).text(description); $("#est_" + id_issue).text(est_time); $(".readmore").show(); $(".hide").hide(); $("i.edit_issue").show(); $("#completed").find("#close_"+id_issue).show();
            $("#description_hide_" + id_issue).hide();
+           $(".description_readmore").hide();
+		   $("#description_readmore_"+ id_issue).show();
+		   $("#readmore_"+id_issue).hide();
+		   $("#hide_" + id_issue).show()
            $("#assignee_" + id_issue).html();
           }
         });
