@@ -200,14 +200,15 @@ li{
         $(".hide").hide();
         $(".close_issue").show();
       });
+      
       $(".submit_edit").click(function(){
       var project_id = <%= @project.id %>
         var id_issue = $(this).parent().attr("value");
 
-        $(".description_readmore").hide();
-        
+        $(".description_readmore").hide(); 
       });
-      $(".submit_edit").click(function(){
+      
+      $(".submit_edit").live("click", function(){
         var project_id = <%= @project.id %>
         var id_issue = parseInt($(this).parent().attr("value"));
 
@@ -222,10 +223,13 @@ li{
         $.ajax({
           url : url_ajax,
           type : "POST",
-          data : 'subject=' + subject + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee=' + assignee + '&date_start=' + date_start + '&date_end=' + date_end + '&est_time=' + est_time + '&description=' + description,
+          data :'subject=' + subject + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee=' + assignee + '&date_start=' + date_start + '&date_end=' + date_end + '&est_time=' + est_time + '&description=' + description,
           dataType : "text",
           success : function() {
-            location.reload();
+            //location.reload();
+           $(".editing").hide(); $(".no_edit").show(); $("#subject_" + id_issue).text(subject); $("#assignee_" + id_issue).text(name_ass); $("#start_date_" + id_issue).text(date_start); if(date_end == "" && date_end_ver != ""){ $("#end_date_" + id_issue).text(date_end_ver+"(v)"); }else{ $("#end_date_" + id_issue).text(date_end); } $("#description_readmore_" + id_issue).text(description); $("#est_" + id_issue).text(est_time); $(".readmore").show(); $(".hide").hide(); $("i.edit_issue").show(); $("#completed").find("#close_"+id_issue).show();
+           $("#description_hide_" + id_issue).hide();
+           $("#assignee_" + id_issue).html();
           }
         });
   

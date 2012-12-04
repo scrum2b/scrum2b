@@ -174,7 +174,9 @@ class Scrum2bIssuesController < ApplicationController
     @issue.update_attribute(:description,params[:description])
     @issue.update_attribute(:start_date,params[:date_start])
     @issue.update_attribute(:due_date,params[:date_end])
-  end
+    #render :json => {:result => "success", :message => "Success to update the message",
+     #                :content => data }
+     end
 
   private
 
