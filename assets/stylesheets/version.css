@@ -94,9 +94,6 @@ margin:10px 0 0 0;
 		white-space: nowrap;
 	}
 
-	.estimated input.editing {
-		float: left;
-	}
 	.connectedSortable {
 		margin-top: 25px;
 		padding: 5px 0;
@@ -119,12 +116,7 @@ margin:10px 0 0 0;
 	.edit_issue:hover p.text_edit {
 		display: inline;
 	}
-	.editing {
-		display: none;
-	}
-	input.editing {
-		display: none;
-	}
+
 	.submit_edit_issue {
 
 	}

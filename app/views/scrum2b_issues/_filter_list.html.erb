@@ -24,11 +24,11 @@
     <% if @list_versions_closed %>
     <optgroup label="Closed Sprint">
       <% @list_versions_closed.each do |version|%>
-      <% if params[:select_version] && params[:select_version].to_i == version.id %>
-      <option value="<%= version.id %>" selected ><%= version.name %></option>
-      <% else %>
-      <option value="<%= version.id %>" ><%= version.name %></option>
-      <% end %>
+        <% if params[:select_version] && params[:select_version].to_i == version.id %>
+          <option value="<%= version.id %>" selected ><%= version.name %></option>
+        <% else %>
+          <option value="<%= version.id %>" ><%= version.name %></option>
+        <% end %>
       <% end %>
     </optgroup>
     <% end %>
@@ -36,11 +36,11 @@
     
   </select>
   <%= form_tag %>
-  <% if User.current.name != "Anonymous"  && @id_member.include?(User.current.id)|| User.current.admin %>
-  <p>
-    <button class="btn btn-danger close_issue_list btn-mini">
-      <%= l(:label_close_all_issues)%>
-    </button>
-  </p>
+  <% if  !User.current.anonymous?  && @id_member.include?(User.current.id)|| User.current.admin %>
+    <p>
+      <button class="btn btn-danger close_issue_list btn-mini">
+        <%= l(:label_close_all_issues)%>
+      </button>
+    </p>
   <% end %>
 </div>

@@ -3,71 +3,78 @@ class Scrum2bIssuesController < ApplicationController
 
   before_filter :find_project, :only => [:index,:board]
   before_filter :set_status_settings
+  
   #layout false
   self.allow_forgery_protection = false
+  
   def index
     @list_versions_open = @project.versions.where(:status => "open")
     @list_versions_closed = @project.versions.where(:status => "closed") 
     @id_member = @project.assignable_users.collect{|id_member| id_member.id}
 
-    if params[:session]
-      session[:view_issue] = params[:session]
-    end
-    if  session[:view_issue] == "board"
+    session[:view_issue] = params[:session] if params[:session]
+      
+    if session[:view_issue] == "board"
       redirect_to :action => "board" ,:project_id =>  params[:project_id]
-    else  
-      @list_versions = @project.versions.all
-      @id_version  = params[:select_version]  
-      @select_issues  = params[:select_issue]
-      if @select_issues
-        if @select_issues == "1"
-          @issues =  @project.issues
-        end
-        if @select_issues == "2"
-          @issues =  @project.issues.where(:assigned_to_id => User.current.id)
-        end
-        if @select_issues == "3"
-          @issues =  @project.issues.where(:assigned_to_id => User.current.id , :status_id => @default_completed_status_id.to_i)
-        end
-        if @select_issues == "4"
-          @issues =  @project.issues.where(:status_id => @default_not_start_status_id.to_i)
-        end
-        if @select_issues == "5"
-          @issues =  @project.issues.where(:status_id => @default_completed_status_id.to_i )
-        end
-        if @select_issues == "6"
-          @issues =  @project.issues.where(:status_id => @default_closed_status_id.to_i )
-        end
-        if @select_issues == "7"
-          @issues =  @project.issues.where("status_id NOT IN (?)", @default_closed_status_id.to_i )
-        end
-      elsif
-      @issues = @project.issues.where("status_id NOT IN (?)", @default_closed_status_id.to_i )
-      end
-      if @id_version
-        if @id_version == "all"
-          @version = @project.versions.all
-        end
-        if @id_version == "version_working"
-          @version = @project.versions.where("status NOT IN (?)","closed")
-        end
-        if @id_version != "all" && @id_version != "version_working"
-          @version = Version.where(:id => @id_version);
-        end
-      elsif
-      @version = @project.versions.where("status NOT IN (?)","closed")
-      end
-      @issues_backlog = @project.issues.where(:fixed_version_id => nil).all
+      return
     end
+    
+    #TODO: Duplicate code, please refactor it
+    @list_versions = @project.versions.all
+    @id_version  = params[:select_version]  
+    @select_issues  = params[:select_issue]
+    if @select_issues
+      if @select_issues == "1"
+        @issues =  @project.issues
+      end
+      if @select_issues == "2"
+        @issues =  @project.issues.where(:assigned_to_id => User.current.id)
+      end
+      if @select_issues == "3"
+        @issues =  @project.issues.where(:assigned_to_id => User.current.id , :status_id => @default_completed_status_id.to_i)
+      end
+      if @select_issues == "4"
+        @issues =  @project.issues.where(:status_id => @default_not_start_status_id.to_i)
+      end
+      if @select_issues == "5"
+        @issues =  @project.issues.where(:status_id => @default_completed_status_id.to_i )
+      end
+      if @select_issues == "6"
+        @issues =  @project.issues.where(:status_id => @default_closed_status_id.to_i )
+      end
+      if @select_issues == "7"
+        @issues =  @project.issues.where("status_id NOT IN (?)", @default_closed_status_id.to_i )
+      end
+    elsif
+      @issues = @project.issues.where("status_id NOT IN (?)", @default_closed_status_id.to_i )
+    end
+    
+    #TODO: Logic is not clear, please refactor it
+    if @id_version
+      if @id_version == "all"
+        @version = @project.versions.all
+      end
+      if @id_version == "version_working"
+        @version = @project.versions.where("status NOT IN (?)","closed")
+      end
+      if @id_version != "all" && @id_version != "version_working"
+        @version = Version.where(:id => @id_version);
+      end
+    elsif
+      @version = @project.versions.where("status NOT IN (?)","closed")
+    end
+    @issues_backlog = @project.issues.where(:fixed_version_id => nil).all
+
   end
 
   def board
     if params[:session]
-    session[:view_issue] = params[:session]
+      session[:view_issue] = params[:session]
     end
+
     @tracker = Tracker.all
     @status = IssueStatus.all
-    @priority =IssuePriority.all
+    @priority = IssuePriority.all
     @list_versions_open = @project.versions.where(:status => "open")
     @list_versions_closed = @project.versions.where(:status => "closed")
     @member = @project.assignable_users
@@ -75,89 +82,85 @@ class Scrum2bIssuesController < ApplicationController
     @id_version  = params[:select_version]
     @select_issues  = params[:select_member]
     @sprints = @project.versions.where(:status => "open")
-    if @id_version
-      if @id_version == "all"
-        @issues_version =  @project.issues
-      elsif
+    
+    if @id_version && @id_version != "all"
       @issues_version =  @project.issues.where(:fixed_version_id  => @id_version);
-      end
-    elsif
-    @issues_version =  @project.issues
+    else
+      @issues_version =  @project.issues
     end
-    if @select_issues
-
-      if @select_issues == "all"
-        @issues_select =  @issues_version
-
-      elsif @select_issues == "me"
-        @issues_select =  @issues_version.where(:assigned_to_id => User.current.id )
-
-      else
-        @issues_select = @issues_version.where(:assigned_to_id => @select_issues)
-      end
-
+    
+    if @select_issues && @select_issues == "me"
+      @issues_select =  @issues_version.where(:assigned_to_id => User.current.id )
+    elsif @select_issues && @select_issues != "all"
+      @issues_select = @issues_version.where(:assigned_to_id => @select_issues)
     else
       @issues_select =  @issues_version
     end
+    
     @issues_new = @issues_select.where(:status_id => @default_not_start_status_id.to_i)
     @issues_start = @issues_select.where(:status_id => @default_inprogress_status_id.to_i)
     @issues_completed = @issues_select.where(:status_id => @default_completed_status_id.to_i)
-    e = 0
-    @issues_start.each do |issue_position|
-      unless issue_position.position
-        issue_position.update_attribute(:position,e)
-      e = e+1
-      end
-    end
+    
+    #TODO: @Hung: review these codes to avoid bugs in sorting
+    #issue_postion = 0
+    #@issues_start.each do |issue_position|
+    #  unless issue_position.position
+    #    issue_position.update_attribute(:position, e)
+    #    e = e + 1
+    #  end
+    #end
     @issues_started = @issues_select.where(:status_id => @default_inprogress_status_id.to_i).order(:position)
   end
 
   def update_status
     @project =  Project.find(params[:project_id])
-
+    @issue = @project.issues.find(params[:issue_id])
+    unless @issue
+      
+      return
+    end
+      
     if params[:status] == "completed"
-      @issue = @project.issues.find(params[:issue_id])
+      #TODO: not optimize, please refactor
       @issue.update_attribute(:done_ratio,100)
       @issue.update_attribute(:status_id,@default_completed_status_id.to_i)
-
     end
+
     if params[:status] == "started"
-      @issue = @project.issues.find(params[:issue_id])
       @issue.update_attribute(:status_id,@default_inprogress_status_id.to_i)
-
     end
-    if params[:status] == "new"
-      @issue = @project.issues.find(params[:issue_id])
-      @issue.update_attribute(:status_id,@default_not_start_status_id.to_i)
 
+    if params[:status] == "new"
+      @issue.update_attribute(:status_id,@default_not_start_status_id.to_i)
     end
   end
 
-  def sort_issues
+  def sort
     @position = params[:position]
     Rails.logger.info "Test_PARAMS POSITION #{params[:position].to_s}"
     @project = Project.find(params[:project_id])
+    
     @issue = @project.issues.find(params[:issue_id])
     @issue.update_attribute(:position,@position.to_i)
+    
     @sort_issue = @project.issues.where("status_id = ? AND position >= ?", @default_inprogress_status_id.to_i, @position.to_i)
+    
     Rails.logger.info "Test_PARAMS ISSUES_POSITION #{@issue.position.to_s}"
     e = params[:position].to_i+1
     @sort_issue.each do |sort|
-    		unless sort.id == @issue.id
-    		sort.update_attribute(:position,e)
-    	end
-    	 e = e+1
+  		sort.update_attribute(:position, e) unless sort.id == @issue.id
+  	  e += 1
     end
   end
 
-  def ajax
-    @project =  Project.find(params[:project_id])
+  def update_progress
+    @project = Project.find(params[:project_id])
     @issue = @project.issues.find(params[:issue_id])
     @issue.update_attribute(:done_ratio, params[:done_ratio])
-
+    #TODO: we should have return JSON data to close the Loading form
   end
 
-  def close_issue
+  def close
     @project =  Project.find(params[:project_id])
     test= Array.new
     test = params[:issue_id]
@@ -166,23 +169,52 @@ class Scrum2bIssuesController < ApplicationController
     @issues = @project.issues.where(:id => @int_array)
     Rails.logger.info "TEST_ISSUE: #{@issues.to_s}"
     @issues.each do |issues|
-      issues.update_attribute(:status_id,@default_closed_status_id.to_i)
+      issues.update_attribute(:status_id, @default_closed_status_id.to_i)
     end
   end
 
-  def edit_issue
+  def update
     @project =  Project.find(params[:project_id])
     @issue = @project.issues.find(params[:id_issue])
-    @issue.update_attribute(:subject,params[:subject])
-    @issue.update_attribute(:assigned_to_id,params[:assignee])
-    @issue.update_attribute(:estimated_hours,params[:est_time])
-    @issue.update_attribute(:description,params[:description])
-    @issue.update_attribute(:start_date,params[:date_start])
-    @issue.update_attribute(:due_date,params[:date_end])
-    #render :json => {:result => "success", :message => "Success to update the message",
-     #                :content => data }
-     end
+    #@issue.update_attribute(:subject, params[:edit_subject])
+    @issue.update_attributes(:subject => params[:subject], 
+                             :assigned_to_id => params[:assignee],
+                             :estimated_hours => params[:est_time],
+                             :description => params[:description], 
+                             :start_date => params[:date_start], 
+                             :due_date => params[:date_end], 
+                             :tracker_id => params[:tracker], 
+                             :priority_id => params[:priority])
+    #@issue.update_attribute(:fixed_version_id,params[:sprin])
+    data  = render_to_string(:partial => "/scrum2b_issues/show_issue", :locals => {:issue => @issue})
+    edit  = render_to_string(:partial => "/scrum2b_issues/edit_issue", :locals => {:issue => @issue})
+    render :json => {:result => "success", :message => "Success to update the message",
+                       :content => data, :edit_content => edit }
+   # Rails.logger.info "Json data : #{data.to_s}"
+  end
 
+  def new
+    @issue = Issue.new()
+    Rails.logger.info "TEST_ISSUE"
+    edit  = render_to_string(:partial => "/scrum2b_issues/edit_issue", :locals => {:issue => @issue})
+    render :json => {:edit_content => edit }
+  end   
+     
+  def create
+    #TODO: @Hung: refactor this codes
+    #call_hook(:controller_issues_new_before_save, { :params => params, :issue => @issue })
+    Rails.logger.info "TEST_ISSUE"
+    @issue = Issue.new(params[:issue])
+    respond_to do |format|
+      if @issue.save
+        flash[:notice] = "You have successfully to create the article"
+        format.html { redirect_to "/" }
+      else
+        flash[:error] = "You have error to create the article"
+      end
+    end
+  end
+  
   private
 
   def find_project
@@ -227,16 +259,6 @@ class Scrum2bIssuesController < ApplicationController
       @default_closed_status_id = @closed_statuses_id[0]
     end
   end
-  def create
-    @issues = Issue.new(params[:issue])
-    respond_to do |format|
-    if @post.save
-      format.html  { redirect_to :action => "board" ,:project_id =>  params[:project_id],
-                    :notice => 'Post was successfully created.' }
-    else
-      format.html  { render :action => "board" }
-    end
-  end
-  end
+  
 
 end
