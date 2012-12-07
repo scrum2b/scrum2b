@@ -1,14 +1,16 @@
-<div class="no_edit" id="show_<%= issue.id %>" value="<%= issue.id %>">
-    <p class="id" style="font-size: 13px;float: left">
-      #<%= link_to issue.id,:controller => 'issues', :action => 'show', :id =>issue.id %></p>
-    <i class="close_issue icon-remove-circle" id="close_<%= issue.id %>">
+<div class="no_edit" id="show_issue_<%= issue.id %>" value="<%= issue.id %>">
+      <p class="id" style="font-size: 13px;float: left">
+      #<%= link_to issue.id,:controller => 'issues', :action => 'show', :id => issue.id %></p>
+    <% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin %>
+      <i class="close_issue icon-remove-circle" id="close_<%= issue.id %>">
       <p class="text_close">
         <%= l(:label_board_issue_text_close_issue)%>
       </p></i>
-    <i class="edit_issue  icon-edit">
+      <i class="edit_issue  icon-edit">
       <p class="text_edit">
         <%= l(:label_board_issue_text_edit_issue)%>
-      </p></i>
+      </p> </i>
+    <% end %>
     <div class="subject" >
       <p class="no_edit subject_issue" id="subject_<%= issue.id%>">
         <%= issue.subject %></p>
@@ -61,8 +63,19 @@
         <% end %>
       </div>
     <% end %>
+    <% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin %>
+      <div class="slider-horizontal" id="slider<%= issue.id%>" value="<%= issue.done_ratio%>" style="margin: 0 15px 5px 0"></div>
+      <p style="float: right;color: #f6931f; font-weight: bold">% </p>
+      <input type="text" id="amount<%= issue.id%>" style="border:0;color: #f6931f; font-weight: bold;float: right;margin-bottom: 0;font-size: 13px;width: 25px;padding:0px;" />
+    <% else %>
+      <div class="progressbar" value="<%= issue.done_ratio%>" id="progress<%= issue.id%>" style="height: 12px;margin: 0 15px 5px 0"></div>
+      <p style="float: right;color: #f6931f; font-weight: bold">
+        <%= issue.done_ratio%>%
+      </p>
+    <% end %>
     
     <p class="estimated" style="float: left;font-size: 12px;margin-top: 3px;">
       <%= l(:label_board_issue_time)%><span id="est_<%= issue.id %>"> <%= issue.estimated_hours %></span>
     </p>
   </div>
+  
