@@ -6,7 +6,7 @@
     <option value="2" <% if params[:select_issue] && params[:select_issue].to_i == 2%><%= selected="selected" %><% end %>><%= l(:label_select_my_issues)%></option>
     <option value="3" <% if params[:select_issue] && params[:select_issue].to_i == 3%><%= selected="selected" %><% end %>><%= l(:label_select_my_issues_completed)%></option>
     <option value="4" <% if params[:select_issue] && params[:select_issue].to_i == 4%><%= selected="selected" %><% end %>><%= l(:label_select_new_issues)%></option>
-    <option value="5" <% if params[:select_issue] && params[:select_issue].to_i == 5%><%= selected="selected" %><% end %>><%= l(:label_select_al_issuesl_completed)%></option>
+    <option value="5" <% if params[:select_issue] && params[:select_issue].to_i == 5%><%= selected="selected" %><% end %>><%= l(:label_select_all_issuesl_completed)%></option>
     <option value="6" <% if params[:select_issue] && params[:select_issue].to_i == 6%><%= selected="selected" %><% end %>><%= l(:label_select_all_issues_closed)%></option>
     <option value="1" <% if params[:select_issue] && params[:select_issue].to_i == 1%><%= selected="selected" %><% end %>><%= l(:label_select_all_issues)%></option>
 
@@ -22,13 +22,13 @@
     <% end %>
     <option value="backlog" <% if params[:select_version] && params[:select_version] == 'backlog'%><%= selected="selected" %><% end %>><%= l(:label_select_backlog)%></option>
     <% if @list_versions_closed %>
-    <optgroup label="Closed Sprint">
+    <optgroup label="<%= l(:label_group_closed_sprin)%>">
       <% @list_versions_closed.each do |version|%>
-      <% if params[:select_version] && params[:select_version].to_i == version.id %>
-      <option value="<%= version.id %>" selected ><%= version.name %></option>
-      <% else %>
-      <option value="<%= version.id %>" ><%= version.name %></option>
-      <% end %>
+        <% if params[:select_version] && params[:select_version].to_i == version.id %>
+          <option value="<%= version.id %>" selected ><%= version.name %></option>
+        <% else %>
+          <option value="<%= version.id %>" ><%= version.name %></option>
+        <% end %>
       <% end %>
     </optgroup>
     <% end %>
@@ -36,11 +36,11 @@
     
   </select>
   <%= form_tag %>
-  <% if User.current.name != "Anonymous" %>
-  <p>
-    <button class="btn btn-danger close_issue_list btn-mini">
-      <%= l(:label_close_all_issues)%>
-    </button>
-  </p>
+  <% if  !User.current.anonymous?  && @id_member.include?(User.current.id)|| User.current.admin %>
+    <p>
+      <button class="btn btn-danger close_issue_list btn-mini">
+        <%= l(:label_close_all_issues)%>
+      </button>
+    </p>
   <% end %>
 </div>

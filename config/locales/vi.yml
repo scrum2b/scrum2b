@@ -5,11 +5,11 @@ vi:
   label_scrum2b_board: "Bảng "
   label_scrum2b_list: "Danh Sách"
   label_close_all_issues: "Đóng Vấn Đề"
-  label_select_all_issues_working: "Tất Cả Vấn Đề"
+  label_select_all_issues_working: "Vấn Đề Đang Làm"
   label_select_my_issues: "Vấn Đề Của Tôi"
   label_select_my_issues_completed: "Vấn Đề Của Tôi Đã Hoàn Thành"
   label_select_new_issues: "Tất Cả Vấn Đề Mới"
-  label_select_al_issuesl_completed: "Vấn Đề Của Đã Hoàn Thành"
+  label_select_all_issuesl_completed: "Vấn Đề Của Đã Hoàn Thành"
   label_select_all_issues_closed: "Vấn Đề Của Đã Đóng"
   label_select_all_issues: "Tất Cả Vấn Đề"
   
@@ -17,12 +17,13 @@ vi:
   label_select_all_versions: "Tất Cả Phiên Bản"
   label_select_backlog: "Không Phiên Bản" 
   label_btn_submit_selected: "Lọc"
+  label_group_closed_sprin: "Phiên Bản Đã Đóng"
   
   label_head_issue_status: "Trạng Thái"
   label_head_issue_subject: "Chủ Đề"
   label_head_issue_assignee: "Gán Cho"
   label_head_issue_updated: "Cập Nhật"
-  label_head_issue_est_time: "Thời Gian Làm"
+  label_head_issue_est_time: "Thời Gian"
   label_head_issue_done: "% Hoàn Thành"
   
   label_version_backlog: "Không Phiên Bản"
@@ -42,3 +43,8 @@ vi:
   label_board_edit_btn_cancel: "Hủy Bỏ"
   label_readmore: "Xem Thêm"
   label_hide: "Ẩn"
+  
+  label_tracker: "Dòng vấn đề"
+  label_priority: "Ưu tiên"
+  label_start_date: "Bắt Đầu"
+  label_end_date: "Kết Thúc"

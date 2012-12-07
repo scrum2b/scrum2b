@@ -41,28 +41,29 @@
 <script>
   jQuery(function() {
     $("#check_all").toggle(function(){
-     $("#table_issues tr td input:checkbox" ).attr( 'checked','checked');
+      $("#table_issues tr td input:checkbox" ).attr( 'checked','checked');
 		},function(){
-		$("#table_issues tr td input:checkbox").removeAttr('checked');
+		  $("#table_issues tr td input:checkbox").removeAttr('checked');
 		});
-  $(".close_issue_list").live("click",function(){
-	var issue_id = [];
-	$('input[name="check"]').each(function() {
-	if(this.checked==true) issue_id.push($(this).val());
-	});
-	console.debug(issue_id);
-	var project_id = <%= @project.id %>
-	var url_ajax = 'close_issue'
-	$.ajax({
-		url : url_ajax,
-		type : "POST",
-		data : 'issue_id=' + issue_id + '&project_id='+project_id,
-		dataType : "text",
-		success : function() {
-		$("#table_issues tr td input:checkbox").removeAttr('checked');
-		location.reload();
-		}
-	});
+		
+    $(".close_issue_list").live("click",function(){
+    	var issue_id = [];
+    	$('input[name="check"]').each(function() {
+      	if(this.checked==true) issue_id.push($(this).val());
+      });
+    	console.debug(issue_id);
+    	var project_id = <%= @project.id %>
+    	var url_ajax = 'close'
+    	$.ajax({
+    		url : url_ajax,
+    		type : "POST",
+    		data : 'issue_id=' + issue_id + '&project_id='+project_id,
+    		dataType : "text",
+    		success : function() {
+      		$("#table_issues tr td input:checkbox").removeAttr('checked');
+      		location.reload();
+    		}
+  	});
 
 	});
 	$(".progressbar").each(function() {

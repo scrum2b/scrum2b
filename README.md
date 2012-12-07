@@ -49,7 +49,7 @@ Restart Redmine
 Before make the plugin be available in projects, please login to Admin account.
 Go to the Configuration page of the plugin to map the Status of issues to New/In progress/Complete/Closed:
 
-http://localhost:3000/settings/plugin/scrum2b 
+    http://localhost:3000/settings/plugin/scrum2b 
 
 
 
@@ -62,10 +62,10 @@ Change to use "develop" branch for developers:
 
 Commit codes
   
-  $ git fetch --all
-  $ git merge origin/develop
-  $ git commit -m "Message Content in here"
-  $ git push -u origin develop
+    $ git fetch --all
+    $ git merge origin/develop
+    $ git commit -m "Message Content in here"
+    $ git push -u origin develop
 
 
 FOR FURTURE FEATURES

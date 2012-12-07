@@ -25,7 +25,7 @@
 					<% end %>
 				<% end %>
 				<% if @list_versions_closed %>
-  				<optgroup label="Closed Sprint">
+  				<optgroup label="<%= l(:label_group_closed_sprin)%>">
     				<% @list_versions_closed.each do |version|%>
               <% if params[:select_version] && params[:select_version].to_i == version.id %>
                 <option value="<%= version.id %>" selected style="color: red"><%= version.name %></option>
