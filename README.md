@@ -2,7 +2,13 @@ SUMMARY
 -------
 
 **Scrum2B** is a plugin of Redmine (www.redmine.org), support Scrum Board and other features allow teams could use Scrum to develop Agile project.
-Scrum2B is developed by Scrum2B Team (www.scrum2b.com).
+Scrum2B is developed by Scrum2B Team.
+
+***Contacts:***
+- Email: *scrum2b@ithanoi.com*
+- Website: *www.scrum2b.com*
+- Facebook: *www.facebook.com/ScrumToBe*
+
 
 **The first version (1.0) is quite simple, includes 3 main features:**
 
