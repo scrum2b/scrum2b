@@ -6,33 +6,16 @@
       <p><span class="span5"><%= l(:label_tracker)%> </span>
       <select class="span7" id="edit_tracker_<%= issue.id %>">
         <% @tracker.each do |tracker|%>
-          <% if tracker.id == issue.tracker_id %>
-            <option value="<%= tracker.id %>" selected="selected"><%= tracker.name %></option>
-          <% else %>
-            <option value="<%= tracker.id %>"><%=tracker.name %></option>
-          <% end %>
+            <option value="<%= tracker.id %>" <%= "selected" if tracker.id == issue.tracker_id %>><%= tracker.name %></option>
         <% end %>
-      </select></p>
-      <p><span class="span5"><%= l(:label_priority)%> </span>
-      <select class="span7" id="edit_priority_<%= issue.id %>">
-      <% @priority.each do |priority|%>
-        <% if priority.id == issue.priority_id %>
-          <option value="<%= priority.id %>" selected="selected"><%= priority.name %></option>
-        <% else %>
-         <option value="<%= priority.id %>"><%= priority.name %></option>
-        <% end %>
-      <% end %>
       </select></p>
       <p><span class="span5"><%= l(:label_head_issue_assignee)%> </span>
       <select class="span7" id="edit_ass_<%= issue.id %>">
         <option></option>
-      <% @member.each do |assignee|%>
-        <% if assignee.id == issue.assigned_to_id %>
-          <option value="<%= assignee.id %>" selected="selected"><%= assignee.name %></option>
-        <% else %>
-         <option value="<%= assignee.id %>"><%= assignee.name %></option>
+        <option value="<%= User.current.id %>"><< me >></option>
+        <% @member.each do |assignee|%>
+            <option value="<%= assignee.id %>" <%= "selected" if assignee.id == issue.assigned_to_id %>><%= assignee.name %></option>
         <% end %>
-      <% end %>
       </select></p>
     </div>
     <div class="span6">

@@ -57,8 +57,8 @@
           <a href="#" id="hide_<%= issue.id %>" class="hide no_edit" value="<%= issue.id %>"><%= l(:label_hide)%></a>
           <a href="#" id="readmore_<%= issue.id %>" class="readmore no_edit" value="<%= issue.id %>"><%= l(:label_readmore)%></a>
         <% else%>
-          <div class="no_edit div_description description_readmore" id="description_readmore_<%= issue.id %>">
-            <%= raw(issue.description.first(100).html_safe.gsub(/\n/, "<br/> ")) %>
+          <div class="no_edit div_description description_hide" id="description_hide_<%= issue.id %>">
+            <%= raw(issue.description.html_safe.gsub(/\n/, " <br/>")) %>
           </div>
         <% end %>
       </div>

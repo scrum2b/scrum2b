@@ -10,14 +10,22 @@ class Scrum2bIssuesController < ApplicationController
   DEFAULT_STATUS_IDS = {}
   STATUS_IDS = {'status_no_start' => [], 'status_inprogress' => [], 
                        'status_completed' => [], 'status_closed' => []}
-  SELECT_ISSUE_OPTIONS = {:all => 1, 
-                          :my_issue => 2, 
-                          :my_completed_issue => 3, 
-                          :new_issue => 4, 
-                          :completed_issue => 5,
-                          :closed_issue => 6}
+  SELECT_ISSUE_OPTIONS = {:all_working => 1,
+                          :my => 2, 
+                          :my_completed => 3, 
+                          :new => 4, 
+                          :completed => 5,
+                          :closed => 6,
+                          :all => 7,}
     
   def index
+    if session[:view_issue].nil? || session[:view_issue] == "board" && (params[:switch_screens] || "").blank?
+      redirect_to :action => "board" ,:project_id =>  params[:project_id]
+      return
+    end
+    session[:view_issue] = "list"
+
+    @select_issue_options = SELECT_ISSUE_OPTIONS
     @list_versions_open = @project.versions.where(:status => "open")
     @list_versions_closed = @project.versions.where(:status => "closed") 
     @id_member = @project.assignable_users.collect{|id_member| id_member.id}
@@ -31,15 +39,15 @@ class Scrum2bIssuesController < ApplicationController
     
     if @select_issues == SELECT_ISSUE_OPTIONS[:all]
       @issues =  @project.issues
-    elsif @select_issues == SELECT_ISSUE_OPTIONS[:my_issue]
+    elsif @select_issues == SELECT_ISSUE_OPTIONS[:my]
       @issues =  @project.issues.where(:assigned_to_id => User.current.id)
-    elsif @select_issues == SELECT_ISSUE_OPTIONS[:my_completed_issue]
+    elsif @select_issues == SELECT_ISSUE_OPTIONS[:my_completed]
       @issues =  @project.issues.where(:assigned_to_id => User.current.id).where("status_id IN (?)" , STATUS_IDS['status_completed'])
-    elsif @select_issues == SELECT_ISSUE_OPTIONS[:new_issue]
+    elsif @select_issues == SELECT_ISSUE_OPTIONS[:new]
       @issues =  @project.issues.where("status_id IN (?)" , STATUS_IDS['status_no_start'])
-    elsif @select_issues == SELECT_ISSUE_OPTIONS[:completed_issue]
+    elsif @select_issues == SELECT_ISSUE_OPTIONS[:completed]
       @issues =  @project.issues.where("status_id IN (?)" , STATUS_IDS['status_completed'])
-    elsif @select_issues == SELECT_ISSUE_OPTIONS[:closed_issue]
+    elsif @select_issues == SELECT_ISSUE_OPTIONS[:closed]
       @issues =  @project.issues.where("status_id IN (?)" , STATUS_IDS['status_closed'])
     else
       @issues = @project.issues.where("status_id NOT IN (?)", STATUS_IDS['status_closed'])
@@ -53,31 +61,12 @@ class Scrum2bIssuesController < ApplicationController
      else
        @version = @project.versions.where("status NOT IN (?)","closed")
      end
-    # if @id_version
-      # if @id_version == "all"
-        # @version = @project.versions.all
-      # end
-      # if @id_version == "version_working"
-        # @version = @project.versions.where("status NOT IN (?)","closed")
-      # end
-      # if @id_version != "all" && @id_version != "version_working"
-        # @version = Version.where(:id => @id_version);
-      # end
-    # elsif
-      # @version = @project.versions.where("status NOT IN (?)","closed")
-    # end
+    
     @issues_backlog = @project.issues.where(:fixed_version_id => nil).all
-
   end
 
   def board
-    if params[:session]
-      session[:view_issue] = params[:session]
-    end
-    if session[:view_issue] == "list"
-      redirect_to :action => "index" ,:project_id =>  params[:project_id]
-      return
-    end
+    session[:view_issue] = "board"
 
     @tracker = Tracker.all
     @status = IssueStatus.all
@@ -175,8 +164,6 @@ class Scrum2bIssuesController < ApplicationController
     @tracker = Tracker.all
     @member = @project.assignable_users
     @id_member = @member.collect{|id_member| id_member.id}
-    @priority = IssuePriority.all
-    @project =  Project.find(params[:project_id])
     @issue = @project.issues.find(params[:id_issue])
     @issue.update_attributes(:subject => params[:subject], 
                              :assigned_to_id => params[:assignee],
@@ -184,13 +171,12 @@ class Scrum2bIssuesController < ApplicationController
                              :description => params[:description], 
                              :start_date => params[:date_start], 
                              :due_date => params[:date_end], 
-                             :tracker_id => params[:tracker], 
-                             :priority_id => params[:priority])
+                             :tracker_id => params[:tracker])
     if @issue.valid? 
       data  = render_to_string(:partial => "/scrum2b_issues/show_issue", 
                                :locals => {:issue => @issue, :id_member => @id_member})
       edit  = render_to_string(:partial => "/scrum2b_issues/edit_issue", 
-                               :locals => {:issue => @issue, :tracker => @tracker, :member => @member, :priority => @priority})
+                               :locals => {:issue => @issue, :tracker => @tracker, :member => @member})
       render :json => {:result => "success", :message => "Success to update the message",
                        :content => data, :edit_content => edit }
     else
@@ -220,11 +206,7 @@ class Scrum2bIssuesController < ApplicationController
       end
     end
   end
-  
-  def setting_warning
-    
-  end
-  
+
   private
 
   def find_project

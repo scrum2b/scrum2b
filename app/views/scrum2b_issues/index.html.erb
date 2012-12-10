@@ -1,18 +1,5 @@
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
-<% content_for :header_tags do %>
-<%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
-<%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
-<%= stylesheet_link_tag 'jquery-ui-slider', :plugin => 'scrum2b' %>
-<% end %>
-<div class="container-fluid">
-	<p class="issues">
-		<%= l(:label_menu_issue)%>
-	</p>
-	<%= button_to l(:label_scrum2b_board),{:action => "board",:project_id =>  params[:project_id],:session => "board"},:class => "btn btn-small btn_submit_board btn-primary"%>
-</div>
+<%= render :partial => "/shared/plugin_header", :locals => {:is_board => false} %>
 
-<%= render :partial => "filter_list", :locals => { :list_version => @list_versions} %>
 <div class="container-fluid">
 	<table id="table_issues" class="table" style="border: 1px solid #e4e4e4">
 		<thead>

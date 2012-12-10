@@ -1,16 +1,5 @@
-<% html_title "scrum2b" %>
-<%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
-<%= stylesheet_link_tag 'jquery-ui-slider', :plugin => 'scrum2b' %>
-<%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
-<div class="container-fluid">
-  <p class="issues">
-    <%= l(:label_menu_issue)%>
-  </p>
-  <%= button_to l(:label_scrum2b_list),{:action => "index",:project_id =>  params[:project_id],:session => "list"},:class => "btn btn-small btn_submit_board btn-primary"%>
-</div>
-<%= render :partial => "filter_board" %>
+<%= render :partial => "/shared/plugin_header", :locals => {:is_board => true} %>
+
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="board span4">
@@ -165,7 +154,6 @@
       var project_id = <%= @project.id%>;
       var tracker = $("#edit_tracker_" + id_issue).val();
       var status = $("#edit_status_" + id_issue).val();
-      var priority = $("#edit_priority_" + id_issue).val();
       var subject = $("#edit_subject_" + id_issue).val();
       var assignee = $("#edit_ass_" + id_issue).val();
       var est_time = $("#edit_time_" + id_issue).val();
@@ -177,7 +165,7 @@
       $.ajax({
         url : url_ajax,
         type : "POST",
-        data :'subject=' + subject +'&sprin=' + sprin + '&date_start=' + date_start + '&date_end=' + date_end + '&est_time=' + est_time + '&description=' + description +'&tracker='+tracker + '&status='+ status +'&priority=' + priority + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee=' + assignee,
+        data :'subject=' + subject +'&sprin=' + sprin + '&date_start=' + date_start + '&date_end=' + date_end + '&est_time=' + est_time + '&description=' + description +'&tracker='+tracker + '&status='+ status + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee=' + assignee,
         dataType : "json",
         success : function(data) {
           if(data.result == "success") {

@@ -22,6 +22,7 @@ module IssueHelper
       @query.project = @project
     end
   end
+  
   def build_query_from_params
     if params[:fields] || params[:f]
       @query.filters = {}
