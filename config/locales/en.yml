@@ -25,6 +25,7 @@ en:
   label_head_issue_est_time: "Est Time"
   label_head_issue_done: "% Done"
   
+  
   label_version_backlog: "Backlog"
 
   label_select_all_member: "All Member"
@@ -47,3 +48,5 @@ en:
   label_priority: "Priority"
   label_start_date: "Start"
   label_end_date: "End"
+  label_sprint: "Sprint"
+  label_me: "<< Me >>"

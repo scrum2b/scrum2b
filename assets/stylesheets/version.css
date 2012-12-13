@@ -248,7 +248,7 @@ table#done tr td.done {
 }
 .editing p span{
    line-height: 30px;
-   font-size: 9px;
+   font-size: 12px;
 }
 .editing select{
   background: #D9D9D9;
@@ -263,14 +263,26 @@ table#done tr td.done {
 .connectedSortable li{
   list-style: none;
 }
-#new_description_issue{
-  height:100px;
-}
-#new_tracker{
-  float: left;
-  margin-left: 5px;
-}
-#new_est_time{
-  float:right
+
+  #create_issue{
+    font-size:11px;
+    display:none;
+  }
+  #create_issue p input{
+    margin-top:5px;
+  }
+  #create_issue p input{
+
+  }
+  #create_issue p {
+    margin-bottom:0;
+  }
+  #new_description{
+    height:150px;
+  }
+  #p_status_{
+    display:none;
+  }
+  #p_priority_{
+  }
   
-}

@@ -1,7 +1,7 @@
 class Scrum2bIssuesController < ApplicationController
   unloadable
 
-  before_filter :find_project, :only => [:index, :board, :update, :update_status, :update_progress]
+  before_filter :find_project, :only => [:index, :board, :update, :update_status, :update_progress, :create]
   before_filter :set_status_settings
   
   #layout false
@@ -67,9 +67,9 @@ class Scrum2bIssuesController < ApplicationController
 
   def board
     session[:view_issue] = "board"
-
+    @issue = Issue.new
     @tracker = Tracker.all
-    @status = IssueStatus.all
+    @status = IssueStatus.where("id IN (?)" , DEFAULT_STATUS_IDS['status_no_start'])
     @priority = IssuePriority.all
     @list_versions_open = @project.versions.where(:status => "open")
     @list_versions_closed = @project.versions.where(:status => "closed")
@@ -94,9 +94,9 @@ class Scrum2bIssuesController < ApplicationController
       conditions << @select_issues.to_i
     end
 
-    @new_issues = @project.issues.where(conditions).where("status_id IN (?)" , STATUS_IDS['status_no_start']).order(:position)
-    @started_issues = @project.issues.where(conditions).where("status_id IN (?)" , STATUS_IDS['status_inprogress']).order(:position)
-    @completed_issues = @project.issues.where(conditions).where("status_id IN (?)" , STATUS_IDS['status_completed']).order(:position)
+    @new_issues = @project.issues.where(conditions).where("status_id IN (?)" , STATUS_IDS['status_no_start']).order(:s2b_position)
+    @started_issues = @project.issues.where(conditions).where("status_id IN (?)" , STATUS_IDS['status_inprogress']).order(:s2b_position)
+    @completed_issues = @project.issues.where(conditions).where("status_id IN (?)" , STATUS_IDS['status_completed']).order(:s2b_position)
   end
 
   def update_status
@@ -107,33 +107,26 @@ class Scrum2bIssuesController < ApplicationController
       #TODO: not optimize, please refactor
       @issue.update_attributes(:done_ratio => 100, :status_id => DEFAULT_STATUS_IDS['status_completed'])
       render :json => {:status => "completed", :done_ratio => 100 }
-    end
-
-    if params[:status] == "started"
+    elsif params[:status] == "started"
       @issue.update_attribute(:status_id, DEFAULT_STATUS_IDS['status_inprogress'])
-    end
-
-    if params[:status] == "new"
+    elsif params[:status] == "new"
       @issue.update_attribute(:status_id, DEFAULT_STATUS_IDS['status_no_start'])
     end
   end
 
   def sort
-    @position = params[:position]
-    Rails.logger.info "Test_PARAMS POSITION #{params[:position].to_s}"
+    @s2b_position = params[:s2b_position]
     @project = Project.find(params[:project_id])
     
     @issue = @project.issues.find(params[:issue_id])
-    @issue.update_attribute(:position,@position.to_i)
+    @issue.update_attribute(:s2b_position,@s2b_position.to_i)
     
     #TODO: redo the codes to allow sorting in every column
-    @sort_issue = @project.issues.where("status_id = ? AND position >= ?", DEFAULT_STATUS_IDS['status_inprogress'], @position.to_i)
-    
-    Rails.logger.info "Test_PARAMS ISSUES_POSITION #{@issue.position.to_s}"
+    @sort_issue = @project.issues.where("status_id = ? AND s2b_position >= ?", DEFAULT_STATUS_IDS['status_inprogress'], @s2b_position.to_i)
     #TODO: optimize code with more clear variable name
-    e = params[:position].to_i+1
+    e = params[:s2b_position].to_i+1
     @sort_issue.each do |sort|
-  		sort.update_attribute(:position, e) unless sort.id == @issue.id
+  		sort.update_attribute(:s2b_position, e) unless sort.id == @issue.id
   	  e += 1
     end
   end
@@ -151,23 +144,24 @@ class Scrum2bIssuesController < ApplicationController
     test= Array.new
     test = params[:issue_id]
     @int_array = test.split(',').collect(&:to_i)
-    Rails.logger.info "HASH ARRAY #{test.to_s}"
     @issues = @project.issues.where(:id => @int_array)
-    Rails.logger.info "TEST_ISSUE: #{@issues.to_s}"
     @issues.each do |issues|
       issues.update_attribute(:status_id,DEFAULT_STATUS_IDS['status_closed'])
     end
   end
 
   def update
-    @id_version  = params[:select_version]
+    @sprints = @project.versions.where(:status => "open")
+    @priority = IssuePriority.all
+    @status = IssueStatus.where("id IN (?)" , DEFAULT_STATUS_IDS['status_no_start'])
     @tracker = Tracker.all
+    @id_version  = params[:select_version]
     @member = @project.assignable_users
     @id_member = @member.collect{|id_member| id_member.id}
     @issue = @project.issues.find(params[:id_issue])
     @issue.update_attributes(:subject => params[:subject], 
                              :assigned_to_id => params[:assignee],
-                             :estimated_hours => params[:est_time],
+                             :estimated_hours => params[:time],
                              :description => params[:description], 
                              :start_date => params[:date_start], 
                              :due_date => params[:date_end], 
@@ -175,35 +169,36 @@ class Scrum2bIssuesController < ApplicationController
     if @issue.valid? 
       data  = render_to_string(:partial => "/scrum2b_issues/show_issue", 
                                :locals => {:issue => @issue, :id_member => @id_member})
-      edit  = render_to_string(:partial => "/scrum2b_issues/edit_issue", 
-                               :locals => {:issue => @issue, :tracker => @tracker, :member => @member})
-      render :json => {:result => "success", :message => "Success to update the message",
+      edit  = render_to_string(:partial => "/scrum2b_issues/form_new", 
+                               :locals => {:issue => @issue, :tracker => @tracker, :member => @member, :id_member => @id_member,
+                                           :status => @status, :priority => @priority, :sprint => @sprint})
+      render :json => {:result => "edit_success", :message => "Success to update the message",
                        :content => data, :edit_content => edit }
     else
       render :json => {:result => "failure", :message => @issue.errors.full_messages,
                        :content => data, :edit_content => edit }
     end
   end
-
-  def new
-    @issue = Issue.new
-    Rails.logger.info "TEST_ISSUE"
-    edit  = render_to_string(:partial => "/scrum2b_issues/edit_issue", :locals => {:issue => @issue})
-    render :json => {:edit_content => edit }
-  end   
-     
+  
   def create
-    #TODO: @Hung: refactor this codes
-    #call_hook(:controller_issues_new_before_save, { :params => params, :issue => @issue })
-    Rails.logger.info "TEST_ISSUE"
-    @issue = Issue.new(params[:issue])
-    respond_to do |format|
-      if @issue.save
-        flash[:notice] = "You have successfully to create the article"
-        format.html { redirect_to "/" }
-      else
-        flash[:error] = "You have error to create the article"
-      end
+    @sprints = @project.versions.where(:status => "open")
+    @priority = IssuePriority.all
+    @status = IssueStatus.where("id IN (?)" , DEFAULT_STATUS_IDS['status_no_start'])
+    @tracker = Tracker.all
+    @member = @project.assignable_users
+    @id_member = @member.collect{|id_member| id_member.id}
+    @issue = Issue.new(:subject => params[:subject], :description => params[:description], :tracker_id => params[:tracker],
+                       :project_id => params[:project_id], :status_id => params[:status], :assigned_to_id => params[:assignee],
+                       :priority_id => params[:priority], :fixed_version_id => params[:sprint], :start_date => params[:date_start],
+                       :due_date => params[:date_end], :estimated_hours => params[:time], :author_id => params[:author],
+                       :done_ratio => 0, :is_private => false, :lock_version => 0, :s2b_position => 0)    
+    if @issue.save 
+      data  = render_to_string(:partial => "/scrum2b_issues/board_issue", :locals => {:issue => @issue, :tracker => @tracker, :member => @member, :id_member => @id_member,
+                                                                                      :status => @status, :priority => @priority, :sprint => @sprint})
+      render :json => {:result => "create_success", :message => "Success to create the issue",
+                       :content => data,:id => @issue.id}
+    else
+      render :json => {:result => "failure", :message => @issue.errors.full_messages}
     end
   end
 
@@ -222,21 +217,15 @@ class Scrum2bIssuesController < ApplicationController
     # Loop to set default of settings items
     need_to_resetting = false
     STATUS_IDS.keys.each do |column_name|
-      Rails.logger.info "column_name #{column_name}"
-      Rails.logger.info "@settings[key]: #{@settings[column_name].class.name} - #{@settings[column_name].to_s}"
       @settings[column_name].keys.each { |setting| 
-        Rails.logger.info "setting: #{setting.to_s}"
         STATUS_IDS[column_name].push(setting) 
       } if @settings[column_name]
       
-      
-      Rails.logger.info "STATUS_IDS[key]: #{STATUS_IDS[column_name].to_s}"
       if STATUS_IDS[column_name].empty?
         need_to_resetting = true;
       else
         DEFAULT_STATUS_IDS[column_name] = STATUS_IDS[column_name].first
       end
-      Rails.logger.info "DEFAULT_STATUS_IDS[column_name]: #{DEFAULT_STATUS_IDS[column_name]}"
     end
      
     if need_to_resetting

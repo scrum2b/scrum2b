@@ -12,6 +12,7 @@
         </p>
       <% end %>
       <div class="connectedSortable" id ="<% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin%>new<% else %>new_nomember<% end %>" >
+        <%= render :partial => "form_new", :locals => { :issue => @issue} %>
         <% @new_issues.each do |issue|%>
           <li id ="<%= issue.id %>">
             <%= render :partial => "board_issue", :locals => { :issue => issue} %>
@@ -45,7 +46,8 @@
     </div>
   </div>
 </div>
-
+<style>
+</style>
 <script>
   jQuery(function() {
     $("#completed").find(".close_issue").show();
@@ -100,13 +102,13 @@
       var issue_id = $(".check").attr("id");
       var url_sort = 'sort_issues'
       var project_id = <%= @project.id %>;
-      var position = $(ui.item).parent().children().index(ui.item);
+      var s2b_position = $(ui.item).parent().children().index(ui.item);
       $(this).find(".check").removeClass("check")
-        console.debug(position);
+        console.debug(s2b_position);
         $.ajax({
         url : url_sort,
         type : "POST",
-        data : 'position='+ position +'&issue_id=' + issue_id + '&project_id=' + project_id ,
+        data : 's2b_position='+ s2b_position +'&issue_id=' + issue_id + '&project_id=' + project_id ,
         dataType : "text",
         success : function(){}
         });
@@ -137,7 +139,7 @@
       $("#show_issue_" + id_issue).hide();
       $(".hide").hide();
     });
-    $(".cancel_edit").live("click", function(){
+    $(".cancel_issue").live("click", function(){
       var id_issue = parseInt($(this).parent().attr("value"))
       $("#completed").find("#close_" + id_issue).show();
       $("#edit_issue_"+id_issue).hide();
@@ -146,44 +148,65 @@
       $(".readmore").show();
       $(".hide").hide();
       $(".description_readmore").hide();
+      $("#edit_issue_").hide();
     });
    
-    $(".submit_edit").live("click", function(){
-      var id_issue = parseInt($(this).parent().attr("value"));
-      var url_ajax = "update";
-      var project_id = <%= @project.id%>;
-      var tracker = $("#edit_tracker_" + id_issue).val();
-      var status = $("#edit_status_" + id_issue).val();
-      var subject = $("#edit_subject_" + id_issue).val();
-      var assignee = $("#edit_ass_" + id_issue).val();
-      var est_time = $("#edit_time_" + id_issue).val();
-      var description = $("#edit_description_" + id_issue).val();
-      var date_start = $("#date_start_" + id_issue).val();
-      var date_end = $("#date_end_" + id_issue).val();
-      var sprin =  $("#edit_sprin_" + id_issue).val();
+    $(".submit_issue").live("click", function(){
+      var id_issue = $(this).parent().attr("value");
+      if(id_issue != "" ){
+        var url_ajax = "update";
+      } else {
+          var url_ajax = "create";
+      }
+      var subject = $("#new_subject_"+id_issue).val();
+      var description = $("#new_description_"+id_issue).val();
+      var tracker = $("#new_tracker_"+id_issue).val();
+      var status = $("#new_status_"+id_issue).val();
+      var priority = $("#new_priority_"+id_issue).val();
+      var assignee = $("#new_assignee_"+id_issue).val();
+      var sprint = $("#new_sprint_"+id_issue).val();
+      var time = $("#new_time_"+id_issue).val();
+      var date_start = $("#new_date_start_"+id_issue).val();
+      var date_end = $("#new_date_end_"+id_issue).val();
+      var project_id = <%= @project.id %>
+      var author = <%= User.current.id %>
       var slide_value = $("#slider" + id_issue).attr("value");
       $.ajax({
         url : url_ajax,
         type : "POST",
-        data :'subject=' + subject +'&sprin=' + sprin + '&date_start=' + date_start + '&date_end=' + date_end + '&est_time=' + est_time + '&description=' + description +'&tracker='+tracker + '&status='+ status + '&id_issue=' + id_issue + '&project_id=' + project_id + '&assignee=' + assignee,
+        data : 'subject=' + subject + '&id_issue=' + id_issue + '&description=' + description + '&tracker=' + tracker + '&status=' + status + '&priority=' + priority + '&assignee= ' + assignee + '&sprint=' + sprint + '&time=' + time + '&date_start=' + date_start + '&date_end=' + date_end + '&project_id=' + project_id + '&author=' + author,
         dataType : "json",
         success : function(data) {
-          if(data.result == "success") {
+          if(data.result == "edit_success") {
             console.debug("get value :" + data.edit_content);
             $("#show_issue_" + id_issue).replaceWith(data.content).show();
             makeSlider(id_issue, slide_value);
             $("#edit_issue_" + id_issue).replaceWith(data.edit_content).hide();
             editDate(id_issue); 
-          }else{
+            form_edit(id_issue);
+          }else if(data.result == "create_success"){
+            $("#edit_issue_").find(".value_content").val("");
+            $("#edit_issue_").hide();
+            $("#edit_issue_").after(data.content)
+            makeSlider(data.id,0);
+            editDate(data.id); 
+            form_edit(data.id);
+          }
+          else{
             alert(data.message);
           }
         }
       });
     });
-
-    $(".edit_date").each(function() {
+    
+    
+    $(".editing").each(function() {
       var id = $(this).attr("value");
-      editDate(id); 
+      editDate(id);
+      if( id != ""){ 
+        form_edit(id);
+      }
+      
     })
     
     $(".readmore").live("click", function(){
@@ -204,24 +227,28 @@
        return false;
   
       });
-      $( "#new_start_date").datepicker();
-      $( "#new_due_date").datepicker();
-      $( "#new_start_date").datepicker("option", "dateFormat", "yy-mm-dd");
-      $( "#new_due_date").datepicker("option", "dateFormat", "yy-mm-dd");
+      $( "#date_start_").datepicker();
+      $( "#date_end_").datepicker();
+      $( "#ate_start_").datepicker("option", "dateFormat", "yy-mm-dd");
+      $( "#date_end_").datepicker("option", "dateFormat", "yy-mm-dd");
+      
       $(".icon_new_issue").click(function(){
-      $("#create_issue").show();
-      });
-      $("#cancel_new_issue").click(function(){
-        $("#create_issue").hide();
+        $("#edit_issue_").show();
+        $("#edit_issue_").addClass("board_issue");
       });
       
     }); 
-    
+    function form_edit(id){
+      $("#p_status_" + id).hide();
+      $("#p_priority_" + id).hide();
+      $("#p_tracker_" + id).hide();
+      $("#p_sprint_" + id).hide(); 
+    }
     function editDate(id){
-      $("#date_start_" + id).datepicker();
-      $("#date_end_" + id).datepicker();
-      $("#date_start_" + id).datepicker("option", "dateFormat", "yy-mm-dd");
-      $("#date_end_" + id).datepicker("option", "dateFormat", "yy-mm-dd");  
+      $("#new_date_start_" + id).datepicker();
+      $("#new_date_end_" + id).datepicker();
+      $("#new_date_start_" + id).datepicker("option", "dateFormat", "yy-mm-dd");
+      $("#new_date_end_" + id).datepicker("option", "dateFormat", "yy-mm-dd");  
     }
     
     function makeSlider(id, slide_value) {
@@ -245,7 +272,6 @@
             dataType : "json",
             success : function(res) {
               $("#slider" + issue_id).attr("value", ui.value);
-              console.debug(res);
             }
           });
         }

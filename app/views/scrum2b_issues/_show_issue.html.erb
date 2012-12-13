@@ -47,9 +47,7 @@
       <div class="description">
         <% if issue.description.length >= 100 %>
           <div class="div_description description_hide" id="description_hide_<%= issue.id %>">
-            <%= raw(issue.description.first(100).html_safe.gsub(/\n/, " <br/> ")) %>
-            <br />
-            &hellip;
+            <%= raw(issue.description.first(100).html_safe.gsub(/\n/, " <br/> ")) %>&hellip;
           </div>
           <div class="div_description description_readmore" id="description_readmore_<%= issue.id %>" style="display: none">
             <%= raw(issue.description.html_safe.gsub(/\n/, " <br/>")) %>
