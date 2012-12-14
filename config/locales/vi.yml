@@ -49,3 +49,5 @@ vi:
   label_start_date: "Bắt Đầu"
   label_end_date: "Kết Thúc"
   label_me: "<< Tôi >>"
+  label_change_sprint: "Đổi Phiên Bản"
+  label_move_issues: "Chuyển Tới"

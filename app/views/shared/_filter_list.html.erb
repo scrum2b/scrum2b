@@ -26,14 +26,22 @@
       <% end %>
       <option value="all" <% if params[:select_version] && params[:select_version] == 'all'%><%= selected="selected" %><% end %>><%= l(:label_select_all_versions)%></option>
     </select>
-    
   <%= form_tag %>
 
   <% if  !User.current.anonymous?  && @id_member.include?(User.current.id)|| User.current.admin %>
-    <p>
-      <button class="btn btn-danger close_issue_list btn-mini">
-        <%= l(:label_close_all_issues)%>
-      </button>
-    </p>
+    <button class="btn btn-danger btn-mini" id="btn_close_issue_list">
+      <%= l(:label_close_all_issues)%>
+    </button>
+    <button class="btn btn-danger btn-mini" id="btn_change_sprint_issues">
+      <%= l(:label_change_sprint)%>
+    </button>
+    <button class="btn btn-danger btn-mini" id="btn_move_issues">
+      <%= l(:label_move_issues)%>
+    </button>
+    <select id="change_sprint" class="span2"> 
+       <% @list_versions_open.each do |version|%>
+        <option value="<%= version.id %>"><%= version.name %></option>
+       <% end %>
+    </select>
   <% end %>
 </div>

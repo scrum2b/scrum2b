@@ -25,6 +25,19 @@
 		</tbody>
 	</table>
 </div>
+<style>
+#btn_change_sprint_issues{
+}
+#btn_close_issue_list{
+
+}
+#btn_move_issues{
+  display:none
+}
+#change_sprint{
+display:none;
+}
+</style>
 <script>
   jQuery(function() {
     $("#check_all").toggle(function(){
@@ -32,25 +45,49 @@
 		},function(){
 		  $("#table_issues tr td input:checkbox").removeAttr('checked');
 		});
-		
-    $(".close_issue_list").live("click",function(){
-    	var issue_id = [];
-    	$('input[name="check"]').each(function() {
-      	if(this.checked==true) issue_id.push($(this).val());
+		$("#btn_change_sprint_issues").click(function(){
+		  $(this).hide();
+		  $("#btn_move_issues").show();
+		  $("#change_sprint").show();
+		  return false;
+		});
+		$("#btn_move_issues").live("click",function(){
+      var issue_id = [];
+      $('input[name="check"]').each(function() {
+        if(this.checked==true) issue_id.push($(this).val());
       });
-    	console.debug(issue_id);
-    	var project_id = <%= @project.id %>
-    	var url_ajax = 'close'
-    	$.ajax({
-    		url : url_ajax,
-    		type : "POST",
-    		data : 'issue_id=' + issue_id + '&project_id='+project_id,
-    		dataType : "text",
-    		success : function() {
-      		$("#table_issues tr td input:checkbox").removeAttr('checked');
-      		location.reload();
-    		}
-  	});
+      var new_sprint = $("#change_sprint").val();
+      var project_id = <%= @project.id %>
+      var url_ajax = 'change_sprint'
+      $.ajax({
+      url : url_ajax,
+      type : "POST",
+      data : 'issue_id=' + issue_id + '&project_id='+project_id + '&new_sprint=' + new_sprint,
+      dataType : "text",
+      success : function() {
+        location.reload();
+        }
+     });
+    });
+    
+  $("#btn_close_issue_list").live("click",function(){
+  	var issue_id = [];
+  	$('input[name="check"]').each(function() {
+    	if(this.checked==true) issue_id.push($(this).val());
+    });
+  	console.debug(issue_id);
+  	var project_id = <%= @project.id %>
+  	var url_ajax = 'close'
+  	$.ajax({
+  		url : url_ajax,
+  		type : "POST",
+  		data : 'issue_id=' + issue_id + '&project_id='+project_id,
+  		dataType : "text",
+  		success : function() {
+    		$("#table_issues tr td input:checkbox").removeAttr('checked');
+    		location.reload();
+  		  }
+	   });
 
 	});
 	$(".progressbar").each(function() {

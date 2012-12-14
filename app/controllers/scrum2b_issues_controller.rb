@@ -1,7 +1,7 @@
 class Scrum2bIssuesController < ApplicationController
   unloadable
 
-  before_filter :find_project, :only => [:index, :board, :update, :update_status, :update_progress, :create]
+  before_filter :find_project, :only => [:index, :board, :update, :update_status, :update_progress, :create, :change_sprint, :close]
   before_filter :set_status_settings
   
   #layout false
@@ -24,7 +24,9 @@ class Scrum2bIssuesController < ApplicationController
       return
     end
     session[:view_issue] = "list"
-
+    @status_new = STATUS_IDS['status_no_start'];
+    @status_inprogress = STATUS_IDS['status_inprogress'];
+    @status_completed = STATUS_IDS['status_completed'];
     @select_issue_options = SELECT_ISSUE_OPTIONS
     @list_versions_open = @project.versions.where(:status => "open")
     @list_versions_closed = @project.versions.where(:status => "closed") 
@@ -199,6 +201,15 @@ class Scrum2bIssuesController < ApplicationController
                        :content => data,:id => @issue.id}
     else
       render :json => {:result => "failure", :message => @issue.errors.full_messages}
+    end
+  end
+  def change_sprint
+    array_id= Array.new
+    array_id = params[:issue_id]
+    @int_array = array_id.split(',').collect(&:to_i)
+    @issues = @project.issues.where(:id => @int_array)
+    @issues.each do |issues|
+      issues.update_attribute(:fixed_version_id,params[:new_sprint])
     end
   end
 

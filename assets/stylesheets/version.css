@@ -50,7 +50,6 @@ select#select_issue {
 .btn_submit_board {
 	float: right;
 	margin:0 0 10px 0;
-	border: 1px solid red;
 }
 .filter {
 margin:10px 0 0 0;

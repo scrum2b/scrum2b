@@ -50,3 +50,6 @@ en:
   label_end_date: "End"
   label_sprint: "Sprint"
   label_me: "<< Me >>"
+  
+  label_change_sprint: "Change Sprint"
+  label_move_issues: "Move To"
