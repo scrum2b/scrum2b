@@ -24,9 +24,10 @@ class Scrum2bIssuesController < ApplicationController
       return
     end
     session[:view_issue] = "list"
-    @status_new = STATUS_IDS['status_no_start'];
-    @status_inprogress = STATUS_IDS['status_inprogress'];
-    @status_completed = STATUS_IDS['status_completed'];
+    @status_new = STATUS_IDS['status_no_start']
+    @status_inprogress = STATUS_IDS['status_inprogress']
+    @status_completed = STATUS_IDS['status_completed']
+    @status_closed = STATUS_IDS['status_closed']
     @select_issue_options = SELECT_ISSUE_OPTIONS
     @list_versions_open = @project.versions.where(:status => "open")
     @list_versions_closed = @project.versions.where(:status => "closed") 
@@ -40,32 +41,34 @@ class Scrum2bIssuesController < ApplicationController
     @select_issues  = (params[:select_issue] || "0").to_i 
     
     if @select_issues == SELECT_ISSUE_OPTIONS[:all]
-      @issues =  @project.issues
+      @issues =  @project.issues.order("status_id, s2b_position")
     elsif @select_issues == SELECT_ISSUE_OPTIONS[:my]
-      @issues =  @project.issues.where(:assigned_to_id => User.current.id)
+      @issues =  @project.issues.where(:assigned_to_id => User.current.id).order("status_id, s2b_position")
     elsif @select_issues == SELECT_ISSUE_OPTIONS[:my_completed]
-      @issues =  @project.issues.where(:assigned_to_id => User.current.id).where("status_id IN (?)" , STATUS_IDS['status_completed'])
+      @issues =  @project.issues.where(:assigned_to_id => User.current.id).where("status_id IN (?)" , STATUS_IDS['status_completed']).order("status_id, s2b_position")
     elsif @select_issues == SELECT_ISSUE_OPTIONS[:new]
-      @issues =  @project.issues.where("status_id IN (?)" , STATUS_IDS['status_no_start'])
+      @issues =  @project.issues.where("status_id IN (?)" , STATUS_IDS['status_no_start']).order("status_id, s2b_position")
     elsif @select_issues == SELECT_ISSUE_OPTIONS[:completed]
-      @issues =  @project.issues.where("status_id IN (?)" , STATUS_IDS['status_completed'])
+      @issues =  @project.issues.where("status_id IN (?)" , STATUS_IDS['status_completed']).order("status_id, s2b_position")
     elsif @select_issues == SELECT_ISSUE_OPTIONS[:closed]
-      @issues =  @project.issues.where("status_id IN (?)" , STATUS_IDS['status_closed'])
+      @issues =  @project.issues.where("status_id IN (?)" , STATUS_IDS['status_closed']).order("status_id, s2b_position")
     else
-      @issues = @project.issues.where("status_id NOT IN (?)", STATUS_IDS['status_closed'])
+      @issues = @project.issues.where("status_id NOT IN (?)", STATUS_IDS['status_closed']).order("status_id, s2b_position")
     end
     
     #TODO: Logic is not clear, please refactor it
      if @id_version && @id_version == "all"
-        @version = @project.versions.all
+        @version = @project.versions.order("created_on")
      elsif @id_version && @id_version != "version_working" && @id_version != "all"
-        @version = Version.where(:id => @id_version);
+        @version = Version.where(:id => @id_version).order("created_on")
      else
-       @version = @project.versions.where("status NOT IN (?)","closed")
+       @version = @project.versions.where("status NOT IN (?)","closed").order("created_on")
      end
-    
-    @issues_backlog = @project.issues.where(:fixed_version_id => nil).all
+    @sort_versions = resort_for_version(@version, @issues)
+    @issues_backlog = @project.issues.where(:fixed_version_id => nil).order("status_id, s2b_position")
   end
+  
+  
 
   def board
     session[:view_issue] = "board"
@@ -245,5 +248,61 @@ class Scrum2bIssuesController < ApplicationController
       redirect_to "/projects/#{@project.to_param}"
     end
   end
-
+  
+  private
+  
+    def resort_for_version(versions, issues)
+      sort_versions = {}
+      versions.each do |version|
+        if version.status == "open"
+          version_issues = []
+          issues.each do |issue|
+           version_issues << issue if issue.fixed_version_id == version.id
+          end
+          sort_by_status_issues = []    
+          version_issues.each do |issue|
+          sort_by_status_issues << issue if @status_inprogress.include?(issue.status_id.to_s)
+          end
+         
+          version_issues.each do |issue|
+           sort_by_status_issues << issue if @status_new.include?(issue.status_id.to_s)
+          end
+         
+          version_issues.each do |issue|
+           sort_by_status_issues << issue if @status_completed.include?(issue.status_id.to_s)
+          end
+         
+          version_issues.each do |issue|
+           sort_by_status_issues << issue if @status_closed.include?(issue.status_id.to_s)
+          end
+            sort_versions.merge!(version.name => sort_by_status_issues)
+        end
+      end 
+      versions.each do |version|
+        if version.status == "closed"
+          version_issues = []
+          issues.each do |issue|
+           version_issues << issue if issue.fixed_version_id == version.id
+          end
+          sort_by_status_issues = []    
+          version_issues.each do |issue|
+          sort_by_status_issues << issue if @status_inprogress.include?(issue.status_id.to_s)
+          end
+         
+          version_issues.each do |issue|
+           sort_by_status_issues << issue if @status_new.include?(issue.status_id.to_s)
+          end
+         
+          version_issues.each do |issue|
+           sort_by_status_issues << issue if @status_completed.include?(issue.status_id.to_s)
+          end
+         
+          version_issues.each do |issue|
+           sort_by_status_issues << issue if @status_closed.include?(issue.status_id.to_s)
+          end
+          sort_versions.merge!(version.name => sort_by_status_issues)
+        end
+      end
+      return sort_versions
+    end  
 end

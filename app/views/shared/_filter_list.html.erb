@@ -29,19 +29,25 @@
   <%= form_tag %>
 
   <% if  !User.current.anonymous?  && @id_member.include?(User.current.id)|| User.current.admin %>
-    <button class="btn btn-danger btn-mini" id="btn_close_issue_list">
-      <%= l(:label_close_all_issues)%>
-    </button>
-    <button class="btn btn-danger btn-mini" id="btn_change_sprint_issues">
-      <%= l(:label_change_sprint)%>
-    </button>
-    <button class="btn btn-danger btn-mini" id="btn_move_issues">
-      <%= l(:label_move_issues)%>
-    </button>
-    <select id="change_sprint" class="span2"> 
-       <% @list_versions_open.each do |version|%>
-        <option value="<%= version.id %>"><%= version.name %></option>
-       <% end %>
-    </select>
+      <button class="btn btn-danger btn-mini" id="btn_close_issue_list">
+        <%= l(:label_close_all_issues)%>
+      </button>
+      <button class="btn btn-danger btn-mini" id="btn_change_sprint_issues">
+        <%= l(:label_change_sprint)%>
+      </button>
+      <div id="div_change_sprint">
+        <button class="btn btn-danger btn-mini" id="btn_move_issues">
+          <%= l(:label_move_issues)%>
+        </button>
+        <select id="change_sprint" class="span2">
+           <option><%= l(:label_version_backlog)%></option> 
+           <% @list_versions_open.each do |version|%>
+            <option value="<%= version.id %>"><%= version.name %></option>
+           <% end %>
+        </select>
+        <button class="btn btn-danger btn-mini" id="cancel_move_issue">
+          <%= l(:label_board_edit_btn_cancel)%>
+        </button>
+      </div>
   <% end %>
 </div>

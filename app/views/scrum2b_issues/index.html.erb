@@ -16,8 +16,8 @@
 		</thead>
 
 		<tbody>
-			<% if @version %>
-				<%= render :partial => "version", :locals =>{:version => @version}  %>
+			<% if @sort_versions %>
+				<%= render :partial => "version", :locals =>{:sort_versions => @sort_versions}  %>
 			<% end %>
 			<% if !params[:select_version] || params[:select_version] && params[:select_version] == 'all' ||  params[:select_version] == 'version_working' || params[:select_version] == 'backlog'%>
 				<%= render :partial => "backlog", :locals =>{:issues_backlog => @issues_backlog }%>
@@ -26,17 +26,25 @@
 	</table>
 </div>
 <style>
-#btn_change_sprint_issues{
-}
 #btn_close_issue_list{
+  float: left;
+}
+#btn_change_sprint_issues{
+  float:left;
+  margin-left:5px;
+}
+#div_change_sprint{
+  float: left;
+  margin-left:5px;
+  display:none;
+}
+  #btn_move_issues{
 
-}
-#btn_move_issues{
-  display:none
-}
-#change_sprint{
-display:none;
-}
+  }
+  #change_sprint{
+
+  margin-bottom: -7px;
+  }
 </style>
 <script>
   jQuery(function() {
@@ -45,12 +53,20 @@ display:none;
 		},function(){
 		  $("#table_issues tr td input:checkbox").removeAttr('checked');
 		});
+		
 		$("#btn_change_sprint_issues").click(function(){
 		  $(this).hide();
-		  $("#btn_move_issues").show();
-		  $("#change_sprint").show();
+		  $("#div_change_sprint").show();
 		  return false;
 		});
+		
+		$("#cancel_move_issue").click(function(){
+       $("#div_change_sprint").hide();
+      $("#btn_change_sprint_issues").show();
+      $("#table_issues tr td input:checkbox").removeAttr('checked');
+      return false;
+    });
+    
 		$("#btn_move_issues").live("click",function(){
       var issue_id = [];
       $('input[name="check"]').each(function() {
