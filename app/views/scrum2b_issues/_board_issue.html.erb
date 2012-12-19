@@ -1,4 +1,4 @@
-<div class="board_issue clearfix" id="<%= issue.id %>">
+<div class="board_issue clearfix" id="<%= issue.id %>" position="<%= issue.s2b_position %>">
   <%= render :partial => "show_issue", :locals => { :issue => issue} %>
   <%= render :partial => "form_new", :locals => { :issue => issue} %>
 </div>

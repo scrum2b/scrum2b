@@ -15,7 +15,6 @@
       <p class="no_edit subject_issue" id="subject_<%= issue.id%>">
         <%= issue.subject %></p>
     </div>
-  
     <div class="assignee clearfix">
       <i class="icon-arrow-right" style="float: left"></i>
       <% if issue.assigned_to %>
@@ -64,7 +63,7 @@
     <% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin %>
       <div class="slider-horizontal" id="slider<%= issue.id%>" value="<%= issue.done_ratio%>" style="margin: 0 15px 5px 0"></div>
       <p style="float: right;color: #f6931f; font-weight: bold">% </p>
-      <input type="text" id="amount<%= issue.id%>" style="border:0;color: #f6931f; font-weight: bold;float: right;margin-bottom: 0;font-size: 13px;width: 25px;padding:0px;" />
+      <input type="button" id="amount<%= issue.id%>" style="background-color:white;border:0;color: #f6931f; font-weight: bold;float: right;margin-bottom: 0;font-size: 13px;width: 25px;padding:0px;cursor:default"/>
     <% else %>
       <div class="progressbar" value="<%= issue.done_ratio%>" id="progress<%= issue.id%>" style="height: 12px;margin: 0 15px 5px 0"></div>
       <p style="float: right;color: #f6931f; font-weight: bold">

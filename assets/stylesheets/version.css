@@ -284,3 +284,20 @@ table#done tr td.done {
   }
   #p_priority_{
   }
+	#btn_close_issue_list{
+  float: left;
+	}
+	#btn_change_sprint_issues{
+	  float:left;
+	  margin-left:5px;
+	}
+	#div_change_sprint{
+	  float: left;
+	  margin-left:5px;
+	  display:none;
+	}
+	#div_change_sprint{
+	  padding:5px;
+	  border: 1px solid #339BB9;
+	  margin-top:-15px;
+	}

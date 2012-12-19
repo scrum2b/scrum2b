@@ -1,5 +1,4 @@
 <%= render :partial => "/shared/plugin_header", :locals => {:is_board => true} %>
-
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="board span4">
@@ -11,7 +10,7 @@
         <i class="icon-plus-sign icon_new_issue"><span class="text_new "><%= l(:label_board_issue_new_issue)%></span></i> 
         </p>
       <% end %>
-      <div class="connectedSortable" id ="<% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin%>new<% else %>new_nomember<% end %>" >
+      <div class="connectedSortable" id ="<% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin%>new<% else %>new_nomember<% end %>" value="status_no_start">
         <%= render :partial => "form_new", :locals => { :issue => @issue} %>
         <% @new_issues.each do |issue|%>
           <li id ="<%= issue.id %>">
@@ -24,7 +23,7 @@
       <p class="status">
         <%= l(:label_board_status_inprogress)%>
       </p>
-      <div class="connectedSortable" id ="<% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin%>started<% else %>started_nomember<% end %>">
+      <div class="connectedSortable" id ="<% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin%>started<% else %>started_nomember<% end %>" value="status_inprogress">
         <% @started_issues.each do |issue|%>
           <li id ="<%= issue.id %>">
             <%= render :partial => "board_issue", :locals => { :issue => issue} %>
@@ -36,7 +35,7 @@
       <p class="status">
         <%= l(:label_board_status_completed)%>
       </p>
-      <div class="connectedSortable" id ="<% if !User.current.anonymous?  && @id_member.include?(User.current.id)|| User.current.admin%>completed<% else %>completed_nomember<% end %>">
+      <div class="connectedSortable" id ="<% if !User.current.anonymous?  && @id_member.include?(User.current.id)|| User.current.admin%>completed<% else %>completed_nomember<% end %>" value="status_completed">
         <% @completed_issues.each do |issue|%>
         <li id ="<%= issue.id %>">
           <%= render :partial => "board_issue", :locals => { :issue => issue} %>
@@ -97,20 +96,24 @@
            }
         });
       },
-      axit: 'y',
-      stop: function(event, ui) {
+      stop: function() {
       var issue_id = $(".check").attr("id");
-      var url_sort = 'sort_issues'
+      var url_sort = 'sort'
       var project_id = <%= @project.id %>;
-      var s2b_position = $(ui.item).parent().children().index(ui.item);
-      $(this).find(".check").removeClass("check")
-        console.debug(s2b_position);
+      var id_next = $(".check").next().attr("id");
+      var id_prev = $(".check").prev().attr("id");
+      var old_status = $(this).attr("value");
+      var new_status = $(".check").parent().attr("value");
+      $(".check").removeClass("check");
+        console.debug(id_prev);
         $.ajax({
         url : url_sort,
         type : "POST",
-        data : 's2b_position='+ s2b_position +'&issue_id=' + issue_id + '&project_id=' + project_id ,
+        data : 'issue_id=' + issue_id +'&id_prev=' + id_prev + '&project_id=' + project_id + '&id_next=' + id_next + '&new_status=' + new_status + '&old_status=' + old_status,
         dataType : "text",
-        success : function(){}
+        success : function(){
+        
+        }
         });
       }
     }).disableSelection();

@@ -1,7 +1,7 @@
 class Scrum2bIssuesController < ApplicationController
   unloadable
 
-  before_filter :find_project, :only => [:index, :board, :update, :update_status, :update_progress, :create, :change_sprint, :close]
+  before_filter :find_project, :only => [:index, :board, :update, :update_status, :update_progress, :create, :change_sprint, :close, :sort]
   before_filter :set_status_settings
   
   #layout false
@@ -71,6 +71,13 @@ class Scrum2bIssuesController < ApplicationController
   
 
   def board
+    @max_position_issue = @project.issues.maximum(:s2b_position).to_i+1
+    Rails.logger.info "Test_PARAMS POSITION #{@max_position_issue.to_s}"
+    @issue_no_position = @project.issues.where(:s2b_position => nil)
+    @issue_no_position.each do |issue|
+        issue.update_attribute(:s2b_position,@max_position_issue)
+        @max_position_issue += 1
+      end
     session[:view_issue] = "board"
     @issue = Issue.new
     @tracker = Tracker.all
@@ -120,19 +127,50 @@ class Scrum2bIssuesController < ApplicationController
   end
 
   def sort
-    @s2b_position = params[:s2b_position]
-    @project = Project.find(params[:project_id])
-    
+    @max_position = @project.issues.where("status_id IN (?)", STATUS_IDS[params[:new_status]]).maximum(:s2b_position)
     @issue = @project.issues.find(params[:issue_id])
-    @issue.update_attribute(:s2b_position,@s2b_position.to_i)
-    
-    #TODO: redo the codes to allow sorting in every column
-    @sort_issue = @project.issues.where("status_id = ? AND s2b_position >= ?", DEFAULT_STATUS_IDS['status_inprogress'], @s2b_position.to_i)
-    #TODO: optimize code with more clear variable name
-    e = params[:s2b_position].to_i+1
-    @sort_issue.each do |sort|
-  		sort.update_attribute(:s2b_position, e) unless sort.id == @issue.id
-  	  e += 1
+    @old_position = @issue.s2b_position
+    if params[:id_next].to_i != 0
+      @next_issue = @project.issues.find(params[:id_next].to_i) 
+      @next_position = @next_issue.s2b_position
+    end
+    if params[:id_prev].to_i != 0
+      @prev_issue = @project.issues.find(params[:id_prev].to_i)
+      @prev_position = @prev_issue.s2b_position
+    end
+    Rails.logger.info "Test_PARAMS POSITION #{@old_position}"
+    if params[:new_status] != params[:old_status] && params[:id_next].to_i == 0 && params[:id_prev].to_i == 0
+      Rails.logger.info "Test_PARAMS POSITION #{@old_position.to_s}"
+       @issue.update_attribute(:s2b_position,1)
+    elsif params[:new_status] != params[:old_status] && params[:id_next].to_i == 0 && params[:id_prev].to_i != "" 
+      @issue.update_attribute(:s2b_position,@max_position.to_i+1)
+    elsif params[:new_status] != params[:old_status] && params[:id_next].to_i != 0 && params[:id_prev].to_i == 0
+      @sort_issue = @project.issues.where("status_id IN (?)", STATUS_IDS[params[:new_status]])
+      @sort_issue.each do |issue|
+        issue.update_attribute(:s2b_position,issue.s2b_position.to_i+1) if issue.id != @issue.id
+      end
+      @issue.update_attribute(:s2b_position,1)
+    elsif params[:new_status] != params[:old_status] && params[:id_next].to_i != 0 && params[:id_prev].to_i != 0
+       @sort_issue = @project.issues.where("status_id IN (?) AND s2b_position >= ? ", STATUS_IDS[params[:new_status]],@next_position)
+
+       @sort_issue.each do |issue|
+        issue.update_attribute(:s2b_position,issue.s2b_position.to_i+1) if issue.id != @issue.id
+      end
+      @issue.update_attribute(:s2b_position,@next_position)
+    elsif params[:new_status] == params[:old_status]
+      if @prev_position && @old_position < @prev_position
+        @sort_issue = @project.issues.where("status_id IN (?) AND s2b_position > ? AND s2b_position <= ? ", STATUS_IDS[params[:new_status]],@old_position,@prev_position)
+        @sort_issue.each do |issue|
+          issue.update_attribute(:s2b_position,issue.s2b_position.to_i-1) if issue.id != @issue.id
+        end
+        @issue.update_attribute(:s2b_position,@prev_position)   
+      elsif @old_position > @next_position
+        @sort_issue = @project.issues.where("status_id IN (?) AND s2b_position < ? AND s2b_position >= ? ", STATUS_IDS[params[:new_status]],@old_position,@next_position)
+        @sort_issue.each do |issue|
+          issue.update_attribute(:s2b_position,issue.s2b_position.to_i+1) if issue.id != @issue.id
+        end
+        @issue.update_attribute(:s2b_position,@next_position)
+      end
     end
   end
 
@@ -186,18 +224,24 @@ class Scrum2bIssuesController < ApplicationController
   end
   
   def create
+    @sort_issue = @project.issues.where("status_id IN (?)", STATUS_IDS['status_no_start']) 
     @sprints = @project.versions.where(:status => "open")
     @priority = IssuePriority.all
     @status = IssueStatus.where("id IN (?)" , DEFAULT_STATUS_IDS['status_no_start'])
     @tracker = Tracker.all
     @member = @project.assignable_users
     @id_member = @member.collect{|id_member| id_member.id}
+    
     @issue = Issue.new(:subject => params[:subject], :description => params[:description], :tracker_id => params[:tracker],
                        :project_id => params[:project_id], :status_id => params[:status], :assigned_to_id => params[:assignee],
                        :priority_id => params[:priority], :fixed_version_id => params[:sprint], :start_date => params[:date_start],
                        :due_date => params[:date_end], :estimated_hours => params[:time], :author_id => params[:author],
-                       :done_ratio => 0, :is_private => false, :lock_version => 0, :s2b_position => 0)    
-    if @issue.save 
+                       :done_ratio => 0, :is_private => false, :lock_version => 0, :s2b_position => 1)    
+    
+    if @issue.save
+      @sort_issue.each do |issue|
+        issue.update_attribute(:s2b_position, issue.s2b_position.to_i+1) if issue.id != @issue.id
+      end
       data  = render_to_string(:partial => "/scrum2b_issues/board_issue", :locals => {:issue => @issue, :tracker => @tracker, :member => @member, :id_member => @id_member,
                                                                                       :status => @status, :priority => @priority, :sprint => @sprint})
       render :json => {:result => "create_success", :message => "Success to create the issue",
@@ -306,3 +350,4 @@ class Scrum2bIssuesController < ApplicationController
       return sort_versions
     end  
 end
+
