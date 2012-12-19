@@ -17,13 +17,11 @@
       <% end %>
       <option value="backlog" <% if params[:select_version] && params[:select_version] == 'backlog'%><%= selected="selected" %><% end %>><%= l(:label_select_backlog)%></option>
       
-      <% if @list_versions_closed %>
-        <optgroup label="<%= l(:label_group_closed_sprin)%>">
-          <% @list_versions_closed.each do |version|%>
-              <option value="<%= version.id %>" <%= "selected" if params[:select_version] && params[:select_version].to_i == version.id %>><%= version.name %></option>
-          <% end %>
-        </optgroup>
-      <% end %>
+      <optgroup label="<%= l(:label_group_closed_sprin)%>">
+        <% @list_versions_closed.each do |version|%>
+            <option value="<%= version.id %>" <%= "selected" if params[:select_version] && params[:select_version].to_i == version.id %>><%= version.name %></option>
+        <% end %>
+      </optgroup>
       <option value="all" <% if params[:select_version] && params[:select_version] == 'all'%><%= selected="selected" %><% end %>><%= l(:label_select_all_versions)%></option>
     </select>
   <%= form_tag %>
@@ -40,7 +38,7 @@
           <%= l(:label_move_issues)%>
         </button>
         <select id="change_sprint" class="span2">
-           <option><%= l(:label_version_backlog)%></option> 
+           <option value=""><%= l(:label_version_backlog)%></option> 
            <% @list_versions_open.each do |version|%>
             <option value="<%= version.id %>"><%= version.name %></option>
            <% end %>

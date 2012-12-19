@@ -1,5 +1,5 @@
  <% @sort_versions.each do |version,issue|%>
-  <% if !params[:select_version] || params[:select_version] && params[:select_version] == 'all' ||  params[:select_version] == 'version_working'%>
+  <% if !params[:select_version] || params[:select_version] && params[:select_version] == 'all' ||  params[:select_version] == 'version_working' %>
     <tr class="version_row">
   		<td colspan="8"><%= version %></td>
   	</tr>

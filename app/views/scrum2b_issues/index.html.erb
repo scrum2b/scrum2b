@@ -29,6 +29,12 @@
 </style>
 <script>
   jQuery(function() {
+    $("tr.version_row").each(function() {
+      if($(this).next().attr("class") != "issue_row")
+        {
+          $(this).hide();
+        }
+    });
     $("#check_all").toggle(function(){
       $("#table_issues tr td input:checkbox" ).attr( 'checked','checked');
 		},function(){
@@ -93,12 +99,7 @@
 			value:parseInt($(this).attr("value"))
 		});
 	});
-	$("tr.version_row").each(function() {
-		if($(this).next().attr("class") != "issue_row")
-		{
-			$(this).hide();
-		}
-	});
+	
 });
 </script>
 

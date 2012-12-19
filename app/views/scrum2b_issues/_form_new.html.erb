@@ -4,7 +4,7 @@
   
   <div  class="span12" style="margin:0 0 5px 0;">
     <div class="span6">
-      <p id="p_tracker_<%= issue.id%>"><span class="span5"><%= l(:label_tracker)%></span>
+      <p id="p_tracker_<%= issue.id%>"><span class="span5" style="font-size: 11px"><%= l(:label_tracker)%></span>
       <select class="span7 value_content" id="new_tracker_<%= issue.id%>">
         <% @tracker.each do |tracker|%>
             <option value="<%= tracker.id %>" <%= "selected" if tracker.id == issue.tracker_id %>><%= tracker.name %></option>
@@ -45,7 +45,6 @@
             <option value="<%= sprint.id %>"  <%= "selected" if sprint.id == issue.fixed_version_id %>><%= sprint.name %></option>
         <% end %>
       </select></p>
-      
       <p id="p_time_<%= issue.id%>"><span class="span5"><%= l(:label_head_issue_est_time)%> </span>
       <input class="span7 input-mini value_content"  id="new_time_<%= issue.id%>" value="<%= issue.estimated_hours %>" style="text"/></p>
       
