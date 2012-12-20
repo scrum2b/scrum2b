@@ -60,7 +60,7 @@
         if(this.checked==true) issue_id.push($(this).val());
       });
       if (issue_id.length === 0){
-        alert("Please select an issue...");
+        alert("<%= l(:label_error_select_issues)%>");
         return false;
         }
       else{
@@ -86,7 +86,7 @@
     	if(this.checked==true) issue_id.push($(this).val());
     });
   	if (issue_id.length === 0){
-    	alert("Please select an issue...");
+    	alert("<%= l(:label_error_select_issues)%>");
     	return false;
   	}else{
   	  var project_id = <%= @project.id %>

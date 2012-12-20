@@ -51,3 +51,4 @@ vi:
   label_me: "<< Tôi >>"
   label_change_sprint: "Đổi Phiên Bản"
   label_move_issues: "Chuyển Tới"
+  label_error_select_issues: "Hãy chon một vấn đề "
