@@ -59,18 +59,25 @@
       $('input[name="check"]').each(function() {
         if(this.checked==true) issue_id.push($(this).val());
       });
-      var new_sprint = $("#change_sprint").val();
-      var project_id = <%= @project.id %>
-      var url_ajax = 'change_sprint'
-      $.ajax({
-      url : url_ajax,
-      type : "POST",
-      data : 'issue_id=' + issue_id + '&project_id='+project_id + '&new_sprint=' + new_sprint,
-      dataType : "text",
-      success : function() {
-        location.reload();
+      if (issue_id.length === 0){
+        alert("Please select an issue...");
+        return false;
         }
-     });
+      else{
+        var new_sprint = $("#change_sprint").val();
+        var project_id = <%= @project.id %>
+        var url_ajax = 'change_sprint'
+        $.ajax({
+        url : url_ajax,
+        type : "POST",
+        data : 'issue_id=' + issue_id + '&project_id='+project_id + '&new_sprint=' + new_sprint,
+        dataType : "text",
+        success : function() {
+          location.reload();
+          }
+        });
+       }
+      
     });
     
   $("#btn_close_issue_list").live("click",function(){
@@ -78,19 +85,23 @@
   	$('input[name="check"]').each(function() {
     	if(this.checked==true) issue_id.push($(this).val());
     });
-  	console.debug(issue_id);
-  	var project_id = <%= @project.id %>
-  	var url_ajax = 'close'
-  	$.ajax({
-  		url : url_ajax,
-  		type : "POST",
-  		data : 'issue_id=' + issue_id + '&project_id='+project_id,
-  		dataType : "text",
-  		success : function() {
-    		$("#table_issues tr td input:checkbox").removeAttr('checked');
-    		location.reload();
-  		  }
-	   });
+  	if (issue_id.length === 0){
+    	alert("Please select an issue...");
+    	return false;
+  	}else{
+  	  var project_id = <%= @project.id %>
+      var url_ajax = 'close'
+      $.ajax({
+        url : url_ajax,
+        type : "POST",
+        data : 'issue_id=' + issue_id + '&project_id='+project_id,
+        dataType : "text",
+        success : function() {
+          $("#table_issues tr td input:checkbox").removeAttr('checked');
+          location.reload();
+          }
+       });
+  	}
 
 	});
 	$(".progressbar").each(function() {

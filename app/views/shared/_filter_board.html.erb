@@ -14,9 +14,9 @@
 		</select>
 		
 		<select name="select_version" id="select_version">
-			<option value="all" ><%= l(:label_select_all_versions)%></option>
+			<option value="all"><%= l(:label_select_all_versions)%></option>
 			<% @list_versions_open.each do |version|%>
-					<option value="<%= version.id %>" <% "selected" if params[:select_version] && params[:select_version].to_i == version.id %> ><%= version.name %></option>
+					<option value="<%= version.id %>" <%= "selected" if params[:select_version] && params[:select_version].to_i == version.id %> ><%= version.name %></option>
 			<% end %>
 			<% if @list_versions_closed %>
 				<optgroup label="<%= l(:label_group_closed_sprin)%>">

@@ -71,8 +71,11 @@
       </p>
     <% end %>
     
-    <p class="estimated" style="float: left;font-size: 12px;margin-top: 3px;">
+    <p class="estimated" style="float: left;font-size: 12px;margin-bottom:4px">
       <%= l(:label_board_issue_time)%><span id="est_<%= issue.id %>"> <%= issue.estimated_hours %></span>
+    </p><br />
+    <p class="sprint" style="font-size: 11px;width: 20%;line-height:0">
+      <%= link_to issue.fixed_version,:controller => 'versions', :action => 'show', :id => issue.fixed_version_id if issue.fixed_version_id %>
     </p>
-  </div>
+</div>
   
