@@ -65,7 +65,9 @@ class Scrum2bIssuesController < ApplicationController
        @version = @project.versions.where("status NOT IN (?)","closed").order("created_on")
      end
     @sort_versions = resort_for_version(@version, @issues)
-    @issues_backlog = @project.issues.where(:fixed_version_id => nil).order("status_id, s2b_position")
+    @id_issues = @issues.collect{|id_issue| id_issue.id}
+    @issues_backlog = @project.issues.where(:fixed_version_id => nil).where("id IN (?)",@id_issues).order("status_id, s2b_position")
+    
   end
   
   
