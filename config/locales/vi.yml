@@ -1,4 +1,3 @@
-# VietNam strings go here for Rails i18n
 vi:
   label_scrum2b: "Scrum2B"
   label_menu_issue: "Vấn Đề"
@@ -48,7 +47,9 @@ vi:
   label_priority: "Ưu tiên"
   label_start_date: "Bắt Đầu"
   label_end_date: "Kết Thúc"
+  label_sprint: "Phiên Bản"
   label_me: "<< Tôi >>"
+  
   label_change_sprint: "Đổi Phiên Bản"
   label_move_issues: "Chuyển Tới"
   label_error_select_issues: "Hãy chon một vấn đề "
