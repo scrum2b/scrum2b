@@ -48,8 +48,8 @@ de:
   label_start_date: "Beginndatum"
   label_end_date: "Abgabedatum"
   label_sprint: "Sprint"
-  label_me: "<< Me >>"
-  
-  label_change_sprint: "Change Sprint"
-  label_move_issues: "Move To"
-  label_error_select_issues: "Please select an issue..."
+  label_me: "<< Ich>>"
+
+  label_change_sprint: "Sprint anpassen"
+  label_move_issues: "Verschieben nach"
+  label_error_select_issues: "Bitte Ticket wählen..."
