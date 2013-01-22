@@ -7,7 +7,8 @@
       </p>
       <% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin%>
         <p class="new_issue ">
-        <i class="icon-plus-sign icon_new_issue"><span class="text_new "><%= l(:label_board_issue_new_issue)%></span></i> 
+        <img src="/plugin_assets/scrum2b/images/Add.ico" class="icon_new_issue icon">
+        <span class="text_new "><%= l(:label_board_issue_new_issue)%></span>
         </p>
       <% end %>
       <div class="connectedSortable" id ="<% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin%>new<% else %>new_nomember<% end %>" value="status_no_start">
@@ -45,8 +46,6 @@
     </div>
   </div>
 </div>
-<style>
-</style>
 <script>
   jQuery(function() {
     $("#completed").find(".close_issue").show();
@@ -132,7 +131,7 @@
     });
     $(".edit_issue").live("click", function(){
       var id_issue = parseInt($(this).parent().attr("value"))
-      $("i.edit_issue").show();
+      $(".edit_issue").show();
       $(this).hide();
       $("#completed").find(".close_issue").show();
       $("#close_"+id_issue).hide();
@@ -147,7 +146,7 @@
       $("#completed").find("#close_" + id_issue).show();
       $("#edit_issue_"+id_issue).hide();
       $("#show_issue_"+id_issue).show();
-      $("i.edit_issue").show();
+      $(".edit_issue").show();
       $(".readmore").show();
       $(".hide").hide();
       $(".description_readmore").hide();

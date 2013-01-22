@@ -1,5 +1,5 @@
 class Scrum2bIssuesController < ApplicationController
-  unloadable
+   layout nil
 
   before_filter :find_project, :only => [:index, :board, :update, :update_status, :update_progress, :create, :change_sprint, :close, :sort]
   before_filter :set_status_settings

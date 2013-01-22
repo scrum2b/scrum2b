@@ -103,15 +103,6 @@ margin:10px 0 0 0;
 		margin-right: 5px;
 		cursor: pointer;
 	}
-	.text_edit {
-		position: absolute;
-		padding: 2px 3px;
-		top: -30px;
-		left: -30px;
-		width: 65px;
-		display: none;
-		background: #e4e4e4;
-	}
 	.edit_issue:hover p.text_edit {
 		display: inline;
 	}
@@ -160,7 +151,7 @@ margin:10px 0 0 0;
 }
 .board_issue .subject p.subject_issue{
 	margin-left: 10px;
-	margin-right: 40px;
+	margin-right: 50px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -230,7 +221,20 @@ table#done tr td.done {
 .new_issue:hover .text_new {
 	display: inline;
 }
-
+img.icon{
+  height: 20px;
+  width:20px;
+  padding:0px;
+}
+p.text_edit {
+    position: absolute;
+    padding: 2px 3px;
+    top: -30px;
+    left: -30px;
+    width: 65px;
+    background: #e4e4e4;
+    color:#252525;
+  }
 .version_row {
 	background-color: #DFF0D8;
 }
@@ -284,20 +288,13 @@ table#done tr td.done {
   }
   #p_priority_{
   }
+  #div_change_sprint{
+  display:none;
+	}
 	#btn_close_issue_list{
   float: left;
 	}
-	#btn_change_sprint_issues{
+	#btn_change_sprint_issues,#change_sprint,#btn_move_issues,#cancel_move_issue{
 	  float:left;
 	  margin-left:5px;
-	}
-	#div_change_sprint{
-	  float: left;
-	  margin-left:5px;
-	  display:none;
-	}
-	#div_change_sprint{
-	  padding:5px;
-	  border: 1px solid #339BB9;
-	  margin-top:-15px;
 	}

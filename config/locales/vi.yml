@@ -53,3 +53,4 @@ vi:
   label_change_sprint: "Đổi Phiên Bản"
   label_move_issues: "Chuyển Tới"
   label_error_select_issues: "Hãy chon một vấn đề "
+  label_sure_to_close_issues: "Bạn chắc chắn muốn xóa vấn đề"

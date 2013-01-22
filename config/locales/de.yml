@@ -53,3 +53,4 @@ de:
   label_change_sprint: "Change Sprint"
   label_move_issues: "Move To"
   label_error_select_issues: "Please select an issue..."
+  label_sure_to_close_issues: "Are you sure to close the issues"

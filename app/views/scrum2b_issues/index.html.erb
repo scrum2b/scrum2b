@@ -37,12 +37,14 @@
 		
 		$("#btn_change_sprint_issues").click(function(){
 		  $(this).hide();
+		  $("#btn_close_issue_list").hide();
 		  $("#div_change_sprint").show();
 		  return false;
 		});
 		
 		$("#cancel_move_issue").click(function(){
        $("#div_change_sprint").hide();
+       $("#btn_close_issue_list").show();
       $("#btn_change_sprint_issues").show();
       $("#table_issues tr td input:checkbox").removeAttr('checked');
       return false;
@@ -83,17 +85,22 @@
     	alert("<%= l(:label_error_select_issues)%>");
     	return false;
   	}else{
-  	  var project_id = <%= @project.id %>
-      var url_ajax = 'close'
-      $.ajax({
-        url : url_ajax,
-        type : "POST",
-        data : 'issue_id=' + issue_id + '&project_id='+project_id,
-        dataType : "text",
-        success : function() {
-          location.reload();
-          }
-       });
+  	     if (confirm('<%= l(:label_sure_to_close_issues)%>')) {
+          var project_id = <%= @project.id %>
+          var url_ajax = 'close'
+          $.ajax({
+            url : url_ajax,
+            type : "POST",
+            data : 'issue_id=' + issue_id + '&project_id='+project_id,
+            dataType : "text",
+            success : function() {
+              location.reload();
+              }
+           });
+        }
+        else{
+          $("#table_issues tr td input:checkbox").removeAttr('checked');
+        }
   	}
 
 	});
