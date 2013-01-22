@@ -253,13 +253,17 @@ class Scrum2bIssuesController < ApplicationController
     end
   end
   def change_sprint
+    Rails.logger.info "checking action change sprint"
     array_id= Array.new
     array_id = params[:issue_id]
     @int_array = array_id.split(',').collect(&:to_i)
+      Rails.logger.info "intarray : #{@int_array.to_s}"
     @issues = @project.issues.where(:id => @int_array)
     @issues.each do |issues|
-      issues.update_attribute(:fixed_version_id,params[:new_sprint])
+      Rails.logger.info "param : #{params[:new_sprint].to_s}"
+    issues.update_attribute(:fixed_version_id,params[:new_sprint])
     end
+    redirect_to '/scrum2b_issues/index'
   end
 
   private
