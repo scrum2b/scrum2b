@@ -189,6 +189,7 @@
             $("#edit_issue_" + id_issue).replaceWith(data.edit_content).hide();
             editDate(id_issue); 
             form_edit(id_issue);
+            $("#completed").find(".icon_close_issue").show();
           }else if(data.result == "create_success"){
             $("#edit_issue_").find(".value_content").val("");
             $("#edit_issue_").hide();
