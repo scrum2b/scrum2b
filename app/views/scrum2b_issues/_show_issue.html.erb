@@ -2,14 +2,18 @@
       <p class="id" style="font-size: 13px;float: left">
       #<%= link_to issue.id,:controller => 'issues', :action => 'show', :id => issue.id %></p>
     <% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin %>
-      <img src="/plugin_assets/scrum2b/images/Close.ico" class="icon close_issue" id="close_<%= issue.id %>"/>
-      <p class="text_close">
-        <%= l(:label_board_issue_text_close_issue)%>
-      </p>
-      <img src="/plugin_assets/scrum2b/images/Edit.ico" class="edit_issue icon"/>
-      <p class="text_edit">
-        <%= l(:label_board_issue_text_edit_issue)%>
-      </p> 
+      <p class="icon_close_issue">
+        <img src="/plugin_assets/scrum2b/images/Close.ico" class="icon" id="close_<%= issue.id %>" alt="close_issue"/>
+        <span class="text_close">
+          <%= l(:label_board_issue_text_close_issue)%>
+        </span>
+      </p>  
+      <p class="icon_edit_issue">
+        <img src="/plugin_assets/scrum2b/images/Edit.ico" class="icon" alt="edit_issue"/>
+        <span class="text_edit">
+          <%= l(:label_board_issue_text_edit_issue)%>
+        </span> 
+      </p>  
     <% end %>
     <div class="subject" >
       <p class="no_edit subject_issue" id="subject_<%= issue.id%>">

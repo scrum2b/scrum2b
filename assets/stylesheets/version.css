@@ -97,16 +97,9 @@ margin:10px 0 0 0;
 		margin-top: 25px;
 		padding: 5px 0;
 	}
-	.edit_issue {
-		position: relative;
-		float: right;
-		margin-right: 5px;
-		cursor: pointer;
-	}
-	.edit_issue:hover p.text_edit {
-		display: inline;
-	}
-
+	
+	
+	
 	.submit_edit_issue {
 
 	}
@@ -176,42 +169,21 @@ table#done tr td.todo {
 table#done tr td.done {
 	background: #bae0ba;
 }
-.close_issue {
-	position: relative;
+.icon_close_issue {
 	float: right;
 	cursor: pointer;
 	display: none;
 }
-.text_close {
-	position: absolute;
-	padding: 2px 3px;
-	top: -30px;
-	left: -30px;
-	display: none;
-	background: #e4e4e4;
-}
+
 .text_new {
 	position: absolute;
 	padding: 2px 3px;
 	top: -30px;
-	right: -50px;
+	right:0;
 	display: none;
 	background: #e4e4e4;
 }
-.text_close_list {
-	position: absolute;
-	padding: 2px 3px;
-	top: -30px;
-	left: -30px;
-	display: none;
-	background: #e4e4e4;
-}
-.close_issue:hover p.text_close_list {
-	display: inline;
-}
-.close_issue:hover p.text_close {
-	display: inline;
-}
+
 .new_issue {
   float:right;
   position: relative;
@@ -225,16 +197,40 @@ img.icon{
   height: 20px;
   width:20px;
   padding:0px;
+  position: relative;
 }
-p.text_edit {
-    position: absolute;
-    padding: 2px 3px;
-    top: -30px;
-    left: -30px;
-    width: 65px;
-    background: #e4e4e4;
-    color:#252525;
-  }
+.no_edit {
+		position: relative;
+	}
+	.icon_edit_issue {
+		float: right;
+		margin-right: 5px;
+		cursor: pointer;
+	}
+	.icon_edit_issue:hover .text_edit {
+		display: inline;
+	}
+	.text_edit {
+		position: absolute;
+		padding: 2px 3px;
+		right: 0;
+		top: -30px;
+		background: #e4e4e4;
+		color: #252525;
+		display: none
+	}
+	.text_close {
+		position: absolute;
+		padding: 2px 3px;
+		right: 0px;
+		top: -30px;
+		background: #e4e4e4;
+		color: #252525;
+		display: none
+	}
+	.icon_close_issue:hover .text_close {
+		display: inline;
+	}
 .version_row {
 	background-color: #DFF0D8;
 }

@@ -46,10 +46,13 @@
     </div>
   </div>
 </div>
+<style>
+	
+</style>
 <script>
   jQuery(function() {
-    $("#completed").find(".close_issue").show();
-    $(".close_issue").live("click",function(){
+    $("#completed").find(".icon_close_issue").show();
+    $(".icon_close_issue").live("click",function(){
       var issue_id = $(this).parent().attr("value")
       var project_id = <%= @project.id %>
       var url_ajax = 'close'
@@ -75,13 +78,13 @@
       var url_ajax = 'update_status'
       var issue_id = $(this).find(".check").attr("id")
       if (status == "completed"){
-        $(this).find(".close_issue").show();
+        $(this).find(".icon_close_issue").show();
       }
       if (status == "started" ){
-        $(this).find(".close_issue").hide();
+        $(this).find(".icon_close_issue").hide();
       }
       if (status == "new"){
-        $(this).find(".close_issue").hide();
+        $(this).find(".icon_close_issue").hide();
       }
       $.ajax({
         url : url_ajax,
@@ -129,11 +132,11 @@
         value:parseInt($(this).attr("value"))
        });
     });
-    $(".edit_issue").live("click", function(){
+    $(".icon_edit_issue").live("click", function(){
       var id_issue = parseInt($(this).parent().attr("value"))
-      $(".edit_issue").show();
+      $(".icon_edit_issue").show();
       $(this).hide();
-      $("#completed").find(".close_issue").show();
+      $("#completed").find(".icon_close_issue").show();
       $("#close_"+id_issue).hide();
       $(".editing").hide();
       $(".no_edit").show();
@@ -146,7 +149,7 @@
       $("#completed").find("#close_" + id_issue).show();
       $("#edit_issue_"+id_issue).hide();
       $("#show_issue_"+id_issue).show();
-      $(".edit_issue").show();
+      $(".icon_edit_issue").show();
       $(".readmore").show();
       $(".hide").hide();
       $(".description_readmore").hide();
