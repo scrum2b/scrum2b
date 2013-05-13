@@ -1,17 +1,18 @@
-# VietNam strings go here for Rails i18n
 vi:
   label_scrum2b: "Scrum2B"
   label_menu_issue: "Vấn Đề"
   label_scrum2b_board: "Bảng "
   label_scrum2b_list: "Danh Sách"
   label_close_all_issues: "Đóng Vấn Đề"
-  label_select_all_issues_working: "Vấn Đề Đang Làm"
-  label_select_my_issues: "Vấn Đề Của Tôi"
-  label_select_my_issues_completed: "Vấn Đề Của Tôi Đã Hoàn Thành"
-  label_select_new_issues: "Tất Cả Vấn Đề Mới"
-  label_select_all_issuesl_completed: "Vấn Đề Của Đã Hoàn Thành"
-  label_select_all_issues_closed: "Vấn Đề Của Đã Đóng"
-  label_select_all_issues: "Tất Cả Vấn Đề"
+
+  label_select_issues_all_working: "Vấn Đề Đang Làm"
+  label_select_issues_my: "Vấn Đề Của Tôi"
+  label_select_issues_my_completed: "Vấn Đề Của Tôi Đã Hoàn Thành"
+  label_select_issues_new: "Tất Cả Vấn Đề Mới"
+  label_select_issues_completed: "Vấn Đề Của Đã Hoàn Thành"
+  label_select_issues_closed: "Vấn Đề Của Đã Đóng"
+  label_select_issues_all: "Tất Cả Vấn Đề"
+
   
   label_select_all_versions_working: "Phiên Bản Đang Làm Việc" 
   label_select_all_versions: "Tất Cả Phiên Bản"
@@ -47,4 +48,12 @@ vi:
   label_tracker: "Dòng vấn đề"
   label_priority: "Ưu tiên"
   label_start_date: "Bắt Đầu"
+
   label_end_date: "Kết Thúc"
+  label_sprint: "Phiên Bản"
+  label_me: "<< Tôi >>"
+  
+  label_change_sprint: "Đổi Phiên Bản"
+  label_move_issues: "Chuyển Tới"
+  label_error_select_issues: "Hãy chon một vấn đề "
+

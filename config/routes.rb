@@ -7,6 +7,8 @@ match 'scrum2b/update_status' => 'scrum2b_issues#update_status'
 match "scrum2b/update_progress" => "scrum2b_issues#update_progress"
 match "scrum2b/close" => "scrum2b_issues#close"
 match "scrum2b/update" => "scrum2b_issues#update"
-match "scrum2b/sort_issues" => "scrum2b_issues#sort_issues"
+
+match "scrum2b/sort" => "scrum2b_issues#sort"
 match "scrum2b/new" => "scrum2b_issues#new"
-match "scrum2b/createe" => "scrum2b_issues#create"
+match "scrum2b/create" => "scrum2b_issues#create"
+match "scrum2b/change_sprint" => "scrum2b_issues#change_sprint"

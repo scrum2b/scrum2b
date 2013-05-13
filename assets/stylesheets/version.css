@@ -50,7 +50,6 @@ select#select_issue {
 .btn_submit_board {
 	float: right;
 	margin:0 0 10px 0;
-	border: 1px solid red;
 }
 .filter {
 margin:10px 0 0 0;
@@ -248,7 +247,9 @@ table#done tr td.done {
 }
 .editing p span{
    line-height: 30px;
-   font-size: 9px;
+
+   font-size: 12px;
+
 }
 .editing select{
   background: #D9D9D9;
@@ -263,6 +264,7 @@ table#done tr td.done {
 .connectedSortable li{
   list-style: none;
 }
+
 #new_description_issue{
   height:100px;
 }
@@ -274,3 +276,44 @@ table#done tr td.done {
   float:right
   
 }
+
+
+  #create_issue{
+    font-size:11px;
+    display:none;
+  }
+  #create_issue p input{
+    margin-top:5px;
+  }
+  #create_issue p input{
+
+  }
+  #create_issue p {
+    margin-bottom:0;
+  }
+  #new_description{
+    height:150px;
+  }
+  #p_status_{
+    display:none;
+  }
+  #p_priority_{
+  }
+	#btn_close_issue_list{
+  float: left;
+	}
+	#btn_change_sprint_issues{
+	  float:left;
+	  margin-left:5px;
+	}
+	#div_change_sprint{
+	  float: left;
+	  margin-left:5px;
+	  display:none;
+	}
+	#div_change_sprint{
+	  padding:5px;
+	  border: 1px solid #339BB9;
+	  margin-top:-15px;
+	}
+

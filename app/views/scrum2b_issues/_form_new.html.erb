@@ -1,0 +1,64 @@
+<div class="editing clearfix" id="edit_issue_<%= issue.id %>" value="<%= issue.id %>">
+  <p><input class="span12 value_content" id="new_subject_<%= issue.id%>" type="text" value="<%= issue.subject %>"></p>
+  <textarea class="span12 value_content" id="new_description_<%= issue.id%>" style="height: 150px;margin-top:0"><%= issue.description %></textarea></p>
+  
+  <div  class="span12" style="margin:0 0 5px 0;">
+    <div class="span6">
+      <p id="p_tracker_<%= issue.id%>"><span class="span5" style="font-size: 11px"><%= l(:label_tracker)%></span>
+      <select class="span7 value_content" id="new_tracker_<%= issue.id%>">
+        <% @tracker.each do |tracker|%>
+            <option value="<%= tracker.id %>" <%= "selected" if tracker.id == issue.tracker_id %>><%= tracker.name %></option>
+        <% end %>
+      </select></p>
+      
+      <p id="p_status_<%= issue.id%>"><span class="span5"><%= l(:label_head_issue_status)%> </span>
+      <select class="span7 value_content" id="new_status_<%= issue.id%>">
+        <% @status.each do |status|%>
+            <option value="<%= status.id %>" <%= "selected" if status.id == issue.status_id %>><%= status.name %></option>
+        <% end %>
+      </select></p>
+      
+      <p id="p_priority_<%= issue.id%>"><span class="span5"><%= l(:label_priority)%> </span>
+      <select class="span7 value_content" id="new_priority_<%= issue.id%>">
+        <% @priority.each do |priority|%>
+            <option value="<%= priority.id %>" <%= "selected" if priority.id == issue.priority_id %>><%= priority.name %></option>
+        <% end %>
+      </select></p>
+      
+      <p id="p_assignee_<%= issue.id%>"><span class="span5"><%= l(:label_head_issue_assignee)%> </span>
+      <select class="span7 value_content" id="new_assignee_<%= issue.id%>">
+        <option></option>
+        <option value="<%= User.current.id %>" <%= "selected" if issue.assigned_to_id == User.current.id %>><%= l(:label_me)%></option>
+        <% @member.each do |assignee|%>
+            <option value="<%= assignee.id %>"  <%= "selected" if assignee.id == issue.assigned_to_id %>><%= assignee.name %></option>
+        <% end %>
+      </select></p>
+      <p><span class="span5"><%= l(:label_start_date)%></span>
+      <input class="span7 value_content"  id="new_date_start_<%= issue.id %>"  value="<%= format_date(issue.start_date)%>"></p>
+    </div>
+    
+    <div class="span6">
+      <p id="p_sprint_<%= issue.id%>"><span class="span5"><%= l(:label_sprint)%> </span>
+      <select class="span7 value_content" id="new_sprint_<%= issue.id%>">
+        <option></option>
+        <% @sprints.each do |sprint|%>
+            <option value="<%= sprint.id %>"  <%= "selected" if sprint.id == issue.fixed_version_id %>><%= sprint.name %></option>
+        <% end %>
+      </select></p>
+      <p id="p_time_<%= issue.id%>"><span class="span5"><%= l(:label_head_issue_est_time)%> </span>
+      <input class="span7 input-mini value_content"  id="new_time_<%= issue.id%>" value="<%= issue.estimated_hours %>" style="text"/></p>
+      
+      <p><span class="span5"><%= l(:label_end_date)%></span>
+      <input class="span7 value_content"  id="new_date_end_<%= issue.id %>" value="<%= format_date(issue.due_date)%>"/></p>
+
+    </div>
+  </div>
+  <div class="submit_new_issue span12" value = "<%= issue.id %>">
+    <button type="button" class="submit_issue btn-mini btn-primary">
+      <%= l(:label_board_edit_btn_submit)%>
+    </button>
+    <button type="button" class="cancel_issue btn-mini btn-danger">
+      <%= l(:label_board_edit_btn_cancel)%>
+    </button>
+  </div>
+</div>

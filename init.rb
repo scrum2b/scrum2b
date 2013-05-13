@@ -1,4 +1,15 @@
 require 'redmine'
+if Rails::VERSION::MAJOR < 3
+  require 'dispatcher'
+  object_to_prepare = Dispatcher
+else
+  object_to_prepare = Rails.configuration
+
+end
+object_to_prepare.to_prepare do
+  require_dependency 'scrum2b_issue_patch'
+end
+
 
 Redmine::Plugin.register :scrum2b do
   name 'Scrum2B Plugin'
@@ -14,9 +25,9 @@ Redmine::Plugin.register :scrum2b do
   settings :default => {'status_no_start'=> {}, 'status_inprogress' => {}, 'status_completed' => {}, 'status_closed' => {} }, :partial => 'settings/scrum2b'
   
   project_module :scrum2b do
-    permission :view_issue, :scrum2b_issues => :board
+    permission :view_issue, :scrum2b_issues => :index
   end
   
-  menu :project_menu, :scrum2b_issues, { :controller => :scrum2b_issues, :action => :board }, :caption => :label_scrum2b, :after => :activity, :param => :project_id
+  menu :project_menu, :scrum2b_issues, { :controller => :scrum2b_issues, :action => :index }, :caption => :label_scrum2b, :after => :activity, :param => :project_id
   
  end
