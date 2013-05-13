@@ -18,8 +18,7 @@
 		<tbody>
 			<% if @sort_versions %>
 				<%= render :partial => "version", :locals =>{:sort_versions => @sort_versions}  %>
-			<% end %>
-			<% if !params[:select_version] || params[:select_version] && params[:select_version] == 'all' ||  params[:select_version] == 'version_working' || params[:select_version] == 'backlog'%>
+				<% elsif !params[:select_version] || params[:select_version] && params[:select_version] == 'all' ||  params[:select_version] == 'version_working' || params[:select_version] == 'backlog'%>
 				<%= render :partial => "backlog", :locals =>{:issues_backlog => @issues_backlog }%>
 			<% end %>
 		</tbody>

@@ -1,4 +1,15 @@
 require 'redmine'
+if Rails::VERSION::MAJOR < 3
+  require 'dispatcher'
+  object_to_prepare = Dispatcher
+else
+  object_to_prepare = Rails.configuration
+
+end
+object_to_prepare.to_prepare do
+  require_dependency 'scrum2b_issue_patch'
+end
+
 
 Redmine::Plugin.register :scrum2b do
   name 'Scrum2B Plugin'

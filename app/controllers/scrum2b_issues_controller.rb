@@ -3,7 +3,7 @@ class Scrum2bIssuesController < ApplicationController
 
   before_filter :find_project, :only => [:index, :board, :update, :update_status, :update_progress, :create, :change_sprint, :close, :sort]
   before_filter :set_status_settings
-  
+  #before_filter :default_version, :only =>[ :index, :update]
   #layout false
   self.allow_forgery_protection = false
   
@@ -32,12 +32,11 @@ class Scrum2bIssuesController < ApplicationController
     @list_versions_open = @project.versions.where(:status => "open")
     @list_versions_closed = @project.versions.where(:status => "closed") 
     @id_member = @project.assignable_users.collect{|id_member| id_member.id}
-
     session[:view_issue] = params[:session] if params[:session]
-    
+ 
     #TODO: Duplicate code, please refactor it
     @list_versions = @project.versions.all
-    @id_version  = params[:select_version]  
+    params[:select_version] ||= default_version
     @select_issues  = (params[:select_issue] || "0").to_i 
     
     if @select_issues == SELECT_ISSUE_OPTIONS[:all]
@@ -45,7 +44,7 @@ class Scrum2bIssuesController < ApplicationController
     elsif @select_issues == SELECT_ISSUE_OPTIONS[:my]
       @issues =  @project.issues.where(:assigned_to_id => User.current.id).order("status_id, s2b_position")
     elsif @select_issues == SELECT_ISSUE_OPTIONS[:my_completed]
-      @issues =  @project.issues.where(:assigned_to_id => User.current.id).where("status_id IN (?)" , STATUS_IDS['status_completed']).order("status_id, s2b_position")
+     @issues =  @project.issues.where(:assigned_to_id => User.current.id).where("status_id IN (?)" , STATUS_IDS['status_completed']).order("status_id, s2b_position")
     elsif @select_issues == SELECT_ISSUE_OPTIONS[:new]
       @issues =  @project.issues.where("status_id IN (?)" , STATUS_IDS['status_no_start']).order("status_id, s2b_position")
     elsif @select_issues == SELECT_ISSUE_OPTIONS[:completed]
@@ -53,7 +52,7 @@ class Scrum2bIssuesController < ApplicationController
     elsif @select_issues == SELECT_ISSUE_OPTIONS[:closed]
       @issues =  @project.issues.where("status_id IN (?)" , STATUS_IDS['status_closed']).order("status_id, s2b_position")
     else
-      @issues = @project.issues.where("status_id NOT IN (?)", STATUS_IDS['status_closed']).order("status_id, s2b_position")
+      @issues =  @project.issues.where("status_id NOT IN (?)", STATUS_IDS['status_closed']).order("status_id, s2b_position")
     end
     
     #TODO: Logic is not clear, please refactor it
@@ -77,10 +76,11 @@ class Scrum2bIssuesController < ApplicationController
     Rails.logger.info "Test_PARAMS POSITION #{@max_position_issue.to_s}"
     @issue_no_position = @project.issues.where(:s2b_position => nil)
     @issue_no_position.each do |issue|
-        issue.update_attribute(:s2b_position,@max_position_issue)
-        @max_position_issue += 1
-      end
+    issue.update_attribute(:s2b_position,@max_position_issue)
+    @max_position_issue += 1
+    end
     session[:view_issue] = "board"
+    #params[:select_version] ||= default_version
     @issue = Issue.new
     @tracker = Tracker.all
     @status = IssueStatus.where("id IN (?)" , DEFAULT_STATUS_IDS['status_no_start'])
@@ -107,7 +107,6 @@ class Scrum2bIssuesController < ApplicationController
       conditions[0] += " AND assigned_to_id = ?"
       conditions << @select_issues.to_i
     end
-
     @new_issues = @project.issues.where(conditions).where("status_id IN (?)" , STATUS_IDS['status_no_start']).order(:s2b_position)
     @started_issues = @project.issues.where(conditions).where("status_id IN (?)" , STATUS_IDS['status_inprogress']).order(:s2b_position)
     @completed_issues = @project.issues.where(conditions).where("status_id IN (?)" , STATUS_IDS['status_completed']).order(:s2b_position)
@@ -177,7 +176,7 @@ class Scrum2bIssuesController < ApplicationController
   end
 
   def update_progress
-    @issue = @project.issues.find(params[:issue_id])
+     @issue = @project.issues.find(params[:issue_id])
     @issue.update_attribute(:done_ratio, params[:done_ratio])
     #TODO: we should have return JSON data to close the Loading form
     render :json => {:result => "success", :new => "Success to update the progress",
@@ -196,6 +195,7 @@ class Scrum2bIssuesController < ApplicationController
   end
 
   def update
+    params[:select_version] ||= default_version
     @sprints = @project.versions.where(:status => "open")
     @priority = IssuePriority.all
     @status = IssueStatus.where("id IN (?)" , DEFAULT_STATUS_IDS['status_no_start'])
@@ -266,6 +266,17 @@ class Scrum2bIssuesController < ApplicationController
     redirect_to '/scrum2b_issues/index'
   end
 
+def default_version
+
+    find_project unless @project
+    versions = @project.versions.where("status = 'open' AND effective_date > ?", Date.today).order("effective_date ASC").limit(1)
+    if versions.nil? or versions.empty?
+       0
+    else
+       # TODO should not have to do an extra sort here, but just order in the database. For some reason, the .order at the end of the above statement does not appear to be working:(
+       versions.sort{|x,y| x.effective_date <=> y.effective_date}.first.id
+    end
+  end
   private
 
   def find_project
