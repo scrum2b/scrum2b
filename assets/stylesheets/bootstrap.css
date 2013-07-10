@@ -80,15 +80,6 @@ img {
 }
 
 button,
-input,
-select,
-textarea {
-  margin: 0;
-  font-size: 100%;
-  vertical-align: middle;
-}
-
-button,
 input {
   *overflow: visible;
   line-height: normal;
@@ -155,14 +146,6 @@ textarea {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
           box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-size: 14px;
-  line-height: 20px;
-  color: #333333;
-  background-color: #ffffff;
 }
 
 a {
@@ -920,16 +903,6 @@ legend small {
   color: #999999;
 }
 
-label,
-input,
-button,
-select,
-textarea {
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 20px;
-}
-
 input,
 button,
 select,
@@ -957,24 +930,6 @@ input[type="url"],
 input[type="search"],
 input[type="tel"],
 input[type="color"],
-.uneditable-input {
-  display: inline-block;
-  height: 20px;
-  padding: 4px 6px;
-  margin-bottom: 9px;
-  font-size: 14px;
-  line-height: 20px;
-  color: #555555;
-  -webkit-border-radius: 3px;
-     -moz-border-radius: 3px;
-          border-radius: 3px;
-}
-
-input,
-textarea,
-.uneditable-input {
-  width: 206px;
-}
 
 textarea {
   height: auto;
@@ -1050,23 +1005,6 @@ input[type="button"],
 input[type="radio"],
 input[type="checkbox"] {
   width: auto;
-}
-
-select,
-input[type="file"] {
-  height: 30px;
-  /* In IE7, the height of the select element cannot be changed by height, only font-size */
-
-  *margin-top: 4px;
-  /* For IE7, add top margin to align select with labels */
-
-  line-height: 30px;
-}
-
-select {
-  width: 220px;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
 }
 
 select[multiple],

@@ -15,7 +15,6 @@
       <p class="no_edit subject_issue" id="subject_<%= issue.id%>">
         <%= issue.subject %></p>
     </div>
-  
     <div class="assignee clearfix">
       <i class="icon-arrow-right" style="float: left"></i>
       <% if issue.assigned_to %>
@@ -42,23 +41,20 @@
         <% end %>
       </div>
     </div>
-  
-    <% if issue.description != "" %>
+    <% if issue.description && issue.description != "" %>
       <div class="description">
-        <% if issue.description.length >= 100 %>
+        <% if issue.description.to_s.length >= 100 %>
           <div class="div_description description_hide" id="description_hide_<%= issue.id %>">
-            <%= raw(issue.description.first(100).html_safe.gsub(/\n/, " <br/> ")) %>
-            <br />
-            &hellip;
+            <%= raw(issue.description.truncate(100, :separator => ' ').html_safe.gsub(/\n/, " <br/> ")) %>
           </div>
           <div class="div_description description_readmore" id="description_readmore_<%= issue.id %>" style="display: none">
-            <%= raw(issue.description.html_safe.gsub(/\n/, " <br/>")) %>
+            <%= raw(issue.description.to_s.html_safe.gsub(/\n/, " <br/>")) %>
           </div>
           <a href="#" id="hide_<%= issue.id %>" class="hide no_edit" value="<%= issue.id %>"><%= l(:label_hide)%></a>
           <a href="#" id="readmore_<%= issue.id %>" class="readmore no_edit" value="<%= issue.id %>"><%= l(:label_readmore)%></a>
         <% else%>
-          <div class="no_edit div_description description_readmore" id="description_readmore_<%= issue.id %>">
-            <%= raw(issue.description.first(100).html_safe.gsub(/\n/, "<br/> ")) %>
+          <div class="no_edit div_description description_hide" id="description_hide_<%= issue.id %>">
+            <%= raw(issue.description.to_s.html_safe.gsub(/\n/, " <br/>")) %>
           </div>
         <% end %>
       </div>
@@ -66,16 +62,19 @@
     <% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin %>
       <div class="slider-horizontal" id="slider<%= issue.id%>" value="<%= issue.done_ratio%>" style="margin: 0 15px 5px 0"></div>
       <p style="float: right;color: #f6931f; font-weight: bold">% </p>
-      <input type="text" id="amount<%= issue.id%>" style="border:0;color: #f6931f; font-weight: bold;float: right;margin-bottom: 0;font-size: 13px;width: 25px;padding:0px;" />
+      <input type="button" id="amount<%= issue.id%>" style="background-color:white;border:0;color: #f6931f; font-weight: bold;float: right;margin-bottom: 0;font-size: 13px;width: 25px;padding:0px;cursor:default"/>
     <% else %>
       <div class="progressbar" value="<%= issue.done_ratio%>" id="progress<%= issue.id%>" style="height: 12px;margin: 0 15px 5px 0"></div>
       <p style="float: right;color: #f6931f; font-weight: bold">
         <%= issue.done_ratio%>%
       </p>
     <% end %>
-    
-    <p class="estimated" style="float: left;font-size: 12px;margin-top: 3px;">
+    <p class="estimated" style="float: left;font-size: 12px;margin-top: 5px">
       <%= l(:label_board_issue_time)%><span id="est_<%= issue.id %>"> <%= issue.estimated_hours %></span>
     </p>
-  </div>
+    <p class="sprint" style="font-size: 11px;text-align:center; margin-top: 10px">
+      <%= link_to issue.fixed_version,:controller => 'versions', :action => 'show', :id => issue.fixed_version_id if issue.fixed_version_id %>
+    </p>
+</div>
+
   

@@ -1,24 +1,24 @@
 # English strings go here for Rails i18n
 en:
   label_scrum2b: "Scrum2B"
-  label_menu_issue: "Issues"
+
   label_scrum2b_board: "Scrum Board"
-  label_scrum2b_list: "Sprin Backlogs"
+  label_scrum2b_list: "Sprint Backlogs"
   label_close_all_issues: "Close"
-  label_select_all_issues_working: "All Issues Working"
-  label_select_my_issues: "My Issues"
-  label_select_my_issues_completed: "My Issues Completed "
-  label_select_new_issues: "All New Issues"
-  label_select_all_issuesl_completed: "All Issues Completed "
-  label_select_all_issues_closed: "All Issues Closed"
-  label_select_all_issues: "All Issues"
+  label_select_issues_all_working: "All Issues Working"
+  label_select_issues_my: "My Issues"
+  label_select_issues_my_completed: "My Issues Completed "
+  label_select_issues_new: "All New Issues"
+  label_select_issues_completed: "All Issues Completed "
+  label_select_issues_closed: "All Issues Closed"
+  label_select_issues_all: "All Issues"
   
-  label_select_all_versions_working: "All Sprins Working" 
-  label_select_all_versions: "All Sprins"
+  label_select_all_versions_working: "All Sprints Working" 
+  label_select_all_versions: "All Sprints"
   label_select_backlog: "Backlog" 
   label_btn_submit_selected: "Filter"
-  label_group_closed_sprin: "Closed Sprin"
-  
+  label_group_closed_sprin: "Closed Sprint"
+
   label_head_issue_status: "Status"
   label_head_issue_subject: "Subject"
   label_head_issue_assignee: "Assignee"
@@ -26,9 +26,10 @@ en:
   label_head_issue_est_time: "Est Time"
   label_head_issue_done: "% Done"
   
+  
   label_version_backlog: "Backlog"
 
-  label_select_all_member: "All Member"
+  label_select_all_member: "All Members"
   label_select_me: "Me"
   label_board_status_new: "New Issues"
   label_board_status_inprogress: "In Progress"
@@ -48,3 +49,10 @@ en:
   label_priority: "Priority"
   label_start_date: "Start"
   label_end_date: "End"
+
+  label_sprint: "Sprint"
+  label_me: "<< Me >>"
+  
+  label_change_sprint: "Change Sprint"
+  label_move_issues: "Move To"
+  label_error_select_issues: "Please select an issue..."
