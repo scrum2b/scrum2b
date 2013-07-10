@@ -1,0 +1,57 @@
+# English strings go here for Rails i18n
+"pt-BR":
+  label_scrum2b: "Scrum2B"
+
+  label_scrum2b_board: "Scrum Board"
+  label_scrum2b_list: "Sprint Backlogs"
+  label_close_all_issues: "Fechar"
+  label_select_issues_all_working: "Todas as Tarefas Abertas"
+  label_select_issues_my: "Minhas Tarefas"
+  label_select_issues_my_completed: "Minhas Tarefas Completadas"
+  label_select_issues_new: "Todas as novas Tarefas"
+  label_select_issues_completed: "Todas as Tarefas Completadas"
+  label_select_issues_closed: "Todas as Tarefas Fechadas"
+  label_select_issues_all: "Todas as Tarefas"
+  
+  label_select_all_versions_working: "Todos os Sprints Abertos" 
+  label_select_all_versions: "Todos os Sprints"
+  label_select_backlog: "Backlog" 
+  label_btn_submit_selected: "Filtrar"
+
+  label_head_issue_status: "Status"
+  label_head_issue_subject: "Subject"
+  label_head_issue_assignee: "Assignee"
+  label_head_issue_updated: "Updated"
+  label_head_issue_est_time: "Est Time"
+  label_head_issue_done: "% Feita"
+  
+  
+  label_version_backlog: "Backlog"
+
+  label_select_all_member: "Todos os Membros"
+  label_select_me: "Mim"
+  label_board_status_new: "Novas Tarefas"
+  label_board_status_inprogress: "Em Progresso"
+  label_board_status_completed: "Completado"
+  
+  label_board_issue_text_close_issue: "Fechar Tarefa"
+  label_board_issue_text_edit_issue: "Editar Tarefa"
+  label_board_issue_time: "Tempo Estimado:"
+  label_board_issue_description: "Descrição"
+  label_board_issue_new_issue: "Nova Tarefa"
+  label_board_edit_btn_submit: "Enviar"
+  label_board_edit_btn_cancel: "Cancelar"
+  label_readmore: "Leia Mais"
+  label_hide: "Esconder"
+  
+  label_tracker: "Tipo"
+  label_priority: "Prioridade"
+  label_start_date: "Data Inicial"
+  label_end_date: "Data Final"
+
+  label_sprint: "Sprint"
+  label_me: "<< Mim >>"
+  
+  label_change_sprint: "Alterar de Sprint"
+  label_move_issues: "Mover para"
+  label_error_select_issues: "Por favor, selecione uma tarefa ..."
