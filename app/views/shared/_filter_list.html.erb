@@ -1,5 +1,5 @@
 <div class="container-fluid filter">
-  <%= form_tag :action => 'index',:project_id =>  params[:project_id] %>
+  <%= form_tag :action => 'index', :project_id =>  params[:project_id] do %>
     <%= button_tag l(:label_btn_submit_selected),:class => " btn btn-small btn-primary btn_submit" %>
     <select name="select_issue" id="select_issue">
       <% @select_issue_options.keys.each do |issue_type| %>
@@ -11,12 +11,20 @@
     
     <select name="select_version" id="select_version">
       <option value="version_working"<% if params[:select_version] && params[:select_version] == 'version_working'%><%= selected="selected" %><% end %> ><%= l(:label_select_all_versions_working)%></option>
-      <option value="all" <% if params[:select_version] && params[:select_version] == 'all'%><%= selected="selected" %><% end %>><%= l(:label_select_all_versions)%></option>
       <% @list_versions_open.each do |version|%>
-        <option value="<%= version.id %>" <%= "selected" if params[:select_version] && params[:select_version].to_i == version.id %> ><%= version.name %></option>
+        <option value="<%= version.id %>" <%= "selected" if params[:select_version] && params[:select_version].to_i == version.id %> 
+          ><%= version.name %></option>
       <% end %>
+      <option value="backlog" <% if params[:select_version] && params[:select_version] == 'backlog'%><%= selected="selected" %><% end %>><%= l(:label_select_backlog)%></option>
+      
+      <optgroup label="<%= l(:label_group_closed_sprin)%>">
+        <% @list_versions_closed.each do |version|%>
+            <option value="<%= version.id %>" <%= "selected" if params[:select_version] && params[:select_version].to_i == version.id %>><%= version.name %></option>
+        <% end %>
+      </optgroup>
+      <option value="all" <% if params[:select_version] && params[:select_version] == 'all'%><%= selected="selected" %><% end %>><%= l(:label_select_all_versions)%></option>
     </select>
-  <%= form_tag %>
+  <% end %>
 
   <% if  !User.current.anonymous?  && @id_member.include?(User.current.id)|| User.current.admin %>
       <button class="btn btn-danger btn-mini" id="btn_close_issue_list">

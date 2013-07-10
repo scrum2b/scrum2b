@@ -15,7 +15,7 @@ class Scrum2bIssuesController < ApplicationController
                           :new => 4, 
                           :completed => 5,
                           :closed => 6,
-                          :all => 7,}
+                          :all => 7}
     
   def index
     if session[:view_issue].nil? || session[:view_issue] == "board" && (params[:switch_screens] || "").blank?
@@ -160,10 +160,12 @@ class Scrum2bIssuesController < ApplicationController
   def update_status
     @issue = @project.issues.find(params[:issue_id])
     return unless @issue
+
     if params[:status] == "completed"
       #TODO: not optimize, please refactor
       @issue.update_attributes(:done_ratio => 100, :status_id => DEFAULT_STATUS_IDS['status_completed'])
       render :json => {:status => "completed", :done_ratio => 100 }
+
     elsif params[:status] == "started"
       @issue.update_attribute(:status_id, DEFAULT_STATUS_IDS['status_inprogress'])
     elsif params[:status] == "new"
@@ -181,9 +183,9 @@ class Scrum2bIssuesController < ApplicationController
 
   def close
     @project =  Project.find(params[:project_id])
-    array_id = Array.new
-    array_id = params[:issue_id]
-    @int_array = array_id.split(',').collect(&:to_i)
+    test= Array.new
+    test = params[:issue_id]
+    @int_array = test.split(',').collect(&:to_i)
     @issues = Issue.where(:id => @int_array)
     @issues.each do |issues|
       issues.update_attribute(:status_id,DEFAULT_STATUS_IDS['status_closed'])
@@ -233,7 +235,7 @@ class Scrum2bIssuesController < ApplicationController
                        :project_id => params[:project_id], :status_id => params[:status], :assigned_to_id => params[:assignee],
                        :priority_id => params[:priority], :fixed_version_id => params[:sprint], :start_date => params[:date_start],
                        :due_date => params[:date_end], :estimated_hours => params[:time], :author_id => params[:author],
-                       :done_ratio => 0, :is_private => false, :lock_version => 0 )    
+                       :done_ratio => 0, :is_private => false, :lock_version => 0 ) )    
     
     if @issue.save
       data  = render_to_string(:partial => "/scrum2b_issues/board_issue", :locals => {:issue => @issue, :tracker => @tracker, :member => @member, :id_member => @id_member,

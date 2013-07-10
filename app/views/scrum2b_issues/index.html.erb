@@ -16,7 +16,15 @@
 		</thead>
 
 		<tbody>
+			<% if @sort_versions %>
+				<%= render :partial => "version", :locals =>{:sort_versions => @sort_versions}  %>
+			<% elsif params[:select_version].nil? || 
+			         params[:select_version].blank? &&
+			         params[:select_version] == 'all' ||  
+			         params[:select_version] == 'version_working' || 
+			         params[:select_version] == 'backlog' %>
 				<%= render :partial => "backlog", :locals =>{:issues_backlog => @issues_backlog }%>
+		  <% end %>
 		</tbody>
 	</table>
 </div>
