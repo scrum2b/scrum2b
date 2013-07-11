@@ -48,7 +48,8 @@ Go to the Redmine plugin folder. Clone the plugin from GitHub:
 Go back to the Redmine folder, update your bundle and migrate the database:
 
     $ bundle install
-    $ rake redmine:plugins:migrate
+    $ rake redmine:plugins:migrate RAILS_ENV=production
+    
 
 Restart Redmine
 
