@@ -36,11 +36,11 @@ html[xmlns] .clearfix {
 	background: #e4e4e4;
 	color: #0044CC;
 }
-select#select_version {
+select#select_version_onboard,#select_version_onlist {
 	float: right;
 	margin: 0 5px 0;
 }
-select#select_issue {
+select#select_member ,#select_type_issue_onlist{
 	float: right;
 }
 .btn_submit {
@@ -190,9 +190,6 @@ table#done tr td.done {
   cursor: pointer;
   margin:5px 0 0 0;
 }
-.new_issue:hover .text_new {
-	display: inline;
-}
 img.icon{
   height: 20px;
   width:20px;
@@ -206,9 +203,6 @@ img.icon{
 		float: right;
 		margin-right: 5px;
 		cursor: pointer;
-	}
-	.icon_edit_issue:hover .text_edit {
-		display: inline;
 	}
 	.text_edit {
 		position: absolute;
@@ -227,9 +221,6 @@ img.icon{
 		background: #e4e4e4;
 		color: #252525;
 		display: none
-	}
-	.icon_close_issue:hover .text_close {
-		display: inline;
 	}
 .version_row {
 	background-color: #DFF0D8;
