@@ -1,10 +1,8 @@
-<%= render :partial => "/shared/plugin_header", :locals => {:is_board => true} %>
+<%= render :partial => "/shared/plugin_header", :locals => {:is_board => true, :member => @member, :list_versions_open => @list_versions_open, :list_versions_closed => @list_versions_closed} %>
 <div class="container-fluid">
   <%= render :partial => "screen_board", :locals => { :id_member =>@id_member ,:new_issues => @new_issues ,:started_issues => @started_issues ,:completed_issues => @completed_issues,:issue => @issue,
                                                       :tracker => @tracker , :priority => @priority,:member => @member,:status => @status,:sprints => @sprints} %>
 </div>
-<style>
-</style>
 <script>
   jQuery(function() {
     $("#completed").find(".icon_close_issue").show();
@@ -18,8 +16,7 @@
         data : 'issue_id=' + issue_id + '&project_id=' + project_id,
         dataType : "script",
         success : function() {
-         
-        }
+          }
       });
       return false;
     });
@@ -86,8 +83,7 @@
         data : 'issue_id=' + issue_id +'&id_prev=' + id_prev + '&project_id=' + project_id + '&id_next=' + id_next + '&new_status=' + new_status + '&old_status=' + old_status,
         dataType : "text",
         success : function(){
-        
-        }
+          }
         });
       }
     });
@@ -132,8 +128,8 @@
       var id_issue = $(this).parent().attr("value");
       if(id_issue != "" ){
         var url_ajax = "update";
-      } else {
-          var url_ajax = "create";
+      }else {
+         var url_ajax = "create";
       }
       var subject = $("#new_subject_"+id_issue).val();
       var description = $("#new_description_"+id_issue).val();
@@ -183,8 +179,7 @@
       editDate(id);
       if( id != ""){ 
         form_edit(id);
-      }
-      
+      }      
     })
     
     $(".readmore").live("click", function(){
@@ -254,6 +249,7 @@
           });
         }
       });
-      $( "#amount" + id ).val( $("#slider" + id).slider("value"));
+      $("#amount" + id ).val( $("#slider" + id).slider("value"));
+      $("#main-menu .s2b-lists").addClass("selected");
     }
 </script>

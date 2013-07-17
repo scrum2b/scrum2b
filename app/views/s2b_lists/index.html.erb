@@ -1,7 +1,6 @@
-
 <%= render :partial => "/shared/plugin_header", :locals => {:is_board => false} %>
 <div class="container-fluid" id="div_screen_list">
-  <%= render :partial => "/scrum2b_issues/screen_list", :locals => {:sort_versions => @sort_versions,:issues_backlog => @issues_backlog} %>
+  <%= render :partial => "screen_list", :locals => {:sort_versions => @sort_versions,:issues_backlog => @issues_backlog} %>
 </div>
 <script>
   jQuery(function() {
@@ -75,23 +74,22 @@
     	alert("<%= l(:label_error_select_issues)%>");
     	return false;
   	}else{
-  	     if (confirm('<%= l(:label_sure_to_close_issues)%>')) {
-          var project_id = <%= @project.id %>
-          var url_ajax = 'close_on_list'
-          $.ajax({
-            url : url_ajax,
-            type : "POST",
-            data : 'issue_id=' + issue_id + '&project_id='+project_id,
-            dataType : "script",
-            success : function() {            
-              }
-           });
-        }
-        else{
-          $("#table_issues tr td input:checkbox").removeAttr('checked');
-        }
+  	   if (confirm('<%= l(:label_sure_to_close_issues)%>')) {
+         var project_id = <%= @project.id %>
+         var url_ajax = 'close_on_list'
+         $.ajax({
+           url : url_ajax,
+           type : "POST",
+           data : 'issue_id=' + issue_id + '&project_id='+project_id,
+           dataType : "script",
+           success : function() {            
+             }
+          });
+       }
+       else{
+         $("#table_issues tr td input:checkbox").removeAttr('checked');
+       }
   	}
-
 	});
 	$(".progressbar").each(function() {
 		var id = parseInt($(this).attr("id"))
