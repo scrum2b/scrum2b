@@ -1,5 +1,5 @@
 <!-- confirmation popup -->
-<script type="text/javascript">
+<%= javascript_tag do %>
   Event.observe(window, 'load', function() {
     var confirm_msg = "<%= l(:text_are_you_sure) %>";
     var date_range_error_msg = "<%=  l(:error_banner_date_range) %>";
@@ -7,7 +7,7 @@
       checkDateRange(event, confirm_msg, date_range_error_msg);    
     })
   });
-</script>
+<% end %>
 <p>
   <%=content_tag(:label, "Not start")%>
   <% all_issue_statuses = IssueStatus.all.sort %>
