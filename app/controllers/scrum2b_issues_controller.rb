@@ -34,22 +34,16 @@ class Scrum2bIssuesController < ApplicationController
     session[:view_issue] = params[:session] if params[:session]
     @list_versions = @project.versions.all
     params[:select_version] ||= default_version
+    
     @select_issues  = (params[:select_issue] || "0").to_i 
-    if @select_issues == SELECT_ISSUE_OPTIONS[:all]
-      @issues =  @project.issues.order("status_id, s2b_position")
-    elsif @select_issues == SELECT_ISSUE_OPTIONS[:my]
-      @issues =  @project.issues.where(:assigned_to_id => User.current.id).order("status_id, s2b_position")
-    elsif @select_issues == SELECT_ISSUE_OPTIONS[:my_completed]
-     @issues =  @project.issues.where(:assigned_to_id => User.current.id).where("status_id IN (?)" , STATUS_IDS['status_completed']).order("status_id, s2b_position")
-    elsif @select_issues == SELECT_ISSUE_OPTIONS[:new]
-      @issues =  @project.issues.where("status_id IN (?)" , STATUS_IDS['status_no_start']).order("status_id, s2b_position")
-    elsif @select_issues == SELECT_ISSUE_OPTIONS[:completed]
-      @issues =  @project.issues.where("status_id IN (?)" , STATUS_IDS['status_completed']).order("status_id, s2b_position")
-    elsif @select_issues == SELECT_ISSUE_OPTIONS[:closed]
-      @issues =  @project.issues.where("status_id IN (?)" , STATUS_IDS['status_closed']).order("status_id, s2b_position")
-    else
-      @issues =  @project.issues.where("status_id NOT IN (?)", STATUS_IDS['status_closed']).order("status_id, s2b_position")
-    end
+    
+    @issues = @project.issues.order("status_id, s2b_position") if @select_issues == SELECT_ISSUE_OPTIONS[:all]
+    @issues ||= @project.issues.where(:assigned_to_id => User.current.id).order("status_id, s2b_position") if @select_issues == SELECT_ISSUE_OPTIONS[:my]
+    @issues ||= @project.issues.where(:assigned_to_id => User.current.id).where("status_id IN (?)" , STATUS_IDS['status_completed']).order("status_id, s2b_position") if @select_issues == SELECT_ISSUE_OPTIONS[:my_completed]
+    @issues ||= @project.issues.where("status_id IN (?)" , STATUS_IDS['status_no_start']).order("status_id, s2b_position") if @select_issues == SELECT_ISSUE_OPTIONS[:new]
+    @issues ||= @project.issues.where("status_id IN (?)" , STATUS_IDS['status_completed']).order("status_id, s2b_position") if @select_issues == SELECT_ISSUE_OPTIONS[:completed]
+    @issues ||= @project.issues.where("status_id IN (?)" , STATUS_IDS['status_closed']).order("status_id, s2b_position") if @select_issues == SELECT_ISSUE_OPTIONS[:closed]
+    @issues ||= @project.issues.where("status_id NOT IN (?)", STATUS_IDS['status_closed']).order("status_id, s2b_position")
     
     #TODO: Logic is not clear, please refactor it
      if @id_version && @id_version == "all"
