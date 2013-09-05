@@ -1,71 +1,40 @@
-<%= render :partial => "/shared/plugin_header", :locals => {:is_board => true} %>
-
+<%= render :partial => "/shared/plugin_header", :locals => {:is_board => true, :member => @member, :list_versions_open => @list_versions_open, :list_versions_closed => @list_versions_closed} %>
 <div class="container-fluid">
-  <div class="row-fluid">
-    <div class="board span4">
-      <p class="status">
-        <%= l(:label_board_status_new)%>
-      </p>
-      <% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin%>
-        <p class="new_issue ">
-        <i class="icon-plus-sign icon_new_issue"><span class="text_new "><%= l(:label_board_issue_new_issue)%></span></i> 
-        </p>
-      <% end %>
-      <div class="connectedSortable" id ="<% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin%>new<% else %>new_nomember<% end %>" value="status_no_start">
-        <%= render :partial => "form_new", :locals => { :issue => @issue} %>
-
-        <% @new_issues.each do |issue|%>
-          <li id ="<%= issue.id %>">
-            <%= render :partial => "board_issue", :locals => { :issue => issue} %>
-          </li>
-        <% end %>
-      </div>
-    </div>
-    <div class="board span4">
-      <p class="status">
-        <%= l(:label_board_status_inprogress)%>
-      </p>
-      <div class="connectedSortable" id ="<% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin%>started<% else %>started_nomember<% end %>" value="status_inprogress">
-        <% @started_issues.each do |issue|%>
-          <li id ="<%= issue.id %>">
-            <%= render :partial => "board_issue", :locals => { :issue => issue} %>
-          </li>
-        <% end %>
-      </div>
-    </div>
-    <div class="board span4">
-      <p class="status">
-        <%= l(:label_board_status_completed)%>
-      </p>
-      <div class="connectedSortable" id ="<% if !User.current.anonymous?  && @id_member.include?(User.current.id)|| User.current.admin%>completed<% else %>completed_nomember<% end %>" value="status_completed">
-        <% @completed_issues.each do |issue|%>
-        <li id ="<%= issue.id %>">
-          <%= render :partial => "board_issue", :locals => { :issue => issue} %>
-        </li>
-        <% end %>
-      </div>
-    </div>
-  </div>
+  <%= render :partial => "screen_board", :locals => { :id_member =>@id_member ,:new_issues => @new_issues ,:started_issues => @started_issues ,:completed_issues => @completed_issues,:issue => @issue,
+                                                      :tracker => @tracker , :priority => @priority,:member => @member,:status => @status,:sprints => @sprints} %>
 </div>
-<style>
-</style>
 <script>
   jQuery(function() {
-    $("#completed").find(".close_issue").show();
-    $(".close_issue").live("click",function(){
+    $("#completed").find(".icon_close_issue").show();
+    $(".icon_close_issue").live("click",function(){
       var issue_id = $(this).parent().attr("value")
       var project_id = <%= @project.id %>
-      var url_ajax = 'close'
+      var url_ajax = 'close_on_board'
       $.ajax({
         url : url_ajax,
         type : "POST",
         data : 'issue_id=' + issue_id + '&project_id=' + project_id,
-        dataType : "text",
+        dataType : "script",
         success : function() {
-          $("#"+issue_id).hide()
-        }
+          }
       });
+      return false;
     });
+    $("#btn_filter_issues_on_board").live("click",function(){
+      var select_version = $("#select_version_onboard").val()
+      var select_member = $("#select_member").val()
+      var project_id = <%= @project.id %>
+      var url_ajax = 'filter_issues_onboard'
+      $.ajax({
+        url : url_ajax,
+        type : "POST",
+        data : 'select_version=' + select_version + '&select_member=' + select_member + '&project_id=' + project_id,
+        dataType : "script",
+        success : function() {}
+      });
+      return false;
+    });
+    
     $( "#new, #started, #completed").sortable({
       scroll: true, scrollSensitivity: 100, scrollSpeed: 100,
       connectWith: ".connectedSortable",
@@ -78,13 +47,13 @@
       var url_ajax = 'update_status'
       var issue_id = $(this).find(".check").attr("id")
       if (status == "completed"){
-        $(this).find(".close_issue").show();
+        $(this).find(".icon_close_issue").show();
       }
       if (status == "started" ){
-        $(this).find(".close_issue").hide();
+        $(this).find(".icon_close_issue").hide();
       }
       if (status == "new"){
-        $(this).find(".close_issue").hide();
+        $(this).find(".icon_close_issue").hide();
       }
       $.ajax({
         url : url_ajax,
@@ -113,10 +82,8 @@
         type : "POST",
         data : 'issue_id=' + issue_id +'&id_prev=' + id_prev + '&project_id=' + project_id + '&id_next=' + id_next + '&new_status=' + new_status + '&old_status=' + old_status,
         dataType : "text",
-
         success : function(){
-        
-        }
+          }
         });
       }
     });
@@ -133,11 +100,11 @@
         value:parseInt($(this).attr("value"))
        });
     });
-    $(".edit_issue").live("click", function(){
+    $(".icon_edit_issue").live("click", function(){
       var id_issue = parseInt($(this).parent().attr("value"))
-      $("i.edit_issue").show();
+      $(".icon_edit_issue").show();
       $(this).hide();
-      $("#completed").find(".close_issue").show();
+      $("#completed").find(".icon_close_issue").show();
       $("#close_"+id_issue).hide();
       $(".editing").hide();
       $(".no_edit").show();
@@ -145,13 +112,12 @@
       $("#show_issue_" + id_issue).hide();
       $(".hide").hide();
     });
-
     $(".cancel_issue").live("click", function(){
       var id_issue = parseInt($(this).parent().attr("value"))
       $("#completed").find("#close_" + id_issue).show();
       $("#edit_issue_"+id_issue).hide();
       $("#show_issue_"+id_issue).show();
-      $("i.edit_issue").show();
+      $(".icon_edit_issue").show();
       $(".readmore").show();
       $(".hide").hide();
       $(".description_readmore").hide();
@@ -162,8 +128,8 @@
       var id_issue = $(this).parent().attr("value");
       if(id_issue != "" ){
         var url_ajax = "update";
-      } else {
-          var url_ajax = "create";
+      }else {
+         var url_ajax = "create";
       }
       var subject = $("#new_subject_"+id_issue).val();
       var description = $("#new_description_"+id_issue).val();
@@ -191,6 +157,7 @@
             $("#edit_issue_" + id_issue).replaceWith(data.edit_content).hide();
             editDate(id_issue); 
             form_edit(id_issue);
+            $("#completed").find(".icon_close_issue").show();
           }else if(data.result == "create_success"){
             $("#edit_issue_").find(".value_content").val("");
             $("#edit_issue_").hide();
@@ -212,8 +179,7 @@
       editDate(id);
       if( id != ""){ 
         form_edit(id);
-      }
-      
+      }      
     })
     
     $(".readmore").live("click", function(){
@@ -283,6 +249,7 @@
           });
         }
       });
-      $( "#amount" + id ).val( $("#slider" + id).slider("value"));
+      $("#amount" + id ).val( $("#slider" + id).slider("value"));
+      $("#main-menu .s2b-lists").addClass("selected");
     }
 </script>

@@ -1,0 +1,44 @@
+<div class="row-fluid" id="div_screen_board">
+    <div class="board span4" id="div_news">
+      <p class="status">
+        <%= l(:label_board_status_new)%>
+      </p>
+      <% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin%>
+        <p class="new_issue ">
+        <img src="/plugin_assets/scrum2b/images/Add.ico" title="<%= l(:label_board_issue_new_issue)%>" class="icon_new_issue icon">
+        </p>
+      <% end %>
+      <div class="connectedSortable" id ="<% if !User.current.anonymous? && id_member.include?(User.current.id)|| User.current.admin%>new<% else %>new_nomember<% end %>" value="status_no_start">
+        <%= render :partial => "form_new", :locals => { :issue => @issue} %>
+        <% new_issues.each do |issue|%>
+          <li id ="<%= issue.id %>">
+            <%= render :partial => "board_issue", :locals => { :issue => issue} %>
+          </li>
+        <% end %>
+      </div>
+    </div>
+    <div class="board span4" id="div_progress">
+      <p class="status">
+        <%= l(:label_board_status_inprogress)%>
+      </p>
+      <div class="connectedSortable" id ="<% if !User.current.anonymous? && id_member.include?(User.current.id)|| User.current.admin%>started<% else %>started_nomember<% end %>" value="status_inprogress">
+        <% started_issues.each do |issue|%>
+          <li id ="<%= issue.id %>">
+            <%= render :partial => "board_issue", :locals => { :issue => issue} %>
+          </li>
+        <% end %>
+      </div>
+    </div>
+    <div class="board span4" id="div_completed">
+      <p class="status">
+      <%= l(:label_board_status_completed)%>
+    </p>
+    <div class="connectedSortable" id ="<% if !User.current.anonymous?  && id_member.include?(User.current.id)|| User.current.admin%>completed<% else %>completed_nomember<% end %>" value="status_completed">
+      <% completed_issues.each do |issue|%>
+      <li id ="<%= issue.id %>">
+        <%= render :partial => "board_issue", :locals => { :issue => issue} %>
+      </li>
+      <% end %>
+    </div>
+    </div>
+  </div>

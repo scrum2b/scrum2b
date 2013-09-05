@@ -48,10 +48,11 @@ de:
   label_start_date: "Beginndatum"
   label_end_date: "Abgabedatum"
   label_sprint: "Sprint"
+
   label_me: "<< Ich>>"
 
   label_change_sprint: "Sprint anpassen"
   label_move_issues: "Verschieben nach"
   label_error_select_issues: "Bitte Ticket wählen..."
-
   permission_view_issue: "Ticket anzeigen"
+  label_sure_to_close_issues: "Are you sure to close the issues"

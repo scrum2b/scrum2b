@@ -45,10 +45,10 @@
             <option value="<%= sprint.id %>"  <%= "selected" if sprint.id == issue.fixed_version_id %>><%= sprint.name %></option>
         <% end %>
       </select></p>
-      <p id="p_time_<%= issue.id%>"><span class="span5"><%= l(:label_head_issue_est_time)%> </span>
+      <p id="p_time_<%= issue.id%>"><span class="span5" style="text-align:justify; white-space: nowrap;"><%= l(:label_head_issue_est_time)%> </span>
       <input class="span7 input-mini value_content"  id="new_time_<%= issue.id%>" value="<%= issue.estimated_hours %>" style="text"/></p>
       
-      <p><span class="span5"><%= l(:label_end_date)%></span>
+      <p><span class="span5" ><%= l(:label_end_date)%></span>
       <input class="span7 value_content"  id="new_date_end_<%= issue.id %>" value="<%= format_date(issue.due_date)%>"/></p>
 
     </div>
