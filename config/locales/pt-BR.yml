@@ -56,3 +56,5 @@ pt-BR:
   label_change_sprint: "Mudar Sprint"
   label_move_issues: "Mover para"
   label_error_select_issues: "Por favor selecione uma tarefa..."
+
+  permission_view_issue: "View Issue"

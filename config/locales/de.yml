@@ -53,3 +53,5 @@ de:
   label_change_sprint: "Sprint anpassen"
   label_move_issues: "Verschieben nach"
   label_error_select_issues: "Bitte Ticket wählen..."
+
+  permission_view_issue: "Ticket anzeigen"
