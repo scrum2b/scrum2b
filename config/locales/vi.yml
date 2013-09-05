@@ -57,3 +57,4 @@ vi:
   label_move_issues: "Chuyển Tới"
   label_error_select_issues: "Hãy chon một vấn đề "
 
+  permission_view_issue: "View Issue"
