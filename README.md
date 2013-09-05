@@ -6,7 +6,8 @@ Scrum2B is developed by Scrum2B Team.
 
 ***Contacts:***
 - Email: *scrum2b@ithanoi.com*
-- Website: *www.scrum2b.com*
+- Demo tool: *www.scrum2b.com*
+- Website: *www.scrumtobe.com*
 - Facebook: *www.facebook.com/ScrumToBe*
 
 
@@ -86,6 +87,7 @@ We want to implement new features in short term:
 If you have any comment/sugguession, please send message to us via Git Issues.
 
 Thanks and best regards,
-Scrum2B Team
+
+ScrumTobe Team
 
 
