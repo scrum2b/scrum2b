@@ -55,4 +55,4 @@ de:
   label_move_issues: "Verschieben nach"
   label_error_select_issues: "Bitte Ticket wählen..."
   permission_view_issue: "Ticket anzeigen"
-  label_sure_to_close_issues: "Are you sure to close the issues"
+  label_sure_to_close_issues: "Sind Sie sicher, dass Sie das Ticket schließen wollen"
