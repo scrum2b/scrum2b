@@ -1,10 +1,9 @@
 <% html_title "#{is_board ? "Scrum Board" : "Sprint Backlogs"} - #{@project.name}" %>
 <% content_for :header_tags do %>
   <%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
-  <%= stylesheet_link_tag 'jquery-ui-slider', :plugin => 'scrum2b' %>
   <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-  <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+  <%= stylesheet_link_tag 'application', :plugin => 'scrum2b' %>
+  <%= javascript_include_tag "application", :plugin => 'scrum2b' %>
 <% end %>
 <div class="container-fluid">
   <p class="issues">

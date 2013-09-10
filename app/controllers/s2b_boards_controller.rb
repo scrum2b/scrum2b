@@ -13,15 +13,20 @@ class S2bBoardsController < ApplicationController
                 'status_completed' => [], 'status_closed' => []}
  
   def index
+    #
     @max_position_issue = @project.issues.maximum(:s2b_position).to_i+1
     @issue_no_position = @project.issues.where(:s2b_position => nil)
     @issue_no_position.each do |issue|
-      issue.update_attribute(:s2b_position,@max_position_issue)
+      issue.update_attribute(:s2b_position, @max_position_issue)
       @max_position_issue += 1
     end
+    
     session[:view_issue] = "board"
+    
+    #TODO: thua code 2 dong du
     @list_versions_open = opened_versions_list
     @list_versions_closed = closed_versions_list
+
     @new_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_no_start']).order(:s2b_position)
     @started_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_inprogress']).order(:s2b_position)
     @completed_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_completed']).order(:s2b_position)     
@@ -43,6 +48,7 @@ class S2bBoardsController < ApplicationController
   def update_progress
     @issue = @project.issues.find(params[:issue_id])
     @issue.update_attribute(:done_ratio, params[:done_ratio])
+    #TODO: move message content to Location files
     render :json => {:result => "success", :new => "Success to update the progress",
                      :new_ratio => params[:done_ratio]}
   end
@@ -50,39 +56,52 @@ class S2bBoardsController < ApplicationController
   def close_on_board
     array_id= Array.new
     array_id = params[:issue_id]
+    
     @int_array = array_id.split(',').collect(&:to_i)
     @issues = @project.issues.where(:id => @int_array)
-      @issues.each do |issues|
-        issues.update_attribute(:status_id,DEFAULT_STATUS_IDS['status_closed'])
-      end
+    @issues.each do |issues|
+      issues.update_attribute(:status_id,DEFAULT_STATUS_IDS['status_closed'])
+    end
+    
     @new_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_no_start']).order(:s2b_position)
     @started_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_inprogress']).order(:s2b_position)
     @completed_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_completed']).order(:s2b_position)   
+    
     respond_to do |format|
       format.js {
-        @return_content = render_to_string(:partial => "/s2b_boards/screen_board",:locals => {:id_member => @id_member , :completed_issues => @completed_issues,:project => @project,:new_issues => @new_issues ,
-                                                                                          :started_issues => @started_issues,:tracker => @tracker , :priority => @priority,:member => @member,
-                                                                                          :issue => @issue,:status => @status,:sprints => @sprints })
+        @return_content = render_to_string(:partial => "/s2b_boards/screen_board",
+                                           :locals => {:id_member => @id_member , 
+                                                       :completed_issues => @completed_issues,
+                                                       :project => @project,
+                                                       :new_issues => @new_issues,
+                                                       :started_issues => @started_issues,
+                                                       :tracker => @tracker,
+                                                       :priority => @priority,
+                                                       :member => @member,
+                                                       :issue => @issue,
+                                                       :status => @status,
+                                                       :sprints => @sprints })
       }
     end
   end
 
   def update
-    @id_version  = params[:select_version]
-    @issue = @project.issues.find(params[:id_issue])
-    @issue.update_attributes(:subject => params[:subject], 
-                             :assigned_to_id => params[:assignee],
-                             :estimated_hours => params[:time],
-                             :description => params[:description], 
-                             :start_date => params[:date_start], 
-                             :due_date => params[:date_end], 
-                             :tracker_id => params[:tracker])
+    # Update attributes of issue from parameter
+    @id_version  = params[:issue][:sprint]
+    @issue = @project.issues.find(params[:issue][:id])
+    @issue.update_attributes(params[:issue])
+    
     if @issue.valid? 
       data  = render_to_string(:partial => "/s2b_boards/show_issue", 
                                :locals => {:issue => @issue, :id_member => @id_member})
       edit  = render_to_string(:partial => "/s2b_boards/form_new", 
-                               :locals => {:issue => @issue, :tracker => @tracker, :member => @member, :id_member => @id_member,
-                                           :status => @status, :priority => @priority, :sprint => @sprint})
+                               :locals => {:issue => @issue, 
+                                           :tracker => @tracker, 
+                                           :member => @member, 
+                                           :id_member => @id_member,
+                                           :status => @status, 
+                                           :priority => @priority, 
+                                           :sprint => @sprint})
       render :json => {:result => "edit_success", :message => "Success to update the message",
                        :content => data, :edit_content => edit }
     else
@@ -92,18 +111,21 @@ class S2bBoardsController < ApplicationController
   end
   
   def create
-    @sort_issue = @project.issues.where("status_id IN (?)", STATUS_IDS['status_no_start'])    
-    @issue = Issue.new(:subject => params[:subject], :description => params[:description], :tracker_id => params[:tracker],
-                       :project_id => params[:project_id], :status_id => params[:status], :assigned_to_id => params[:assignee],
-                       :priority_id => params[:priority], :fixed_version_id => params[:sprint], :start_date => params[:date_start],
-                       :due_date => params[:date_end], :estimated_hours => params[:time], :author_id => params[:author],
-                       :done_ratio => 0, :is_private => false, :lock_version => 0, :s2b_position => 1)    
+    @sort_issue = @project.issues.where("status_id IN (?)", STATUS_IDS['status_no_start'])
+    #Creat new issue
+    @issue = Issue.new(params[:issue])
     if @issue.save
       @sort_issue.each do |issue|
         issue.update_attribute(:s2b_position, issue.s2b_position.to_i+1) if issue.id != @issue.id
       end
-      data  = render_to_string(:partial => "/s2b_boards/board_issue", :locals => {:issue => @issue, :tracker => @tracker, :member => @member, :id_member => @id_member,
-                                                                                      :status => @status, :priority => @priority, :sprint => @sprint})
+      data  = render_to_string(:partial => "/s2b_boards/board_issue", 
+                               :locals => {:issue     => @issue, 
+                                           :tracker   => @tracker, 
+                                           :member    => @member, 
+                                           :id_member => @id_member,
+                                           :status    => @status, 
+                                           :priority  => @priority, 
+                                           :sprint    => @sprint})
       render :json => {:result => "create_success", :message => "Success to create the issue",
                        :content => data,:id => @issue.id}
     else
@@ -131,9 +153,18 @@ class S2bBoardsController < ApplicationController
     @completed_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_completed']).order(:s2b_position)
     respond_to do |format|
       format.js {
-        @return_content = render_to_string(:partial => "/s2b_boards/screen_board",:locals => {:id_member => @id_member , :completed_issues => @completed_issues,:project => @project,:new_issues => @new_issues ,
-                                                                                                  :started_issues => @started_issues,:tracker => @tracker , :priority => @priority,:member => @member,
-                                                                                                  :issue => @issue,:status => @status,:sprints => @sprints })
+        @return_content = render_to_string(:partial => "/s2b_boards/screen_board",
+                                           :locals => {:id_member => @id_member , 
+                                                       :completed_issues => @completed_issues,
+                                                       :project => @project,
+                                                       :new_issues => @new_issues,
+                                                       :started_issues => @started_issues,
+                                                       :tracker => @tracker, 
+                                                       :priority => @priority,
+                                                       :member => @member,
+                                                       :issue => @issue,
+                                                       :status => @status,
+                                                       :sprints => @sprints })
       }
     end
   end
@@ -152,6 +183,7 @@ class S2bBoardsController < ApplicationController
   
   def find_project
     # @project variable must be set before calling the authorize filter
+    Rails.logger.info "Test Params #{params[:issue]}"
     project_id = params[:project_id] || (params[:issue] && params[:issue][:project_id])
     @project = Project.find(project_id)
   end
