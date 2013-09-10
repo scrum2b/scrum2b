@@ -2,6 +2,7 @@
 <div class="container-fluid">
   <%= render :partial => "screen_board", :locals => { :id_member =>@id_member ,:new_issues => @new_issues ,:started_issues => @started_issues ,:completed_issues => @completed_issues,:issue => @issue,
                                                       :tracker => @tracker , :priority => @priority,:member => @member,:status => @status,:sprints => @sprints} %>
+
 </div>
 <script>
   jQuery(function() {
@@ -133,13 +134,13 @@
       }
       var subject = $("#new_subject_"+id_issue).val();
       var description = $("#new_description_"+id_issue).val();
-      var tracker = $("#new_tracker_"+id_issue).val();
-      var status = $("#new_status_"+id_issue).val();
-      var priority = $("#new_priority_"+id_issue).val();
-      var assignee = $("#new_assignee_"+id_issue).val();
-      var sprint = $("#new_sprint_"+id_issue).val();
-      var time = $("#new_time_"+id_issue).val();
-      var date_start = $("#new_date_start_"+id_issue).val();
+      var tracker_id = $("#new_tracker_"+id_issue).val();
+      var status_id = $("#new_status_"+id_issue).val();
+      var priority_id = $("#new_priority_"+id_issue).val();
+      var assigned_to_id = $("#new_assignee_"+id_issue).val();
+      var fixed_version_id = $("#new_sprint_"+id_issue).val();
+      var estimated_hours = $("#new_time_"+id_issue).val();
+      var due_date = $("#new_date_start_"+id_issue).val();
       var date_end = $("#new_date_end_"+id_issue).val();
       var project_id = <%= @project.id %>
       var author = <%= User.current.id %>
@@ -147,7 +148,8 @@
       $.ajax({
         url : url_ajax,
         type : "POST",
-        data : 'subject=' + subject + '&id_issue=' + id_issue + '&description=' + description + '&tracker=' + tracker + '&status=' + status + '&priority=' + priority + '&assignee= ' + assignee + '&sprint=' + sprint + '&time=' + time + '&date_start=' + date_start + '&date_end=' + date_end + '&project_id=' + project_id + '&author=' + author,
+        //data : 'subject=' + subject + '&id_issue=' + id_issue + '&description=' + description + '&tracker=' + tracker + '&status=' + status + '&priority=' + priority + '&assignee= ' + assignee + '&sprint=' + sprint + '&time=' + time + '&date_start=' + date_start + '&date_end=' + date_end + '&project_id=' + project_id + '&author=' + author,
+        data: $('#update_issue_'+id_issue).serialize(),
         dataType : "json",
         success : function(data) {
           if(data.result == "edit_success") {
