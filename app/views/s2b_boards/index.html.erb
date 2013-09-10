@@ -2,6 +2,7 @@
 <div class="container-fluid">
   <%= render :partial => "screen_board", :locals => { :id_member =>@id_member ,:new_issues => @new_issues ,:started_issues => @started_issues ,:completed_issues => @completed_issues,:issue => @issue,
                                                       :tracker => @tracker , :priority => @priority,:member => @member,:status => @status,:sprints => @sprints} %>
+
 </div>
 <script>
   jQuery(function() {
