@@ -17,7 +17,9 @@
             <option value="<%= tracker.id %>" <%= "selected" if tracker.id == issue.tracker_id %>><%= tracker.name %></option>
         <% end %>
       </select></p>
-      
+       <!--
+          Hide status field
+      -->
       <p id="p_status_<%= issue.id%>"><span class="span5"><%= l(:label_head_issue_status)%> </span>
       <select class="span7 value_content" name="issue[status_id]" id="new_status_<%= issue.id%>">
         <% @status.each do |status|%>
@@ -31,7 +33,6 @@
             <option value="<%= priority.id %>" <%= "selected" if priority.id == issue.priority_id %>><%= priority.name %></option>
         <% end %>
       </select></p>
-      
       <p id="p_assignee_<%= issue.id%>"><span class="span5"><%= l(:label_head_issue_assignee)%> </span>
       <select class="span7 value_content" name="issue[assigned_to_id]" id="new_assignee_<%= issue.id%>">
         <option></option>

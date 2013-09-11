@@ -13,7 +13,6 @@ class S2bBoardsController < ApplicationController
                 'status_completed' => [], 'status_closed' => []}
  
   def index
-    #
     @max_position_issue = @project.issues.maximum(:s2b_position).to_i+1
     @issue_no_position = @project.issues.where(:s2b_position => nil)
     @issue_no_position.each do |issue|
@@ -23,7 +22,6 @@ class S2bBoardsController < ApplicationController
     
     session[:view_issue] = "board"
     
-    #TODO: thua code 2 dong du
     @list_versions_open = opened_versions_list
     @list_versions_closed = closed_versions_list
 
@@ -191,7 +189,8 @@ class S2bBoardsController < ApplicationController
     @issue = Issue.new
     @priority = IssuePriority.all
     @tracker = Tracker.all
-    @status = IssueStatus.where("id IN (?)" , DEFAULT_STATUS_IDS['status_no_start'])
+    #@status = IssueStatus.where("id IN (?)" , DEFAULT_STATUS_IDS['status_no_start'])
+    @status = IssueStatus.all
     @sprints = @project.versions.where(:status => "open")
     @project =  Project.find(params[:project_id])
     @member = @project.assignable_users
