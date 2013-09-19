@@ -14,7 +14,7 @@ class S2bBoardsController < ApplicationController
  
   def index
     #
-    @max_position_issue = @project.issues.maximum(:s2b_position).to_i+1
+    @max_position_issue = @project.issues.maximum(:s2b_position).to_i + 1
     @issue_no_position = @project.issues.where(:s2b_position => nil)
     @issue_no_position.each do |issue|
       issue.update_attribute(:s2b_position, @max_position_issue)
@@ -73,28 +73,28 @@ class S2bBoardsController < ApplicationController
     elsif params[:new_status] != params[:old_status] && params[:id_next].to_i != 0 && params[:id_prev].to_i == 0
       @sort_issue = @project.issues.where("status_id IN (?)", STATUS_IDS[params[:new_status]])
       @sort_issue.each do |issue|
-        issue.update_attribute(:s2b_position,issue.s2b_position.to_i+1) if issue.id != @issue.id
+        issue.update_attribute(:s2b_position,issue.s2b_position.to_i + 1) if issue.id != @issue.id
       end
       @issue.update_attribute(:s2b_position,1)
     elsif params[:new_status] != params[:old_status] && params[:id_next].to_i != 0 && params[:id_prev].to_i != 0
       @sort_issue = @project.issues.where("status_id IN (?) AND s2b_position >= ? ", STATUS_IDS[params[:new_status]],@next_position)
       @sort_issue.each do |issue|
-        issue.update_attribute(:s2b_position,issue.s2b_position.to_i+1) if issue.id != @issue.id
+        issue.update_attribute(:s2b_position, issue.s2b_position.to_i + 1) if issue.id != @issue.id
       end
-      @issue.update_attribute(:s2b_position,@next_position)
+      @issue.update_attribute(:s2b_position, @next_position)
     elsif params[:new_status] == params[:old_status]
       if @prev_position && @old_position < @prev_position
         @sort_issue = @project.issues.where("status_id IN (?) AND s2b_position > ? AND s2b_position <= ? ", STATUS_IDS[params[:new_status]],@old_position,@prev_position)
         @sort_issue.each do |issue|
-          issue.update_attribute(:s2b_position,issue.s2b_position.to_i-1) if issue.id != @issue.id
+          issue.update_attribute(:s2b_position, issue.s2b_position.to_i - 1) if issue.id != @issue.id
         end
-        @issue.update_attribute(:s2b_position,@prev_position)   
+        @issue.update_attribute(:s2b_position, @prev_position)   
       elsif @old_position > @next_position
         @sort_issue = @project.issues.where("status_id IN (?) AND s2b_position < ? AND s2b_position >= ? ", STATUS_IDS[params[:new_status]],@old_position,@next_position)
         @sort_issue.each do |issue|
-          issue.update_attribute(:s2b_position,issue.s2b_position.to_i+1) if issue.id != @issue.id
+          issue.update_attribute(:s2b_position, issue.s2b_position.to_i + 1) if issue.id != @issue.id
         end
-        @issue.update_attribute(:s2b_position,@next_position)
+        @issue.update_attribute(:s2b_position, @next_position)
       end
     end
   end
@@ -106,7 +106,7 @@ class S2bBoardsController < ApplicationController
     @int_array = array_id.split(',').collect(&:to_i)
     @issues = @project.issues.where(:id => @int_array)
     @issues.each do |issues|
-      issues.update_attribute(:status_id,DEFAULT_STATUS_IDS['status_closed'])
+      issues.update_attribute(:status_id, DEFAULT_STATUS_IDS['status_closed'])
     end
     
     @new_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_no_start']).order(:s2b_position)
@@ -162,7 +162,7 @@ class S2bBoardsController < ApplicationController
     @issue = Issue.new(params[:issue])
     if @issue.save
       @sort_issue.each do |issue|
-        issue.update_attribute(:s2b_position, issue.s2b_position.to_i+1) if issue.id != @issue.id
+        issue.update_attribute(:s2b_position, issue.s2b_position.to_i + 1) if issue.id != @issue.id
       end
       data  = render_to_string(:partial => "/s2b_boards/board_issue", 
                                :locals => {:issue     => @issue, 
@@ -173,7 +173,7 @@ class S2bBoardsController < ApplicationController
                                            :priority  => @priority, 
                                            :sprint    => @sprint})
       render :json => {:result => "create_success", :message => "Success to create the issue",
-                       :content => data,:id => @issue.id}
+                       :content => data, :id => @issue.id}
     else
       render :json => {:result => "failure", :message => @issue.errors.full_messages}
     end
@@ -194,9 +194,11 @@ class S2bBoardsController < ApplicationController
       session[:conditions][0] += " AND assigned_to_id = ?"
       session[:conditions] << session[:params_select_member].to_i
     end
+
     @new_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_no_start']).order(:s2b_position)
     @started_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_inprogress']).order(:s2b_position)
     @completed_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_completed']).order(:s2b_position)
+
     respond_to do |format|
       format.js {
         @return_content = render_to_string(:partial => "/s2b_boards/screen_board",
@@ -219,12 +221,12 @@ class S2bBoardsController < ApplicationController
   
   def opened_versions_list
     find_project unless @project
-    return Version.where(status:"open").where(project_id: [@project.id,@project.parent_id])
+    return Version.where(:status => "open").where(:project_id => [@project.id, @project.parent_id])
   end
   
   def closed_versions_list 
     find_project unless @project
-    return Version.where(status:"closed").where(project_id: [@project.id,@project.parent_id])
+    return Version.where(:status => "closed").where(:project_id => [@project.id, @project.parent_id])
   end
   
   def find_project
