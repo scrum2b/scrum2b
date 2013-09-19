@@ -63,7 +63,7 @@ class S2bListsController < ApplicationController
       all_backlog_status.push(STATUS_IDS['status_completed'].dup)
       all_backlog_status.push(STATUS_IDS['status_closed'].dup)
     end
-    @issues = Issue.where(status_id: all_backlog_status.to_a).order("status_id, s2b_position DESC")
+    @issues = Issue.where(:status_id => all_backlog_status.to_a).order("status_id, s2b_position DESC")
     # Filter my issues 
     if session[:param_select_issues] == SELECT_ISSUE_OPTIONS[:my] || session[:param_select_issues] == SELECT_ISSUE_OPTIONS[:my_completed]
         @issues = @issues.where(:assigned_to_id => User.current.id)
@@ -76,7 +76,7 @@ class S2bListsController < ApplicationController
       versions = @project.versions.where("status NOT IN (?)","closed").order("created_on")
     end
     versions.each do |version|
-      @sort_versions[version] = @issues.where(fixed_version_id: version)
+      @sort_versions[version] = @issues.where(:fixed_version_id => version)
     end
     id_issues = @issues.collect{|id_issue| id_issue.id}
     @issue_backlogs = @project.issues.where(:fixed_version_id => nil).where("id IN (?)",id_issues).order("status_id, s2b_position")
@@ -103,12 +103,12 @@ class S2bListsController < ApplicationController
   
   def opened_versions_list
     find_project unless @project
-    return Version.where(status:"open").where(project_id: [@project.id,@project.parent_id])
+    return Version.where(:status => "open").where(:project_id => [@project.id,@project.parent_id])
   end
   
   def closed_versions_list 
     find_project unless @project
-    return Version.where(status:"closed").where(project_id: [@project.id,@project.parent_id])
+    return Version.where(:status => "closed").where(:project_id => [@project.id,@project.parent_id])
   end
   
   def find_project

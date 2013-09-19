@@ -219,12 +219,12 @@ class S2bBoardsController < ApplicationController
   
   def opened_versions_list
     find_project unless @project
-    return Version.where(status:"open").where(project_id: [@project.id,@project.parent_id])
+    return Version.where(:status => "open").where(:project_id => [@project.id,@project.parent_id])
   end
   
   def closed_versions_list 
     find_project unless @project
-    return Version.where(status:"closed").where(project_id: [@project.id,@project.parent_id])
+    return Version.where(:status => "closed").where(:project_id => [@project.id,@project.parent_id])
   end
   
   def find_project
