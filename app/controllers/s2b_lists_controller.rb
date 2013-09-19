@@ -30,19 +30,21 @@ class S2bListsController < ApplicationController
     array_id= Array.new
     array_id = params[:issue_id]
     int_array = array_id.split(',').collect(&:to_i)
+
     issues = @project.issues.where(:id => int_array)
     issues.each do |issue|
-      issue.update_attribute(:fixed_version_id,params[:new_sprint])
+      issue.update_attribute(:fixed_version_id, params[:new_sprint])
     end
     filter_issues_onlist
   end
   
   def filter_issues_onlist
     @sort_versions = {}
-      if session[:view_issue].nil? || session[:view_issue] == "board" && (params[:switch_screens] || "").blank?
-        redirect_to :controller => "s2b_boards", :action => "index" ,:project_id =>  params[:project_id]
-        return
-      end
+    if session[:view_issue].nil? || session[:view_issue] == "board" && (params[:switch_screens] || "").blank?
+      redirect_to :controller => "s2b_boards", :action => "index" ,:project_id =>  params[:project_id]
+      return
+    end
+    
     session[:view_issue] = "list"
     session[:param_select_version]  = (params[:select_version] || "version_working")
     session[:param_select_issues] = params[:select_issue].to_i if params[:select_issue]
@@ -63,11 +65,13 @@ class S2bListsController < ApplicationController
       all_backlog_status.push(STATUS_IDS['status_completed'].dup)
       all_backlog_status.push(STATUS_IDS['status_closed'].dup)
     end
-    @issues = Issue.where(status_id: all_backlog_status.to_a).order("status_id, s2b_position DESC")
+    
+    @issues = Issue.where(:status_id => all_backlog_status.to_a).order("status_id, s2b_position DESC")
     # Filter my issues 
     if session[:param_select_issues] == SELECT_ISSUE_OPTIONS[:my] || session[:param_select_issues] == SELECT_ISSUE_OPTIONS[:my_completed]
-        @issues = @issues.where(:assigned_to_id => User.current.id)
+      @issues = @issues.where(:assigned_to_id => User.current.id)
     end
+
     if session[:param_select_version] && session[:param_select_version] == "all"
       versions = @project.versions.order("created_on")
     elsif session[:param_select_version] && session[:param_select_version] != "version_working" && session[:param_select_version] != "all"
@@ -76,13 +80,14 @@ class S2bListsController < ApplicationController
       versions = @project.versions.where("status NOT IN (?)","closed").order("created_on")
     end
     versions.each do |version|
-      @sort_versions[version] = @issues.where(fixed_version_id: version)
+      @sort_versions[version] = @issues.where(:fixed_version_id => version)
     end
+    
     id_issues = @issues.collect{|id_issue| id_issue.id}
-    @issue_backlogs = @project.issues.where(:fixed_version_id => nil).where("id IN (?)",id_issues).order("status_id, s2b_position")
+    @issue_backlogs = @project.issues.where(:fixed_version_id => nil).where("id IN (?)", id_issues).order("status_id, s2b_position")
     respond_to do |format|
       format.js {
-        @return_content = render_to_string(:partial => "/s2b_lists/screen_list",:locals => {:sort_versions => @sort_versions,:issues_backlog => @issues_backlog})
+        @return_content = render_to_string(:partial => "/s2b_lists/screen_list", :locals => {:sort_versions => @sort_versions, :issues_backlog => @issues_backlog})
       }
       format.html {}
     end
@@ -92,9 +97,10 @@ class S2bListsController < ApplicationController
     array_id= Array.new
     array_id = params[:issue_id]
     int_array = array_id.split(',').collect(&:to_i)
+
     issues = @project.issues.where(:id => int_array)
     issues.each do |issue|
-      issue.update_attribute(:status_id,DEFAULT_STATUS_IDS['status_closed'])
+      issue.update_attribute(:status_id, DEFAULT_STATUS_IDS['status_closed'])
     end
     filter_issues_onlist   
   end
@@ -103,12 +109,12 @@ class S2bListsController < ApplicationController
   
   def opened_versions_list
     find_project unless @project
-    return Version.where(status:"open").where(project_id: [@project.id,@project.parent_id])
+    return Version.where(:status => "open").where( :project_id => [@project.id, @project.parent_id] )
   end
   
   def closed_versions_list 
     find_project unless @project
-    return Version.where(status:"closed").where(project_id: [@project.id,@project.parent_id])
+    return Version.where(:status => "closed").where( :project_id => [@project.id, @project.parent_id] )
   end
   
   def find_project
