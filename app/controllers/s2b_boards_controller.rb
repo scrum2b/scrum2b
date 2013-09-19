@@ -1,6 +1,6 @@
 class S2bBoardsController < ApplicationController
   unloadable
-  before_filter :find_project, :only => [:index, :update, :update_status, :update_progress, :create,
+  before_filter :find_project, :only => [:index, :update, :update_status, :update_progress, :create, :sort,
                                          :close_on_board, :filter_issues_onboard, :opened_versions_list, :closed_versions_list]
   before_filter :set_status_settings
   before_filter :check_before_board, :only => [:index, :close_on_board, :filter_issues_onboard, :update, :create]
@@ -51,6 +51,52 @@ class S2bBoardsController < ApplicationController
     #TODO: move message content to Location files
     render :json => {:result => "success", :new => "Success to update the progress",
                      :new_ratio => params[:done_ratio]}
+  end
+  
+  
+  def sort
+    @max_position = @project.issues.where("status_id IN (?)", STATUS_IDS[params[:new_status]]).maximum(:s2b_position)
+    @issue = @project.issues.find(params[:issue_id])
+    @old_position = @issue.s2b_position
+    if params[:id_next].to_i != 0
+      @next_issue = @project.issues.find(params[:id_next].to_i) 
+      @next_position = @next_issue.s2b_position
+    end
+    if params[:id_prev].to_i != 0
+      @prev_issue = @project.issues.find(params[:id_prev].to_i)
+      @prev_position = @prev_issue.s2b_position
+    end
+    if params[:new_status] != params[:old_status] && params[:id_next].to_i == 0 && params[:id_prev].to_i == 0
+      @issue.update_attribute(:s2b_position,1)
+    elsif params[:new_status] != params[:old_status] && params[:id_next].to_i == 0 && params[:id_prev].to_i != "" 
+      @issue.update_attribute(:s2b_position,@max_position.to_i+1)
+    elsif params[:new_status] != params[:old_status] && params[:id_next].to_i != 0 && params[:id_prev].to_i == 0
+      @sort_issue = @project.issues.where("status_id IN (?)", STATUS_IDS[params[:new_status]])
+      @sort_issue.each do |issue|
+        issue.update_attribute(:s2b_position,issue.s2b_position.to_i+1) if issue.id != @issue.id
+      end
+      @issue.update_attribute(:s2b_position,1)
+    elsif params[:new_status] != params[:old_status] && params[:id_next].to_i != 0 && params[:id_prev].to_i != 0
+      @sort_issue = @project.issues.where("status_id IN (?) AND s2b_position >= ? ", STATUS_IDS[params[:new_status]],@next_position)
+      @sort_issue.each do |issue|
+        issue.update_attribute(:s2b_position,issue.s2b_position.to_i+1) if issue.id != @issue.id
+      end
+      @issue.update_attribute(:s2b_position,@next_position)
+    elsif params[:new_status] == params[:old_status]
+      if @prev_position && @old_position < @prev_position
+        @sort_issue = @project.issues.where("status_id IN (?) AND s2b_position > ? AND s2b_position <= ? ", STATUS_IDS[params[:new_status]],@old_position,@prev_position)
+        @sort_issue.each do |issue|
+          issue.update_attribute(:s2b_position,issue.s2b_position.to_i-1) if issue.id != @issue.id
+        end
+        @issue.update_attribute(:s2b_position,@prev_position)   
+      elsif @old_position > @next_position
+        @sort_issue = @project.issues.where("status_id IN (?) AND s2b_position < ? AND s2b_position >= ? ", STATUS_IDS[params[:new_status]],@old_position,@next_position)
+        @sort_issue.each do |issue|
+          issue.update_attribute(:s2b_position,issue.s2b_position.to_i+1) if issue.id != @issue.id
+        end
+        @issue.update_attribute(:s2b_position,@next_position)
+      end
+    end
   end
   
   def close_on_board
@@ -187,6 +233,7 @@ class S2bBoardsController < ApplicationController
     project_id = params[:project_id] || (params[:issue] && params[:issue][:project_id])
     @project = Project.find(project_id)
   end
+
   def check_before_board
     @issue = Issue.new
     @priority = IssuePriority.all
