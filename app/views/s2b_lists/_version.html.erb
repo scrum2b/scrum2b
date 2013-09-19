@@ -5,15 +5,15 @@
           <td colspan="8"><%= version %></td>
         </tr>
       <% issue.each do |issue|%>
-        <tr class="issue_row">
-              <%= render :partial => "list_issues", :locals => { :issue => issue} %>
+        <tr class="issue <%= cycle("odd", "even") %>">
+          <%= render :partial => "list_issues", :locals => { :issue => issue} %>
         </tr>
       <% end %>
     <% end %>
   <% else %>
      <% if issue.empty? != true %>
       <% issue.each do |issue|%>
-        <tr class="issue_row">
+        <tr class="issue <%= cycle("odd", "even") %>">
               <%= render :partial => "list_issues", :locals => { :issue => issue} %>
         </tr>
       <% end %>

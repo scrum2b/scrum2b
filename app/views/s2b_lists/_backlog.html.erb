@@ -4,7 +4,7 @@
   </tr>
 <% end %>
 <% issues_backlog.each do |issue|%>
-  <tr class="issue_row">
+  <tr class="issue <%= cycle("odd", "even") %>">
     <%= render :partial => "list_issues", :locals => { :issue => issue} %>
   </tr>
 <% end %>

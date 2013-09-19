@@ -1,8 +1,8 @@
 <%= render :partial => "/shared/plugin_header", :locals => {:is_board => false} %>
-<div class="container-fluid" id="div_screen_list">
+<div id="div_screen_list">
   <%= render :partial => "screen_list", :locals => {:sort_versions => @sort_versions,:issues_backlog => @issues_backlog} %>
 </div>
-<script>
+<script language="JavaScript">
   $(document).ready(function() {
 
     $("#check_all").toggle(function(){
