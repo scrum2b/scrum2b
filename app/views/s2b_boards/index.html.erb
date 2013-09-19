@@ -5,13 +5,18 @@
 
 </div>
 <script>
-  jQuery(function() {
+  $(document).ready(function() {
     $("#completed").find(".icon_close_issue").show();
     
     $(".icon_close_issue").live("click",function(){
+      if(!confirm('<%= l(:label_sure_to_close_issues)%>')){
+        return;
+      }
+
       var issue_id = $(this).parent().attr("value")
       var project_id = <%= @project.id %>
       var url_ajax = 'close_on_board'
+
       $.ajax({
         url : url_ajax,
         type : "POST",
