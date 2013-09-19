@@ -1,6 +1,6 @@
 class S2bListsController < ApplicationController
   unloadable
-  before_filter :find_project, :only => [:index, :change_sprint, :close_on_list, :sort,
+  before_filter :find_project, :only => [:index, :change_sprint, :close_on_list,
                                          :filter_issues_onlist]
   before_filter :set_status_settings 
   before_filter :filter_issues_onlist, :only => [:index]
@@ -24,54 +24,6 @@ class S2bListsController < ApplicationController
     @list_versions_closed = closed_versions_list 
     @id_member = @project.assignable_users.collect{|id_member| id_member.id}
     @list_versions = @project.versions.all
-  end
-  
-  
-  def sort
-    @max_position = @project.issues.where("status_id IN (?)", STATUS_IDS[params[:new_status]]).maximum(:s2b_position)
-    @issue = @project.issues.find(params[:issue_id])
-    @old_position = @issue.s2b_position
-    if params[:id_next].to_i != 0
-      @next_issue = @project.issues.find(params[:id_next].to_i) 
-      @next_position = @next_issue.s2b_position
-    end
-    if params[:id_prev].to_i != 0
-      @prev_issue = @project.issues.find(params[:id_prev].to_i)
-      @prev_position = @prev_issue.s2b_position
-    end
-    if params[:new_status] != params[:old_status] && params[:id_next].to_i == 0 && params[:id_prev].to_i == 0
-      
-       @issue.update_attribute(:s2b_position,1)
-    elsif params[:new_status] != params[:old_status] && params[:id_next].to_i == 0 && params[:id_prev].to_i != "" 
-      @issue.update_attribute(:s2b_position,@max_position.to_i+1)
-    elsif params[:new_status] != params[:old_status] && params[:id_next].to_i != 0 && params[:id_prev].to_i == 0
-      @sort_issue = @project.issues.where("status_id IN (?)", STATUS_IDS[params[:new_status]])
-      @sort_issue.each do |issue|
-        issue.update_attribute(:s2b_position,issue.s2b_position.to_i+1) if issue.id != @issue.id
-      end
-      @issue.update_attribute(:s2b_position,1)
-    elsif params[:new_status] != params[:old_status] && params[:id_next].to_i != 0 && params[:id_prev].to_i != 0
-       @sort_issue = @project.issues.where("status_id IN (?) AND s2b_position >= ? ", STATUS_IDS[params[:new_status]],@next_position)
-
-       @sort_issue.each do |issue|
-        issue.update_attribute(:s2b_position,issue.s2b_position.to_i+1) if issue.id != @issue.id
-      end
-      @issue.update_attribute(:s2b_position,@next_position)
-    elsif params[:new_status] == params[:old_status]
-      if @prev_position && @old_position < @prev_position
-        @sort_issue = @project.issues.where("status_id IN (?) AND s2b_position > ? AND s2b_position <= ? ", STATUS_IDS[params[:new_status]],@old_position,@prev_position)
-        @sort_issue.each do |issue|
-          issue.update_attribute(:s2b_position,issue.s2b_position.to_i-1) if issue.id != @issue.id
-        end
-        @issue.update_attribute(:s2b_position,@prev_position)   
-      elsif @old_position > @next_position
-        @sort_issue = @project.issues.where("status_id IN (?) AND s2b_position < ? AND s2b_position >= ? ", STATUS_IDS[params[:new_status]],@old_position,@next_position)
-        @sort_issue.each do |issue|
-          issue.update_attribute(:s2b_position,issue.s2b_position.to_i+1) if issue.id != @issue.id
-        end
-        @issue.update_attribute(:s2b_position,@next_position)
-      end
-    end
   end
   
   def change_sprint
