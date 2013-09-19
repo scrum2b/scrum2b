@@ -89,7 +89,7 @@ class S2bBoardsController < ApplicationController
           issue.update_attribute(:s2b_position, issue.s2b_position.to_i - 1) if issue.id != @issue.id
         end
         @issue.update_attribute(:s2b_position, @prev_position)   
-      elsif @old_position > @next_position
+      elsif @next_position && @old_position > @next_position
         @sort_issue = @project.issues.where("status_id IN (?) AND s2b_position < ? AND s2b_position >= ? ", STATUS_IDS[params[:new_status]],@old_position,@next_position)
         @sort_issue.each do |issue|
           issue.update_attribute(:s2b_position, issue.s2b_position.to_i + 1) if issue.id != @issue.id
