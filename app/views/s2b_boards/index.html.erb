@@ -7,6 +7,7 @@
 <script>
   jQuery(function() {
     $("#completed").find(".icon_close_issue").show();
+    
     $(".icon_close_issue").live("click",function(){
       var issue_id = $(this).parent().attr("value")
       var project_id = <%= @project.id %>
@@ -21,6 +22,7 @@
       });
       return false;
     });
+    
     $("#btn_filter_issues_on_board").live("click",function(){
       var select_version = $("#select_version_onboard").val()
       var select_member = $("#select_member").val()
@@ -134,26 +136,14 @@
       if(id_issue != "" ){
         var url_ajax = "update";
       }else{
-         var url_ajax = "create";
+        var url_ajax = "create";
       }
-      var subject = $("#new_subject_"+id_issue).val();
-      var description = $("#new_description_"+id_issue).val();
-      var tracker_id = $("#new_tracker_"+id_issue).val();
-      var status_id = $("#new_status_"+id_issue).val();
-      var priority_id = $("#new_priority_"+id_issue).val();
-      var assigned_to_id = $("#new_assignee_"+id_issue).val();
-      var fixed_version_id = $("#new_sprint_"+id_issue).val();
-      var estimated_hours = $("#new_time_"+id_issue).val();
-      var due_date = $("#new_date_start_"+id_issue).val();
-      var date_end = $("#new_date_end_"+id_issue).val();
-      var project_id = <%= @project.id %>
-      var author = <%= User.current.id %>
+      
       var slide_value = $("#slider" + id_issue).attr("value");
       $.ajax({
         url : url_ajax,
         type : "POST",
-        //data : 'subject=' + subject + '&id_issue=' + id_issue + '&description=' + description + '&tracker=' + tracker + '&status=' + status + '&priority=' + priority + '&assignee= ' + assignee + '&sprint=' + sprint + '&time=' + time + '&date_start=' + date_start + '&date_end=' + date_end + '&project_id=' + project_id + '&author=' + author,
-        data: $('#update_issue_'+id_issue).serialize(),
+        data: $('#update_issue_' + id_issue).serialize(),
         dataType : "json",
         success : function(data) {
           if(data.result == "edit_success") {
@@ -168,7 +158,7 @@
             $("#edit_issue_").find(".value_content").val("");
             $("#edit_issue_").hide();
             $("#edit_issue_").after(data.content)
-            makeSlider(data.id,0);
+            makeSlider(data.id, 0);
             editDate(data.id); 
             form_edit(data.id);
           }
