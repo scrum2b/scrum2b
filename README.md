@@ -83,6 +83,7 @@ We want to implement new features in short term:
 1. Burndown chart based on Estimate Time and Spent Time.
 2. The check list for each issues.
 
+
 If you have any comment/sugguession, please send message to us via Git Issues.
 
 
@@ -90,10 +91,12 @@ If you have any comment/sugguession, please send message to us via Git Issues.
 UNINSTALLATION
 --------------
 
+
 1. Go to the Redmine folder, run rake command to undo migrate the database:
 
-$ bundle install
-$ rake redmine:plugins:migrate NAME=scrum2b VERSION=0 RAILS_ENV=production 
+
+    $ bundle install
+    $ rake redmine:plugins:migrate NAME=scrum2b VERSION=0 RAILS_ENV=production 
 
     Parameter "VERSION=0" is very important, it set to revert migrations in the plugin.
     
