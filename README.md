@@ -99,7 +99,7 @@ UNINSTALLATION
 
     *(Parameter "VERSION=0" is very important, it set to revert migrations in the plugin.)*
     
-2. Remove the plugin from the plugins folder: #{RAILS_ROOT}/scrum2b
+2. Remove the plugin from the plugins folder: #{RAILS_ROOT}/plugins/scrum2b
 
 3. Restart Redmine
 
