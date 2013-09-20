@@ -93,12 +93,11 @@ UNINSTALLATION
 
 
 1. Go to the Redmine folder, run rake command to undo migrate the database:
-
-
-    $ bundle install
+  
     $ rake redmine:plugins:migrate NAME=scrum2b VERSION=0 RAILS_ENV=production 
 
-    Parameter "VERSION=0" is very important, it set to revert migrations in the plugin.
+
+*(Parameter "VERSION=0" is very important, it set to revert migrations in the plugin.)*
     
 2. Remove the plugin from the plugins folder: #{RAILS_ROOT}/scrum2b
 
