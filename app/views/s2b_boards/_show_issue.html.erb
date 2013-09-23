@@ -1,6 +1,6 @@
-<div class="no_edit" id="show_issue_<%= issue.id %>" value="<%= issue.id %>">
-      <p class="id" style="font-size: 13px;float: left">
-      #<%= link_to issue.id,:controller => 'issues', :action => 'show', :id => issue.id %></p>
+<div class="show_form" id="show_issue_<%= issue.id %>" value="<%= issue.id %>">
+  <p class="id" style="font-size: 13px;float: left">
+    <%= link_to "##{issue.id}", :controller => 'issues', :action => 'show', :id => issue.id %></p>
     <% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin %>
       <p class="icon_close_issue">
         <img src="/plugin_assets/scrum2b/images/Close.ico" class="icon" title="<%= l(:label_board_issue_text_close_issue)%>" id="close_<%= issue.id %>" alt="close_issue"/>
@@ -14,7 +14,6 @@
         <%= issue.subject %></p>
     </div>
     <div class="assignee clearfix">
-      <i class="icon-arrow-right" style="float: left"></i>
       <% if issue.assigned_to %>
         <div class="no_edit" id="assignee_<%= issue.id %>" style="float:left;margin: 0 5px;color: #3A87AD">
           <%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %>
@@ -22,9 +21,9 @@
       <% end %>
       <div id="date_<%= issue.id %>" style="float: right">
         <% if issue.due_date %>
-          <p  style="float: right" id="end_date_<%= issue.id %>">
-            <%= issue.due_date%></p>
-          <i class=" icon-arrow-right" style="float: right;margin: 0 5px"></i>
+          <p style="float: right" id="end_date_<%= issue.id %>">
+            &nbsp;-> <%= issue.due_date %>
+          </p>
         <% else%>
            <% if issue.fixed_version && issue.fixed_version.effective_date != nil %>
               <p style="float: right" id="end_date_<%= issue.id %>">
@@ -33,9 +32,9 @@
               <i class=" icon-arrow-right" style="float: right;margin: 0 5px"></i>
            <% end %>
         <% end %>
-        <% if issue.start_date != ""%>
+        <% if issue.start_date != "" %>
           <p style="float: right" id="start_date_<%= issue.id %>">
-            <%= issue.start_date%></p>
+          <%= issue.start_date %></p>
         <% end %>
       </div>
     </div>
@@ -68,10 +67,10 @@
       </p>
     <% end %>
     <p class="estimated" style="float: left;font-size: 12px;margin-top: 5px">
-      <%= l(:label_board_issue_time)%><span id="est_<%= issue.id %>"> <%= issue.estimated_hours %></span>
+      <%= l(:label_board_issue_time) %><span id="est_<%= issue.id %>"> <%= issue.estimated_hours %></span>
     </p>
     <p class="sprint" style="font-size: 11px;text-align:center; margin-top: 10px">
-      <%= link_to issue.fixed_version,:controller => 'versions', :action => 'show', :id => issue.fixed_version_id if issue.fixed_version_id %>
+      <%= link_to issue.fixed_version, :controller => 'versions', :action => 'show', :id => issue.fixed_version_id if issue.fixed_version_id %>
     </p>
 </div>
 
