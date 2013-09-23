@@ -1,26 +1,26 @@
-<% html_title "#{is_board ? "Scrum Board" : "Sprint Backlogs"} - #{@project.name}" %>
+<% html_title "#{is_board ? l(:label_scrum2b_board) : l(:label_scrum2b_list)} - #{@project.name}" %>
 <% content_for :header_tags do %>
-  <%= stylesheet_link_tag 'bootstrap', :plugin => 'scrum2b' %>
   <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
   <%= stylesheet_link_tag 'application', :plugin => 'scrum2b' %>
   <%= javascript_include_tag "application", :plugin => 'scrum2b' %>
 <% end %>
-<div class="container-fluid">
-  <p class="issues">
-    <%= is_board ? l(:label_scrum2b_board) : l(:label_scrum2b_list) %>
-  </p>
+<div class="contextual">
   <% if is_board %>
-    <%= button_to l(:label_scrum2b_list), {:controller => "s2b_lists", :action => "index", :project_id =>  params[:project_id], :switch_screens => 1},
-                    :class => "btn btn_submit_board btn-primary"%>
+    <%= button_to l(:label_scrum2b_list), {:controller => "s2b_lists", :action => "index", 
+                                           :project_id =>  params[:project_id], :switch_screens => 1},
+                    :class => "btn_submit_board"%>
   <% else %> 
-    <%= button_to l(:label_scrum2b_board), {:controller => "s2b_boards", :action => "index", :project_id =>  params[:project_id], :switch_screens => 1},
-                    :class => "btn btn_submit_board btn-primary" %>
+    <%= button_to l(:label_scrum2b_board), {:controller => "s2b_boards", :action => "index", 
+                                            :project_id =>  params[:project_id], :switch_screens => 1},
+                    :class => "btn_submit_board" %>
   <% end %>
 </div>
+<h2><%= is_board ? l(:label_scrum2b_board) : l(:label_scrum2b_list) %></h2>
 
 <% if is_board %>
   <%= render :partial => "/shared/filter_board", :locals => {:is_board => is_board} %>
 <% else %>
   <%= render :partial => "/shared/filter_list", :locals => { :list_version => @list_versions} %>
 <% end %>
-
+<br/>
+<br/>
