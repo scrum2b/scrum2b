@@ -8,8 +8,13 @@
   float:left;
 }
 
+#div_screen_board {
+  text-align: center;
+}
+
 .board {
   display: inline-block;
+  text-align: left;
   vertical-align: top;
   width: 30%;
   padding: 10px 10px 10px 10px;
@@ -18,20 +23,18 @@
   -webkit-border-radius: 4px;
 }
 
+.boad#div_news{
+  float: left;
+}
+.boad#div_completed{
+  float: right;
+}
 .version_row {
   background-color: #DFF0D8;
 }
 
 #check_all {
   cursor: pointer
-}
-
-p.issues {
-  font-size: 20px;
-  font-weight: bold;
-  color: #555555;
-  margin-top: 0;
-  float: left;
 }
 
 .clearfix:after {
@@ -45,6 +48,21 @@ p.issues {
 
 .clearfix {
   display: inline-block;
+}
+
+#div_screen_board .issue_subject {
+  width: 100%;
+}
+#div_screen_board .issue_description {
+  width: 100%;
+}
+
+#div_screen_board .board_issue {
+  width: 100%;
+  padding: 0px;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
 }
 
 
@@ -69,17 +87,6 @@ p.issues {
 
 #ui-datepicker-div {
   display: none;
-}
-
-.board_issue {
-  border: 1px solid #000000;
-  padding: 5px;
-  margin: 0 0 5px 0;
-  background: #ffffff;
-  width: 97%;
-  border-radius: 2px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
 }
 
 .assignee {
@@ -199,9 +206,11 @@ img.icon {
   padding: 0px;
   position: relative;
 }
-.no_edit {
+.show_form {
   position: relative;
+  padding: 5px;
 }
+
 .icon_edit_issue {
   float: right;
   margin-right: 5px;
@@ -235,19 +244,13 @@ img.icon {
   font-size: 12px;
   font-weight: bold;
 }
-.editing p span {
-  line-height: 30px;
-  font-size: 12px;
-}
-.editing select {
+.edit_form select {
   background: #D9D9D9;
   margin: 0;
 }
-.editing {
-  font-size: 12px;
-  font-weight: bold;
+.edit_form {
   display: none;
-  padding-top: 15px;
+  padding: 5px 10px 5px 5px;
 }
 .connectedSortable li {
   list-style: none;
