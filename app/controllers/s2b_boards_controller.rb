@@ -1,9 +1,10 @@
+
 class S2bBoardsController < ApplicationController
   unloadable
   before_filter :find_project, :only => [:index, :update, :update_status, :update_progress, :create, :sort,
-                                         :close_on_board, :filter_issues_onboard, :opened_versions_list, :closed_versions_list]
+                                         :close_issue, :filter_issues, :opened_versions_list, :closed_versions_list]
   before_filter :set_status_settings
-  before_filter :check_before_board, :only => [:index, :close_on_board, :filter_issues_onboard, :update, :create]
+  before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues, :update, :create]
   skip_before_filter :verify_authenticity_token
 
   self.allow_forgery_protection = false
@@ -23,39 +24,56 @@ class S2bBoardsController < ApplicationController
     
     session[:view_issue] = "board"
     
-    #TODO: thua code 2 dong du
     @list_versions_open = opened_versions_list
     @list_versions_closed = closed_versions_list
-
-    @new_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_no_start']).order(:s2b_position)
-    @started_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_inprogress']).order(:s2b_position)
+    
+    @new_issues = @project.issues.where(session[:conditions]).where("status_id IS NULL or status_id IN (?)" , STATUS_IDS['status_no_start']).order(:s2b_position)
+    @in_progress_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_inprogress']).order(:s2b_position)
     @completed_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_completed']).order(:s2b_position)     
   end
   
   def update_status
     @issue = @project.issues.find(params[:issue_id])
-    return unless @issue
+    unless @issue
+      render :json => {:result => "error", :message => "Unknow issue"}
+      return 
+    end
+
     if params[:status] == "completed"
-      @issue.update_attributes(:done_ratio => 100, :status_id => DEFAULT_STATUS_IDS['status_completed'])
-      render :json => {:status => "completed", :done_ratio => 100 }
-    elsif params[:status] == "started"
-      @issue.update_attribute(:status_id, DEFAULT_STATUS_IDS['status_inprogress'])
+      result = @issue.update_attributes(:done_ratio => 100, :status_id => DEFAULT_STATUS_IDS['status_completed'])
+      Rails.logger.info "first STATUS_IDS['status_completed']: #{DEFAULT_STATUS_IDS['status_completed']}"
+    elsif params[:status] == "in_progress"
+      result = @issue.update_attribute(:status_id, DEFAULT_STATUS_IDS['status_inprogress'])
+      Rails.logger.info "first STATUS_IDS['status_completed']: #{DEFAULT_STATUS_IDS['status_inprogress']}"
     elsif params[:status] == "new"
-      @issue.update_attribute(:status_id, DEFAULT_STATUS_IDS['status_no_start'])
+      result = @issue.update_attribute(:status_id, DEFAULT_STATUS_IDS['status_no_start'])
+      Rails.logger.info "first STATUS_IDS['status_completed']: #{DEFAULT_STATUS_IDS['status_no_start']}"
+    else
+      render :json => {:result => "error", :message => "Unknow status to update"}
+      return
+    end
+    
+    if result
+      render :json => {:result => "success", :status => params[:status] }
+    else
+      render :json => {:result => "error", :message => @issue.errors.full_messages }
     end
   end
   
   def update_progress
     @issue = @project.issues.find(params[:issue_id])
-    @issue.update_attribute(:done_ratio, params[:done_ratio])
-    #TODO: move message content to Location files
-    render :json => {:result => "success", :new => "Success to update the progress",
-                     :new_ratio => params[:done_ratio]}
+    result = @issue.update_attribute(:done_ratio, params[:done_ratio])
+    if result
+      render :json => {:result => "success", :message => "Success to update the progress",
+                      :new_ratio => params[:done_ratio]}
+    else
+      render :json => {:result => "error", :message => @issue.errors.full_messages}
+    end
   end
   
   
   def sort
-    @max_position = @project.issues.where("status_id IN (?)", STATUS_IDS[params[:new_status]]).maximum(:s2b_position)
+    @max_position = @project.issues.where("status_id IS NULL or status_id IN (?)", STATUS_IDS[params[:new_status]]).maximum(:s2b_position)
     @issue = @project.issues.find(params[:issue_id])
     @old_position = @issue.s2b_position
     if params[:id_next].to_i != 0
@@ -99,82 +117,60 @@ class S2bBoardsController < ApplicationController
     end
   end
   
-  def close_on_board
-    array_id= Array.new
-    array_id = params[:issue_id]
-    
-    @int_array = array_id.split(',').collect(&:to_i)
-    @issues = @project.issues.where(:id => @int_array)
-    @issues.each do |issues|
-      issues.update_attribute(:status_id, DEFAULT_STATUS_IDS['status_closed'])
+  def close_issue
+    @issue = @project.issues.find(params[:issue_id])
+    unless @issue
+      render :json => {:result => "error", :message => "Unknow issue"}
+      return 
     end
     
-    @new_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_no_start']).order(:s2b_position)
-    @started_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_inprogress']).order(:s2b_position)
-    @completed_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_completed']).order(:s2b_position)   
-    
-    respond_to do |format|
-      format.js {
-        @return_content = render_to_string(:partial => "/s2b_boards/screen_board",
-                                           :locals => {:id_member => @id_member , 
-                                                       :completed_issues => @completed_issues,
-                                                       :project => @project,
-                                                       :new_issues => @new_issues,
-                                                       :started_issues => @started_issues,
-                                                       :tracker => @tracker,
-                                                       :priority => @priority,
-                                                       :member => @member,
-                                                       :issue => @issue,
-                                                       :status => @status,
-                                                       :sprints => @sprints })
-      }
+    result = @issue.update_attribute(:status_id, DEFAULT_STATUS_IDS['status_closed'])
+    if result
+      @completed_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_completed']).order(:s2b_position)   
+      content = ""
+      @completed_issues.each do |issue|
+        content += "<li id='#{issue.id}' >"
+        content += render_to_string(:partial => "/s2b_boards/issue", :locals => { :issue => issue, :column => :completed_column, :show_for => :show_and_edit })
+        content += "</li>"
+      end
+      render :json => {:result => "success", :content => content}
+    else
+      render :json => {:result => "error", :message => @issue.errors.full_messages}
     end
   end
 
   def update
     # Update attributes of issue from parameter
-    @id_version  = params[:issue][:sprint]
     @issue = @project.issues.find(params[:issue][:id])
-    @issue.update_attributes(params[:issue])
-    
-    if @issue.valid? 
-      data  = render_to_string(:partial => "/s2b_boards/show_issue", 
-                               :locals => {:issue => @issue, :id_member => @id_member})
-      edit  = render_to_string(:partial => "/s2b_boards/form_new", 
-                               :locals => {:issue => @issue, 
-                                           :tracker => @tracker, 
-                                           :member => @member, 
-                                           :id_member => @id_member,
-                                           :status => @status, 
-                                           :priority => @priority, 
-                                           :sprint => @sprint})
-      render :json => {:result => "edit_success", :message => "Success to update the message",
-                       :content => data, :edit_content => edit }
+    unless @issue
+      render :json => {:result => "error", :message => "Unknow issue"}
+      return 
+    end
+
+    if @issue.update_attributes(params[:issue])
+      data  = render_to_string(:partial => "/s2b_boards/issue", :locals => {:issue => @issue, :id_member => @id_member})
+      render :json => {:result => "success", :message => "Success to update the message",
+                       :content => data}
     else
-      render :json => {:result => "failure", :message => @issue.errors.full_messages,
-                       :content => data, :edit_content => edit }
+      render :json => {:result => "error", :message => @issue.errors.full_messages}
     end
   end
   
   def create
-    @sort_issue = @project.issues.where("status_id IN (?)", STATUS_IDS['status_no_start'])
+    @sort_issue = @project.issues.where("status_id IS NULL or status_id IN (?)", STATUS_IDS['status_no_start'])
     #Creat new issue
-    @issue = Issue.new(params[:issue])
+    @issue = Issue.new(params[:issue].merge(:status_id => DEFAULT_STATUS_IDS['status_no_start'], :s2b_position => 0))
     if @issue.save
       @sort_issue.each do |issue|
-        issue.update_attribute(:s2b_position, issue.s2b_position.to_i + 1) if issue.id != @issue.id
+        issue.update_attribute(:s2b_position, issue.s2b_position.to_i + 1)
       end
-      data  = render_to_string(:partial => "/s2b_boards/board_issue", 
-                               :locals => {:issue     => @issue, 
-                                           :tracker   => @tracker, 
-                                           :member    => @member, 
-                                           :id_member => @id_member,
-                                           :status    => @status, 
-                                           :priority  => @priority, 
-                                           :sprint    => @sprint})
+      data = render_to_string(:partial => "/s2b_boards/issue", :locals => {:issue => @issue, :column => :new_column, :show_for => :show_and_edit} )
+      
+      Rails.logger.info "Success to create the issue"
       render :json => {:result => "create_success", :message => "Success to create the issue",
                        :content => data, :id => @issue.id}
     else
+      Rails.logger.info @issue.errors.full_messages
       render :json => {:result => "failure", :message => @issue.errors.full_messages}
     end
   end
@@ -216,7 +212,7 @@ class S2bBoardsController < ApplicationController
       }
     end
   end
-  
+        
   private
   
   def opened_versions_list
@@ -254,13 +250,13 @@ class S2bBoardsController < ApplicationController
     need_to_resetting = false
     STATUS_IDS.keys.each do |column_name|
       @settings[column_name].keys.each { |setting| 
-        STATUS_IDS[column_name].push(setting) 
+        STATUS_IDS[column_name].push(setting.to_i) 
       } if @settings[column_name]
       
       if STATUS_IDS[column_name].empty?
         need_to_resetting = true;
       else
-        DEFAULT_STATUS_IDS[column_name] = STATUS_IDS[column_name].first
+        DEFAULT_STATUS_IDS[column_name] = STATUS_IDS[column_name].first.to_i
       end
     end
      

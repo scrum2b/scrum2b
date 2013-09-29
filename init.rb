@@ -1,4 +1,10 @@
 require 'redmine'
+#require 'application_helper_patch'
+
+#Rails.configuration.to_prepare do
+#  ApplicationHelper.send(:include, PluginName::Patches::ApplicationtHelperPatch) unless ApplicationHelper.included_modules.include? PluginName::Patches::ApplicationtHelperPatch
+#end
+
 Redmine::Plugin.register :scrum2b do
   name 'Scrum2B Plugin'
   author 'Scrum2B'
