@@ -1,6 +1,20 @@
-<div class="container-fluid filter">
-		<%=	button_tag l(:label_btn_submit_selected),:class => "btn btn-primary btn_submit",:id => "btn_filter_issues_on_board" %>
-		<select name="select_member" id="select_member">
+<div class="filter">
+  <div class="right-filter">
+		<select name="select_version" id="select_version_onboard">
+      <option value="all"><%= l(:label_select_all_versions)%></option>
+      <% @list_versions_open.each do |version|%>
+          <option value="<%= version.id %>" <%= "selected" if session[:params_select_version_onboard] && session[:params_select_version_onboard].to_i == version.id %> ><%= version.name %></option>
+      <% end %>
+      <% if @list_versions_closed %>
+        <optgroup label="<%= l(:label_group_closed_sprin)%>">
+          <% @list_versions_closed.each do |version|%>
+             <option value="<%= version.id %>" <%= "selected" if session[:params_select_version_onboard] && session[:params_select_version_onboard].to_i == version.id %> style="color: red"><%= version.name %></option>
+          <% end %>
+        </optgroup>
+      <% end %>
+    </select>
+    
+    <select name="select_member" id="select_member">
  			<option value="all" ><%= l(:label_select_all_member)%></option>
  			<% if User.current.name != "Anonymous" %>
  			 <option value="me" <% if session[:params_select_member] && session[:params_select_member] == "me" %><%= selected="selected" %><% end %>><%= l(:label_select_me)%></option>
@@ -10,17 +24,7 @@
 			<% end %>
 		</select>
 		
-		<select name="select_version" id="select_version_onboard">
-			<option value="all"><%= l(:label_select_all_versions)%></option>
-			<% @list_versions_open.each do |version|%>
-					<option value="<%= version.id %>" <%= "selected" if session[:params_select_version_onboard] && session[:params_select_version_onboard].to_i == version.id %> ><%= version.name %></option>
-			<% end %>
-			<% if @list_versions_closed %>
-				<optgroup label="<%= l(:label_group_closed_sprin)%>">
-  				<% @list_versions_closed.each do |version|%>
-             <option value="<%= version.id %>" <%= "selected" if session[:params_select_version_onboard] && session[:params_select_version_onboard].to_i == version.id %> style="color: red"><%= version.name %></option>
-          <% end %>
-        </optgroup>
-			</select>
-		<% end %>
+		<%= button_tag l(:label_btn_submit_selected),:id => "btn_filter_issues_on_board" %>
+    
+	</div>
 </div>

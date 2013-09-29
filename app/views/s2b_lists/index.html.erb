@@ -1,8 +1,8 @@
 <%= render :partial => "/shared/plugin_header", :locals => {:is_board => false} %>
-<div class="container-fluid" id="div_screen_list">
+<div id="div_screen_list">
   <%= render :partial => "screen_list", :locals => {:sort_versions => @sort_versions,:issues_backlog => @issues_backlog} %>
 </div>
-<script>
+<script language="JavaScript">
   $(document).ready(function() {
 
     $("#check_all").toggle(function(){
@@ -52,12 +52,11 @@
     });
     
     $("#btn_filter_issues_onlist").live("click",function(){
-      var select_version = $("#select_version_onlist").val()
-      var select_issue = $("#select_type_issue_onlist").val()
-      var project_id = <%= @project.id %>
-      var url_ajax = 'filter_issues_onlist'
+      var select_version = $("#select_version_onlist").val();
+      var select_issue = $("#select_type_issue_onlist").val();
+      var project_id = '<%= @project.id %>';
       $.ajax({
-        url : url_ajax,
+        url : 'filter_issues',
         type : "POST",
         data : 'select_version=' + select_version + '&select_issue=' + select_issue + '&project_id=' + project_id,
         dataType : "script",
@@ -76,10 +75,9 @@
       	return false;
     	}else{
   	    if (confirm('<%= l(:label_sure_to_close_issues)%>')) {
-          var project_id = <%= @project.id %>
-          var url_ajax = 'close_on_list'
+          var project_id = '<%= @project.id %>';
           $.ajax({
-            url : url_ajax,
+            url : 'close_issue',
             type : "POST",
             data : 'issue_id=' + issue_id + '&project_id='+project_id,
             dataType : "script",

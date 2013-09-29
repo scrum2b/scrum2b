@@ -1,0 +1,16 @@
+<% 
+column = :new_column if !defined?(column) || column == nil
+show_for = :view_and_edit if !defined?(show_for) || show_for == nil
+%>
+
+<div class="board_issue issue clearfix" position="<%= issue.s2b_position %>" slide_value="<%= issue.done_ratio %>" >
+
+<% if column == :new_column && show_for == :create_new %>
+  <%= render(:partial => "edit_issue", :locals => { :issue => issue, :column => column}) %>
+<% elsif show_for == :view_and_edit && !User.current.anonymous? && @id_member.include?(User.current.id) || User.current.admin %>
+  <%= render(:partial => "show_issue", :locals => { :issue => issue, :column => column}) %>
+  <%= render(:partial => "edit_issue", :locals => { :issue => issue, :column => column}) %>
+<% else %>
+  <%= render(:partial => "show_issue", :locals => { :issue => issue, :column => column}) %>
+<% end %>
+</div>
