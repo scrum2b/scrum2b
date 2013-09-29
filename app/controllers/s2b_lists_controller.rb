@@ -1,9 +1,8 @@
 class S2bListsController < ApplicationController
   unloadable
-  before_filter :find_project, :only => [:index, :change_sprint, :close_on_list,
-                                         :filter_issues_onlist]
+  before_filter :find_project, :only => [:index, :change_sprint, :close_issue, :filter_issues]
   before_filter :set_status_settings 
-  before_filter :filter_issues_onlist, :only => [:index]
+  before_filter :filter_issues, :only => [:index]
   skip_before_filter :verify_authenticity_token
   self.allow_forgery_protection = false
   

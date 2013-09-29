@@ -1,38 +1,76 @@
 <%= render :partial => "/shared/plugin_header", :locals => {:is_board => true, :member => @member, :list_versions_open => @list_versions_open, :list_versions_closed => @list_versions_closed} %>
-<%= render :partial => "screen_board", :locals => { :id_member =>@id_member ,:new_issues => @new_issues ,:started_issues => @started_issues ,:completed_issues => @completed_issues,:issue => @issue,
-                                                    :tracker => @tracker , :priority => @priority,:member => @member,:status => @status,:sprints => @sprints} %>
+
+<div id="div_screen_board">
+
+  <% columns = [{:column_id => :new_column, :status => "new", :column_name => l(:label_board_status_new), :issues => @new_issues },
+                {:column_id => :in_progress_column, :status => "in_progress", :column_name => l(:label_board_status_inprogress), :issues => @in_progress_issues },
+                {:column_id => :completed_column, :status => "completed", :column_name => l(:label_board_status_completed), :issues => @completed_issues }
+               ]
+  %>
+  <% columns.each do |column| %>
+    <div class="board box" status="<%= column[:status].to_s %>" id="<%= column[:column_id].to_s %>">
+      <%= render :partial => "board_column", :locals => column %>
+    </div>
+  <% end %>
+</div>
 
 <script language="JavaScript" >
+  function show_and_hide_close_issue_icon() {
+    $("#completed_column .icon_close_issue").show();
+    $("#new_column .icon_close_issue").hide();
+    $("#in_progress_column .icon_close_issue").hide();
+  }
+
   $(document).ready(function() {
-    $("#completed").find(".icon_close_issue").show();
+    show_and_hide_close_issue_icon();
+    
+    $( "#date_start_").datepicker();
+    $( "#date_end_").datepicker();
+    $( "#date_start_").datepicker("option", "dateFormat", "yy-mm-dd");
+    $( "#date_end_").datepicker("option", "dateFormat", "yy-mm-dd");
+    
+    $(".icon_new_issue").click(function(){
+      $("#new_issue_form").show();
+    });
     
     $(".icon_close_issue").live("click",function(){
       if(!confirm('<%= l(:label_sure_to_close_issues)%>')){
         return;
       }
 
-      var issue_id = $(this).parent().attr("value")
-      var project_id = <%= @project.id %>
-      var url_ajax = 'close_on_board'
+      var issue_id = $(this).parents('li').attr("id");
+      var project_id = '<%= @project.id %>';
 
       $.ajax({
-        url : url_ajax,
+        url : 'close_issue',
         type : "POST",
         data : 'issue_id=' + issue_id + '&project_id=' + project_id,
-        dataType : "script",
-        success : function() {
+        dataType : "json",
+        success : function(data) {
+          if(data.result == 'success'){
+            $('#completed_column .connectedSortable').html(data.content);
+            show_and_hide_close_issue_icon();
+            $("#completed_column li").each(function() {
+              var issue_id = $(this).attr("id");
+              var slide_value = $(this).find(".board_issue").attr("slide_value");
+              makeSlider(issue_id, slide_value);
+              editDate(issue_id); 
+              form_edit(issue_id);
+            });
+          }else{
+            alert(data.message);
           }
+        }
       });
       return false;
     });
     
     $("#btn_filter_issues_on_board").live("click",function(){
-      var select_version = $("#select_version_onboard").val()
-      var select_member = $("#select_member").val()
-      var project_id = <%= @project.id %>
-      var url_ajax = 'filter_issues_onboard'
+      var select_version = $("#select_version_onboard").val();
+      var select_member = $("#select_member").val();
+      var project_id = '<%= @project.id %>';
       $.ajax({
-        url : url_ajax,
+        url : 'filter_issues',
         type : "POST",
         data : 'select_version=' + select_version + '&select_member=' + select_member + '&project_id=' + project_id,
         dataType : "script",
@@ -41,7 +79,7 @@
       return false;
     });
     
-    $( "#new, #started, #completed").sortable({
+    $( "#new_column .connectedSortable, #in_progress_column .connectedSortable, #completed_column .connectedSortable").sortable({
       scroll: true, 
       scrollSensitivity: 100, 
       scrollSpeed: 100,
@@ -50,21 +88,13 @@
         $(this).find(".ui-sortable-helper").addClass("check");
       },
       receive: function(){
-        var status = $(this).attr("id")
-        var project_id = <%= @project.id %>
-        var url_ajax = 'update_status'
-        var issue_id = $(this).find(".check").attr("id")
-        if (status == "completed"){
-          $(this).find(".icon_close_issue").show();
-        }
-        if (status == "started" ){
-          $(this).find(".icon_close_issue").hide();
-        }
-        if (status == "new"){
-          $(this).find(".icon_close_issue").hide();
-        }
+        var status = $(this).parents(".box").attr("status");
+        var project_id = <%= @project.id %>;
+        var issue_id = $(this).find("li").attr("id");
+        show_and_hide_close_issue_icon();
+        
         $.ajax({
-          url : url_ajax,
+          url : 'update_status',
           type : "POST",
           data : 'issue_id=' + issue_id + '&project_id=' + project_id + '&status=' + status,
           dataType : "json",
@@ -110,36 +140,59 @@
     });
 
     $(".icon_edit_issue").live("click", function(){
-      var id_issue = parseInt($(this).parent().attr("value"));
-      $(".icon_edit_issue").show();
-      $(this).hide();
-      $("#completed").find(".icon_close_issue").show();
-      $("#close_"+id_issue).hide();
-      $(".edit_form").hide();
-      $(".show_form").show();
-      $("#edit_issue_" + id_issue).show();
-      $("#show_issue_" + id_issue).hide();
-      $(".hide").hide();
+      $(this).parents(".show_form").hide();
+      $(this).parents(".issue").find(".edit_form").show();
     });
 
     $(".cancel_issue").live("click", function(){
-      var id_issue = parseInt($(this).parent().attr("value"));
-      $("#completed").find("#close_" + id_issue).show();
-      $("#edit_issue_"+id_issue).hide();
-      $("#show_issue_"+id_issue).show();
-      $(".icon_edit_issue").show();
-      $(".readmore").show();
-      $(".hide").hide();
-      $(".description_readmore").hide();
-      $("#edit_issue_").hide();
+      if($(this).parents("li").attr("id") == "new_issue_form") {
+        $(this).parents("li").hide();
+      }else{
+        $(this).parents(".edit_form").hide();
+        $(this).parents(".issue").find(".show_form").show();
+      }
     });
 
     $(".submit_issue").live("click", function(){
       var id_issue = $(this).parent().attr("value");
       if(id_issue != "" ){
-        var url_ajax = "update";
+        $.ajax({
+          url : "update",
+          type : "POST",
+          data: $('#update_issue_' + id_issue).serialize(),
+          dataType : "json",
+          success : function(data) {
+            if(data.result == "success") {
+              $("li#" + id_issue).html(data.content);
+              makeSlider(id_issue, slide_value);
+              show_and_hide_close_issue_icon();
+              editDate(id_issue); 
+              form_edit(id_issue);
+            }else{
+              alert(data.message);
+            }
+          }
+        });
       }else{
-        var url_ajax = "create";
+        $.ajax({
+          url : "create",
+          type : "POST",
+          data: $('#update_issue_').serialize(),
+          dataType : "json",
+          success : function(data) {
+            if(data.result == "success"){
+              $("#new_issue_form").find(".value_content").val("");
+              $("#new_issue_form").hide();
+              $("#new_issue_form").parent().find(".connectedSortable").prepend(data.content);
+              makeSlider(data.id, 0);
+              editDate(data.id); 
+              form_edit(data.id);
+            }
+            else{
+              alert(data.message);
+            }
+          }
+        });
       }
       
       var slide_value = $("#slider" + id_issue).attr("value");
@@ -156,11 +209,11 @@
             $("#edit_issue_" + id_issue).replaceWith(data.edit_content).hide();
             editDate(id_issue); 
             form_edit(id_issue);
-            $("#completed").find(".icon_close_issue").show();
+            show_and_hide_close_issue_icon();
           }else if(data.result == "create_success"){
-            $("#edit_issue_").find(".value_content").val("");
-            $("#edit_issue_").hide();
-            $("#edit_issue_").after(data.content)
+            $("#new_issue_form").find(".value_content").val("");
+            $("#new_issue_form").hide();
+            $("#new_issue_form").parent().find(".connectedSortable").prepend(data.content);
             makeSlider(data.id, 0);
             editDate(data.id); 
             form_edit(data.id);
@@ -197,17 +250,7 @@
       $("#description_readmore_" + id).hide();
       return false;
     });
-    
-    $( "#date_start_").datepicker();
-    $( "#date_end_").datepicker();
-    $( "#ate_start_").datepicker("option", "dateFormat", "yy-mm-dd");
-    $( "#date_end_").datepicker("option", "dateFormat", "yy-mm-dd");
-    
-    $(".icon_new_issue").click(function(){
-      $("#edit_issue_").show();
-      $("#edit_issue_").addClass("board_issue");
-    });
-      
+
   }); 
   
   function form_edit(id){
