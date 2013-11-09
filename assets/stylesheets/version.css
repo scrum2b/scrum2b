@@ -1,5 +1,5 @@
-.filter {
-  
+li {
+  list-style: none !important;
 }
 .right-filter {
   float:right;
@@ -7,7 +7,6 @@
 .left-filter {
   float:left;
 }
-
 #div_screen_board {
   text-align: center;
 }
@@ -211,6 +210,7 @@ img.icon {
   padding: 0px;
   position: relative;
 }
+
 .show_form,
 .edit_form {
   width: 95%;

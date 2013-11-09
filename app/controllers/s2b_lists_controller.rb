@@ -1,8 +1,8 @@
 class S2bListsController < ApplicationController
   unloadable
-  before_filter :find_project, :only => [:index, :change_sprint, :close_issue, :filter_issues]
+  before_filter :find_project, :only => [:index, :change_sprint, :close_issue, :filter_issues_onlist]
   before_filter :set_status_settings 
-  before_filter :filter_issues, :only => [:index]
+  before_filter :filter_issues_onlist, :only => [:index]
   skip_before_filter :verify_authenticity_token
   self.allow_forgery_protection = false
   
@@ -83,7 +83,7 @@ class S2bListsController < ApplicationController
     end
     
     id_issues = @issues.collect{|id_issue| id_issue.id}
-    @issue_backlogs = @project.issues.where(:fixed_version_id => nil).where("id IN (?)", id_issues).order("status_id, s2b_position")
+    @issues_backlog = @project.issues.where(:fixed_version_id => nil).where("id IN (?)", id_issues).order("status_id, s2b_position")
     respond_to do |format|
       format.js {
         @return_content = render_to_string(:partial => "/s2b_lists/screen_list", :locals => {:sort_versions => @sort_versions, :issues_backlog => @issues_backlog})

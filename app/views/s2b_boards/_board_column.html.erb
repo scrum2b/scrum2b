@@ -3,12 +3,12 @@
 </p>
 <% is_editable = !User.current.anonymous? && @id_member.include?(User.current.id) || User.current.admin %>
 <% if column_id == :new_column && is_editable %>
-  <img src="/plugin_assets/scrum2b/images/add.ico" style="float: right;" title="<%= l(:label_board_issue_new_issue)%>" class="icon_new_issue icon">
-  <li id="new_issue_form" >
+  <img src="/plugin_assets/scrum2b/images/Add.ico" style="float: right;cursor: pointer;" title="<%= l(:label_board_issue_new_issue)%>" class="icon_new_issue icon">
+  <li id="new_issue_form" style="list-style: none !important;">
     <%= render(:partial => "issue", :locals => { :issue => Issue.new, :column => column_id, :show_for => :create_new }) %>
   </li>
 <% end %>
-<div class="connectedSortable ui-sortable">
+<div class="connectedSortable ui-sortable" status="<%= status %>">
   <% issues.each do |issue| %>
     <li id="<%= issue.id %>" >
       <%= render(:partial => "issue", :locals => { :issue => issue, :column => column_id, :show_for => is_editable ? :show_and_edit : :show }) %>

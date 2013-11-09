@@ -39,15 +39,10 @@ class S2bBoardsController < ApplicationController
       return 
     end
 
-    if params[:status] == "completed"
+    if params[:status] == "status_completed"
       result = @issue.update_attributes(:done_ratio => 100, :status_id => DEFAULT_STATUS_IDS['status_completed'])
-      Rails.logger.info "first STATUS_IDS['status_completed']: #{DEFAULT_STATUS_IDS['status_completed']}"
-    elsif params[:status] == "in_progress"
-      result = @issue.update_attribute(:status_id, DEFAULT_STATUS_IDS['status_inprogress'])
-      Rails.logger.info "first STATUS_IDS['status_completed']: #{DEFAULT_STATUS_IDS['status_inprogress']}"
-    elsif params[:status] == "new"
-      result = @issue.update_attribute(:status_id, DEFAULT_STATUS_IDS['status_no_start'])
-      Rails.logger.info "first STATUS_IDS['status_completed']: #{DEFAULT_STATUS_IDS['status_no_start']}"
+    elsif
+      result = @issue.update_attribute(:status_id, DEFAULT_STATUS_IDS[params[:status]])
     else
       render :json => {:result => "error", :message => "Unknow status to update"}
       return
@@ -75,6 +70,7 @@ class S2bBoardsController < ApplicationController
   def sort
     @max_position = @project.issues.where("status_id IS NULL or status_id IN (?)", STATUS_IDS[params[:new_status]]).maximum(:s2b_position)
     @issue = @project.issues.find(params[:issue_id])
+    Rails.logger.info "AAAAAAAAAAAAa #{@max_position}"
     @old_position = @issue.s2b_position
     if params[:id_next].to_i != 0
       @next_issue = @project.issues.find(params[:id_next].to_i) 
@@ -149,7 +145,7 @@ class S2bBoardsController < ApplicationController
 
     if @issue.update_attributes(params[:issue])
       data  = render_to_string(:partial => "/s2b_boards/issue", :locals => {:issue => @issue, :id_member => @id_member})
-      render :json => {:result => "success", :message => "Success to update the message",
+      render :json => {:result => "edit_success", :message => "Success to update the message",
                        :content => data}
     else
       render :json => {:result => "error", :message => @issue.errors.full_messages}
@@ -197,7 +193,7 @@ class S2bBoardsController < ApplicationController
 
     respond_to do |format|
       format.js {
-        @return_content = render_to_string(:partial => "/s2b_boards/screen_board",
+        @return_content = render_to_string(:partial => "/s2b_boards/board_column",
                                            :locals => {:id_member => @id_member , 
                                                        :completed_issues => @completed_issues,
                                                        :project => @project,
@@ -227,7 +223,6 @@ class S2bBoardsController < ApplicationController
   
   def find_project
     # @project variable must be set before calling the authorize filter
-    Rails.logger.info "Test Params #{params[:issue]}"
     project_id = params[:project_id] || (params[:issue] && params[:issue][:project_id])
     @project = Project.find(project_id)
   end

@@ -2,13 +2,13 @@
 
 <div id="div_screen_board">
 
-  <% columns = [{:column_id => :new_column, :status => "new", :column_name => l(:label_board_status_new), :issues => @new_issues },
-                {:column_id => :in_progress_column, :status => "in_progress", :column_name => l(:label_board_status_inprogress), :issues => @in_progress_issues },
-                {:column_id => :completed_column, :status => "completed", :column_name => l(:label_board_status_completed), :issues => @completed_issues }
+  <% columns = [{:column_id => :new_column, :status => "status_no_start", :column_name => l(:label_board_status_new), :issues => @new_issues },
+                {:column_id => :in_progress_column, :status => "status_inprogress", :column_name => l(:label_board_status_inprogress), :issues => @in_progress_issues },
+                {:column_id => :completed_column, :status => "status_completed", :column_name => l(:label_board_status_completed), :issues => @completed_issues }
                ]
   %>
   <% columns.each do |column| %>
-    <div class="board box" status="<%= column[:status].to_s %>" id="<%= column[:column_id].to_s %>">
+    <div class="board box"  id="<%= column[:column_id].to_s %>">
       <%= render :partial => "board_column", :locals => column %>
     </div>
   <% end %>
@@ -88,19 +88,18 @@
         $(this).find(".ui-sortable-helper").addClass("check");
       },
       receive: function(){
-        var status = $(this).parents(".box").attr("status");
+        var status = $(this).attr("status");
         var project_id = <%= @project.id %>;
-        var issue_id = $(this).find("li").attr("id");
-        show_and_hide_close_issue_icon();
-        
+        var issue_id = $(this).find(".check").attr("id");   
+        show_and_hide_close_issue_icon();       
         $.ajax({
           url : 'update_status',
           type : "POST",
           data : 'issue_id=' + issue_id + '&project_id=' + project_id + '&status=' + status,
           dataType : "json",
           success : function(res) {
-             if (res.status == "completed"){
-                makeSlider(issue_id,res.done_ratio);
+             if (res.status == "status_completed"){
+                makeSlider(issue_id,100);
              }
           }
         });
@@ -111,16 +110,17 @@
         var project_id = <%= @project.id %>;
         var id_next = $(".check").next().attr("id");
         var id_prev = $(".check").prev().attr("id");
-        var old_status = $(this).attr("value");
-        var new_status = $(".check").parent().attr("value");
+        var old_status = $(this).attr("status");
+        var new_status = $(".check").parent().attr("status");
         $(".check").removeClass("check");
-          console.debug(id_prev);
-          $.ajax({
-          url : url_sort,
-          type : "POST",
-          data : 'issue_id=' + issue_id +'&id_prev=' + id_prev + '&project_id=' + project_id + '&id_next=' + id_next + '&new_status=' + new_status + '&old_status=' + old_status,
-          dataType : "text",
-          success : function(){
+        console.debug(old_status);
+        console.debug(new_status);
+        $.ajax({
+        url : url_sort,
+        type : "POST",
+        data : 'issue_id=' + issue_id +'&id_prev=' + id_prev + '&project_id=' + project_id + '&id_next=' + id_next + '&new_status=' + new_status + '&old_status=' + old_status,
+        dataType : "text",
+        success : function(){
           }
         });
       }
@@ -155,58 +155,22 @@
 
     $(".submit_issue").live("click", function(){
       var id_issue = $(this).parent().attr("value");
-      if(id_issue != "" ){
-        $.ajax({
-          url : "update",
-          type : "POST",
-          data: $('#update_issue_' + id_issue).serialize(),
-          dataType : "json",
-          success : function(data) {
-            if(data.result == "success") {
-              $("li#" + id_issue).html(data.content);
-              makeSlider(id_issue, slide_value);
-              show_and_hide_close_issue_icon();
-              editDate(id_issue); 
-              form_edit(id_issue);
-            }else{
-              alert(data.message);
-            }
-          }
-        });
-      }else{
-        $.ajax({
-          url : "create",
-          type : "POST",
-          data: $('#update_issue_').serialize(),
-          dataType : "json",
-          success : function(data) {
-            if(data.result == "success"){
-              $("#new_issue_form").find(".value_content").val("");
-              $("#new_issue_form").hide();
-              $("#new_issue_form").parent().find(".connectedSortable").prepend(data.content);
-              makeSlider(data.id, 0);
-              editDate(data.id); 
-              form_edit(data.id);
-            }
-            else{
-              alert(data.message);
-            }
-          }
-        });
-      }
-      
       var slide_value = $("#slider" + id_issue).attr("value");
-      $.ajax({
+      if(id_issue != "" ){
+        var url_ajax = "update"
+      }else{
+        var url_ajax = "create"
+      }
+     $.ajax({
         url : url_ajax,
         type : "POST",
         data: $('#update_issue_' + id_issue).serialize(),
         dataType : "json",
         success : function(data) {
           if(data.result == "edit_success") {
-            console.debug("get value :" + data.edit_content);
-            $("#show_issue_" + id_issue).replaceWith(data.content).show();
+            console.debug("get value :" + data.content);
+            $("#issue" + id_issue).replaceWith(data.content);
             makeSlider(id_issue, slide_value);
-            $("#edit_issue_" + id_issue).replaceWith(data.edit_content).hide();
             editDate(id_issue); 
             form_edit(id_issue);
             show_and_hide_close_issue_icon();
