@@ -2,9 +2,9 @@
 class S2bBoardsController < ApplicationController
   unloadable
   before_filter :find_project, :only => [:index, :update, :update_status, :update_progress, :create, :sort,
-                                         :close_issue, :filter_issues, :opened_versions_list, :closed_versions_list]
+                                         :close_issue, :filter_issues_onboard, :opened_versions_list, :closed_versions_list]
   before_filter :set_status_settings
-  before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues, :update, :create]
+  before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues_onboard, :update, :create]
   skip_before_filter :verify_authenticity_token
 
   self.allow_forgery_protection = false
@@ -188,17 +188,17 @@ class S2bBoardsController < ApplicationController
     end
 
     @new_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_no_start']).order(:s2b_position)
-    @started_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_inprogress']).order(:s2b_position)
+    @in_progress_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_inprogress']).order(:s2b_position)
     @completed_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_completed']).order(:s2b_position)
 
     respond_to do |format|
       format.js {
-        @return_content = render_to_string(:partial => "/s2b_boards/board_column",
+        @return_content = render_to_string(:partial => "/s2b_boards/screen_boards",
                                            :locals => {:id_member => @id_member , 
                                                        :completed_issues => @completed_issues,
                                                        :project => @project,
                                                        :new_issues => @new_issues,
-                                                       :started_issues => @started_issues,
+                                                       :in_progress_issues => @in_progress_issues,
                                                        :tracker => @tracker, 
                                                        :priority => @priority,
                                                        :member => @member,
