@@ -307,11 +307,9 @@ img.icon {
 }
 #div_change_sprint {
   float: left;
-  margin-left: 5px;
   display: none;
-}
-#div_change_sprint {
   padding: 5px;
   border: 1px solid #339BB9;
-  margin-top: -15px;
+  margin-bottom:5px;
 }
+

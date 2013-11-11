@@ -1,6 +1,6 @@
 <div class="filter">
   <div class="right-filter">
-    <select name="select_version" id="select_version_onlist">
+    <select name="select_version" id="select_version_onlist" >
       <option value="version_working"<% if  session[:param_select_version] && session[:param_select_version] == 'version_working'%><%= selected="selected" %><% end %> ><%= l(:label_select_all_versions_working)%></option>
       <% @list_versions_open.each do |version|%>
         <option value="<%= version.id %>" <%= "selected" if session[:param_select_version] && session[:param_select_version].to_i == version.id %> 
@@ -31,7 +31,7 @@
       <button id="btn_close_issue_list"><%= l(:label_close_all_issues) %></button>
       <button id="btn_change_sprint_issues"><%= l(:label_change_sprint) %></button>
       <div id="div_change_sprint">
-        <select id="change_sprint">
+        <select id="change_sprint" style="height: 26px">
            <option value=""><%= l(:label_version_backlog) %></option> 
            <% @list_versions_open.each do |version|%>
             <option value="<%= version.id %>"><%= version.name %></option>

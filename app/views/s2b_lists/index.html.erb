@@ -45,6 +45,9 @@
         data : 'issue_id=' + issue_id + '&project_id='+project_id + '&new_sprint=' + new_sprint,
         dataType : "script",
         success : function() {
+            $("#div_change_sprint").hide();
+            $("#btn_close_issue_list").show();
+            $("#btn_change_sprint_issues").show();
           }
         });
        }
@@ -77,7 +80,7 @@
   	    if (confirm('<%= l(:label_sure_to_close_issues)%>')) {
           var project_id = '<%= @project.id %>';
           $.ajax({
-            url : 'close_issue',
+            url : 'close_on_list',
             type : "POST",
             data : 'issue_id=' + issue_id + '&project_id='+project_id,
             dataType : "script",

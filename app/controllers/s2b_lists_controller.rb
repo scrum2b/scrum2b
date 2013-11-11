@@ -1,6 +1,6 @@
 class S2bListsController < ApplicationController
   unloadable
-  before_filter :find_project, :only => [:index, :change_sprint, :close_issue, :filter_issues_onlist]
+  before_filter :find_project, :only => [:index, :change_sprint, :close_on_list, :filter_issues_onlist]
   before_filter :set_status_settings 
   before_filter :filter_issues_onlist, :only => [:index]
   skip_before_filter :verify_authenticity_token
@@ -25,18 +25,6 @@ class S2bListsController < ApplicationController
     @list_versions = @project.versions.all
   end
   
-  def change_sprint
-    array_id= Array.new
-    array_id = params[:issue_id]
-    int_array = array_id.split(',').collect(&:to_i)
-
-    issues = @project.issues.where(:id => int_array)
-    issues.each do |issue|
-      issue.update_attribute(:fixed_version_id, params[:new_sprint])
-    end
-    filter_issues_onlist
-  end
-  
   def filter_issues_onlist
     @sort_versions = {}
     if session[:view_issue].nil? || session[:view_issue] == "board" && (params[:switch_screens] || "").blank?
@@ -45,7 +33,7 @@ class S2bListsController < ApplicationController
     end
     
     session[:view_issue] = "list"
-    session[:param_select_version]  = (params[:select_version] || "version_working")
+    session[:param_select_version]  = params[:select_version] if params[:select_version]
     session[:param_select_issues] = params[:select_issue].to_i if params[:select_issue]
     
     if session[:param_select_issues] == SELECT_ISSUE_OPTIONS[:new]
@@ -90,6 +78,18 @@ class S2bListsController < ApplicationController
       }
       format.html {}
     end
+  end
+  
+  def change_sprint
+    array_id= Array.new
+    array_id = params[:issue_id]
+    int_array = array_id.split(',').collect(&:to_i)
+
+    issues = @project.issues.where(:id => int_array)
+    issues.each do |issue|
+      issue.update_attribute(:fixed_version_id, params[:new_sprint])
+    end
+    filter_issues_onlist
   end
   
   def close_on_list
