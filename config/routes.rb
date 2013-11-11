@@ -12,6 +12,6 @@ match "boards/new" => "s2b_boards#new"
 match "boards/create" => "s2b_boards#create"
 
 match 'lists/index' => 's2b_lists#index'
-match "lists/filter_issues" => "s2b_lists#filter_issues"
+match "lists/filter_issues_onlist" => "s2b_lists#filter_issues_onlist"
 match "lists/close_issue" => "s2b_lists#close_issue"
 match "lists/change_sprint" => "s2b_lists#change_sprint"

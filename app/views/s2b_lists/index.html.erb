@@ -56,7 +56,7 @@
       var select_issue = $("#select_type_issue_onlist").val();
       var project_id = '<%= @project.id %>';
       $.ajax({
-        url : 'filter_issues',
+        url : 'filter_issues_onlist',
         type : "POST",
         data : 'select_version=' + select_version + '&select_issue=' + select_issue + '&project_id=' + project_id,
         dataType : "script",
