@@ -54,12 +54,12 @@
       
     });
     
-    $("#btn_filter_issues_onlist").live("click",function(){
+    $("#btn_filter_issues").live("click",function(){
       var select_version = $("#select_version_onlist").val();
       var select_issue = $("#select_type_issue_onlist").val();
       var project_id = '<%= @project.id %>';
       $.ajax({
-        url : 'filter_issues_onlist',
+        url : 'filter_issues',
         type : "POST",
         data : 'select_version=' + select_version + '&select_issue=' + select_issue + '&project_id=' + project_id,
         dataType : "script",

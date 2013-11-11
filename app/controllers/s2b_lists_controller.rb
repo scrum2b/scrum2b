@@ -1,8 +1,8 @@
 class S2bListsController < ApplicationController
   unloadable
-  before_filter :find_project, :only => [:index, :change_sprint, :close_on_list, :filter_issues_onlist]
+  before_filter :find_project, :only => [:index, :change_sprint, :close_on_list, :filter_issues]
   before_filter :set_status_settings 
-  before_filter :filter_issues_onlist, :only => [:index]
+  before_filter :filter_issues, :only => [:index]
   skip_before_filter :verify_authenticity_token
   self.allow_forgery_protection = false
   
@@ -25,7 +25,7 @@ class S2bListsController < ApplicationController
     @list_versions = @project.versions.all
   end
   
-  def filter_issues_onlist
+  def filter_issues
     @sort_versions = {}
     if session[:view_issue].nil? || session[:view_issue] == "board" && (params[:switch_screens] || "").blank?
       redirect_to :controller => "s2b_boards", :action => "index" ,:project_id =>  params[:project_id]
@@ -89,7 +89,7 @@ class S2bListsController < ApplicationController
     issues.each do |issue|
       issue.update_attribute(:fixed_version_id, params[:new_sprint])
     end
-    filter_issues_onlist
+    filter_issues
   end
   
   def close_on_list
@@ -101,7 +101,7 @@ class S2bListsController < ApplicationController
     issues.each do |issue|
       issue.update_attribute(:status_id, DEFAULT_STATUS_IDS['status_closed'])
     end
-    filter_issues_onlist   
+    filter_issues   
   end
   
   private

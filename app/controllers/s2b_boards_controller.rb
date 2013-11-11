@@ -2,9 +2,9 @@
 class S2bBoardsController < ApplicationController
   unloadable
   before_filter :find_project, :only => [:index, :update, :update_status, :update_progress, :create, :sort,
-                                         :close_issue, :filter_issues_onboard, :opened_versions_list, :closed_versions_list]
+                                         :close_issue, :filter_issues, :opened_versions_list, :closed_versions_list]
   before_filter :set_status_settings
-  before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues_onboard, :update, :create]
+  before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues, :update, :create]
   skip_before_filter :verify_authenticity_token
 
   self.allow_forgery_protection = false
@@ -171,7 +171,7 @@ class S2bBoardsController < ApplicationController
     end
   end
   
-  def filter_issues_onboard
+  def filter_issues
     session[:params_select_version_onboard] = params[:select_version]
     session[:params_select_member] = params[:select_member]
     session[:conditions] = ["(1=1)"]

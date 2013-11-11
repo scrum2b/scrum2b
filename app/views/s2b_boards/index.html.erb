@@ -58,7 +58,7 @@
       var select_member = $("#select_member").val();
       var project_id = '<%= @project.id %>';
       $.ajax({
-        url : 'filter_issues_onboard',
+        url : 'filter_issues',
         type : "POST",
         data : 'select_version=' + select_version + '&select_member=' + select_member + '&project_id=' + project_id,
         dataType : "script",
