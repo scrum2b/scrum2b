@@ -7,6 +7,18 @@ li {
 .left-filter {
   float:left;
 }
+.col-50 {
+  width:40%;
+  padding:5px 5%;
+  float:left;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  
+  text-align:right;
+}
 #div_screen_board {
   text-align: center;
 }
@@ -220,6 +232,10 @@ img.icon {
 .connectedSortable .edit_form {
   display: none;
 }
+.edit_form select {
+  background: #D9D9D9;
+  margin: 0;
+}
 
 .icon_edit_issue {
   float: right;
@@ -254,10 +270,7 @@ img.icon {
   font-size: 12px;
   font-weight: bold;
 }
-.edit_form select {
-  background: #D9D9D9;
-  margin: 0;
-}
+
 
 .connectedSortable li {
   list-style: none;
