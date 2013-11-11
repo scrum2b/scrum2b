@@ -122,14 +122,7 @@ class S2bBoardsController < ApplicationController
     
     result = @issue.update_attribute(:status_id, DEFAULT_STATUS_IDS['status_closed'])
     if result
-      @completed_issues = @project.issues.where(session[:conditions]).where("status_id IN (?)" , STATUS_IDS['status_completed']).order(:s2b_position)   
-      content = ""
-      @completed_issues.each do |issue|
-        content += "<li id='#{issue.id}' >"
-        content += render_to_string(:partial => "/s2b_boards/issue", :locals => { :issue => issue, :column => :completed_column, :show_for => :show_and_edit })
-        content += "</li>"
-      end
-      render :json => {:result => "success", :content => content}
+      render :json => {:result => "success"}
     else
       render :json => {:result => "error", :message => @issue.errors.full_messages}
     end

@@ -10,8 +10,6 @@
 <% end %>
 <div class="connectedSortable ui-sortable" status="<%= status %>">
   <% issues.each do |issue| %>
-    <li id="<%= issue.id %>" >
       <%= render(:partial => "issue", :locals => { :issue => issue, :column => column_id, :show_for => is_editable ? :show_and_edit : :show }) %>
-    </li>
   <% end if issues %>
 </div>

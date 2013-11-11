@@ -26,7 +26,7 @@
         return;
       }
 
-      var issue_id = $(this).parents('li').attr("id");
+      var issue_id = $(this).attr("issue_id");
       var project_id = '<%= @project.id %>';
 
       $.ajax({
@@ -36,15 +36,7 @@
         dataType : "json",
         success : function(data) {
           if(data.result == 'success'){
-            $('#completed_column .connectedSortable').html(data.content);
-            show_and_hide_close_issue_icon();
-            $("#completed_column li").each(function() {
-              var issue_id = $(this).attr("id");
-              var slide_value = $(this).find(".board_issue").attr("slide_value");
-              makeSlider(issue_id, slide_value);
-              editDate(issue_id); 
-              form_edit(issue_id);
-            });
+           $('#issue' + issue_id).hide();
           }else{
             alert(data.message);
           }
@@ -78,7 +70,7 @@
       receive: function(){
         var status = $(this).attr("status");
         var project_id = <%= @project.id %>;
-        var issue_id = $(this).find(".check").attr("id");   
+        var issue_id = $(this).find(".check").attr("issue_id");   
         show_and_hide_close_issue_icon();       
         $.ajax({
           url : 'update_status',
@@ -93,11 +85,11 @@
         });
       },
       stop: function() {
-        var issue_id = $(".check").attr("id");
+        var issue_id = $(".check").attr("issue_id");
         var url_sort = 'sort'
         var project_id = <%= @project.id %>;
-        var id_next = $(".check").next().attr("id");
-        var id_prev = $(".check").prev().attr("id");
+        var id_next = $(".check").next().attr("issue_id");
+        var id_prev = $(".check").prev().attr("issue_id");
         var old_status = $(this).attr("status");
         var new_status = $(".check").parent().attr("status");
         $(".check").removeClass("check");

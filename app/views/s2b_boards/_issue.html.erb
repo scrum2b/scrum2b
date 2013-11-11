@@ -3,7 +3,7 @@ column = :new_column if !defined?(column) || column == nil
 show_for = :view_and_edit if !defined?(show_for) || show_for == nil
 %>
 
-<div class="board_issue issue clearfix" id="issue<%= issue.id %>" position="<%= issue.s2b_position %>" slide_value="<%= issue.done_ratio %>" >
+<div class="board_issue issue clearfix"  id="issue<%= issue.id %>" issue_id="<%= issue.id %>" position="<%= issue.s2b_position %>" slide_value="<%= issue.done_ratio %>" >
 
 <% if column == :new_column && show_for == :create_new %>
   <%= render(:partial => "edit_issue", :locals => { :issue => issue, :column => column}) %>
