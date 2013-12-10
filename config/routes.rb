@@ -15,3 +15,8 @@ match 'lists/index' => 's2b_lists#index'
 match "lists/filter_issues" => "s2b_lists#filter_issues"
 match "lists/close_on_list" => "s2b_lists#close_on_list"
 match "lists/change_sprint" => "s2b_lists#change_sprint"
+
+
+match "s2b_issues/show" => "s2b_issues#show"
+match "s2b_issues/edit" => "s2b_issues#edit"
+match "s2b_issues/update" => "s2b_issues#update"
