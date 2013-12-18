@@ -1,7 +1,7 @@
 
 class S2bBoardsController < S2bApplicationController
 
-  before_filter :find_project, :only => [:index, :update, :update_status, :update_progress, :create, :sort,
+  before_filter :find_project, :only => [:index, :update, :update_status, :update_progress, :create, :sort, :delete,
                                          :close_issue, :filter_issues, :opened_versions_list, :closed_versions_list]
   before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues, :update, :create]
   
@@ -153,6 +153,19 @@ class S2bBoardsController < S2bApplicationController
     else
       Rails.logger.info @issue.errors.full_messages
       render :json => {:result => "failure", :message => @issue.errors.full_messages}
+    end
+  end
+  
+  def delete
+    @issue = @project.issues.find(params[:issue_id])
+    unless @issue
+      render :json => {:result => "error", :message => "Unknow issue"}
+      return 
+    end
+    if @issue.destroy()
+      render :json => {:result => "success"}
+    else
+      render :json => {:result => "error"}
     end
   end
   

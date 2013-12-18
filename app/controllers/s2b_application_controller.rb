@@ -1,5 +1,5 @@
 
-class S2bAplicationController < ApplicationController
+class S2bApplicationController < ApplicationController
   unloadable
 
   skip_before_filter :verify_authenticity_token
@@ -10,6 +10,14 @@ class S2bAplicationController < ApplicationController
   DEFAULT_STATUS_IDS = {}
   STATUS_IDS = {'status_no_start' => [], 'status_inprogress' => [], 
                 'status_completed' => [], 'status_closed' => []}
+                
+  SELECT_ISSUE_OPTIONS = {:all_working => 1,
+                          :my => 2, 
+                          :my_completed => 3, 
+                          :new => 4, 
+                          :completed => 5,
+                          :closed => 6,
+                          :all => 7}
         
   protected
   
@@ -24,6 +32,7 @@ class S2bAplicationController < ApplicationController
   end
   
   def find_project
+
     # @project variable must be set before calling the authorize filter
     project_id = params[:project_id] || (params[:issue] && params[:issue][:project_id])
     @project = Project.find(project_id)

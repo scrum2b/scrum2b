@@ -56,3 +56,4 @@ de:
   label_error_select_issues: "Bitte Ticket wählen..."
   permission_view_issue: "Ticket anzeigen"
   label_sure_to_close_issues: "Sind Sie sicher, dass Sie das Ticket schließen wollen"
+  label_sure_to_delete_issues: "Are you sure to delete the issues"

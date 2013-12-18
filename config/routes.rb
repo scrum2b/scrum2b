@@ -10,6 +10,7 @@ match "boards/update" => "s2b_boards#update"
 match "boards/sort" => "s2b_boards#sort"
 match "boards/new" => "s2b_boards#new"
 match "boards/create" => "s2b_boards#create"
+match "boards/delete" => "s2b_boards#delete"
 
 match 'lists/index' => 's2b_lists#index'
 match "lists/filter_issues" => "s2b_lists#filter_issues"
