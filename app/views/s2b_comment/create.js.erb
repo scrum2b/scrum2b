@@ -1,4 +1,5 @@
 $("#detail_issue").html("<%= raw escape_javascript(@return_content) %>");
+
 $( "#new_date_start").datepicker({
       showOn: "button",
       buttonImage: "../images/calendar.png",
@@ -22,12 +23,12 @@ $('.btn_cancel_update').live("click",function(){
   $('#history').show();
 })
 $(".btn_submit_update").live("click",function(){
-      $.ajax({
-        url : '/s2b_issues/update',
-        type : "POST",
-        data : $('#form_edit').serialize(),
-        dataType : "script",
-        success : function() {}
-      });
-      return false;
-    });
+  $.ajax({
+    url : '/s2b_issues/update',
+    type : "POST",
+    data : $('#form_edit').serialize(),
+    dataType : "script",
+    success : function() {}
+  });
+  return false;
+});

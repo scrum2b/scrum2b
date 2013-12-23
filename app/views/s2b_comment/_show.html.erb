@@ -1,0 +1,22 @@
+<div class="div_comment">
+  <h5>Update By <%= link_to comment.author,:controller => 'users', :action => 'show', :id =>comment[:author_id]%> Update on <%= comment.updated_on%></h5>
+  <a href="#" class="delete_comment icon icon-del" style="float: right;height:10px;"></a>
+  <a href="#" class="edit_comment" style="float: right;margin-right: 5px"><img src="../images/edit.png?1383533903" /></a>
+  
+  <p class="comments"><%= comment.comments%></p>
+  <%= render :partial => 's2b_comment/form_edit', :locals => { :comment => comment } %>
+</div>
+<script>
+  $(document).ready(function() {
+    $(".edit_comment").live("click",function(){
+      $(this).hide();
+      $(this).parent().find(".comments").hide();
+      $(this).parent().find(".form_comment_edit").show();
+    })
+    $(".btn_cancel_edit_comment").live("click",function(){
+      $(this).parent().hide();
+      $(this).parent().parent().find(".comments").show();
+      $(this).parent().parent().find(".edit_comment").show();
+    })
+  })
+</script>

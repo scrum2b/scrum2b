@@ -1,5 +1,5 @@
 <div id="div_detail_issue">
-  asdasd
+
 </div>
 <%= render :partial => "/shared/plugin_header", :locals => {:is_board => true, :member => @member, :list_versions_open => @list_versions_open, :list_versions_closed => @list_versions_closed} %>
 <%= render :partial => "/s2b_boards/screen_boards" %>
@@ -111,7 +111,19 @@
       return false;
     });
     
-   
+   $(".btn_submit_comment").live("click",function(){
+      $.ajax({
+        url : '/s2b_comment/create',
+        beforeSend : function(xhr) {
+              xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+              },
+        type : "POST",
+        data : $('#form_comment').serialize(),
+        dataType : "script",
+        success : function() {}
+      });
+      return false;
+    });
     
     $( "#new_column .connectedSortable, #in_progress_column .connectedSortable, #completed_column .connectedSortable").sortable({
       scroll: true, 

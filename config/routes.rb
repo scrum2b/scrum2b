@@ -21,3 +21,5 @@ match "lists/change_sprint" => "s2b_lists#change_sprint"
 match "s2b_issues/show" => "s2b_issues#show"
 match "s2b_issues/edit" => "s2b_issues#edit"
 match "s2b_issues/update" => "s2b_issues#update"
+
+match "s2b_comment/create" => "s2b_comment#create"

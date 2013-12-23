@@ -328,6 +328,6 @@ img.icon {
 #detail_issue {
   padding:30px;
 }
-#detail_issue .contextual {
-  margin-right:30px !important;
+a.edit_comment {
+  float:right;
 }

@@ -1,17 +1,13 @@
 class S2bIssuesController < S2bApplicationController
   
-  before_filter :find_project, :only => [:show, :edit, :update]
+  before_filter :find_project, :only => [:show, :edit, :update, :create_comment]
                           
   def show
     return unless find_issue_from_param
-    @journals = @issue.journals.includes(:user, :details).reorder("#{Journal.table_name}.id ASC").all
-    @journals.each_with_index {|j,i| j.indice = i+1}
-    @journals.reject!(&:private_notes?) unless User.current.allowed_to?(:view_private_notes, @issue.project)
-    @journals.reverse! if User.current.wants_comments_in_reverse_order?
-     
-    @member = @project.assignable_users
-    @id_member = @member.collect{|id_member| id_member.id} 
-    
+    member = @project.assignable_users
+    @id_member = member.collect{|id_member| id_member.id}
+    @comments = Comment.where(:commented_type => "Issue",:commented_id => @issue.id)
+    Rails.logger.info "AAAAAAAAAAAAAAAA #{@comments}"
     
     @allowed_statuses = @issue.new_statuses_allowed_to(User.current)
     @edit_allowed = User.current.allowed_to?(:edit_issues, @project)
@@ -20,7 +16,7 @@ class S2bIssuesController < S2bApplicationController
     
     respond_to do |format|
       format.js {
-        @return_content = render_to_string(:partial => "/s2b_issues/detail_issue", :locals => {:issue => @issue, :project => @project, :id_member => @id_member})
+        @return_content = render_to_string(:partial => "/s2b_issues/detail_issue", :locals => {:issue => @issue, :project => @project, :id_member => @id_member, :notes => @notes})
       }
     end
   end
@@ -32,14 +28,8 @@ class S2bIssuesController < S2bApplicationController
   
   def update
     return unless find_issue_from_param 
-    @issue.save_attachments(params[:attachments] || (params[:issue] && params[:issue][:uploads]))
-    @journals = @issue.journals.includes(:user, :details).reorder("#{Journal.table_name}.id ASC").all
-    @journals.each_with_index {|j,i| j.indice = i+1}
-    @journals.reject!(&:private_notes?) unless User.current.allowed_to?(:view_private_notes, @issue.project)
-    @journals.reverse! if User.current.wants_comments_in_reverse_order?
-     
-    @member = @project.assignable_users
-    @id_member = @member.collect{|id_member| id_member.id} 
+    member = @project.assignable_users
+    @id_member = member.collect{|id_member| id_member.id} 
     
     
     @allowed_statuses = @issue.new_statuses_allowed_to(User.current)
@@ -52,13 +42,13 @@ class S2bIssuesController < S2bApplicationController
       format.js {
         @return_content = render_to_string(:partial => "/s2b_issues/detail_issue", :locals => {:issue => @issue, :project => @project, :id_member => @id_member})
       }
-    end
+      end
     else
       render :json => {:result => "error", :message => @issue.errors.full_messages}
     end
     
   end
-  
+ 
   protected
   
     def find_issue_from_param
