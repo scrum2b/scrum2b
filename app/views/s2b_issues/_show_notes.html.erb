@@ -1,0 +1,8 @@
+<div class="div_comment"> 
+  <%= render :partial => 'form_edit_notes', :locals => { :journal => journal } %>
+  <% if User.current.id == journal.user_id || User.current.admin %>
+    <a href="#" class="delete_notes icon icon-del" value="<%= journal.id %> " title="Delete Notes" style="float: right;height:10px;"></a>
+    <a href="#" class="edit_notes" style="float: right;margin-right: 5px" title="Edit Notes"><img src="../images/edit.png?1383533903" /></a>
+  <% end %>
+  <p class="notes"><%= journal.notes %></p>
+</div>

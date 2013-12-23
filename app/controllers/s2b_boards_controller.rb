@@ -156,18 +156,7 @@ class S2bBoardsController < S2bApplicationController
     end
   end
   
-  def delete
-    @issue = @project.issues.find(params[:issue_id])
-    unless @issue
-      render :json => {:result => "error", :message => "Unknow issue"}
-      return 
-    end
-    if @issue.destroy()
-      render :json => {:result => "success"}
-    else
-      render :json => {:result => "error"}
-    end
-  end
+  
   
   def filter_issues
     session[:params_select_version_onboard] = params[:select_version]

@@ -1,5 +1,4 @@
 <div id="div_detail_issue">
-
 </div>
 <%= render :partial => "/shared/plugin_header", :locals => {:is_board => true, :member => @member, :list_versions_open => @list_versions_open, :list_versions_closed => @list_versions_closed} %>
 <%= render :partial => "/s2b_boards/screen_boards" %>
@@ -42,31 +41,6 @@
            $("#detail_issue").dialog( "close" );
           }else{
             alert(data.message);
-          }
-        }
-      });
-      return false;
-    });
-    
-    
-    $(".delete_issue").live("click",function(){
-      if(!confirm('<%= l(:label_sure_to_delete_issues)%>')){
-        return;
-      }
-      var issue_id = $(this).attr("issue_id");
-      var project_id = '<%= @project.id %>';
-
-      $.ajax({
-        url : 'delete',
-        type : "POST",
-        data : 'issue_id=' + issue_id + '&project_id=' + project_id,
-        dataType : "json",
-        success : function(data) {
-          if(data.result == 'success'){
-           $('#issue' + issue_id).hide();
-           $("#detail_issue").dialog( "close" );
-          }else{
-            alert(data.result);
           }
         }
       });
@@ -248,9 +222,6 @@
       $("#description_readmore_" + id).hide();
       return false;
     });
-    
-    
-    
   }); 
   
   function form_edit(id){
