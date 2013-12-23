@@ -1,8 +1,9 @@
 <form class="form_comment_edit" style="display: none">
     <input name="authenticity_token" type="hidden"  value="<%= form_authenticity_token %>"/>
-    <textarea class="text_commnet" name="comments" style="height: 50px;width:100%"> <%= comment.comments %></textarea>
+    <textarea class="text_commnet" name="comment[comments]" style="height: 50px;width:100%"> <%= comment.comments %></textarea>
     <input type="hidden" name="project_id" value="<%= @project.id %>"/>
-    <input type="hidden" name="comment_id" value="<%= comment.id %>"/>
+    <input type="hidden" name="comment[commented_id]" value="<%= @issue.id %>"/>
+    <input type="hidden" name="comment[id]" value="<%= comment.id %>"/>
     <br />
     <br />
     <input type="button" value="Submit" class="btn_submit_edit_comment" />

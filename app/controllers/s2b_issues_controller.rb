@@ -30,7 +30,7 @@ class S2bIssuesController < S2bApplicationController
     return unless find_issue_from_param 
     member = @project.assignable_users
     @id_member = member.collect{|id_member| id_member.id} 
-    
+    @comments = Comment.where(:commented_type => "Issue",:commented_id => @issue.id)
     
     @allowed_statuses = @issue.new_statuses_allowed_to(User.current)
     @edit_allowed = User.current.allowed_to?(:edit_issues, @project)
@@ -40,7 +40,7 @@ class S2bIssuesController < S2bApplicationController
     if @issue.update_attributes(params[:issue])
       respond_to do |format|
       format.js {
-        @return_content = render_to_string(:partial => "/s2b_issues/detail_issue", :locals => {:issue => @issue, :project => @project, :id_member => @id_member})
+        @return_content = render_to_string(:partial => "/s2b_issues/detail_issue", :locals => {:issue => @issue, :project => @project, :id_member => @id_member, :comments  => @comments})
       }
       end
     else

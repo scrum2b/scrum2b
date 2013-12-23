@@ -1,10 +1,10 @@
 <div class="div_comment">
-  <h5>Update By <%= link_to comment.author,:controller => 'users', :action => 'show', :id =>comment[:author_id]%> Update on <%= comment.updated_on%></h5>
+  <h5>Update By <%= link_to comment.author,:controller => 'users', :action => 'show', :id =>comment[:author_id]%> Update on <%= comment.updated_on%></h5> 
+  <%= render :partial => 's2b_comment/form_edit', :locals => { :comment => comment } %>
   <a href="#" class="delete_comment icon icon-del" style="float: right;height:10px;"></a>
   <a href="#" class="edit_comment" style="float: right;margin-right: 5px"><img src="../images/edit.png?1383533903" /></a>
   
   <p class="comments"><%= comment.comments%></p>
-  <%= render :partial => 's2b_comment/form_edit', :locals => { :comment => comment } %>
 </div>
 <script>
   $(document).ready(function() {
@@ -18,5 +18,18 @@
       $(this).parent().parent().find(".comments").show();
       $(this).parent().parent().find(".edit_comment").show();
     })
+    $(".btn_submit_edit_comment").live("click",function(){
+      $.ajax({
+        url : '/s2b_comment/s2b_update',
+        beforeSend : function(xhr) {
+              xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+              },
+        type : "POST",
+        data : $('#form_comment').serialize(),
+        dataType : "script",
+        success : function() {}
+      });
+      return false;
+    });
   })
 </script>

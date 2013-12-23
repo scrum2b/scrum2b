@@ -23,3 +23,5 @@ match "s2b_issues/edit" => "s2b_issues#edit"
 match "s2b_issues/update" => "s2b_issues#update"
 
 match "s2b_comment/create" => "s2b_comment#create"
+match "s2b_comment/s2b_update" => "s2b_comment#s2b_update"
+match "s2b_comment/delete" => "s2b_comment#delete"
