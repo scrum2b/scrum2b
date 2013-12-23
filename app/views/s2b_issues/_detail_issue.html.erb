@@ -5,24 +5,11 @@
   <div class="detail_issue issue">  
     <%= render :partial => 'issue', :locals => {:issue => @issue} %>
   </div>
-<<<<<<< HEAD
   <%= render :partial => 'form_new_notes', :locals => {:issue => @issue, :project => @project} %>
   <% if @journals.present? %>
     <div id="history">
     <h3><%=l(:label_history)%></h3>
       <%= render :partial => 'history', :locals => { :issue => @issue, :journals => @journals } %>
-=======
-  <fieldset><legend>Comment</legend>
-    <%= render :partial => 's2b_comment/form_new' %>
-  </fieldset>
-  <% if !@comments.blank? %>
-    <div id="comment">
-    <h3><%=l(:label_comment)%></h3>
-     <% @comments.each do |comment| %>
-      <%= render :partial => 's2b_comment/show', :locals => { :comment => comment } %>
-      <% end %>
->>>>>>> origin/issue_tools
-    </div>
   <% end %>
 </div>
 
