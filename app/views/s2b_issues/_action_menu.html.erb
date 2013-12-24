@@ -1,6 +1,6 @@
 <% if !User.current.anonymous? && @id_member.include?(User.current.id) || User.current.admin %>
   <div class="contextual">
-    <a class="update_issue icon icon icon-edit" href="#" title="Update issue" issue_id="<%= issue.id%>">Update</a>
+    <a class="update_issue icon icon icon-edit"  href="#" title="Update issue" issue_id="<%= issue.id%>">Update</a>
     <a class="delete_issue icon icon-del" href="#" title="Delete Issue" issue_id="<%= issue.id%>">Delete</a>
   </div>
 <% end %>

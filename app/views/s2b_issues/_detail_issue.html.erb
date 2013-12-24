@@ -23,6 +23,7 @@
 $(document).ready(function() { 
     $("#detail_issue").dialog({
       width:1000,
+      height:800,
       modal: true,
       resizable: false,
       close: function() {
@@ -40,6 +41,10 @@ $(document).ready(function() {
         return false;
       }
     });
+    $('.ui-widget-overlay').live("click",function(){
+      $('#detail_issue' ).dialog( "close" );
+    })
+    
     $( "#new_date_start").datepicker({
       showOn: "button",
       buttonImage: "../images/calendar.png",
