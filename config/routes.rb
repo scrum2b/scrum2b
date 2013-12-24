@@ -22,7 +22,8 @@ match "s2b_issues/show" => "s2b_issues#show"
 match "s2b_issues/edit" => "s2b_issues#edit"
 match "s2b_issues/update" => "s2b_issues#update"
 match "s2b_issues/delete" => "s2b_issues#delete"
-match "s2b_issues/update_notes" => "s2b_issues#update_notes"
-match "s2b_issues/delete_notes" => "s2b_issues#delete_notes"
-match "s2b_issues/create_notes" => "s2b_issues#create_notes"
+
+match "s2b_notes/update" => "s2b_notes#update"
+match "s2b_notes/delete" => "s2b_notes#delete"
+match "s2b_notes/create" => "s2b_notes#create"
 

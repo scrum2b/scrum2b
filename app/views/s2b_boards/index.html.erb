@@ -1,5 +1,3 @@
-<div id="div_detail_issue">
-</div>
 <%= render :partial => "/shared/plugin_header", :locals => {:is_board => true, :member => @member, :list_versions_open => @list_versions_open, :list_versions_closed => @list_versions_closed} %>
 <%= render :partial => "/s2b_boards/screen_boards" %>
 
@@ -18,7 +16,7 @@
     $( "#date_start_").datepicker("option", "dateFormat", "yy-mm-dd");
     $( "#date_end_").datepicker("option", "dateFormat", "yy-mm-dd");
     
-    $(".icon_new_issue").click(function(){
+    $(".icon_new_issue").live('click',function(){
       $("#new_issue_form").show();
     });
     
@@ -26,7 +24,6 @@
       if(!confirm('<%= l(:label_sure_to_close_issues)%>')){
         return;
       }
-
       var issue_id = $(this).attr("issue_id");
       var project_id = '<%= @project.id %>';
 

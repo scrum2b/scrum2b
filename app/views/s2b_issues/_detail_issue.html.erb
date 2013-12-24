@@ -5,12 +5,13 @@
   <div class="detail_issue issue">  
     <%= render :partial => 'issue', :locals => {:issue => @issue} %>
   </div>
-  <%= render :partial => 'form_new_notes', :locals => {:issue => @issue, :project => @project} %>
-  <% if @journals.present? %>
-    <div id="history">
-    <h3><%=l(:label_history)%></h3>
-      <%= render :partial => 'history', :locals => { :issue => @issue, :journals => @journals } %>
-  <% end %>
+  <%= render :partial => '/s2b_notes/form_new', :locals => {:issue => @issue, :project => @project} %>
+
+  <div id="history">
+  <div id="div_notes">
+    <%= render :partial => '/s2b_notes/show', :locals => { :issue => @issue, :journals => @journals, :project => @project } %>
+  </div>
+
 </div>
 
 <style>
@@ -25,7 +26,6 @@ $(document).ready(function() {
       modal: true,
       resizable: false,
       close: function() {
-        $(this).remove();
         var select_version = $("#select_version_onboard").val();
         var select_member = $("#select_member").val();
         var project_id = '<%= @project.id %>';
@@ -66,9 +66,8 @@ $(document).ready(function() {
       $('#history').show();
     })  
     
-    $(".delete_issue").live("click",function(){
-      var checkstr =  confirm('are you sure you want to delete this?');
-      if(checkstr == true){
+    $(".delete_issue").live("click",function(){    
+      if(confirm("Do you want to delete?")) { 
         var issue_id = $(this).attr("issue_id");
         var project_id = '<%= @project.id %>';
         $.ajax({
@@ -84,10 +83,9 @@ $(document).ready(function() {
               alert(data.result);
             }
           }
-        });
-      }else{
-      return false;
-      }
+        });}else{
+          return false;
+       }    
     });
     
     $(".edit_notes").live("click",function(){
@@ -103,33 +101,29 @@ $(document).ready(function() {
     });
     
     $(".btn_submit_edit_notes").live("click",function(){     
-        var notes_id = $(this).attr("notes_id");
-        var form = $('.form_notes_' + notes_id )
-        $.ajax({
-          url : '/s2b_issues/update_notes',
-          beforeSend : function(xhr) {
-                xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
-                },
-          type : "POST",
-          data : form.serialize(),
-          dataType : "script",
-          success : function() {}
-        });
-        return false;
-      
+      var notes_id = $(this).attr("notes_id");
+      var form = $('.form_notes_' + notes_id )
+      $.ajax({
+        url : '/s2b_notes/update',
+        beforeSend : function(xhr) {
+              xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+              },
+        type : "POST",
+        data : form.serialize(),
+        dataType : "script",
+        success : function() {}
+      });
+      return false;      
     });
     
     $(".delete_notes").live("click",function(){
-      var checkstr =  window.confirm('are you sure you want to delete this?');
-      if(checkstr == true){
+      if(confirm("Do you want to delete?")) {
         var notes_id = $(this).attr("value");
         var project_id = <%= @project.id %> 
         var issue_id = <%= @issue.id %> 
         $.ajax({
-          url : '/s2b_issues/delete_notes',
-          beforeSend : function(xhr) {
-                xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
-                },
+          url : '/s2b_notes/delete',
+          beforeSend : function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
           type : "POST",
           data : 'notes_id=' + notes_id + '&project_id=' + project_id + '&issue_id=' + issue_id,
           dataType : "script",
@@ -141,17 +135,17 @@ $(document).ready(function() {
     });
     
     $("#btn_submit_create_notes").live("click",function(){
-        $.ajax({
-          url : '/s2b_issues/create_notes',
-          beforeSend : function(xhr) {
-                xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
-                },
-          type : "POST",
-          data : $('#form_create_notes').serialize(),
-          dataType : "script",
-          success : function() {}
-        });
-        return false;
+      $.ajax({
+        url : '/s2b_notes/create',
+        beforeSend : function(xhr) {
+              xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+              },
+        type : "POST",
+        data : $('#form_create_notes').serialize(),
+        dataType : "script",
+        success : function() {}
+      });
+      return false;
     });
 })
 </script>

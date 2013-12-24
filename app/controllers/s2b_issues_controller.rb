@@ -11,7 +11,7 @@ class S2bIssuesController < S2bApplicationController
     return unless find_issue_from_param
     respond_to do |format|
       format.js {
-        @return_content = render_to_string(:partial => "/s2b_issues/detail_issue", :locals => {:issue => @issue, :project => @project, :id_member => @id_member, :notes => @notes})
+        @return_content = render_to_string(:partial => "/s2b_issues/detail_issue", :locals => {:issue => @issue, :project => @project, :id_member => @id_member, :journals => @journals})
       }
     end
   end
@@ -36,21 +36,6 @@ class S2bIssuesController < S2bApplicationController
     
   end
 
-  
-  def create_notes
-    @journal = Journal.new(params[:journal])
-    if @journal.save
-      @journals = @issue.journals.includes(:user, :details).reorder("#{Journal.table_name}.id ASC").all
-      respond_to do |format|
-      format.js {
-        @return_content = render_to_string(:partial => "/s2b_issues/detail_issue", :locals => {:issue => @issue, :project => @project, :id_member => @id_member, :journals => @journals})
-      }
-      end
-    else
-      render :json => {:result => "error", :message => @journal.errors.full_messages}
-    end
-  end
-  
   def delete
     @issue = @project.issues.find(params[:issue_id])
     unless @issue
@@ -61,35 +46,6 @@ class S2bIssuesController < S2bApplicationController
       render :json => {:result => "success"}
     else
       render :json => {:result => "error"}
-    end
-  end
-  
-  def update_notes
-    @journal = Journal.find(params[:journal][:id])
-    @journal.notes = params[:journal][:notes]
-    if @journal.save
-      @journals = @issue.journals.includes(:user, :details).reorder("#{Journal.table_name}.id ASC").all
-      respond_to do |format|
-      format.js {
-        @return_content = render_to_string(:partial => "/s2b_issues/detail_issue", :locals => {:issue => @issue, :project => @project, :id_member => @id_member, :journals => @journals})
-      }
-      end
-    else
-      render :json => {:result => "error", :message => @journal.errors.full_messages}
-    end
-  end
-  
-  def delete_notes
-    @journal = Journal.find(params[:notes_id])
-    if @journal.destroy
-      @journals = @issue.journals.includes(:user, :details).reorder("#{Journal.table_name}.id ASC").all
-      respond_to do |format|
-      format.js {
-        @return_content = render_to_string(:partial => "/s2b_issues/detail_issue", :locals => {:issue => @issue, :project => @project, :id_member => @id_member, :journals => @journals})
-      }
-      end
-    else
-      render :json => {:result => "error", :message => @journal.errors.full_messages}
     end
   end
   
