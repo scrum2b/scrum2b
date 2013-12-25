@@ -1,0 +1,18 @@
+<fieldset class="tabular tabular_notes">
+  <legend>Create Comment</legend>
+  <form id="form_create_notes" >
+      <input name="authenticity_token" type="hidden"  value="<%= form_authenticity_token %>"/>
+      <textarea class="text_commnet" name="journal[notes]" style="height: 50px;width:100%"></textarea>
+      <input type="hidden" name="journal[user_id]" value="<%= User.current.id %>"/>
+      <input type="hidden" name="journal[journalized_type]" value="Issue"/>
+      <input type="hidden" name="journal[journalized_id]" value="<%= @issue.id %>"/>
+      <input type="hidden" name="issue_id" value="<%= @issue.id %>"/>
+      <input type="hidden" name="project_id" value="<%= @project.id %>"/>
+      <br />
+      <br />
+      <input type="button" value="Submit" id="btn_submit_create_notes" title="submit" />
+  </form>
+  <br />
+</fieldset>
+<br />
+<br />

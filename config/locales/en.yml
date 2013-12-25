@@ -58,3 +58,5 @@ en:
   label_error_select_issues: "Please select an issue..."
   permission_view_issue: "View Issue"
   label_sure_to_close_issues: "Are you sure to close the issues"
+  label_sure_to_delete_issues: "Are you sure to delete the issues"
+  label_sure_to_delete_notes: "Are you sure to delete the notes"

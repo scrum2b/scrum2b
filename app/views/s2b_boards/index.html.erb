@@ -1,5 +1,4 @@
 <%= render :partial => "/shared/plugin_header", :locals => {:is_board => true, :member => @member, :list_versions_open => @list_versions_open, :list_versions_closed => @list_versions_closed} %>
-
 <%= render :partial => "/s2b_boards/screen_boards" %>
 
 <script language="JavaScript" >
@@ -17,15 +16,14 @@
     $( "#date_start_").datepicker("option", "dateFormat", "yy-mm-dd");
     $( "#date_end_").datepicker("option", "dateFormat", "yy-mm-dd");
     
-    $(".icon_new_issue").click(function(){
+    $(".icon_new_issue").live('click',function(){
       $("#new_issue_form").show();
     });
     
-    $(".icon_close_issue").live("click",function(){
+    $(".icon_close_issue, .close_issue").live("click",function(){
       if(!confirm('<%= l(:label_sure_to_close_issues)%>')){
         return;
       }
-
       var issue_id = $(this).attr("issue_id");
       var project_id = '<%= @project.id %>';
 
@@ -37,6 +35,7 @@
         success : function(data) {
           if(data.result == 'success'){
            $('#issue' + issue_id).hide();
+           $("#detail_issue").dialog( "close" );
           }else{
             alert(data.message);
           }
@@ -58,6 +57,32 @@
       });
       return false;
     });
+    
+    $(".show_detail").live("click",function(){
+      var issue_id = $(this).attr("value");
+      var project_id = '<%= @project.id %>';
+      $.ajax({
+        url : '/s2b_issues/show',
+        type : "POST",
+        data : 'issue_id=' + issue_id + '&project_id=' + project_id,
+        dataType : "script",
+        success : function() {}
+      });
+      return false;
+    });
+    
+    $(".btn_submit_update").live("click",function(){
+      $.ajax({
+        url : '/s2b_issues/update',
+        type : "POST",
+        data : $('#form_edit').serialize(),
+        dataType : "script",
+        success : function() {}
+      });
+      return false;
+    });
+    
+   
     
     $( "#new_column .connectedSortable, #in_progress_column .connectedSortable, #completed_column .connectedSortable").sortable({
       scroll: true, 
@@ -194,7 +219,6 @@
       $("#description_readmore_" + id).hide();
       return false;
     });
-
   }); 
   
   function form_edit(id){

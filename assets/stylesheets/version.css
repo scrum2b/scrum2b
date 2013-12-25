@@ -325,4 +325,9 @@ img.icon {
   border: 1px solid #339BB9;
   margin-bottom:5px;
 }
-
+#detail_issue {
+  padding:30px;
+}
+a.edit_comment {
+  float:right;
+}

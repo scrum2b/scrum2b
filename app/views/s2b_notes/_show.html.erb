@@ -1,0 +1,37 @@
+<div id="div_show_notes">
+  <% if @journals.present? %>
+    <h3><%=l(:label_history)%></h3>
+  <% end %>
+  <% for journal in journals %>
+    <div id="change-<%= journal.id %>" class="<%= journal.css_classes %>">
+      <div id="note-<%= journal.indice %>">
+      <h4><a href="#"  class="journal-link" ></a>
+      <%= avatar(journal.user, :size => "24") %>
+      <%= authoring journal.created_on, journal.user, :label => :label_updated_time_by %></h4>
+  
+      <% if journal.details.any? %>
+      <ul class="details">
+        <% details_to_strings(journal.details).each do |string| %>
+         <li><%= string %></li>
+        <% end %>
+      </ul>
+      <% end %>    
+      <% if !journal.notes.blank? %>
+        <div> 
+          <%= render :partial => '/s2b_notes/form_edit', :locals => { :journal => journal, :issue => @issue, :project => @project } %>
+          <% if User.current.id == journal.user_id || User.current.admin %>
+            <a href="#" onClick="delete_note(<%= journal.id %>)" class="delete_notes icon icon-del" value="<%= journal.id %> " title="Delete Notes" style="float: right;height:10px;"></a>
+            <a href="#" class="edit_notes" style="float: right;margin-right: 5px" title="Edit Notes"><img src="../images/edit.png?1383533903" /></a>
+          <% end %>
+          <p class="notes"><%= journal.notes %></p>
+        </div>
+      <% end %>
+      </div>
+    </div>
+    <%= call_hook(:view_issues_history_journal_bottom, { :journal => journal }) %>
+  <% end %>
+  
+  <% heads_for_wiki_formatter if User.current.allowed_to?(:edit_issue_notes, issue.project) || User.current.allowed_to?(:edit_own_issue_notes, issue.project) %>
+</div>
+
+
