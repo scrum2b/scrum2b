@@ -40,6 +40,7 @@ de:
   label_board_issue_new_issue: "Neues Ticket"
   label_board_edit_btn_submit: "Übertragen"
   label_board_edit_btn_cancel: "Abbrechen"
+  label_board_show_detail_issue: "View Detail"
   label_readmore: "weitere Informationen"
   label_hide: "verstecken"
   

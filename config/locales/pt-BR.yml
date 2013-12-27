@@ -42,6 +42,7 @@ pt-BR:
   label_board_issue_new_issue: "Nova Tarefa"
   label_board_edit_btn_submit: "Submeter"
   label_board_edit_btn_cancel: "Cancelar"
+  label_board_show_detail_issue: "View Detail"
   label_readmore: "Ler mais"
   label_hide: "Omitir"
   

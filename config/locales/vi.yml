@@ -42,6 +42,7 @@ vi:
   label_board_issue_new_issue: "Tạo Mới"
   label_board_edit_btn_submit: "Đồng Ý"
   label_board_edit_btn_cancel: "Hủy Bỏ"
+  label_board_show_detail_issue: "Xem Chi Tiết"
   label_readmore: "Xem Thêm"
   label_hide: "Ẩn"
   
