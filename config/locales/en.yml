@@ -42,6 +42,7 @@ en:
   label_board_issue_new_issue: "New Issue"
   label_board_edit_btn_submit: "Submit"
   label_board_edit_btn_cancel: "Cancel"
+  label_board_show_detail_issue: "View Detail"
   label_readmore: "Readmore"
   label_hide: "Hide"
   

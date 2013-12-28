@@ -82,7 +82,19 @@
       return false;
     });
     
-   
+    $("#btn_submit_create_notes").live("click",function(){
+      $.ajax({
+        url : '/s2b_notes/create',
+        beforeSend : function(xhr) {
+              xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+              },
+        type : "POST",
+        data : $('#form_create_notes').serialize(),
+        dataType : "script",
+        success : function() {}
+      });
+      return false;
+    });
     
     $( "#new_column .connectedSortable, #in_progress_column .connectedSortable, #completed_column .connectedSortable").sortable({
       scroll: true, 
