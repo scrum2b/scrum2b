@@ -1,12 +1,14 @@
 class S2bIssuesController < S2bApplicationController
-
   before_filter :find_project
   before_filter :find_issue_from_param
   before_filter :check_before
-  
+
   helper :attachments
-  include AttachmentsHelper    
-                      
+  include AttachmentsHelper
+
+  helper :issues
+  include IssuesHelper
+
   def show
     return unless find_issue_from_param
     respond_to do |format|

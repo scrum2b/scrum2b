@@ -1,4 +1,3 @@
-
 class S2bApplicationController < ApplicationController
   unloadable
 
