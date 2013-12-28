@@ -5,8 +5,9 @@
   <div class="detail_issue issue">  
     <%= render :partial => 'issue', :locals => {:issue => @issue} %>
   </div>
-  <%= render :partial => '/s2b_notes/form_new', :locals => {:issue => @issue, :project => @project} %>
-
+  <% if !User.current.anonymous? && @id_member.include?(User.current.id) || User.current.admin %>
+    <%= render :partial => '/s2b_notes/form_new', :locals => {:issue => @issue, :project => @project} %>
+  <% end %>
   <div id="history">
   <div id="div_notes">
     <%= render :partial => '/s2b_notes/show', :locals => { :issue => @issue, :journals => @journals, :project => @project } %>
@@ -73,25 +74,7 @@ $(document).ready(function() {
     })  
     
     $(".delete_issue").live("click",function(){    
-      if(confirm("Do you want to delete?")) { 
-        var issue_id = $(this).attr("issue_id");
-        var project_id = '<%= @project.id %>';
-        $.ajax({
-          url : '/s2b_issues/delete',
-          type : "POST",
-          data : 'issue_id=' + issue_id + '&project_id=' + project_id,
-          dataType : "json",
-          success : function(data) {
-            if(data.result == 'success'){
-             $('#issue' + issue_id).hide();
-             $("#detail_issue").dialog( "close" );
-            }else{
-              alert(data.result);
-            }
-          }
-        });}else{
-          return false;
-       }    
+      
     });
     
     $(".edit_notes").live("click",function(){
@@ -124,6 +107,28 @@ $(document).ready(function() {
        
     
   })
+  function delete_issue(issue_id){
+    if(confirm("Do you want to delete?")) { 
+        var issue_id = issue_id;
+        var project_id = '<%= @project.id %>';
+        $.ajax({
+          url : '/s2b_issues/delete',
+          type : "POST",
+          data : 'issue_id=' + issue_id + '&project_id=' + project_id,
+          dataType : "json",
+          success : function(data) {
+            if(data.result == 'success'){
+             $('#issue' + issue_id).hide();
+             $("#detail_issue").dialog( "close" );
+            }else{
+              alert(data.result);
+            }
+          }
+        });}else{
+          return false;
+       }    
+  }
+  
   function delete_note(note_id){
     if(confirm("Are you sure ?")){
       var notes_id = note_id;

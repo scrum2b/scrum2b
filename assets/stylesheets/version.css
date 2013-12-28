@@ -15,6 +15,9 @@ li {
 .text-left {
   text-align: left;
 }
+.float-left {
+  float:left;
+}
 .text-right {
   
   text-align:right;
@@ -63,11 +66,14 @@ li {
 
 #div_screen_board .issue_subject {
   width: 100%;
+  margin-bottom:7px;
 }
 #div_screen_board .issue_description {
   width: 100%;
 }
-
+#div_screen_board .est_time {
+  margin-left:20px;
+}
 #div_screen_board .board_issue {
   width: 100%;
   padding: 5px 0px 5px 0px;
