@@ -2,15 +2,31 @@
 <%= render :partial => "/s2b_boards/screen_boards" %>
 
 <script language="JavaScript" >
+  $('#flash_show_detail').hide();
   function show_and_hide_close_issue_icon() {
     $("#completed_column .icon_close_issue").show();
     $("#new_column .icon_close_issue").hide();
     $("#in_progress_column .icon_close_issue").hide();
-  }
-
+  };
+  function show_detail(id) {
+    if(id != ""){
+      var issue_id = id;
+      var project_id = '<%= @project.id %>';
+      $.ajax({
+        url : '/s2b_issues/show',
+        type : "POST",
+        data : 'issue_id=' + issue_id + '&project_id=' + project_id,
+        dataType : "script",
+        success : function() {}
+      });
+      return false;
+    }
+  };
+  
   $(document).ready(function() {
+    var show_detail_id = <%= flash[:show_detail] %>
     show_and_hide_close_issue_icon();
-    
+    show_detail(show_detail_id); 
     $( "#date_start_").datepicker();
     $( "#date_end_").datepicker();
     $( "#date_start_").datepicker("option", "dateFormat", "yy-mm-dd");
@@ -71,16 +87,21 @@
       return false;
     });
     
-    $(".btn_submit_update").live("click",function(){
-      $.ajax({
-        url : '/s2b_issues/update',
-        type : "POST",
-        data : $('#form_edit').serialize(),
-        dataType : "script",
-        success : function() {}
-      });
-      return false;
-    });
+    // $(".btn_submit_update").live("click",function(){
+      // $.ajax({
+        // url : '/s2b_issues/update',
+        // type : "POST",
+        // data : $('#form_edit').serialize(),
+        // dataType : "json",
+        // success : function(response) {
+          // if(response.result == 'success'){
+            // alert(response.content);
+            // $('#detail_issue').replaceWith(response.content)
+          // }
+        // }
+      // });
+      // return false;
+    // });
     
     $("#btn_submit_create_notes").live("click",function(){
       $.ajax({

@@ -71,9 +71,7 @@ li {
 #div_screen_board .issue_description {
   width: 100%;
 }
-#div_screen_board .est_time {
-  margin-left:20px;
-}
+
 #div_screen_board .board_issue {
   width: 100%;
   padding: 5px 0px 5px 0px;
@@ -330,9 +328,6 @@ img.icon {
   padding: 5px;
   border: 1px solid #339BB9;
   margin-bottom:5px;
-}
-#detail_issue {
-  padding:30px;
 }
 a.edit_comment {
   float:right;

@@ -6,7 +6,6 @@ class S2bBoardsController < S2bApplicationController
   before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues, :update, :create]
   
   def index
-    #
     @max_position_issue = @project.issues.maximum(:s2b_position).to_i + 1
     @issue_no_position = @project.issues.where(:s2b_position => nil)
     @issue_no_position.each do |issue|

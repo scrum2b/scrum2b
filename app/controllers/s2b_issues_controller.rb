@@ -5,7 +5,6 @@ class S2bIssuesController < S2bApplicationController
 
   helper :attachments
   include AttachmentsHelper
-
   helper :issues
   include IssuesHelper
 
@@ -27,13 +26,27 @@ class S2bIssuesController < S2bApplicationController
     return unless find_issue_from_param 
     @issue.save_attachments(params[:attachments] || (params[:issue] && params[:issue][:uploads]))
     if @issue.update_attributes(params[:issue])
-      respond_to do |format|
-      format.js {
-        @return_content = render_to_string(:partial => "/s2b_issues/detail_issue", :locals => {:issue => @issue, :project => @project, :id_member => @id_member, :comments  => @comments})
-      }
+      redirect_to :controller => "s2b_boards",:action => "index", :project_id => @project.id
+      flash[:notice] = "Successfully update issue #{@issue.id}"
+      flash[:show_detail] = "#{@issue.id}"
+    else
+      redirect_to :controller => "s2b_boards",:action => "index", :project_id => @project.id
+      flash[:notice] = "Error update issue #{@issue.id}"
+    end
+    
+  end
+  
+  def delete_attach
+    return unless params[:attach_id]
+    @attachment = Attachment.find(params[:attach_id])
+      if @attachment.destroy()
+       respond_to do |format|
+        format.js {
+          @return_content = render_to_string(:partial => "/s2b_issues/detail_issue", :locals => {:issue => @issue, :project => @project, :id_member => @id_member})
+        }
       end
     else
-      render :json => {:result => "error", :message => @issue.errors.full_messages}
+      render :json => {:result => "error"}
     end
     
   end

@@ -54,6 +54,17 @@
         </div>
       </div>
     <% end %>
-    <%= link_to_attachments @issue, :thumbnails => true %>
+    <br />
+    <br />
+    <% if @issue.attachments.any? %>
+      <% @issue.attachments.each do |attach| %>
+        <p>
+          <a href="/attachments/download/<%= attach.id%>" class="icon icon-attachment"><%= attach.filename%></a>
+          <span class="size">(<%= attach.filesize %>)</span>
+          <a href="#" onClick="delete_attach(<%= attach.id%>,<%= @issue.id%>)" class="icon icon-del delete" title="Delete"></a>
+          <span class="author"><%= attach.author %>, <%= attach.created_on %></span>
+        </p>
+      <% end %>
+    <% end %>
   <% end -%>
 </div>

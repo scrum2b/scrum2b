@@ -1,6 +1,6 @@
 <div class="show_form" id="show_issue_<%= issue.id %>" value="<%= issue.id %>">
   <p class="id" style="font-size: 13px;float: left">
-    <a href="#" class="show_detail" title="<%= l(:label_board_show_detail_issue) %>" value="<%= issue.id %>">#<%= issue.id %></a></p>
+    <a href="#" class="show_detail show_detail_<%=issue.id %>" title="<%= l(:label_board_show_detail_issue) %>" value="<%= issue.id %>">#<%= issue.id %></a></p>
     <% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin %>
       <p class="icon_close_issue" issue_id="<%= issue.id%>">
         <img src="/plugin_assets/scrum2b/images/Close.ico" class="icon" title="<%= l(:label_board_issue_text_close_issue)%>" id="close_<%= issue.id %>" alt="close_issue"/>

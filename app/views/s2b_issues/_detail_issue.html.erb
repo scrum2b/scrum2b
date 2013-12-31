@@ -127,23 +127,40 @@ $(document).ready(function() {
         });}else{
           return false;
        }    
-  }
+    } 
+    
+    function delete_attach(attach_id,issue_id){
+    if(confirm("Do you want to delete?")) { 
+        var attach_id = attach_id;
+        var project_id = '<%= @project.id %>';
+        var issue_id = issue_id;
+        $.ajax({
+          url : '/s2b_issues/delete_attach',
+          type : "POST",
+          data : 'attach_id=' + attach_id + '&project_id=' + project_id + '&issue_id=' + issue_id,
+          dataType : "script",
+          success : function() {}
+        });
+      }else{
+        return false;
+      }    
+    } 
   
-  function delete_note(note_id){
-    if(confirm("Are you sure ?")){
-      var notes_id = note_id;
-      var project_id = <%= @project.id %> 
-      var issue_id = <%= @issue.id %> 
-      $.ajax({
-        url : '/s2b_notes/delete',
-        beforeSend : function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-        type : "POST",
-        data : 'notes_id=' + notes_id + '&project_id=' + project_id + '&issue_id=' + issue_id,
-        dataType : "script",
-        success : function() {}
-      });
-    }else {
-          return false;
+    function delete_note(note_id){
+      if(confirm("Are you sure ?")){
+        var notes_id = note_id;
+        var project_id = <%= @project.id %> 
+        var issue_id = <%= @issue.id %> 
+        $.ajax({
+          url : '/s2b_notes/delete',
+          beforeSend : function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type : "POST",
+          data : 'notes_id=' + notes_id + '&project_id=' + project_id + '&issue_id=' + issue_id,
+          dataType : "script",
+          success : function() {}
+        });
+      }else {
+            return false;
+      }
     }
-  }
 </script>
