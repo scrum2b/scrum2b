@@ -12,7 +12,6 @@
   <div id="div_notes">
     <%= render :partial => '/s2b_notes/show', :locals => { :issue => @issue, :journals => @journals, :project => @project } %>
   </div>
-
 </div>
 
 <style>
@@ -136,6 +135,7 @@ $(document).ready(function() {
         var issue_id = issue_id;
         $.ajax({
           url : '/s2b_issues/delete_attach',
+          beforeSend : function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
           type : "POST",
           data : 'attach_id=' + attach_id + '&project_id=' + project_id + '&issue_id=' + issue_id,
           dataType : "script",

@@ -60,9 +60,17 @@
       <% @issue.attachments.each do |attach| %>
         <p>
           <a href="/attachments/download/<%= attach.id%>" class="icon icon-attachment"><%= attach.filename%></a>
-          <span class="size">(<%= attach.filesize %>)</span>
+          <% if attach.is_text? %>
+            <%= link_to image_tag('magnifier.png'),
+                        :controller => 'attachments', :action => 'show',
+                        :id => attach, :filename => attach.filename %>
+          <% end %>
+          <%= attach.description unless attach.description.blank? %>
+          <span class="size">(<%= number_to_human_size attach.filesize %>)</span>
+          <% if !User.current.anonymous? && @id_member.include?(User.current.id) || User.current.admin %>
           <a href="#" onClick="delete_attach(<%= attach.id%>,<%= @issue.id%>)" class="icon icon-del delete" title="Delete"></a>
-          <span class="author"><%= attach.author %>, <%= attach.created_on %></span>
+          <% end %>
+          <span class="author"><%= h(attach.author) %>, <%= format_time(attach.created_on) %></span>
         </p>
       <% end %>
     <% end %>

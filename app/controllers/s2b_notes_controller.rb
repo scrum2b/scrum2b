@@ -1,5 +1,6 @@
 class S2bNotesController < S2bApplicationController
   
+  skip_before_filter :verify_authenticity_token
   before_filter :find_project
   before_filter :find_issue
   

@@ -1,7 +1,15 @@
 <%= render :partial => "/shared/plugin_header", :locals => {:is_board => true, :member => @member, :list_versions_open => @list_versions_open, :list_versions_closed => @list_versions_closed} %>
 <%= render :partial => "/s2b_boards/screen_boards" %>
+<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+<% content_for :header_tags do %>
+  <%= javascript_include_tag 'attachments' %>
+<% end %>
 
 <script language="JavaScript" >
+  jQuery(document).ajaxSend(function(e, xhr, options) {
+   var token = jQuery("input[name='authenticity_token']").attr("value");
+    xhr.setRequestHeader("X-CSRF-Token", token);
+  });
   $('#flash_show_detail').hide();
   function show_and_hide_close_issue_icon() {
     $("#completed_column .icon_close_issue").show();

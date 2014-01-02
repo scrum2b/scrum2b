@@ -1,10 +1,32 @@
 class S2bIssuesController < S2bApplicationController
+  
+  skip_before_filter :verify_authenticity_token
   before_filter :find_project
   before_filter :find_issue_from_param
   before_filter :check_before
+  
+  rescue_from Query::StatementInvalid, :with => :query_statement_invalid
 
+  helper :journals
+  helper :projects
+  include ProjectsHelper
+  helper :custom_fields
+  include CustomFieldsHelper
+  helper :issue_relations
+  include IssueRelationsHelper
+  helper :watchers
+  include WatchersHelper
   helper :attachments
   include AttachmentsHelper
+  helper :queries
+  include QueriesHelper
+  helper :repositories
+  include RepositoriesHelper
+  helper :sort
+  include SortHelper
+  include IssuesHelper
+  helper :timelog
+  include Redmine::Export::PDF
   helper :issues
   include IssuesHelper
 
@@ -25,13 +47,15 @@ class S2bIssuesController < S2bApplicationController
   def update
     return unless find_issue_from_param 
     @issue.save_attachments(params[:attachments] || (params[:issue] && params[:issue][:uploads]))
+    
     if @issue.update_attributes(params[:issue])
       redirect_to :controller => "s2b_boards",:action => "index", :project_id => @project.id
       flash[:notice] = "Successfully update issue #{@issue.id}"
       flash[:show_detail] = "#{@issue.id}"
     else
       redirect_to :controller => "s2b_boards",:action => "index", :project_id => @project.id
-      flash[:notice] = "Error update issue #{@issue.id}"
+      flash[:error] = "Error update issue #{@issue.id}"
+      flash[:show_detail] = "#{@issue.id}"
     end
     
   end
