@@ -64,7 +64,7 @@
     <div  class="col-50" id="p_time_<%= issue.id %>" >
       <div style="padding:0">
         <span class="text-left" ><%= l(:label_head_issue_est_time) %> </span>
-        <input class="input-mini value_content right-filter est_time" name="issue[estimated_hours]"  id="new_time_<%= issue.id %>" value="<%= issue.estimated_hours %>" style="width:100px"/>
+        <input class="input-mini value_content right-filter est_time" type="number" name="issue[estimated_hours]"  id="new_time_<%= issue.id %>" value="<%= issue.estimated_hours %>" style="width:100px"/>
       </div>
     </div>
     <br />

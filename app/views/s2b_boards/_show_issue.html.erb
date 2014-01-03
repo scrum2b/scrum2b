@@ -1,21 +1,17 @@
 <div class="show_form" id="show_issue_<%= issue.id %>" value="<%= issue.id %>">
-  <p class="id" style="font-size: 13px;float: left">
-    <a href="#" class="show_detail show_detail_<%=issue.id %>" title="<%= l(:label_board_show_detail_issue) %>" value="<%= issue.id %>">#<%= issue.id %></a></p>
+    <a href="#" class="show_detail show_detail_<%=issue.id %>" style="" title="<%= l(:label_board_show_detail_issue) %>" value="<%= issue.id %>">#<%= issue.id %></a>
+    <span class="no_edit subject_issue" id="subject_<%= issue.id%>" style=""><%= raw(issue.subject.truncate(40, :separator => ' ').html_safe.gsub(/\n/, " <br/> ")) %></span>
     <% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin %>
-      <p class="icon_close_issue" issue_id="<%= issue.id%>">
+      <i class="icon_close_issue" issue_id="<%= issue.id%>">
         <img src="/plugin_assets/scrum2b/images/Close.ico" class="icon" title="<%= l(:label_board_issue_text_close_issue)%>" id="close_<%= issue.id %>" alt="close_issue"/>
-      </p>  
-      <p class="icon_edit_issue">
+      </i>  
+      <i class="icon_edit_issue">
         <img src="/plugin_assets/scrum2b/images/Edit.ico" class="icon" title="<%= l(:label_board_issue_text_edit_issue)%>" alt="edit_issue"/>
-      </p>  
+      </i>  
     <% end %>
-    <div class="subject" >
-      <p class="no_edit subject_issue" id="subject_<%= issue.id%>">
-        <%= issue.subject %></p>
-    </div>
     <div class="assignee clearfix">
       <% if issue.assigned_to %>
-        <div class="no_edit" id="assignee_<%= issue.id %>" style="float:left;margin: 0 5px;color: #3A87AD">
+        <div class="no_edit" id="assignee_<%= issue.id %>" style="float:left;margin: 0 5px;color: #3A87AD;line-height: 40px">
           <%= link_to issue.assigned_to,:controller => 'users', :action => 'show', :id =>issue.assigned_to.id %>
         </div>
       <% end %>
@@ -57,21 +53,28 @@
       </div>
     <% end %>
     <% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin %>
-      <div class="slider-horizontal" id="slider<%= issue.id%>" value="<%= issue.done_ratio%>" style="margin: 0 10px 5px 10px"></div>
-      <p style="float: right;color: #f6931f; font-weight: bold">% </p>
-      <input type="button" id="amount<%= issue.id%>" style="background-color:white;border:0;color: #f6931f; font-weight: bold;float: right;margin-bottom: 0;font-size: 13px;width: 25px;padding:0px;cursor:default"/>
+      <span style="float: right;color: #f6931f; font-weight: bold;margin-top:-20px;">
+        <input type="button" id="amount<%= issue.id%>" style="background-color:white;border:0;color: #f6931f; font-weight: bold;margin-bottom: 0;font-size: 13px;width: 25px;padding:0px;cursor:default"/>%
+      </span>
+      <div class="slider-horizontal" id="slider<%= issue.id%>" value="<%= issue.done_ratio%>" style="margin: 0px"></div>
+      
     <% else %>
-      <div class="progressbar" value="<%= issue.done_ratio%>" id="progress<%= issue.id%>" style="height: 12px;margin: 0 10px 5px 10px"></div>
-      <p style="float: right;color: #f6931f; font-weight: bold">
+      <span style="float: right;color: #f6931f; font-weight: bold;margin-top:-20px;">
         <%= issue.done_ratio%>%
-      </p>
+      </span>
+      <div class="progressbar" value="<%= issue.done_ratio%>" issue_id = "<%= issue.id%>"  id="progress<%= issue.id%>" style="height: 12px;margin: 0 10px 5px 10px"></div>
+      
     <% end %>
-    <p class="estimated" style="float: left;font-size: 12px;margin-top: 5px">
-      <%= l(:label_board_issue_time) %><span id="est_<%= issue.id %>"> <%= issue.estimated_hours %></span>
-    </p>
-    <p class="sprint" style="font-size: 11px;text-align:center; margin-top: 10px">
+    <span class="estimated" style="float: left;font-size: 12px;margin-top: 5px">
+      <%= l(:label_board_issue_time) %><span id="est_<%= issue.id %>"> <%= issue.estimated_hours %> h</span>
+    </span>
+    <span class="sprint" style="font-size: 11px;line-height: 30px;margin-left: 23%">
       <%= link_to issue.fixed_version, :controller => 'versions', :action => 'show', :id => issue.fixed_version_id if issue.fixed_version_id %>
-    </p>
+    </span>
+    <span style="float: right;line-height: 25px">
+      <i class="icon icon-commnet " onClick="show_detail(<%= issue.id %>)" ><%= issue.journals.where("notes NOT IN (?)",'').count %></i>
+      <i class="icon icon-attachment" onClick="show_detail(<%= issue.id %>)" ><%= issue.attachments.count %></i>
+    </span>
 </div>
 
   

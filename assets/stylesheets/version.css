@@ -111,7 +111,7 @@ li {
 }
 
 .description {
-  margin: -5px 0 0 0;
+  margin: -10px 0 0 0;
 }
 
 .description p {
@@ -168,12 +168,9 @@ li {
   font-weight: bold;
   margin-right: 10px;
 }
-.board_issue .subject p.subject_issue {
-  margin-left: 10px;
-  margin-right: 50px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.board_issue .subject_issue {
+  margin-bottom: 0px;
+  font-size:18px;
 }
 
 .board_issue .done {
@@ -331,4 +328,16 @@ img.icon {
 }
 a.edit_comment {
   float:right;
+}
+.show_detail {
+  font-size: 13px;
+  float: left;
+  margin-right: 10px;
+  line-height: 20px
+}
+.icon-commnet {
+  background:url("../images/icon-comment.png") no-repeat 0px 3px;
+}
+.icon {
+  cursor: pointer;
 }
