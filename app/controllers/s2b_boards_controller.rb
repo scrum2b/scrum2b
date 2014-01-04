@@ -202,8 +202,7 @@ class S2bBoardsController < S2bApplicationController
     @status = IssueStatus.where("id IN (?)" , DEFAULT_STATUS_IDS['status_no_start'])
     @sprints = @project.versions.where(:status => "open")
     @project =  Project.find(params[:project_id])
-    @member = @project.assignable_users
-    @id_member = @member.collect{|id_member| id_member.id}    
+    @member = @project.assignable_users  
   end
 
 end

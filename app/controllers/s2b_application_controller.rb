@@ -31,10 +31,12 @@ class S2bApplicationController < ApplicationController
   end
   
   def find_project
-
     # @project variable must be set before calling the authorize filter
     project_id = params[:project_id] || (params[:issue] && params[:issue][:project_id])
     @project = Project.find(project_id)
+    User.current.roles_for_project(@project).each do |role|
+      session[:roles_edit] = true ? role.permissions.include?(:s2b_edit_issue) : false
+    end
   end
 
   def set_status_settings

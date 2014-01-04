@@ -1,4 +1,4 @@
-<% if !User.current.anonymous? && @id_member.include?(User.current.id) || User.current.admin %>
+<% if session[:roles_edit] == true %>
   <div class="contextual">
     <a class="update_issue icon icon icon-edit"  href="#" autofocus="off" title="Update issue" issue_id="<%= issue.id%>">Update</a>
     <a class="delete_issue icon icon-del" href="#" title="Delete Issue" issue_id="<%= issue.id%>" onClick="delete_issue(<%= issue.id %>)">Delete</a>

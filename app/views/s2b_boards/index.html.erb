@@ -16,21 +16,7 @@
     $("#new_column .icon_close_issue").hide();
     $("#in_progress_column .icon_close_issue").hide();
   };
-  function show_detail(id) {
-    if(id != ""){
-      var issue_id = id;
-      var project_id = '<%= @project.id %>';
-      $.ajax({
-        url : '/s2b_issues/show',
-        type : "POST",
-        data : 'issue_id=' + issue_id + '&project_id=' + project_id,
-        dataType : "script",
-        success : function() {}
-      });
-      return false;
-    }
-  };
-  
+ 
   $(document).ready(function() {
     var show_detail_id = <%= flash[:show_detail] %>
     show_and_hide_close_issue_icon();
@@ -169,7 +155,6 @@
             $("#issue" + id_issue).replaceWith(data.content);
             makeSlider(id_issue, slide_value);
             editDate(id_issue); 
-            form_edit(id_issue);
             show_and_hide_close_issue_icon();
           }else if(data.result == "create_success"){
             $("#new_issue_form").find(".value_content").val("");
@@ -177,7 +162,6 @@
             $("#new_issue_form").parent().find(".connectedSortable").prepend(data.content);
             makeSlider(data.id, 0);
             editDate(data.id); 
-            form_edit(data.id);
           }
           else{
             alert(data.message);
@@ -189,9 +173,6 @@
     $(".edit_form").each(function() {
       var id = $(this).attr("value");
       editDate(id);
-      if( id != ""){ 
-        form_edit(id);
-      }
     })
     
     $(".readmore").live("click", function(){
@@ -213,13 +194,27 @@
     });
   }); 
   
-  function form_edit(id){
-    $("#p_status_" + id).hide();
-    $("#p_priority_" + id).hide();
-    $("#p_tracker_" + id).hide();
-    $("#p_sprint_" + id).hide(); 
-  }
-
+  // function form_edit(id){
+    // $("#p_status_" + id).hide();
+    // $("#p_priority_" + id).hide();
+    // $("#p_tracker_" + id).hide();
+    // $("#p_sprint_" + id).hide(); 
+  // }
+  function show_detail(id) {
+    if(id != ""){
+      var issue_id = id;
+      var project_id = '<%= @project.id %>';
+      $.ajax({
+        url : '/s2b_issues/show',
+        type : "POST",
+        data : 'issue_id=' + issue_id + '&project_id=' + project_id,
+        dataType : "script",
+        success : function() {}
+      });
+      return false;
+    }
+  };
+  
   function editDate(id){
     $("#new_date_start_" + id).datepicker();
     $("#new_date_end_" + id).datepicker();

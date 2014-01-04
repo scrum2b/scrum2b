@@ -1,11 +1,11 @@
 <div id="detail_issue" title="Detail Issue #<%= @issue.id%>">
-  <% if !User.current.anonymous? && @id_member.include?(User.current.id) || User.current.admin %>
+  <% if session[:roles_edit] == true %>
     <%= render :partial => 'form', :locals => {:issue => @issue, :priorities => @priorities, :relations => @relations, :allowed_statuses => @allowed_statuses, :edit_allowed => @edit_allowed} %>
   <% end %>
   <div class="detail_issue issue">  
     <%= render :partial => 'issue', :locals => {:issue => @issue} %>
   </div>
-  <% if !User.current.anonymous? && @id_member.include?(User.current.id) || User.current.admin %>
+  <% if session[:roles_edit] == true %>
     <%= render :partial => '/s2b_notes/form_new', :locals => {:issue => @issue, :project => @project} %>
   <% end %>
   <div id="history">

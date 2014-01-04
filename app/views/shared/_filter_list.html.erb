@@ -26,7 +26,7 @@
     
   </div>
   
-  <% if !User.current.anonymous?  && @id_member.include?(User.current.id)|| User.current.admin %>
+  <% if session[:roles_edit] == true %>
     <div class="left-filter">
       <button id="btn_close_issue_list"><%= l(:label_close_all_issues) %></button>
       <button id="btn_change_sprint_issues"><%= l(:label_change_sprint) %></button>

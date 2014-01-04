@@ -1,7 +1,7 @@
 <div class="show_form" id="show_issue_<%= issue.id %>" value="<%= issue.id %>">
-    <a href="#" class="show_detail show_detail_<%=issue.id %>" style="" title="<%= l(:label_board_show_detail_issue) %>" value="<%= issue.id %>">#<%= issue.id %></a>
+    <a href="#" onClick="show_detail(<%= issue.id %>)" style="" title="<%= l(:label_board_show_detail_issue) %>" value="<%= issue.id %>">#<%= issue.id %></a>
     <span class="no_edit subject_issue" id="subject_<%= issue.id%>" style=""><%= raw(issue.subject.truncate(40, :separator => ' ').html_safe.gsub(/\n/, " <br/> ")) %></span>
-    <% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin %>
+    <% if session[:roles_edit] == true %>
       <i class="icon_close_issue" issue_id="<%= issue.id%>">
         <img src="/plugin_assets/scrum2b/images/Close.ico" class="icon" title="<%= l(:label_board_issue_text_close_issue)%>" id="close_<%= issue.id %>" alt="close_issue"/>
       </i>  
@@ -52,7 +52,7 @@
         <% end %>
       </div>
     <% end %>
-    <% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin %>
+    <% if session[:roles_edit] == true %>
       <span style="float: right;color: #f6931f; font-weight: bold;margin-top:-20px;">
         <input type="button" id="amount<%= issue.id%>" style="background-color:white;border:0;color: #f6931f; font-weight: bold;margin-bottom: 0;font-size: 13px;width: 25px;padding:0px;cursor:default"/>%
       </span>
@@ -65,9 +65,11 @@
       <div class="progressbar" value="<%= issue.done_ratio%>" issue_id = "<%= issue.id%>"  id="progress<%= issue.id%>" style="height: 12px;margin: 0 10px 5px 10px"></div>
       
     <% end %>
-    <span class="estimated" style="float: left;font-size: 12px;margin-top: 5px">
-      <%= l(:label_board_issue_time) %><span id="est_<%= issue.id %>"> <%= issue.estimated_hours %> h</span>
-    </span>
+    <% if !issue.estimated_hours.blank? %>
+      <span class="estimated" style="float: left;font-size: 12px;margin-top: 5px">
+        <%= l(:label_board_issue_time) %><span id="est_<%= issue.id %>"><%= issue.estimated_hours %> h</span>
+      </span>
+    <% end %>
     <span class="sprint" style="font-size: 11px;line-height: 30px;margin-left: 23%">
       <%= link_to issue.fixed_version, :controller => 'versions', :action => 'show', :id => issue.fixed_version_id if issue.fixed_version_id %>
     </span>
