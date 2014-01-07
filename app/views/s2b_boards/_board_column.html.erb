@@ -3,7 +3,7 @@
 </p>
 <% is_editable = session[:roles_edit] %>
 <% if column_id == :new_column && is_editable %>
-  <img src="/plugin_assets/scrum2b/images/Add.ico" style="float: right;cursor: pointer;" title="<%= l(:label_board_issue_new_issue)%>" class="icon_new_issue icon">
+  <li style="float: right;cursor: pointer;height:10px" title="<%= l(:label_board_issue_new_issue)%>" class="icon_new_issue icon icon-add"></li>
   <li id="new_issue_form" style="list-style: none !important;">
     <%= render(:partial => "issue", :locals => { :issue => Issue.new, :column => column_id, :show_for => :create_new }) %>
   </li>

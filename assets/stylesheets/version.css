@@ -196,6 +196,7 @@ table#done tr td.done {
   float: right;
   cursor: pointer;
   display: none;
+  height:10px;
 }
 
 .text_new {
@@ -240,8 +241,8 @@ img.icon {
 
 .icon_edit_issue {
   float: right;
-  margin-right: 5px;
   cursor: pointer;
+  height:10px;
 }
 .text_edit {
   position: absolute;

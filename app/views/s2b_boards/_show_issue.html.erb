@@ -2,11 +2,9 @@
     <a href="#" onClick="show_detail(<%= issue.id %>)" style="font-size: 15px" title="<%= l(:label_board_show_detail_issue) %>" value="<%= issue.id %>">#<%= issue.id %></a>
     <span class="no_edit subject_issue" id="subject_<%= issue.id%>" style=""><%= raw(issue.subject.truncate(40, :separator => ' ').html_safe.gsub(/\n/, " <br/> ")) %></span>
     <% if session[:roles_edit] == true %>
-      <i class="icon_close_issue" issue_id="<%= issue.id%>">
-        <img src="/plugin_assets/scrum2b/images/Close.ico" class="icon" title="<%= l(:label_board_issue_text_close_issue)%>" id="close_<%= issue.id %>" alt="close_issue"/>
+      <i class="icon_close_issue icon icon-del" issue_id="<%= issue.id%>" title="<%= l(:label_board_issue_text_close_issue)%>">
       </i>  
-      <i class="icon_edit_issue">
-        <img src="/plugin_assets/scrum2b/images/Edit.ico" class="icon" title="<%= l(:label_board_issue_text_edit_issue)%>" alt="edit_issue"/>
+      <i class="icon_edit_issue icon icon-edit" title="<%= l(:label_board_issue_text_edit_issue)%>">
       </i>  
     <% end %>
     <div class="assignee clearfix">

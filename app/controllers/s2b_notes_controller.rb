@@ -50,7 +50,7 @@ class S2bNotesController < S2bApplicationController
   private
 
   def find_issue
-    issue_id = params[:issue_id] || params[:id] || params[:comment][:commented_id]
+    issue_id = params[:issue_id] || params[:id]
     @issue = Issue.find(issue_id)
   end
 

@@ -11,17 +11,11 @@
     xhr.setRequestHeader("X-CSRF-Token", token);
   });
   $('#flash_show_detail').hide();
-  function show_and_hide_close_issue_icon() {
-    $("#completed_column .icon_close_issue").show();
-    $("#new_column .icon_close_issue").hide();
-    $("#in_progress_column .icon_close_issue").hide();
-  };
- 
   $(document).ready(function() {
-    show_and_hide_close_issue_icon();
     if('<%= flash[:show_detail] %>' != ""){
       show_detail(<%= flash[:show_detail] %>); 
     }
+    show_and_hide_close_issue_icon();
     makeProgressbar();
     s2b_sortable();
     $( "#date_start_").datepicker();
@@ -84,21 +78,6 @@
       return false;
     });
     
-    // $(".btn_submit_update").live("click",function(){
-      // $.ajax({
-        // url : '/s2b_issues/update',
-        // type : "POST",
-        // data : $('#form_edit').serialize(),
-        // dataType : "json",
-        // success : function(response) {
-          // if(response.result == 'success'){
-            // alert(response.content);
-            // $('#detail_issue').replaceWith(response.content)
-          // }
-        // }
-      // });
-      // return false;
-    // });
     
     $("#btn_submit_create_notes").live("click",function(){
       $.ajax({
@@ -207,52 +186,22 @@
     // $("#p_tracker_" + id).hide();
     // $("#p_sprint_" + id).hide(); 
   // }
-  function update_isue(id_issue){
-    var slide_value = $("#slider" + id_issue).attr("value");
-    if(id_issue != "" ){
-        var url_ajax = "update"
-    }else{
-      var url_ajax = "create"
-    }
-    $.ajax({
-        url : url_ajax,
-        type : "POST",
-        data: $('#update_issue_' + id_issue).serialize(),
-        dataType : "json",
-        success : function(data) {
-          if(data.result == "edit_success") {
-            console.debug("get value :" + data.content);
-            $("#issue" + id_issue).replaceWith(data.content);
-            makeSlider(id_issue, slide_value);
-            editDate(id_issue); 
-            show_and_hide_close_issue_icon();
-          }else if(data.result == "create_success"){
-            $("#new_issue_form").find(".value_content").val("");
-            $("#new_issue_form").hide();
-            $("#new_issue_form").parent().find(".connectedSortable").prepend(data.content);
-            makeSlider(data.id, 0);
-            editDate(data.id); 
-          }
-          else{
-            alert(data.message);
-          }
-        }
-      });
-  }
+  function show_and_hide_close_issue_icon() {
+    $("#completed_column .icon_close_issue").show();
+    $("#new_column .icon_close_issue").hide();
+    $("#in_progress_column .icon_close_issue").hide();
+  };
   
   function show_detail(id) {
-    if(id != ""){
-      var issue_id = id;
-      var project_id = '<%= @project.id %>';
-      $.ajax({
-        url : '/s2b_issues/show',
-        type : "POST",
-        data : 'issue_id=' + issue_id + '&project_id=' + project_id,
-        dataType : "script",
-        success : function() {}
-      });
-      return false;
-    }
+    var issue_id = id;
+    var project_id = '<%= @project.id %>';
+    $.ajax({
+      url : '/s2b_issues/show',
+      type : "POST",
+      data : 'issue_id=' + issue_id + '&project_id=' + project_id,
+      dataType : "script",
+      success : function() {}
+    });
   };
   
   function editDate(id){
