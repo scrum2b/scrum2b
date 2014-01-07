@@ -7,11 +7,11 @@
     <input type="hidden" name="issue[project_id]" value="<%= @project.id %>"/>
   	<input type="hidden" name="issue[author_id]" value="<%= User.current.id %>"/>
   
-    <input name="issue[subject]" class="value_content issue_subject" id="new_subject_<%= issue.id %>" type="text" value="<%= issue.subject %>">
+    <input name="issue[subject]" class="value_content issue_subject required" id="new_subject_<%= issue.id %>" type="text" value="<%= issue.subject %>">
     <textarea name="issue[description]" class="value_content issue_description" id="new_description_<%= issue.id %>" style="height: 100px;margin-top:0;"><%= issue.description %></textarea></p>
     <div id="p_sprint_<%= issue.id %>">
       <div class="col-50">
-        <span class="text-left"><%= l(:label_tracker) %></span>
+        <label class="text-left"><%= l(:label_tracker) %></label>
         <select class="value_content right-filter " name="issue[tracker_id]" id="new_tracker_<%= issue.id %>" style="width:100px" >
           <% @tracker.each do |tracker| %>
               <option value="<%= tracker.id %>" <%= "selected" if tracker.id == issue.tracker_id %>><%= tracker.name %></option>
@@ -19,7 +19,7 @@
         </select>
       </div>
       <div class="col-50">
-        <span class="text-left"><%= l(:label_sprint) %></span>
+        <label class="text-left"><%= l(:label_sprint) %></label>
         <select class="value_content right-filter" name="issue[fixed_version_id]" id="new_sprint_<%= issue.id %>" style="width:100px">
           <option></option>
           <% @sprints.each do |sprint| %>
@@ -31,7 +31,7 @@
       
     <div id="p_assignee_<%= issue.id %>">
       <div class="col-50">
-         <span class="text-left"><%= l(:label_head_issue_assignee)%> </span>
+         <label class="text-left"><%= l(:label_head_issue_assignee)%> </label>
          <select class="value_content right-filter" name="issue[assigned_to_id]" id="new_assignee_<%= issue.id %>" style="width:100px">
            <option></option>
            <option value="<%= User.current.id %>" <%= "selected" if issue.assigned_to_id == User.current.id %>><%= l(:label_me) %></option>
@@ -41,7 +41,7 @@
          </select>
        </div>
        <div class="col-50">
-          <span class="text-left"><%= l(:label_priority)%> </span>
+          <label class="text-left"><%= l(:label_priority)%> </label>
           <select class="value_content right-filter" name="issue[priority_id]" id="new_priority_<%= issue.id %>" style="width:100px">
             <% @priority.each do |priority| %>
                 <option value="<%= priority.id %>" <%= "selected" if priority.id == issue.priority_id %>><%= priority.name %></option>
@@ -52,19 +52,19 @@
 
     <div>
       <div class="col-50">
-        <span class="text-left"><%= l(:label_start_date)%></span>
+        <label class="text-left"><%= l(:label_start_date)%></label>
         <input class="value_content right-filter " name="issue[start_date]" id="new_date_start_<%= issue.id %>"  value="<%= format_date(issue.start_date) %>" style="width: 100px">     
       </div>
       <div class="col-50">
-        <span class="text-left" ><%= l(:label_end_date)%></span>
+        <label class="text-left" ><%= l(:label_end_date)%></label>
         <input class="value_content right-filter " name="issue[due_date]"  id="new_date_end_<%= issue.id %>" value="<%= format_date(issue.due_date) %>" style="width: 100px" />    
       </div>
     </div>
     
     <div  class="col-50" id="p_time_<%= issue.id %>" >
       <div style="padding:0">
-        <span class="text-left" ><%= l(:label_head_issue_est_time) %> </span>
-        <input class="input-mini value_content right-filter est_time" name="issue[estimated_hours]"  id="new_time_<%= issue.id %>" value="<%= issue.estimated_hours %>" style="width:100px"/>
+        <label class="text-left" ><%= l(:label_head_issue_est_time) %> </label>
+        <input class="value_content right-filter est_time number" min="1"  name="issue[estimated_hours]" id="new_time_<%= issue.id %>"  value="<%= issue.estimated_hours %>" style="width:100px" />
       </div>
     </div>
     <br />

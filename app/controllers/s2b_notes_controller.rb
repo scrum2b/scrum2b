@@ -1,5 +1,6 @@
 class S2bNotesController < S2bApplicationController
   
+  skip_before_filter :verify_authenticity_token
   before_filter :find_project
   before_filter :find_issue
   
@@ -49,7 +50,7 @@ class S2bNotesController < S2bApplicationController
   private
 
   def find_issue
-    issue_id = params[:issue_id] || params[:id] || params[:comment][:commented_id]
+    issue_id = params[:issue_id] || params[:id]
     @issue = Issue.find(issue_id)
   end
 

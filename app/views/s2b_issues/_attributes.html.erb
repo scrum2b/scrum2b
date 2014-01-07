@@ -51,7 +51,8 @@
       <p><%= f.label :done_ratio %><%= f.select :done_ratio, ((0..10).to_a.collect {|r| ["#{r*10} %", r*10] }), :required => @issue.required_attribute?('done_ratio') %></p>
     <% end %>   
   </div>
-  <fieldset><legend><%= l(:label_attachment_plural) %></legend>
+  <fieldset style="width: 95%;margin: auto;"><legend><%= l(:label_attachment_plural) %></legend>
     <p><%= render :partial => '../views/attachments/form', :locals => {:container => @issue} %></p>
   </fieldset>
 </div>
+

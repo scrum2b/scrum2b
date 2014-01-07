@@ -8,8 +8,8 @@ li {
   float:left;
 }
 .col-50 {
-  width:40%;
-  padding:5px 5%;
+  width:48%;
+  padding:5px 1%;
   float:left;
 }
 .text-left {
@@ -71,9 +71,7 @@ li {
 #div_screen_board .issue_description {
   width: 100%;
 }
-#div_screen_board .est_time {
-  margin-left:20px;
-}
+
 #div_screen_board .board_issue {
   width: 100%;
   padding: 5px 0px 5px 0px;
@@ -113,7 +111,7 @@ li {
 }
 
 .description {
-  margin: -5px 0 0 0;
+  margin: -10px 0 0 0;
 }
 
 .description p {
@@ -170,12 +168,9 @@ li {
   font-weight: bold;
   margin-right: 10px;
 }
-.board_issue .subject p.subject_issue {
-  margin-left: 10px;
-  margin-right: 50px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.board_issue .subject_issue {
+  margin-bottom: 0px;
+  font-size:16px;
 }
 
 .board_issue .done {
@@ -201,6 +196,7 @@ table#done tr td.done {
   float: right;
   cursor: pointer;
   display: none;
+  height:10px;
 }
 
 .text_new {
@@ -245,8 +241,8 @@ img.icon {
 
 .icon_edit_issue {
   float: right;
-  margin-right: 5px;
   cursor: pointer;
+  height:10px;
 }
 .text_edit {
   position: absolute;
@@ -331,9 +327,23 @@ img.icon {
   border: 1px solid #339BB9;
   margin-bottom:5px;
 }
-#detail_issue {
-  padding:30px;
-}
 a.edit_comment {
   float:right;
+}
+.show_detail {
+  font-size: 13px;
+  float: left;
+  margin-right: 10px;
+  line-height: 20px
+}
+.icon-commnet {
+  background:url("../images/icon-comment.png") no-repeat 0px 3px;
+}
+.icon {
+  cursor: pointer;
+}
+span.error {
+  color:red;
+  float: left;
+  display:block;
 }

@@ -4,52 +4,7 @@ $("#div_screen_board").find(".board_issue").each(function() {
       var slide_value = $(this).attr("slide_value");
       makeSlider(id,slide_value);
       editDate(id); 
-      form_edit(id);
   });
+makeProgressbar();
 $("#completed_column").find(".icon_close_issue").show();
-$( "#new_column .connectedSortable, #in_progress_column .connectedSortable, #completed_column .connectedSortable").sortable({
-      scroll: true, 
-      scrollSensitivity: 100, 
-      scrollSpeed: 100,
-      connectWith: ".connectedSortable",
-      sort: function(){
-        $(this).find(".ui-sortable-helper").addClass("check");
-      },
-      receive: function(){
-        var status = $(this).attr("status");
-        var project_id = <%= @project.id %>;
-        var issue_id = $(this).find(".check").attr("issue_id");   
-        show_and_hide_close_issue_icon();       
-        $.ajax({
-          url : 'update_status',
-          type : "POST",
-          data : 'issue_id=' + issue_id + '&project_id=' + project_id + '&status=' + status,
-          dataType : "json",
-          success : function(res) {
-             if (res.status == "status_completed"){
-                makeSlider(issue_id,100);
-             }
-          }
-        });
-      },
-      stop: function() {
-        var issue_id = $(".check").attr("issue_id");
-        var url_sort = 'sort'
-        var project_id = <%= @project.id %>;
-        var id_next = $(".check").next().attr("issue_id");
-        var id_prev = $(".check").prev().attr("issue_id");
-        var old_status = $(this).attr("status");
-        var new_status = $(".check").parent().attr("status");
-        $(".check").removeClass("check");
-        console.debug(old_status);
-        console.debug(new_status);
-        $.ajax({
-        url : url_sort,
-        type : "POST",
-        data : 'issue_id=' + issue_id +'&id_prev=' + id_prev + '&project_id=' + project_id + '&id_next=' + id_next + '&new_status=' + new_status + '&old_status=' + old_status,
-        dataType : "text",
-        success : function(){
-          }
-        });
-      }
-});
+s2b_sortable();

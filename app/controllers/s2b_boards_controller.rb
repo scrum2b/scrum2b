@@ -6,7 +6,6 @@ class S2bBoardsController < S2bApplicationController
   before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues, :update, :create]
   
   def index
-    #
     @max_position_issue = @project.issues.maximum(:s2b_position).to_i + 1
     @issue_no_position = @project.issues.where(:s2b_position => nil)
     @issue_no_position.each do |issue|
@@ -203,8 +202,7 @@ class S2bBoardsController < S2bApplicationController
     @status = IssueStatus.where("id IN (?)" , DEFAULT_STATUS_IDS['status_no_start'])
     @sprints = @project.versions.where(:status => "open")
     @project =  Project.find(params[:project_id])
-    @member = @project.assignable_users
-    @id_member = @member.collect{|id_member| id_member.id}    
+    @member = @project.assignable_users  
   end
 
 end

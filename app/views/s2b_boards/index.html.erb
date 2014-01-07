@@ -1,16 +1,23 @@
 <%= render :partial => "/shared/plugin_header", :locals => {:is_board => true, :member => @member, :list_versions_open => @list_versions_open, :list_versions_closed => @list_versions_closed} %>
 <%= render :partial => "/s2b_boards/screen_boards" %>
-
+<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+<% content_for :header_tags do %>
+  <%= javascript_include_tag 'attachments' %>
+<% end %>
+<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
 <script language="JavaScript" >
-  function show_and_hide_close_issue_icon() {
-    $("#completed_column .icon_close_issue").show();
-    $("#new_column .icon_close_issue").hide();
-    $("#in_progress_column .icon_close_issue").hide();
-  }
-
+  jQuery(document).ajaxSend(function(e, xhr, options) {
+   var token = jQuery("input[name='authenticity_token']").attr("value");
+    xhr.setRequestHeader("X-CSRF-Token", token);
+  });
+  $('#flash_show_detail').hide();
   $(document).ready(function() {
+    if('<%= flash[:show_detail] %>' != ""){
+      show_detail(<%= flash[:show_detail] %>); 
+    }
     show_and_hide_close_issue_icon();
-    
+    makeProgressbar();
+    s2b_sortable();
     $( "#date_start_").datepicker();
     $( "#date_end_").datepicker();
     $( "#date_start_").datepicker("option", "dateFormat", "yy-mm-dd");
@@ -71,16 +78,6 @@
       return false;
     });
     
-    $(".btn_submit_update").live("click",function(){
-      $.ajax({
-        url : '/s2b_issues/update',
-        type : "POST",
-        data : $('#form_edit').serialize(),
-        dataType : "script",
-        success : function() {}
-      });
-      return false;
-    });
     
     $("#btn_submit_create_notes").live("click",function(){
       $.ajax({
@@ -96,6 +93,125 @@
       return false;
     });
     
+
+    $(".slider-horizontal").each(function() {
+      var id = parseInt($(this).parent().attr("value"));
+      var slide_value = $(this).attr("value");
+      makeSlider(id, slide_value);
+    });
+
+    
+
+    $(".icon_edit_issue").live("click", function(){
+      $(this).parents(".show_form").hide();
+      $(this).parents(".issue").find(".edit_form").show();
+    });
+
+    $(".cancel_issue").live("click", function(){
+      if($(this).parents("li").attr("id") == "new_issue_form") {
+        $(this).parents("li").hide();
+      }else{
+        $(this).parents(".edit_form").hide();
+        $(this).parents(".issue").find(".show_form").show();
+      }
+    });
+
+    $(".submit_issue").live("click", function(){
+      var id_issue = $(this).parent().attr("value");    
+      var slide_value = $("#slider" + id_issue).attr("value");
+      if(!$('#update_issue_' + id_issue).validate({
+        errorElement: "span"
+        }).form()){
+       
+        return false;
+      };
+      if(id_issue != "" ){
+          var url_ajax = "update"
+      }else{
+        var url_ajax = "create"
+      }
+      $.ajax({
+        url : url_ajax,
+        type : "POST",
+        data: $('#update_issue_' + id_issue).serialize(),
+        dataType : "json",
+        success : function(data) {
+          if(data.result == "edit_success") {
+            console.debug("get value :" + data.content);
+            $("#issue" + id_issue).replaceWith(data.content);
+            makeSlider(id_issue, slide_value);
+            editDate(id_issue); 
+            show_and_hide_close_issue_icon();
+          }else if(data.result == "create_success"){
+            $("#new_issue_form").find(".value_content").val("");
+            $("#new_issue_form").hide();
+            $("#new_issue_form").parent().find(".connectedSortable").prepend(data.content);
+            makeSlider(data.id, 0);
+            editDate(data.id); 
+          }
+          else{
+            alert(data.message);
+          }
+        }
+      });
+    });
+
+    $(".edit_form").each(function() {
+      var id = $(this).attr("value");
+      editDate(id);
+    })
+    
+    $(".readmore").live("click", function(){
+      var id = $(this).attr("value");
+      $(this).hide();
+      $("#hide_" + id).show();
+      $("#description_readmore_" + id).show();
+      $("#description_hide_" + id).hide();
+      return false;
+    });
+
+    $(".hide").live("click", function() {
+      var id = $(this).attr("value");
+      $(this).hide();
+      $("#readmore_" + id).show();
+      $("#description_hide_" + id).show();
+      $("#description_readmore_" + id).hide();
+      return false;
+    });
+  }); 
+  
+  // function form_edit(id){
+    // $("#p_status_" + id).hide();
+    // $("#p_priority_" + id).hide();
+    // $("#p_tracker_" + id).hide();
+    // $("#p_sprint_" + id).hide(); 
+  // }
+  function show_and_hide_close_issue_icon() {
+    $("#completed_column .icon_close_issue").show();
+    $("#new_column .icon_close_issue").hide();
+    $("#in_progress_column .icon_close_issue").hide();
+  };
+  
+  function show_detail(id) {
+    var issue_id = id;
+    var project_id = '<%= @project.id %>';
+    $.ajax({
+      url : '/s2b_issues/show',
+      type : "POST",
+      data : 'issue_id=' + issue_id + '&project_id=' + project_id,
+      dataType : "script",
+      success : function() {}
+    });
+  };
+  
+  function editDate(id){
+    $("#new_date_start_" + id).datepicker();
+    $("#new_date_end_" + id).datepicker();
+    $("#new_date_start_" + id).datepicker("option", "dateFormat", "yy-mm-dd");
+    $("#new_date_end_" + id).datepicker("option", "dateFormat", "yy-mm-dd");  
+  }
+  
+  function s2b_sortable(){
     $( "#new_column .connectedSortable, #in_progress_column .connectedSortable, #completed_column .connectedSortable").sortable({
       scroll: true, 
       scrollSensitivity: 100, 
@@ -117,6 +233,7 @@
           success : function(res) {
              if (res.status == "status_completed"){
                 makeSlider(issue_id,100);
+                $('#slider' + issue_id).attr("value", "100");
              }
           }
         });
@@ -141,112 +258,18 @@
           }
         });
       }
-    });
-
-    $(".slider-horizontal").each(function() {
-      var id = parseInt($(this).parent().attr("value"));
-      var slide_value = $(this).attr("value");
-      makeSlider(id, slide_value);
-    });
-
+    });  
+  }
+  
+  function makeProgressbar() {
     $(".progressbar").each(function() {
-      var id = parseInt($(this).parent().attr("value"))
+      var id = parseInt($(this).attr("issue_id"))
       $("#progress"+id).progressbar({
         value:parseInt($(this).attr("value"))
        });
     });
-
-    $(".icon_edit_issue").live("click", function(){
-      $(this).parents(".show_form").hide();
-      $(this).parents(".issue").find(".edit_form").show();
-    });
-
-    $(".cancel_issue").live("click", function(){
-      if($(this).parents("li").attr("id") == "new_issue_form") {
-        $(this).parents("li").hide();
-      }else{
-        $(this).parents(".edit_form").hide();
-        $(this).parents(".issue").find(".show_form").show();
-      }
-    });
-
-    $(".submit_issue").live("click", function(){
-      var id_issue = $(this).parent().attr("value");
-      var slide_value = $("#slider" + id_issue).attr("value");
-      if(id_issue != "" ){
-        var url_ajax = "update"
-      }else{
-        var url_ajax = "create"
-      }
-     $.ajax({
-        url : url_ajax,
-        type : "POST",
-        data: $('#update_issue_' + id_issue).serialize(),
-        dataType : "json",
-        success : function(data) {
-          if(data.result == "edit_success") {
-            console.debug("get value :" + data.content);
-            $("#issue" + id_issue).replaceWith(data.content);
-            makeSlider(id_issue, slide_value);
-            editDate(id_issue); 
-            form_edit(id_issue);
-            show_and_hide_close_issue_icon();
-          }else if(data.result == "create_success"){
-            $("#new_issue_form").find(".value_content").val("");
-            $("#new_issue_form").hide();
-            $("#new_issue_form").parent().find(".connectedSortable").prepend(data.content);
-            makeSlider(data.id, 0);
-            editDate(data.id); 
-            form_edit(data.id);
-          }
-          else{
-            alert(data.message);
-          }
-        }
-      });
-    });
-
-    $(".edit_form").each(function() {
-      var id = $(this).attr("value");
-      editDate(id);
-      if( id != ""){ 
-        form_edit(id);
-      }
-    })
+  }; 
     
-    $(".readmore").live("click", function(){
-      var id = $(this).attr("value");
-      $(this).hide();
-      $("#hide_" + id).show();
-      $("#description_readmore_" + id).show();
-      $("#description_hide_" + id).hide();
-      return false;
-    });
-
-    $(".hide").live("click", function() {
-      var id = $(this).attr("value");
-      $(this).hide();
-      $("#readmore_" + id).show();
-      $("#description_hide_" + id).show();
-      $("#description_readmore_" + id).hide();
-      return false;
-    });
-  }); 
-  
-  function form_edit(id){
-    $("#p_status_" + id).hide();
-    $("#p_priority_" + id).hide();
-    $("#p_tracker_" + id).hide();
-    $("#p_sprint_" + id).hide(); 
-  }
-
-  function editDate(id){
-    $("#new_date_start_" + id).datepicker();
-    $("#new_date_end_" + id).datepicker();
-    $("#new_date_start_" + id).datepicker("option", "dateFormat", "yy-mm-dd");
-    $("#new_date_end_" + id).datepicker("option", "dateFormat", "yy-mm-dd");  
-  }
-  
   function makeSlider(id, slide_value) {
     $("#slider" + id ).slider({
       orientation: "horizontal",
