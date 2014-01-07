@@ -4,7 +4,7 @@
 <% content_for :header_tags do %>
   <%= javascript_include_tag 'attachments' %>
 <% end %>
-
+<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
 <script language="JavaScript" >
   jQuery(document).ajaxSend(function(e, xhr, options) {
    var token = jQuery("input[name='authenticity_token']").attr("value");
@@ -18,9 +18,10 @@
   };
  
   $(document).ready(function() {
-    var show_detail_id = <%= flash[:show_detail] %>
     show_and_hide_close_issue_icon();
-    show_detail(show_detail_id); 
+    if('<%= flash[:show_detail] %>' != ""){
+      show_detail(<%= flash[:show_detail] %>); 
+    }
     makeProgressbar();
     s2b_sortable();
     $( "#date_start_").datepicker();
@@ -137,14 +138,20 @@
     });
 
     $(".submit_issue").live("click", function(){
-      var id_issue = $(this).parent().attr("value");
+      var id_issue = $(this).parent().attr("value");    
       var slide_value = $("#slider" + id_issue).attr("value");
+      if(!$('#update_issue_' + id_issue).validate({
+        errorElement: "span"
+        }).form()){
+       
+        return false;
+      };
       if(id_issue != "" ){
-        var url_ajax = "update"
+          var url_ajax = "update"
       }else{
         var url_ajax = "create"
       }
-     $.ajax({
+      $.ajax({
         url : url_ajax,
         type : "POST",
         data: $('#update_issue_' + id_issue).serialize(),
@@ -200,6 +207,39 @@
     // $("#p_tracker_" + id).hide();
     // $("#p_sprint_" + id).hide(); 
   // }
+  function update_isue(id_issue){
+    var slide_value = $("#slider" + id_issue).attr("value");
+    if(id_issue != "" ){
+        var url_ajax = "update"
+    }else{
+      var url_ajax = "create"
+    }
+    $.ajax({
+        url : url_ajax,
+        type : "POST",
+        data: $('#update_issue_' + id_issue).serialize(),
+        dataType : "json",
+        success : function(data) {
+          if(data.result == "edit_success") {
+            console.debug("get value :" + data.content);
+            $("#issue" + id_issue).replaceWith(data.content);
+            makeSlider(id_issue, slide_value);
+            editDate(id_issue); 
+            show_and_hide_close_issue_icon();
+          }else if(data.result == "create_success"){
+            $("#new_issue_form").find(".value_content").val("");
+            $("#new_issue_form").hide();
+            $("#new_issue_form").parent().find(".connectedSortable").prepend(data.content);
+            makeSlider(data.id, 0);
+            editDate(data.id); 
+          }
+          else{
+            alert(data.message);
+          }
+        }
+      });
+  }
+  
   function show_detail(id) {
     if(id != ""){
       var issue_id = id;
@@ -244,6 +284,7 @@
           success : function(res) {
              if (res.status == "status_completed"){
                 makeSlider(issue_id,100);
+                $('#slider' + issue_id).attr("value", "100");
              }
           }
         });

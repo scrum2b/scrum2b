@@ -170,7 +170,7 @@ li {
 }
 .board_issue .subject_issue {
   margin-bottom: 0px;
-  font-size:18px;
+  font-size:16px;
 }
 
 .board_issue .done {
@@ -340,4 +340,9 @@ a.edit_comment {
 }
 .icon {
   cursor: pointer;
+}
+span.error {
+  color:red;
+  float: left;
+  display:block;
 }
