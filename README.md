@@ -39,7 +39,7 @@ Scrum2B is open source and released under the terms of the GNU General Public Li
 INSTALLATION
 ------------
 
-The tool could run based on Redmine 2.3.x, 2.2.x, 2.1.x, 2.0.x.
+The tool could run based on Redmine 2.4.x, 2.3.x, 2.2.x, 2.1.x, 2.0.x.
 
 Go to the Redmine plugin folder. Clone the plugin from GitHub:
     
@@ -82,6 +82,7 @@ We want to implement new features in short term:
 
 1. Burndown chart based on Estimate Time and Spent Time.
 2. The check list for each issues.
+3. Plan sprints
 
 
 If you have any comment/sugguession, please send message to us via Git Issues.
