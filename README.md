@@ -2,7 +2,7 @@ SUMMARY
 -------
 
 **Scrum2B** is a plugin of Redmine (www.redmine.org), support Scrum Board and other features allow teams could use Scrum to develop Agile project.
-Scrum2B is developed by Scrum2B Team.
+Scrum2B is developed by ScrumTobe Team.
 
 ***Contacts:***
 - Email: *scrum2b@ithanoi.com*
@@ -11,13 +11,12 @@ Scrum2B is developed by Scrum2B Team.
 - Facebook: *www.facebook.com/ScrumToBe*
 
 
-**The first version (1.0) is quite simple, includes 3 main features:**
+**The version 2.0 is completed to add more features allow Scrum2B users get more advances:**
 
-1. The ScrumBoard: based on another Redmine plugin with a board, but we completed more features, allow teams could treat like a REAL BOARD.
-Users could drad and drop a task to sort/organizate the Sprint.
-2. The ListBoard: list all issues based on the sort from ScrumBoard and make it more simple than Issue Tracking in Redmine.
-3. The interface of screens based on Twitter Bootstrap, with better look and feeling.
-(You should get the theme: https://github.com/scrum2b/redmine-scrum2b-theme to install in Redmine)
+1. The ScrumBoard: based on another Redmine plugin with a board, but we completed more features, allow teams could treat like a REAL BOARD. Users could drad and drop a task to sort/organizate the Sprint.
+2. The Backlog Sprint: list all issues based on the sort from ScrumBoard, move issues to another sprints. The screen is designed mostly focus on managers and make it more simple than Issue Tracking in Redmine.
+3. Users could show and edit detail information of issues, like Attache files, comments.
+4. The plugin could run with many Redmine plugins.
 
 **You could see the demo version at:**
 - *http://scrum2b.com/projects/scrum2b-demo*
