@@ -11,7 +11,7 @@ post "s2b_boards/update" => "s2b_boards#update"
 post "s2b_boards/sort" => "s2b_boards#sort"
 get  "s2b_boards/new" => "s2b_boards#new"
 post "s2b_boards/create" => "s2b_boards#create"
-post "s2b_boards/raw_issue" => "s2b_boards#raw_issue"
+post "s2b_boards/draw_issue" => "s2b_boards#draw_issue"
 
 post 's2b_lists/index' => 's2b_lists#index'
 get  's2b_lists/index' => 's2b_lists#index'

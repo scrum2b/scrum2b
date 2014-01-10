@@ -32,7 +32,7 @@ $(document).ready(function() {
         var slide_value = $("#slider" + issue_id).attr("value");
         $("#detail_issue").remove();
         $.ajax({
-          url : '/s2b_boards/raw_issue',
+          url : '/s2b_boards/draw_issue',
           type : "POST",
           data : 'issue_id=' + issue_id + '&project_id=' + project_id,
           dataType : "json",
