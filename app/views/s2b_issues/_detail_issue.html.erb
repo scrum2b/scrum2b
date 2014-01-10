@@ -27,7 +27,24 @@ $(document).ready(function() {
       modal: true,
       resizable: false,
       close: function() {
+        var issue_id = $("#detail_issue").attr('value');
+        var project_id = '<%= @project.id %>';
+        var slide_value = $("#slider" + issue_id).attr("value");
         $("#detail_issue").remove();
+        $.ajax({
+          url : '/s2b_boards/raw_issue',
+          type : "POST",
+          data : 'issue_id=' + issue_id + '&project_id=' + project_id,
+          dataType : "json",
+          success : function(data) {
+            $("#issue" + issue_id).replaceWith(data.content);
+            makeSlider(issue_id, slide_value);
+            editDate(issue_id); 
+            show_and_hide_close_issue_icon();
+          }
+        });
+        
+        return false;
       }
     });
     

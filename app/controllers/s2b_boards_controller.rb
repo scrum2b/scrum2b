@@ -1,9 +1,9 @@
 
 class S2bBoardsController < S2bApplicationController
 
-  before_filter :find_project, :only => [:index, :update, :update_status, :update_progress, :create, :sort,
+  before_filter :find_project, :only => [:index, :update, :update_status, :update_progress, :create, :sort, :raw_issue,
                                          :close_issue, :filter_issues, :opened_versions_list, :closed_versions_list]
-  before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues, :update, :create]
+  before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues, :update, :create, :raw_issue]
   
   def index
     @max_position_issue = @project.issues.maximum(:s2b_position).to_i + 1
@@ -134,6 +134,17 @@ class S2bBoardsController < S2bApplicationController
     else
       render :json => {:result => "error", :message => @issue.errors.full_messages}
     end
+  end
+  
+  def raw_issue
+    @issue = @project.issues.find(params[:issue_id])
+    unless @issue
+      render :json => {:result => "error", :message => "Unknow issue"}
+      return 
+    end
+    
+    data  = render_to_string(:partial => "/s2b_boards/issue", :locals => {:issue => @issue, :id_member => @id_member})
+    render :json => {:content => data}
   end
   
   def create
