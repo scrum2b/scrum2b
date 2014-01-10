@@ -1,31 +1,32 @@
 # Plugin's routes
 # See: http://guides.rubyonrails.org/routing.html
 
-match 'boards/index' => 's2b_boards#index'
-match 'boards/update_status' => 's2b_boards#update_status'
-match "boards/update_progress" => "s2b_boards#update_progress"
-match "boards/close_issue" => "s2b_boards#close_issue"
-match "boards/filter_issues" => "s2b_boards#filter_issues"
-match "boards/update" => "s2b_boards#update"
-match "boards/sort" => "s2b_boards#sort"
-match "boards/new" => "s2b_boards#new"
-match "boards/create" => "s2b_boards#create"
-match "boards/delete" => "s2b_boards#delete"
+post 'boards/index' => 's2b_boards#index'
+get  'boards/index' => 's2b_boards#index'
+post 'boards/update_status' => 's2b_boards#update_status'
+post "boards/update_progress" => "s2b_boards#update_progress"
+post  "boards/close_issue" => "s2b_boards#close_issue"
+post "boards/filter_issues" => "s2b_boards#filter_issues"
+post "boards/update" => "s2b_boards#update"
+post "boards/sort" => "s2b_boards#sort"
+get  "boards/new" => "s2b_boards#new"
+post "boards/create" => "s2b_boards#create"
 
-match 'lists/index' => 's2b_lists#index'
-match "lists/filter_issues" => "s2b_lists#filter_issues"
-match "lists/close_on_list" => "s2b_lists#close_on_list"
-match "lists/change_sprint" => "s2b_lists#change_sprint"
+post 'lists/index' => 's2b_lists#index'
+get 'lists/index' => 's2b_lists#index'
+post "lists/filter_issues" => "s2b_lists#filter_issues"
+post "lists/close_on_list" => "s2b_lists#close_on_list"
+post "lists/change_sprint" => "s2b_lists#change_sprint"
 
 
-match "s2b_issues/show" => "s2b_issues#show"
-match "s2b_issues/edit" => "s2b_issues#edit"
-match "s2b_issues/update" => "s2b_issues#update"
-match "s2b_issues/delete" => "s2b_issues#delete"
+post "s2b_issues/show" => "s2b_issues#show"
+get "s2b_issues/edit" => "s2b_issues#edit"
+put "s2b_issues/update" => "s2b_issues#update"
+post "s2b_issues/delete" => "s2b_issues#delete"
 
-match "s2b_issues/delete_attach" => "s2b_issues#delete_attach"
+post "s2b_issues/delete_attach" => "s2b_issues#delete_attach"
 
-match "s2b_notes/update" => "s2b_notes#update"
-match "s2b_notes/delete" => "s2b_notes#delete"
-match "s2b_notes/create" => "s2b_notes#create"
+post "s2b_notes/update" => "s2b_notes#update"
+post "s2b_notes/delete" => "s2b_notes#delete"
+post "s2b_notes/create" => "s2b_notes#create"
 

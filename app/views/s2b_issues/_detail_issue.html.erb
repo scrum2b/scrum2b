@@ -1,4 +1,4 @@
-<div id="detail_issue" title="Detail Issue #<%= @issue.id%>">
+<div id="detail_issue" title="Detail Issue #<%= @issue.id%>" value="<%= @issue.id%>">
   <% if session[:roles_edit] == true %>
     <%= render :partial => 'form', :locals => {:issue => @issue, :priorities => @priorities, :relations => @relations, :allowed_statuses => @allowed_statuses, :edit_allowed => @edit_allowed} %>
   <% end %>
@@ -28,19 +28,9 @@ $(document).ready(function() {
       resizable: false,
       close: function() {
         $("#detail_issue").remove();
-        var select_version = $("#select_version_onboard").val();
-        var select_member = $("#select_member").val();
-        var project_id = '<%= @project.id %>';
-        $.ajax({
-          url : 'filter_issues',
-          type : "POST",
-          data : 'select_version=' + select_version + '&select_member=' + select_member + '&project_id=' + project_id,
-          dataType : "script",
-          success : function() {}
-        });
-        return false;
       }
     });
+    
     $('.ui-widget-overlay').live("click",function(){
       $('#detail_issue' ).dialog( "close" );
     })

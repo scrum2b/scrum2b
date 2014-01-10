@@ -1,7 +1,7 @@
 
 class S2bBoardsController < S2bApplicationController
 
-  before_filter :find_project, :only => [:index, :update, :update_status, :update_progress, :create, :sort, :delete,
+  before_filter :find_project, :only => [:index, :update, :update_status, :update_progress, :create, :sort,
                                          :close_issue, :filter_issues, :opened_versions_list, :closed_versions_list]
   before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues, :update, :create]
   
