@@ -22,12 +22,12 @@ class S2bApplicationController < ApplicationController
   
   def opened_versions_list
     find_project unless @project
-    return Version.where(:status => "open").where(:project_id => [@project.id, @project.parent_id])
+    return Version.where(:status => "open").where(:project_id => @hierarchy_project_id)
   end
   
   def closed_versions_list 
     find_project unless @project
-    return Version.where(:status => "closed").where(:project_id => [@project.id, @project.parent_id])
+    return Version.where(:status => "closed").where(:project_id => @hierarchy_project_id)
   end
   
   def find_project
@@ -37,6 +37,17 @@ class S2bApplicationController < ApplicationController
     User.current.roles_for_project(@project).each do |role|
       session[:roles_edit] = true ? role.permissions.include?(:s2b_edit_issue) : false
     end
+    @hierarchy_project = Project.where(:parent_id => @project.id) << @project
+    @hierarchy_project_id = @hierarchy_project.collect{|project| project.id}
+  end
+  
+  def get_issues
+    @issue_no_position = []     
+    @issue_no_position = Issue.where(session[:conditions]).where("s2b_position IS NULL AND project_id IN (?)",@hierarchy_project_id)
+    @new_issues = Issue.where(session[:conditions]).where("status_id IS NULL or status_id IN (?) AND project_id IN (?)" , STATUS_IDS['status_no_start'],@hierarchy_project_id).order(:s2b_position)
+    @in_progress_issues = Issue.where(session[:conditions]).where("status_id IN (?) AND project_id IN (?)" , STATUS_IDS['status_inprogress'],@hierarchy_project_id).order(:s2b_position)
+    @completed_issues = Issue.where(session[:conditions]).where("status_id IN (?) AND project_id IN (?)" , STATUS_IDS['status_completed'],@hierarchy_project_id).order(:s2b_position)            
+    Rails.logger.info "SSSSSSSSSSSSSSSSSSSSSS#{@issue_no_position.to_a}"
   end
 
   def set_status_settings

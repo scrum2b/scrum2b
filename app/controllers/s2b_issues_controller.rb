@@ -76,7 +76,7 @@ class S2bIssuesController < S2bApplicationController
   end
 
   def delete
-    @issue = @project.issues.find(params[:issue_id])
+    @issue = Issue.find(params[:issue_id])
     unless @issue
       render :json => {:result => "error", :message => "Unknow issue"}
       return 
@@ -93,7 +93,7 @@ class S2bIssuesController < S2bApplicationController
   
     def find_issue_from_param
       issue_id = params[:issue_id] || params[:id] || params[:issue][:id]
-      @issue = @project.issues.find(issue_id)
+      @issue = Issue.find(issue_id)
       return true if @issue
     
       render :json => {:result => "error", :message => "Unknow issue"}
