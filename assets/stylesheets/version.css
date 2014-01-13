@@ -4,6 +4,9 @@ li {
 .right-filter {
   float:right;
 }
+.width-100 {
+  width: 100px;
+}
 .left-filter {
   float:left;
 }

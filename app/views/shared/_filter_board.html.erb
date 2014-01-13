@@ -19,7 +19,7 @@
  			<% if User.current.logged? %>
  			 <option value="me" <% if session[:params_select_member] && session[:params_select_member] == "me" %><%= selected="selected" %><% end %>><%= l(:label_select_me)%></option>
  			<% end %>
- 			<% @member.each do |member|%>
+ 			<% @members.each do |member|%>
 	       <option value="<%= member.id %>" <%= "selected" if session[:params_select_member] && session[:params_select_member].to_i == member.id %> ><%= member.firstname + ' ' + member.lastname %></option>
 			<% end %>
 		</select>

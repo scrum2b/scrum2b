@@ -2,9 +2,11 @@
 class S2bBoardsController < S2bApplicationController
 
   before_filter :find_project, :only => [:index, :update, :update_status, :update_progress, :create, :sort, :draw_issue,:check_before_board,
-                                         :close_issue, :filter_issues, :opened_versions_list, :closed_versions_list, :get_issues]
+                                         :close_issue, :filter_issues, :opened_versions_list, :closed_versions_list, :get_issues, :get_members]
   before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues, :update, :create, :draw_issue]
   before_filter :get_issues, :only => [:index]
+  before_filter :get_members, :only => [:index, :filter_issues]
+  
   def index
     Rails.logger.info "AAAAAAAAAAAa #{@issue_no_position}"
     @max_position_issue = @hierarchy_project.first.issues.maximum(:s2b_position).to_i + 1
@@ -48,7 +50,7 @@ class S2bBoardsController < S2bApplicationController
     result = @issue.update_attribute(:done_ratio, params[:done_ratio])
     if result
       render :json => {:result => "success", :message => "Success to update the progress",
-                      :new_ratio => params[:done_ratio]}
+                       :new_ratio => params[:done_ratio]}
     else
       render :json => {:result => "error", :message => @issue.errors.full_messages}
     end
@@ -58,7 +60,6 @@ class S2bBoardsController < S2bApplicationController
   def sort
     @max_position = Issue.where("status_id IS NULL or status_id IN (?) AND project_id IN (?)", STATUS_IDS[params[:new_status]],@hierarchy_project_id).maximum(:s2b_position)
     @issue = Issue.find(params[:issue_id])
-    Rails.logger.info "AAAAAAAAAAAAa #{@max_position}"
     @old_position = @issue.s2b_position
     if params[:id_next].to_i != 0
       @next_issue = Issue.find(params[:id_next].to_i) 
@@ -188,16 +189,14 @@ class S2bBoardsController < S2bApplicationController
     respond_to do |format|
       format.js {
         @return_content = render_to_string(:partial => "/s2b_boards/screen_boards",
-                                           :locals => {:id_member => @id_member , 
-                                                       :completed_issues => @completed_issues,
+                                           :locals => {:completed_issues => @completed_issues,
                                                        :project => @project,
                                                        :new_issues => @new_issues,
                                                        :in_progress_issues => @in_progress_issues,
                                                        :tracker => @tracker, 
                                                        :priority => @priority,
-                                                       :member => @member,
+                                                       :members => @members,
                                                        :issue => @issue,
-                                                       :status => @status,
                                                        :sprints => @sprints })
       }
     end
@@ -209,13 +208,14 @@ class S2bBoardsController < S2bApplicationController
     @tracker = Tracker.all
     @status = IssueStatus.where("id IN (?)" , DEFAULT_STATUS_IDS['status_no_start'])
     @sprints = @project.versions.where(:status => "open")
-    @project =  Project.find(params[:project_id])
-    @member = []
-    @hierarchy_project.each do |project|
-      project.assignable_users.each do |user|
-        @member.push(user) if !@member.include?(user)
-      end
-    end
   end
-
+  
+  def get_issues
+    @issue_no_position = []     
+    @issue_no_position = Issue.where(session[:conditions]).where("s2b_position IS NULL AND project_id IN (?)",@hierarchy_project_id)
+    @new_issues = Issue.where(session[:conditions]).where("status_id IS NULL or status_id IN (?) AND project_id IN (?)" , STATUS_IDS['status_no_start'],@hierarchy_project_id).order(:s2b_position)
+    @in_progress_issues = Issue.where(session[:conditions]).where("status_id IN (?) AND project_id IN (?)" , STATUS_IDS['status_inprogress'],@hierarchy_project_id).order(:s2b_position)
+    @completed_issues = Issue.where(session[:conditions]).where("status_id IN (?) AND project_id IN (?)" , STATUS_IDS['status_completed'],@hierarchy_project_id).order(:s2b_position)            
+  end
+  
 end

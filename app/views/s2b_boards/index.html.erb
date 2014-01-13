@@ -1,4 +1,4 @@
-<%= render :partial => "/shared/plugin_header", :locals => {:is_board => true, :member => @member, :list_versions_open => @list_versions_open, :list_versions_closed => @list_versions_closed} %>
+<%= render :partial => "/shared/plugin_header", :locals => {:is_board => true, :members => @members, :list_versions_open => @list_versions_open, :list_versions_closed => @list_versions_closed} %>
 <%= render :partial => "/s2b_boards/screen_boards" %>
 <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
 <% content_for :header_tags do %>
