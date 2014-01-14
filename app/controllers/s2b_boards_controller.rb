@@ -1,12 +1,10 @@
-
 class S2bBoardsController < S2bApplicationController
 
-  before_filter :find_project, :only => [:index, :update, :update_status, :update_progress, :create, :sort, :draw_issue,:check_before_board,
-                                         :close_issue, :filter_issues, :opened_versions_list, :closed_versions_list, :get_issues, :get_members]
   before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues, :update, :create, :draw_issue]
   before_filter :get_issues, :only => [:index]
   before_filter :get_members, :only => [:index, :filter_issues]
-  before_filter :check_permission, :only => [:update, :update_status, :update_progress, :create, :sort, :close_issue]
+  before_filter lambda { check_permission(:edit) }, :only => [:update, :update_status, :update_progress, :create, :sort, :close_issue]
+  before_filter lambda { check_permission(:view) }, :only => [:index, :filter_issues]
   
   def index
     @max_position_issue = @hierarchy_project.first.issues.maximum(:s2b_position).to_i + 1
@@ -15,11 +13,9 @@ class S2bBoardsController < S2bApplicationController
       issue.update_attribute(:s2b_position, @max_position_issue)
       @max_position_issue += 1
     end
-        
     session[:view_issue] = "board"   
     @list_versions_open = opened_versions_list
     @list_versions_closed = closed_versions_list
-    
   end
   
   def update_status
@@ -55,7 +51,6 @@ class S2bBoardsController < S2bApplicationController
       render :json => {:result => "error", :message => @issue.errors.full_messages}
     end
   end
-  
   
   def sort
     @max_position = Issue.where("status_id IS NULL or status_id IN (?) AND project_id IN (?)", STATUS_IDS[params[:new_status]],@hierarchy_project_id).maximum(:s2b_position)
@@ -139,8 +134,7 @@ class S2bBoardsController < S2bApplicationController
     unless @issue
       render :json => {:result => "error", :message => "Unknow issue"}
       return 
-    end
-    
+    end   
     data  = render_to_string(:partial => "/s2b_boards/issue", :locals => {:issue => @issue})
     render :json => {:content => data}
   end
@@ -163,9 +157,7 @@ class S2bBoardsController < S2bApplicationController
       render :json => {:result => "failure", :message => @issue.errors.full_messages}
     end
   end
-  
-  
-  
+
   def filter_issues
     session[:params_select_version_onboard] = params[:select_version]
     session[:params_select_member] = params[:select_member]

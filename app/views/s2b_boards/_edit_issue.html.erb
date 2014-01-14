@@ -35,7 +35,7 @@
       
     <div id="p_assignee_<%= issue.id %>">
       <div class="col-50">
-         <label class="text-left"><%= l(:label_head_issue_assignee)%> </label>
+         <label class="text-left"><%= l(:label_head_issue_assignee) %> </label>
          <select class="value_content right-filter width-100" name="issue[assigned_to_id]" >
            <option></option>
            <option value="<%= User.current.id %>" <%= "selected" if issue.assigned_to_id == User.current.id %>><%= l(:label_me) %></option>
@@ -51,7 +51,7 @@
          </select>
        </div>
        <div class="col-50">
-          <label class="text-left"><%= l(:label_priority)%> </label>
+          <label class="text-left"><%= l(:label_priority) %> </label>
           <select class="value_content right-filter width-100" name="issue[priority_id]" >
             <% @priority.each do |priority| %>
                 <option value="<%= priority.id %>" <%= "selected" if priority.id == issue.priority_id %>><%= priority.name %></option>
@@ -62,11 +62,11 @@
 
     <div>
       <div class="col-50">
-        <label class="text-left"><%= l(:label_start_date)%></label>
+        <label class="text-left"><%= l(:label_start_date) %></label>
         <input class="value_content right-filter width-100 " name="issue[start_date]" id="new_date_start_<%= issue.id %>"  value="<%= format_date(issue.start_date) %>" style="width: 100px">     
       </div>
       <div class="col-50">
-        <label class="text-left" ><%= l(:label_end_date)%></label>
+        <label class="text-left" ><%= l(:label_end_date) %></label>
         <input class="value_content right-filter width-100 " name="issue[due_date]"  id="new_date_end_<%= issue.id %>" value="<%= format_date(issue.due_date) %>" style="width: 100px" />    
       </div>
     </div>
@@ -86,7 +86,7 @@
       <button type="button" class="cancel_issue btn-mini btn-danger">
         <%= l(:label_board_edit_btn_cancel) %>
       </button>
-      <a href="#" class="float-right" onClick="edit_detail(<%= issue.id %>)">Edit Detail</a>
+      <a href="#" class="float-right" onClick="edit_detail(<%= issue.id %>)"> <%= l(:label_edit_detail) %></a>
     </div>
   </form>
 </div>
@@ -105,7 +105,6 @@
         $('.tabular_notes').hide();
         $('#history').hide();
       }
-    });
-    
+    }); 
   }
 </script>

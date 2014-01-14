@@ -1,9 +1,9 @@
 class S2bListsController < S2bApplicationController
   
-  before_filter :find_project, :only => [:index, :change_sprint, :close_on_list, :filter_issues]
   before_filter :filter_issues, :only => [:index]
-  before_filter :get_members, :only => [:index]   
-  before_filter :check_permission, :only => [:change_sprint, :close_on_list]                   
+  before_filter :get_members, :only => [:index]
+  before_filter lambda { check_permission(:edit) }, :only => [:change_sprint, :change_sprint]
+  before_filter lambda { check_permission(:view) }, :only => [:index, :filter_issues]               
   
   def index
     @select_issue_options = SELECT_ISSUE_OPTIONS

@@ -47,7 +47,7 @@
     <hr />
     <% if @issue.description? %>
       <div class="description">
-        <p><strong><%=l(:field_description)%></strong></p>
+        <p><strong><%= l(:field_description) %></strong></p>
         <br />
         <div class="wiki">
         <%= textilizable @issue, :description, :attachments => @issue.attachments %>
@@ -59,7 +59,7 @@
     <% if @issue.attachments.any? %>
       <% @issue.attachments.each do |attach| %>
         <p>
-          <a href="/attachments/download/<%= attach.id%>" class="icon icon-attachment"><%= attach.filename%></a>
+          <a href="/attachments/download/<%= attach.id %>" class="icon icon-attachment"><%= attach.filename %></a>
           <% if attach.is_text? %>
             <%= link_to image_tag('magnifier.png'),
                         :controller => 'attachments', :action => 'show',
@@ -68,7 +68,7 @@
           <%= attach.description unless attach.description.blank? %>
           <span class="size">(<%= number_to_human_size attach.filesize %>)</span>
           <% if User.current.member_of?(@project) || User.current.admin %>
-          <a href="#" onClick="delete_attach(<%= attach.id%>,<%= @issue.id%>)" class="icon icon-del delete" title="Delete"></a>
+          <a href="#" onClick="delete_attach(<%= attach.id%>,<%= @issue.id %>)" class="icon icon-del delete" title="Delete"></a>
           <% end %>
           <span class="author"><%= h(attach.author) %>, <%= format_time(attach.created_on) %></span>
         </p>

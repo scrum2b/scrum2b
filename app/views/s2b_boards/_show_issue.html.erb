@@ -1,6 +1,6 @@
 <div class="show_form" id="show_issue_<%= issue.id %>" value="<%= issue.id %>">
     <a href="#" onClick="show_detail(<%= issue.id %>)" style="font-size: 15px" title="<%= l(:label_board_show_detail_issue) %>" value="<%= issue.id %>">#<%= issue.id %> <%= raw(issue.subject.truncate(40, :separator => ' ').html_safe.gsub(/\n/, " <br/> ")) %></a>
-    <% if session[:roles_edit] == true %>
+    <% if editable_for_project? %>
       <i class="icon_close_issue icon icon-del" issue_id="<%= issue.id %>" title="<%= l(:label_board_issue_text_close_issue) %>">
       </i>  
       <i class="icon_edit_issue icon icon-edit" title="<%= l(:label_board_issue_text_edit_issue) %>">
@@ -40,16 +40,16 @@
           <div class="div_description description_readmore" id="description_readmore_<%= issue.id %>" style="display: none">
             <%= raw(issue.description.to_s.html_safe.gsub(/\n/, " <br/>")) %>
           </div>
-          <a href="#" id="hide_<%= issue.id %>" class="hide no_edit" value="<%= issue.id %>"><%= l(:label_hide)%></a>
-          <a href="#" id="readmore_<%= issue.id %>" class="readmore no_edit" value="<%= issue.id %>"><%= l(:label_readmore)%></a>
-        <% else%>
+          <a href="#" id="hide_<%= issue.id %>" class="hide no_edit" value="<%= issue.id %>"><%= l(:label_hide) %></a>
+          <a href="#" id="readmore_<%= issue.id %>" class="readmore no_edit" value="<%= issue.id %>"><%= l(:label_readmore) %></a>
+        <% else %>
           <div class="no_edit div_description description_hide" id="description_hide_<%= issue.id %>">
             <%= raw(issue.description.to_s.html_safe.gsub(/\n/, " <br/>")) %>
           </div>
         <% end %>
       </div>
     <% end %>
-    <% if session[:roles_edit] == true %>
+    <% if editable_for_project? %>
       <span style="float: right;color: #f6931f; font-weight: bold;margin-top:-20px;">
         <input type="button" id="amount<%= issue.id %>" style="background-color:white;border:0;color: #f6931f; font-weight: bold;margin-bottom: 0;font-size: 13px;width: 25px;padding:0px;cursor:default"/>%
       </span>
@@ -62,12 +62,12 @@
       <div class="progressbar" value="<%= issue.done_ratio %>" issue_id = "<%= issue.id %>"  id="progress<%= issue.id %>" style="height: 12px;margin: 0 10px 5px 10px"></div>
       
     <% end %>
-    <% if !issue.estimated_hours.blank? %>
+    <% unless issue.estimated_hours.blank? %>
       <span class="estimated" style="float: left;font-size: 12px;margin-top: 5px">
-        <%= l(:label_board_issue_time) %><span id="est_<%= issue.id %>"><%= issue.estimated_hours %> h</span>
+        <%= l(:label_board_issue_time) %><span id="est_<%= issue.id %>"><%= issue.estimated_hours %> <%= l(:field_hours) %></span>
       </span>
     <% end %>
-    <span class="sprint" style="font-size: 11px;line-height: 30px;margin-left: 23%">
+    <span class="sprint" style="font-size: 11px;line-height: 30px;margin-left:20px">
       <%= link_to "#{issue.fixed_version}#{" <" + issue.project.name + ">" unless @project.issues.include?(issue) }" , :controller => 'versions', :action => 'show', :id => issue.fixed_version_id if issue.fixed_version_id %>       
     </span>
     <span style="float: right;line-height: 25px">

@@ -3,12 +3,12 @@
     <tr class="">
       <th id="check_all"><img src="/images/toggle_check.png?1349682375" alt="Toggle_check"></th>
       <th>#</th>
-      <th><%= l(:label_head_issue_status)%></th>
-      <th><%= l(:label_head_issue_subject)%></th>
-      <th><%= l(:label_head_issue_assignee)%></th>
-      <th><%= l(:label_head_issue_updated)%></th>
-      <th><%= l(:label_head_issue_est_time)%></th>
-      <th><%= l(:label_head_issue_done)%></th>
+      <th><%= l(:label_head_issue_status) %></th>
+      <th><%= l(:label_head_issue_subject) %></th>
+      <th><%= l(:label_head_issue_assignee) %></th>
+      <th><%= l(:label_head_issue_updated) %></th>
+      <th><%= l(:label_head_issue_est_time) %></th>
+      <th><%= l(:label_head_issue_done) %></th>
     </tr>
   </thead>
 
@@ -16,8 +16,8 @@
     <% if @sort_versions %>
       <%= render :partial => "version", :locals =>{:sort_versions => @sort_versions}  %>
     <% end %>
-    <% if !params[:select_version] && !session[:param_select_version] || params[:select_version] && params[:select_version] == 'all' ||  params[:select_version] == 'version_working' || params[:select_version] == 'backlog' || session[:param_select_version] && session[:param_select_version] == 'all' || session[:param_select_version] && session[:param_select_version] == 'version_working' || session[:param_select_version] && session[:param_select_version] == 'backlog'%>
-      <%= render :partial => "backlog", :locals =>{:issues_backlog => @issues_backlog }%>
+    <% if !params[:select_version] && !session[:param_select_version] || params[:select_version] && params[:select_version] == 'all' ||  params[:select_version] == 'version_working' || params[:select_version] == 'backlog' || session[:param_select_version] && session[:param_select_version] == 'all' || session[:param_select_version] && session[:param_select_version] == 'version_working' || session[:param_select_version] && session[:param_select_version] == 'backlog' %>
+      <%= render :partial => "backlog", :locals =>{:issues_backlog => @issues_backlog } %>
     <% end %>
   </tbody>
 </table>
