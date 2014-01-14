@@ -1,7 +1,7 @@
 <div class="splitcontent">
   <div class="splitcontentleft">
     <% if @issue.safe_attribute?('status_id') && @allowed_statuses.present? %>
-      <p><%= f.select :status_id, (@allowed_statuses.collect {|p| [p.name, p.id]}), {:required => true}%></p>
+      <p><%= f.select :status_id, (@allowed_statuses.collect {|p| [p.name, p.id]}), {:required => true} %></p>
     
     <% else %>
       <p><label><%= l(:field_status) %></label> <%= h(@issue.status.name) %></p>
@@ -46,10 +46,7 @@
     <% if @issue.safe_attribute? 'estimated_hours' %>
       <p><%= f.label :estimated_hours %><%= f.text_field :estimated_hours, :size => 3, :disabled => !@issue.leaf?, :required => @issue.required_attribute?('estimated_hours') %> <%= l(:field_hours) %></p>
     <% end %>
-    
-    <% if @issue.safe_attribute?('done_ratio') && @issue.leaf? && Issue.use_field_for_done_ratio? %>
-      <p><%= f.label :done_ratio %><%= f.select :done_ratio, ((0..10).to_a.collect {|r| ["#{r*10} %", r*10] }), :required => @issue.required_attribute?('done_ratio') %></p>
-    <% end %>   
+
   </div>
   <fieldset style="width: 95%;margin: auto;"><legend><%= l(:label_attachment_plural) %></legend>
     <p><%= render :partial => '../views/attachments/form', :locals => {:container => @issue} %></p>

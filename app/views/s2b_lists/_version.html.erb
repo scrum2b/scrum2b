@@ -1,4 +1,4 @@
-<% @sort_versions.each do |version,issue|%>
+<% @sort_versions.each do |version,issue| %>
   <% if !params[:select_version] || params[:select_version] && params[:select_version] == 'all' ||  params[:select_version] == 'version_working' %>
     <% if issue.empty? != true %>
         <tr class="version_row">
@@ -12,7 +12,7 @@
     <% end %>
   <% else %>
      <% if issue.empty? != true %>
-      <% issue.each do |issue|%>
+      <% issue.each do |issue| %>
         <tr class="issue <%= cycle("odd", "even") %>">
               <%= render :partial => "list_issues", :locals => { :issue => issue} %>
         </tr>

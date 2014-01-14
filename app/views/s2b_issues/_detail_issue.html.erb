@@ -1,11 +1,11 @@
-<div id="detail_issue" title="Detail Issue #<%= @issue.id%>">
-  <% if session[:roles_edit] == true %>
+<div id="detail_issue" title="Detail Issue #<%= @issue.id %>" value="<%= @issue.id %>">
+  <% if editable_for_project? %>
     <%= render :partial => 'form', :locals => {:issue => @issue, :priorities => @priorities, :relations => @relations, :allowed_statuses => @allowed_statuses, :edit_allowed => @edit_allowed} %>
   <% end %>
   <div class="detail_issue issue">  
     <%= render :partial => 'issue', :locals => {:issue => @issue} %>
   </div>
-  <% if session[:roles_edit] == true %>
+  <% if editable_for_project? %>
     <%= render :partial => '/s2b_notes/form_new', :locals => {:issue => @issue, :project => @project} %>
   <% end %>
   <div id="history">
@@ -27,20 +27,27 @@ $(document).ready(function() {
       modal: true,
       resizable: false,
       close: function() {
-        $("#detail_issue").remove();
-        var select_version = $("#select_version_onboard").val();
-        var select_member = $("#select_member").val();
+        var issue_id = $("#detail_issue").attr('value');
         var project_id = '<%= @project.id %>';
+        var slide_value = $("#slider" + issue_id).attr("value");
+        $("#detail_issue").remove();
         $.ajax({
-          url : 'filter_issues',
+          url : '/s2b_boards/draw_issue',
           type : "POST",
-          data : 'select_version=' + select_version + '&select_member=' + select_member + '&project_id=' + project_id,
-          dataType : "script",
-          success : function() {}
+          data : 'issue_id=' + issue_id + '&project_id=' + project_id,
+          dataType : "json",
+          success : function(data) {
+            $("#issue" + issue_id).replaceWith(data.content);
+            makeSlider(issue_id, slide_value);
+            editDate(issue_id); 
+            show_and_hide_close_issue_icon();
+          }
         });
+        
         return false;
       }
     });
+    
     $('.ui-widget-overlay').live("click",function(){
       $('#detail_issue' ).dialog( "close" );
     })
@@ -58,23 +65,12 @@ $(document).ready(function() {
     $( "#new_date_start").datepicker("option", "dateFormat", "yy-mm-dd");
     $( "#new_date_end").datepicker("option", "dateFormat", "yy-mm-dd");
     
-    $('.update_issue').live("click",function(){
-      $('.form_edit_issue').show();
-      $('.detail_issue').hide();
-      $('.tabular_notes').hide();
-      $('#history').hide();
-    })
-    
     $('.btn_cancel_update').live("click",function(){
       $('.form_edit_issue').hide();
       $('.detail_issue').show();
       $('.tabular_notes').show();
       $('#history').show();
     })  
-    
-    $(".delete_issue").live("click",function(){    
-      
-    });
     
     $(".edit_notes").live("click",function(){
       $(this).hide();
@@ -103,9 +99,15 @@ $(document).ready(function() {
       });
       return false;      
     });
-       
-    
   })
+  
+  function edit_issue (){
+    $('.form_edit_issue').show();
+    $('.detail_issue').hide();
+    $('.tabular_notes').hide();
+    $('#history').hide();
+  }
+    
   function delete_issue(issue_id){
     if(confirm("Do you want to delete?")) { 
         var issue_id = issue_id;

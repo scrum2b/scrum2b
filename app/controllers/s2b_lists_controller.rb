@@ -1,14 +1,16 @@
 class S2bListsController < S2bApplicationController
   
-  before_filter :find_project, :only => [:index, :change_sprint, :close_on_list, :filter_issues]
   before_filter :filter_issues, :only => [:index]
-                        
+  before_filter :get_members, :only => [:index]
+  before_filter lambda { check_permission(:edit) }, :only => [:change_sprint, :change_sprint]
+  before_filter lambda { check_permission(:view) }, :only => [:index, :filter_issues]               
+  
   def index
     @select_issue_options = SELECT_ISSUE_OPTIONS
     @list_versions_open = opened_versions_list
     @list_versions_closed = closed_versions_list 
-    @id_member = @project.assignable_users.collect{|id_member| id_member.id}
-    @list_versions = @project.versions.all
+    @id_member = @members.collect{|id_member| id_member.id}
+    @list_versions = Version.where(:project_id => @hierarchy_project_id).order("created_on")
   end
   
   def filter_issues
@@ -39,25 +41,25 @@ class S2bListsController < S2bApplicationController
       all_backlog_status.push(STATUS_IDS['status_closed'].dup)
     end
     
-    @issues = Issue.where(:status_id => all_backlog_status.to_a).order("status_id, s2b_position DESC")
+    issues = Issue.where(:status_id => all_backlog_status.to_a).order("status_id, s2b_position DESC")
     # Filter my issues 
     if session[:param_select_issues] == SELECT_ISSUE_OPTIONS[:my] || session[:param_select_issues] == SELECT_ISSUE_OPTIONS[:my_completed]
-      @issues = @issues.where(:assigned_to_id => User.current.id)
+      issues = issues.where(:assigned_to_id => User.current.id)
     end
 
     if session[:param_select_version] && session[:param_select_version] == "all"
-      versions = @project.versions.order("created_on")
+      versions = Version.where(:project_id => @hierarchy_project_id).order("created_on")
     elsif session[:param_select_version] && session[:param_select_version] != "version_working" && session[:param_select_version] != "all"
       versions = Version.where(:id => session[:param_select_version]).order("created_on")
     else
-      versions = @project.versions.where("status NOT IN (?)","closed").order("created_on")
+      versions = Version.where(:project_id => @hierarchy_project_id).where("status NOT IN (?)","closed").order("created_on")
     end
     versions.each do |version|
-      @sort_versions[version] = @issues.where(:fixed_version_id => version)
+      @sort_versions[version] = issues.where(:fixed_version_id => version)
     end
     
-    id_issues = @issues.collect{|id_issue| id_issue.id}
-    @issues_backlog = @project.issues.where(:fixed_version_id => nil).where("id IN (?)", id_issues).order("status_id, s2b_position")
+    id_issues = issues.collect{|id_issue| id_issue.id}
+    @issues_backlog = Issue.where(:fixed_version_id => nil).where("id IN (?) AND project_id IN (?)", id_issues,@hierarchy_project_id).order("status_id, s2b_position")
     respond_to do |format|
       format.js {
         @return_content = render_to_string(:partial => "/s2b_lists/screen_list", :locals => {:sort_versions => @sort_versions, :issues_backlog => @issues_backlog})
@@ -71,7 +73,7 @@ class S2bListsController < S2bApplicationController
     array_id = params[:issue_id]
     int_array = array_id.split(',').collect(&:to_i)
 
-    issues = @project.issues.where(:id => int_array)
+    issues = Issue.where("id IN (?) AND project_id IN (?)",int_array,@hierarchy_project_id)
     issues.each do |issue|
       issue.update_attribute(:fixed_version_id, params[:new_sprint])
     end
@@ -83,7 +85,7 @@ class S2bListsController < S2bApplicationController
     array_id = params[:issue_id]
     int_array = array_id.split(',').collect(&:to_i)
 
-    issues = @project.issues.where(:id => int_array)
+    issues = Issue.where("id IN (?) AND project_id IN (?)",int_array,@hierarchy_project_id)
     issues.each do |issue|
       issue.update_attribute(:status_id, DEFAULT_STATUS_IDS['status_closed'])
     end

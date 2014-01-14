@@ -4,9 +4,13 @@ li {
 .right-filter {
   float:right;
 }
+.width-100 {
+  width: 100px;
+}
 .left-filter {
   float:left;
 }
+
 .col-50 {
   width:48%;
   padding:5px 1%;
@@ -17,6 +21,9 @@ li {
 }
 .float-left {
   float:left;
+}
+.float-right {
+  float:right;
 }
 .text-right {
   

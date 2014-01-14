@@ -2,7 +2,6 @@
   <fieldset class="tabular">
   <legend>Edit Issue <%= @issue.subject %></legend> 
   <%= form_for @issue, :as => :issue, :url => { :action => "update"}, :html => {:id => "form_edit", :name => "fomr_edit_issue", :multipart => true } do |f| %>  
-    
     <% if @issue.safe_attribute? 'is_private' %>
       <p style="float:right; margin-right:1em;">
         <%= f.check_box :is_private, :no_label => true %><label class="inline" for="issue_is_private" id="issue_is_private_label"><%= l(:field_is_private) %></label>
@@ -39,7 +38,7 @@
     <br />
     <%= f.hidden_field :project_id %>
     <%= f.hidden_field :id %>
-    <%= button_tag "Submit", :type => 'submit', :class => "btn_submit_update" , :name => "commit"%>
+    <%= button_tag "Submit", :type => 'submit', :class => "btn_submit_update" , :name => "commit" %>
     <%= button_tag "Cancel", :type => 'reset', :name => "form_edit_issue", :class => "btn_cancel_update" %>
   <% end %>
   </fieldset>

@@ -3,7 +3,32 @@ class S2bApplicationController < ApplicationController
 
   skip_before_filter :verify_authenticity_token
   before_filter :set_status_settings
-
+  before_filter :find_project
+  
+  helper :journals
+  helper :projects
+  include ProjectsHelper
+  helper :custom_fields
+  include CustomFieldsHelper
+  helper :issue_relations
+  include IssueRelationsHelper
+  helper :watchers
+  include WatchersHelper
+  helper :attachments
+  include AttachmentsHelper
+  helper :queries
+  include QueriesHelper
+  helper :repositories
+  include RepositoriesHelper
+  helper :sort
+  include SortHelper
+  include IssuesHelper
+  helper :timelog
+  include Redmine::Export::PDF
+  helper :issues
+  include IssuesHelper
+  helper_method :editable_for_project?
+  helper_method :viewable_for_project?
   self.allow_forgery_protection = false
   
   DEFAULT_STATUS_IDS = {}
@@ -17,28 +42,65 @@ class S2bApplicationController < ApplicationController
                           :completed => 5,
                           :closed => 6,
                           :all => 7}
-        
+  
+  def editable_for_project?
+    return @editable_for_project if @editable_for_project.present?
+    @viewable_for_project = true and return true if User.current.admin?
+
+    @user_roles = @user_roles || User.current.roles_for_project(@project)
+    @editable_for_project = false
+    @user_roles.each do |role|
+      @editable_for_project = true and break if role.permissions.include?(:s2b_edit_issue)
+    end
+    return @editable_for_project  
+  end
+  
+  def viewable_for_project?
+    return @viewable_for_project if @viewable_for_project.present? 
+    @viewable_for_project = true and return true if User.current.admin?
+    
+    @user_roles = @user_roles || User.current.roles_for_project(@project)
+    @viewable_for_project = false
+    @user_roles.each do |role|
+      @viewable_for_project = true and break if role.permissions.include?(:s2b_view_issue)
+    end
+    return @viewable_for_project
+  end
+
+  def check_permission(permission_type = :view)
+    redirect_to :back if permission_type == :view && !viewable_for_project?
+    redirect_to :back if permission_type == :edit && !editable_for_project?
+  end
+      
   protected
   
   def opened_versions_list
     find_project unless @project
-    return Version.where(:status => "open").where(:project_id => [@project.id, @project.parent_id])
+    return @project.versions.where(:status => "open")
   end
   
   def closed_versions_list 
     find_project unless @project
-    return Version.where(:status => "closed").where(:project_id => [@project.id, @project.parent_id])
+    return @project.versions.where(:status => "closed")
   end
   
   def find_project
     # @project variable must be set before calling the authorize filter
     project_id = params[:project_id] || (params[:issue] && params[:issue][:project_id])
     @project = Project.find(project_id)
-    User.current.roles_for_project(@project).each do |role|
-      session[:roles_edit] = true ? role.permissions.include?(:s2b_edit_issue) : false
+    @hierarchy_project = Project.where(:parent_id => @project.id) << @project
+    @hierarchy_project_id = @hierarchy_project.collect{|project| project.id}
+  end
+  
+  def get_members
+    @members = []
+    @hierarchy_project.each do |project|
+      project.assignable_users.each do |user|
+        @members.push(user) unless @members.include?(user)
+      end
     end
   end
-
+  
   def set_status_settings
     @plugin = Redmine::Plugin.find("scrum2b")
     @settings = Setting["plugin_#{@plugin.id}"]   
