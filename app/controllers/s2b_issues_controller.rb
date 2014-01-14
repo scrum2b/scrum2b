@@ -4,6 +4,7 @@ class S2bIssuesController < S2bApplicationController
   before_filter :find_project
   before_filter :find_issue_from_param
   before_filter :check_before
+  before_filter :check_permission, :only => [:update, :delete_attach, :delete]  
   
   rescue_from Query::StatementInvalid, :with => :query_statement_invalid
 

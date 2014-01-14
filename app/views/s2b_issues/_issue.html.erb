@@ -1,5 +1,5 @@
 <div class="show_form">
-  <%= render :partial => 'action_menu' , :locals => {:issue => @issue}%>
+  <%= render :partial => 'action_menu' , :locals => {:issue => @issue} %>
   <h2><%= @issue.subject %></h2>
   <p class="author">
     <%= authoring @issue.created_on, @issue.author %>.

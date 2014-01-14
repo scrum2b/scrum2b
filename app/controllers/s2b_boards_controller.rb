@@ -6,9 +6,9 @@ class S2bBoardsController < S2bApplicationController
   before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues, :update, :create, :draw_issue]
   before_filter :get_issues, :only => [:index]
   before_filter :get_members, :only => [:index, :filter_issues]
+  before_filter :check_permission, :only => [:update, :update_status, :update_progress, :create, :sort, :close_issue]
   
   def index
-    Rails.logger.info "AAAAAAAAAAAa #{@issue_no_position}"
     @max_position_issue = @hierarchy_project.first.issues.maximum(:s2b_position).to_i + 1
     #@issue_no_position = @project.issues.where(:s2b_position => nil)
     @issue_no_position.each do |issue|

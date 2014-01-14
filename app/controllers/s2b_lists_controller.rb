@@ -3,7 +3,8 @@ class S2bListsController < S2bApplicationController
   before_filter :find_project, :only => [:index, :change_sprint, :close_on_list, :filter_issues]
   before_filter :filter_issues, :only => [:index]
   before_filter :get_members, :only => [:index]   
-                     
+  before_filter :check_permission, :only => [:change_sprint, :close_on_list]                   
+  
   def index
     @select_issue_options = SELECT_ISSUE_OPTIONS
     @list_versions_open = opened_versions_list

@@ -3,9 +3,30 @@ class S2bApplicationController < ApplicationController
 
   skip_before_filter :verify_authenticity_token
   before_filter :set_status_settings
+  before_filter :find_project, :only => [:check_permission]
   
+  helper :journals
   helper :projects
   include ProjectsHelper
+  helper :custom_fields
+  include CustomFieldsHelper
+  helper :issue_relations
+  include IssueRelationsHelper
+  helper :watchers
+  include WatchersHelper
+  helper :attachments
+  include AttachmentsHelper
+  helper :queries
+  include QueriesHelper
+  helper :repositories
+  include RepositoriesHelper
+  helper :sort
+  include SortHelper
+  include IssuesHelper
+  helper :timelog
+  include Redmine::Export::PDF
+  helper :issues
+  include IssuesHelper
   
   self.allow_forgery_protection = false
   
@@ -43,7 +64,11 @@ class S2bApplicationController < ApplicationController
     @hierarchy_project = Project.where(:parent_id => @project.id) << @project
     @hierarchy_project_id = @hierarchy_project.collect{|project| project.id}
   end
-
+  
+  def check_permission
+    redirect_to :back if session[:roles_edit] == false
+  end
+  
   def get_members
     @members = []
     @hierarchy_project.each do |project|
