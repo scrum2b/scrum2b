@@ -121,7 +121,7 @@ class S2bBoardsController < S2bApplicationController
     end
 
     if @issue.update_attributes(params[:issue])
-      data  = render_to_string(:partial => "/s2b_boards/issue", :locals => {:issue => @issue})
+      data  = render_to_string(:partial => "/s2b_boards/draw_issue", :locals => {:issue => @issue})
       render :json => {:result => "edit_success", :message => "Success to update the message",
                        :content => data}
     else
@@ -135,7 +135,7 @@ class S2bBoardsController < S2bApplicationController
       render :json => {:result => "error", :message => "Unknow issue"}
       return 
     end   
-    data  = render_to_string(:partial => "/s2b_boards/issue", :locals => {:issue => @issue})
+    data  = render_to_string(:partial => "/s2b_boards/draw_issue", :locals => {:issue => @issue})
     render :json => {:content => data}
   end
   
