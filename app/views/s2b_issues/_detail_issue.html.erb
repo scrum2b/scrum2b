@@ -38,6 +38,7 @@ $(document).ready(function() {
           dataType : "json",
           success : function(data) {
             $("#issue" + issue_id).replaceWith(data.content);
+            makeSlider(issue_id, slide_value);
             editDate(issue_id); 
             show_and_hide_close_issue_icon();
             $("#progress" + issue_id).progressbar({
