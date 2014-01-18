@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Scrum2B Tool by scrum2b</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Scrum2B Tool</h1>
+        <h2>Scrum Tool plugin for Redmine</h2>
+        <a href="https://github.com/scrum2b/scrum2b" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h2>
+<a name="summary" class="anchor" href="#summary"><span class="octicon octicon-link"></span></a>SUMMARY</h2>
+
+<p><strong>Scrum2B</strong> (<a href="http://www.scrum2b.com">www.scrum2b.com</a>) is a plugin of Redmine (<a href="http://www.redmine.org">www.redmine.org</a>), support Scrum Board and other features allow teams could use Scrum to develop Agile project.
+Scrum2B is developed by ScrumTobe Team (<a href="http://www.scrumtobe.com">www.scrumtobe.com</a>).</p>
+
+<p><strong>The version 2.0 is completed with more features that allows Scrum2B users get more advances:</strong></p>
+
+<ol>
+<li>The ScrumBoard: based on another Redmine plugin with a board, but we completed more features, allow teams could treat like a REAL BOARD. Users could drad and drop a task to sort/organizate the Sprint.</li>
+<li>The Backlog Sprint: list all issues based on the sort from ScrumBoard, move issues to another sprints. The screen is designed mostly focus on managers and make it more simple than Issue Tracking in Redmine.</li>
+<li>Users could show and edit detail information of issues, like Attach files, comments.</li>
+<li>The plugin could run with many Redmine themes.</li>
+</ol><p><strong>You could see the demo version at:</strong></p>
+
+<ul>
+<li><em><a href="http://scrum2b.com/projects/scrum2b-demo">http://scrum2b.com/projects/scrum2b-demo</a></em></li>
+<li><em><a href="http://scrum2b.com/scrum2b/board?project_id=scrum2b-demo">http://scrum2b.com/scrum2b/board?project_id=scrum2b-demo</a></em></li>
+</ul><p>(Please login with username/password: <strong>demo/demo123</strong> to get more detail how Scrum2B works)</p>
+
+<p><em>We are focus to make easier and more simple to practice Scrum in Project management. 
+So if you find any new ideas to improve the tools, please do not hesitage to send message to me at <a href="mailto:scrum2b@ithanoi.com">scrum2b@ithanoi.com</a>, 
+Or create a Pull request (<a href="https://github.com/scrum2b/scrum2b/pulls">https://github.com/scrum2b/scrum2b/pulls</a>) to us.</em></p>
+
+<p><strong><em>Contacts:</em></strong></p>
+
+<ul>
+<li>Email: <em><a href="mailto:scrum2b@ithanoi.com">scrum2b@ithanoi.com</a></em>
+</li>
+<li>Demo tool: <em><a href="http://www.scrum2b.com">www.scrum2b.com</a></em>
+</li>
+<li>Website: <em><a href="http://www.scrumtobe.com">www.scrumtobe.com</a></em>
+</li>
+<li>Facebook: <em><a href="http://www.facebook.com/ScrumToBe">www.facebook.com/ScrumToBe</a></em> (Please "like" our profile if you have time :) )</li>
+</ul><h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>LICENSE</h2>
+
+<p>Scrum2B is open source and released under the terms of the GNU General Public License v2 (GPL)  (<a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">http://www.gnu.org/licenses/old-licenses/gpl-2.0.html</a>)</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>INSTALLATION</h2>
+
+<p>The tool could run based on Redmine 2.4.x, 2.3.x, 2.2.x, 2.1.x, 2.0.x.</p>
+
+<p>Go to the Redmine plugin folder. Clone the plugin from GitHub:</p>
+
+<pre><code>$ git clone https://github.com/scrum2b/scrum2b.git
+$ 
+</code></pre>
+
+<p>Go back to the Redmine folder, update your bundle and migrate the database:</p>
+
+<pre><code>$ bundle install
+$ rake redmine:plugins:migrate RAILS_ENV=production
+</code></pre>
+
+<p>Restart Redmine</p>
+
+<p>Before make the plugin be available in projects, please login to Admin account.
+Go to the Configuration page of the plugin to map the Status of issues to New/In progress/Complete/Closed:</p>
+
+<pre><code>http://localhost:3000/settings/plugin/scrum2b 
+</code></pre>
+
+<h2>
+<a name="for-developers" class="anchor" href="#for-developers"><span class="octicon octicon-link"></span></a>FOR DEVELOPERS</h2>
+
+<p>Change to use "develop" branch for developers:</p>
+
+<pre><code>$ git checkout -b develop origin/develop
+</code></pre>
+
+<p>Commit codes</p>
+
+<pre><code>$ git fetch --all
+$ git merge origin/develop
+$ git commit -m "Message Content in here"
+$ git push -u origin develop
+</code></pre>
+
+<h2>
+<a name="for-furture-features" class="anchor" href="#for-furture-features"><span class="octicon octicon-link"></span></a>FOR FURTURE FEATURES</h2>
+
+<p>We want to implement new features in short term:</p>
+
+<ol>
+<li>Burndown chart based on Estimate Time and Spent Time.</li>
+<li>The check list for each issues.</li>
+<li>Plan sprints</li>
+</ol><p>If you have any comment/sugguession, please send message to us via Git Issues.</p>
+
+<h2>
+<a name="uninstallation" class="anchor" href="#uninstallation"><span class="octicon octicon-link"></span></a>UNINSTALLATION</h2>
+
+<ol>
+<li>
+<p>Go to the Redmine folder, run rake command to undo migrate the database:</p>
+
+<p>$ rake redmine:plugins:migrate NAME=scrum2b VERSION=0 RAILS_ENV=production </p>
+
+<p><em>(Parameter "VERSION=0" is very important, it set to revert migrations in the plugin.)</em></p>
+</li>
+<li><p>Remove the plugin from the plugins folder: #{RAILS_ROOT}/plugins/scrum2b</p></li>
+<li><p>Restart Redmine</p></li>
+</ol>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/scrum2b/scrum2b/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/scrum2b/scrum2b/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/scrum2b/scrum2b"></a> is maintained by <a href="https://github.com/scrum2b">scrum2b</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
