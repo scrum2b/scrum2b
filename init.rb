@@ -12,7 +12,7 @@ Redmine::Plugin.register :scrum2b do
                   - Scrum board
                   - Customize views
                 }
-  version '0.1'
+  version '2.0'
   url 'https://github.com/scrum2b/scrum2b'
   author_url 'http://scrum2b.com'
 
