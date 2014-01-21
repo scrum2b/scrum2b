@@ -16,7 +16,7 @@ The newest version (2.0) is completed with more features:
 (Please login with username/password: **demo/demo123** to get more detail how Scrum2B works)
 
 *We are focus to make easier and more simple to practice Scrum in Project management. 
-So if you find any new ideas to improve the tools, please do not hesitage to send message to me at scrum2b@ithanoi.com, 
+So if you find any new ideas to improve the tools, please do not hesitate to send message to me at scrum2b@ithanoi.com, 
 Or create a Pull request (https://github.com/scrum2b/scrum2b/pulls) to us.*
 
 ***Contacts:***
