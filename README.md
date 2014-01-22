@@ -36,24 +36,7 @@ INSTALLATION
 ------------
 
 The tool could run based on Redmine 2.4.x, 2.3.x, 2.2.x, 2.1.x, 2.0.x.
-
-Go to the Redmine plugin folder. Clone the plugin from GitHub:
-    
-    $ git clone https://github.com/scrum2b/scrum2b.git
-    $ 
-
-Go back to the Redmine folder, update your bundle and migrate the database:
-
-    $ bundle install
-    $ rake redmine:plugins:migrate RAILS_ENV=production
-    
-
-Restart Redmine
-
-Before make the plugin be available in projects, please login to Admin account.
-Go to the Configuration page of the plugin to map the Status of issues to New/In progress/Complete/Closed:
-
-    http://localhost:3000/settings/plugin/scrum2b 
+Please see more detail at wiki: https://github.com/scrum2b/scrum2b/wiki/Installation-Guide
 
 
 FOR DEVELOPERS
