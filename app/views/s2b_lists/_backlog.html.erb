@@ -1,10 +1,10 @@
-<% if  params[:select_version] != 'backlog' && issues_backlog.empty? != true%>
+<% if  params[:select_version] != 'backlog' && issues_backlog.empty? != true %>
   <tr class="version_row">
     <td colspan="8"><%= l(:label_version_backlog)%></td>
   </tr>
 <% end %>
-<% issues_backlog.each do |issue|%>
-  <tr class="issue_row">
+<% issues_backlog.each do |issue| %>
+  <tr class="issue <%= cycle("odd", "even") %>">
     <%= render :partial => "list_issues", :locals => { :issue => issue} %>
   </tr>
 <% end %>

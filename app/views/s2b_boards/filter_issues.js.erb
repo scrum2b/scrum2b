@@ -1,0 +1,10 @@
+$("#div_screen_board").html("<%= raw escape_javascript(@return_content) %>");
+$("#div_screen_board").find(".board_issue").each(function() {
+      var id = $(this).attr("issue_id");
+      var slide_value = $(this).attr("slide_value");
+      makeSlider(id,slide_value);
+      editDate(id); 
+  });
+makeProgressbar();
+$("#completed_column").find(".icon_close_issue").show();
+s2b_sortable();

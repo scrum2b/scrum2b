@@ -40,6 +40,7 @@ de:
   label_board_issue_new_issue: "Neues Ticket"
   label_board_edit_btn_submit: "Übertragen"
   label_board_edit_btn_cancel: "Abbrechen"
+  label_board_show_detail_issue: "View Detail"
   label_readmore: "weitere Informationen"
   label_hide: "verstecken"
   
@@ -56,3 +57,5 @@ de:
   label_error_select_issues: "Bitte Ticket wählen..."
   permission_view_issue: "Ticket anzeigen"
   label_sure_to_close_issues: "Sind Sie sicher, dass Sie das Ticket schließen wollen"
+  label_sure_to_delete_issues: "Are you sure to delete the issues"
+  label_sure_to_delete_notes: "Are you sure to delete the notes"

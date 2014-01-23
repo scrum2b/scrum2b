@@ -1,0 +1,16 @@
+<% 
+column = :new_column unless defined?(column) || column == nil
+show_for = :show_and_edit unless defined?(show_for) || show_for == nil
+%>
+
+<div class="board_issue issue clearfix"  id="issue<%= issue.id %>" issue_id="<%= issue.id %>" position="<%= issue.s2b_position %>" slide_value="<%= issue.done_ratio %>" >
+
+<% if column == :new_column && show_for == :create_new %>
+  <%= render(:partial => "/s2b_boards/edit_issue", :locals => { :issue => issue, :column => column}) %>
+<% elsif show_for == :show_and_edit && editable_for_project? %>
+  <%= render(:partial => "/s2b_boards/show_issue", :locals => { :issue => issue, :column => column}) %>
+  <%= render(:partial => "/s2b_boards/edit_issue", :locals => { :issue => issue, :column => column}) %>
+<% else %>
+  <%= render(:partial => "/s2b_boards/show_issue", :locals => { :issue => issue, :column => column}) %>
+<% end %>
+</div>

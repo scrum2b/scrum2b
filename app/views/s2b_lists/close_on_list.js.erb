@@ -1,2 +1,7 @@
 $("#div_screen_list").html("<%= raw escape_javascript(@return_content) %>");
-
+$(".progressbar").each(function() {
+  var id = parseInt($(this).attr("id"))
+  $("#"+id).progressbar({
+    value:parseInt($(this).attr("value"))
+  });
+});

@@ -1,0 +1,6 @@
+<% if editable_for_project? %>
+  <div class="contextual">
+    <a class="update_issue icon icon icon-edit" onClick="edit_issue()"  href="#" autofocus="off" title="Update issue" issue_id="<%= issue.id %>">Update</a>
+    <a class="delete_issue icon icon-del" href="#" title="Delete Issue" issue_id="<%= issue.id %>" onClick="delete_issue(<%= issue.id %>)">Delete</a>
+  </div>
+<% end %>

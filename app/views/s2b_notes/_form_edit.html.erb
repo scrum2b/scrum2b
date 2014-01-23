@@ -1,0 +1,11 @@
+<form  style="display: none" class="form_notes_<%= journal.id %> form_notes_edit">
+    <input name="authenticity_token" type="hidden"  value="<%= form_authenticity_token %>"/>
+    <textarea class="text_commnet" name="journal[notes]" style="height: 50px;width:99%"> <%= journal.notes %></textarea>
+    <input type="hidden" name="project_id" value="<%= @project.id %>"/>
+    <input type="hidden" name="issue_id" value="<%= @issue.id %>"/>
+    <input type="hidden" name="journal[id]" value="<%= journal.id %>"/>
+    <br />
+    <br />
+    <input type="button" value="Submit" notes_id="<%= journal.id %>" class="btn_submit_edit_notes" />
+    <input type="reset" name="journal[notes]" value="Cancel" class="btn_cancel_edit_notes" />
+</form>

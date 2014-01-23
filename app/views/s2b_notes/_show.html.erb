@@ -1,0 +1,24 @@
+<div id="div_show_notes">
+  <% if @journals.present? %>
+    <h3><%= l(:label_comment) %></h3>
+  <% end %>
+  <% for journal in journals %>
+    <div id="change-<%= journal.id %>" class="<%= journal.css_classes %>">  
+      <% unless journal.notes.blank? %>
+        <div> 
+          <h4><a href="#"  class="journal-link" ></a>
+          <%= avatar(journal.user, :size => "24") %>
+          <%= authoring journal.created_on, journal.user, :label => :label_updated_time_by %></h4>
+          <%= render :partial => '/s2b_notes/form_edit', :locals => { :journal => journal, :issue => @issue, :project => @project } %>
+          <% if editable_for_project? %>
+            <a href="#" onClick="delete_note(<%= journal.id %>)" class="delete_notes icon icon-del" value="<%= journal.id %> " title="Delete Notes" style="float: right;height:10px;"></a>
+            <a href="#" class="edit_notes" style="float: right;margin-right: 5px" title="Edit Notes"><img src="../images/edit.png?1383533903" /></a>
+          <% end %>
+          <p class="notes"><%= journal.notes %></p>
+        </div>
+      <% end %>
+    </div>
+  <% end %> 
+</div>
+
+

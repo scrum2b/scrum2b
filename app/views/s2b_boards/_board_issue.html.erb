@@ -1,7 +1,0 @@
-<div class="board_issue clearfix" id="<%= issue.id %>" position="<%= issue.s2b_position %>" slide_value="<%= issue.done_ratio%>">
-  <%= render :partial => "show_issue", :locals => { :issue => issue} %>
-  <% if !User.current.anonymous? && @id_member.include?(User.current.id)|| User.current.admin %>
-    <%= render :partial => "form_new", :locals => { :issue => issue} %>
-  <% end %>  
-</div>
-

@@ -1,0 +1,4 @@
+<div class="board_issue issue clearfix"  id="issue<%= issue.id %>" issue_id="<%= issue.id %>" position="<%= issue.s2b_position %>" slide_value="<%= issue.done_ratio %>" >
+  <%= render(:partial => "/s2b_boards/edit_issue", :locals => { :issue => issue}) if editable_for_project? %>
+  <%= render(:partial => "/s2b_boards/show_issue", :locals => { :issue => issue}) %>
+</div>

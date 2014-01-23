@@ -42,6 +42,7 @@ pt-BR:
   label_board_issue_new_issue: "Nova Tarefa"
   label_board_edit_btn_submit: "Submeter"
   label_board_edit_btn_cancel: "Cancelar"
+  label_board_show_detail_issue: "View Detail"
   label_readmore: "Ler mais"
   label_hide: "Omitir"
   
@@ -56,5 +57,7 @@ pt-BR:
   label_change_sprint: "Mudar Sprint"
   label_move_issues: "Mover para"
   label_error_select_issues: "Por favor selecione uma tarefa..."
-
   permission_view_issue: "View Issue"
+  label_sure_to_close_issues: "Are you sure to close the issues"
+  label_sure_to_delete_issues: "Are you sure to delete the issues"
+  label_sure_to_delete_notes: "Are you sure to delete the notes"

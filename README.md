@@ -1,23 +1,13 @@
 SUMMARY
 -------
 
-**Scrum2B** is a plugin of Redmine (www.redmine.org), support Scrum Board and other features allow teams could use Scrum to develop Agile project.
-Scrum2B is developed by Scrum2B Team.
+**Scrum2B tool** (www.scrum2b.com) is a Project Management application, developed by ScrumTobe Team (www.scrumtobe.com), is an Opensource - plugin of Redmine (www.redmine.org) and free to use in Scrum/Agile projects for Software development.
+The newest version (2.0) is completed with more features:
 
-***Contacts:***
-- Email: *scrum2b@ithanoi.com*
-- Demo tool: *www.scrum2b.com*
-- Website: *www.scrumtobe.com*
-- Facebook: *www.facebook.com/ScrumToBe*
-
-
-**The first version (1.0) is quite simple, includes 3 main features:**
-
-1. The ScrumBoard: based on another Redmine plugin with a board, but we completed more features, allow teams could treat like a REAL BOARD.
-Users could drad and drop a task to sort/organizate the Sprint.
-2. The ListBoard: list all issues based on the sort from ScrumBoard and make it more simple than Issue Tracking in Redmine.
-3. The interface of screens based on Twitter Bootstrap, with better look and feeling.
-(You should get the theme: https://github.com/scrum2b/redmine-scrum2b-theme to install in Redmine)
+1. The ScrumBoard: based on another Redmine plugin with a board, but we completed more features, allow teams could treat like a REAL BOARD. Users could drad and drop a task to sort/organizate the Sprint.
+2. The Backlog Sprint: list all issues based on the sort from ScrumBoard, move issues to another sprints. The screen is designed mostly focus on managers and make it more simple than Issue Tracking in Redmine.
+3. Users could show and edit detail information of issues, like Attach files, comments.
+4. The plugin could run with many Redmine themes.
 
 **You could see the demo version at:**
 - *http://scrum2b.com/projects/scrum2b-demo*
@@ -26,8 +16,14 @@ Users could drad and drop a task to sort/organizate the Sprint.
 (Please login with username/password: **demo/demo123** to get more detail how Scrum2B works)
 
 *We are focus to make easier and more simple to practice Scrum in Project management. 
-So if you find any new ideas to improve the tools, please do not hesitage to send message to me at scrum2b@ithanoi.com, 
+So if you find any new ideas to improve the tools, please do not hesitate to send message to me at scrum2b@ithanoi.com, 
 Or create a Pull request (https://github.com/scrum2b/scrum2b/pulls) to us.*
+
+***Contacts:***
+- Email: *scrum2b@ithanoi.com*
+- Demo tool: *www.scrum2b.com*
+- Website: *www.scrumtobe.com*
+- Facebook: *www.facebook.com/ScrumToBe* (Please "like" our profile if you have time :) )
 
 
 LICENSE
@@ -39,26 +35,8 @@ Scrum2B is open source and released under the terms of the GNU General Public Li
 INSTALLATION
 ------------
 
-The tool could run based on Redmine 2.3.x, 2.2.x, 2.1.x, 2.0.x.
-
-Go to the Redmine plugin folder. Clone the plugin from GitHub:
-    
-    $ git clone https://github.com/scrum2b/scrum2b.git
-    $ 
-
-Go back to the Redmine folder, update your bundle and migrate the database:
-
-    $ bundle install
-    $ rake redmine:plugins:migrate RAILS_ENV=production
-    
-
-Restart Redmine
-
-Before make the plugin be available in projects, please login to Admin account.
-Go to the Configuration page of the plugin to map the Status of issues to New/In progress/Complete/Closed:
-
-    http://localhost:3000/settings/plugin/scrum2b 
-
+The tool could run based on Redmine 2.4.x, 2.3.x, 2.2.x, 2.1.x, 2.0.x.
+Please see more detail at wiki: https://github.com/scrum2b/scrum2b/wiki/Installation-Guide
 
 
 FOR DEVELOPERS
@@ -83,11 +61,25 @@ We want to implement new features in short term:
 
 1. Burndown chart based on Estimate Time and Spent Time.
 2. The check list for each issues.
+3. Plan sprints
+
 
 If you have any comment/sugguession, please send message to us via Git Issues.
 
-Thanks and best regards,
 
-ScrumTobe Team
 
+UNINSTALLATION
+--------------
+
+
+1. Go to the Redmine folder, run rake command to undo migrate the database:
+  
+    $ rake redmine:plugins:migrate NAME=scrum2b VERSION=0 RAILS_ENV=production 
+
+
+    *(Parameter "VERSION=0" is very important, it set to revert migrations in the plugin.)*
+    
+2. Remove the plugin from the plugins folder: #{RAILS_ROOT}/plugins/scrum2b
+
+3. Restart Redmine
 

@@ -42,6 +42,7 @@ en:
   label_board_issue_new_issue: "New Issue"
   label_board_edit_btn_submit: "Submit"
   label_board_edit_btn_cancel: "Cancel"
+  label_board_show_detail_issue: "View Detail"
   label_readmore: "Readmore"
   label_hide: "Hide"
   
@@ -58,3 +59,6 @@ en:
   label_error_select_issues: "Please select an issue..."
   permission_view_issue: "View Issue"
   label_sure_to_close_issues: "Are you sure to close the issues"
+  label_sure_to_delete_issues: "Are you sure to delete the issues"
+  label_sure_to_delete_notes: "Are you sure to delete the notes"
+  label_edit_detail: "Edit Detail"

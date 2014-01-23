@@ -1,0 +1,14 @@
+<div id="div_screen_board">
+  <div id="div_detail_issue">
+  </div>
+  <% columns = [{:column_id => :new_column, :status => "status_no_start", :column_name => l(:label_board_status_new), :issues => @new_issues },
+                {:column_id => :in_progress_column, :status => "status_inprogress", :column_name => l(:label_board_status_inprogress), :issues => @in_progress_issues },
+                {:column_id => :completed_column, :status => "status_completed", :column_name => l(:label_board_status_completed), :issues => @completed_issues }
+               ]
+  %>
+  <% columns.each do |column| %>
+    <div class="board box"  id="<%= column[:column_id].to_s %>">
+      <%= render :partial => "board_column", :locals => column %>
+    </div>
+  <% end %>
+</div>

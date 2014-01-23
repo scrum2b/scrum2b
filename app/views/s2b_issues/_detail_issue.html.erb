@@ -1,0 +1,171 @@
+<div id="detail_issue" title="Detail Issue #<%= @issue.id %>" value="<%= @issue.id %>">
+  <% if editable_for_project? %>
+    <%= render :partial => 'form', :locals => {:issue => @issue, :priorities => @priorities, :relations => @relations, :allowed_statuses => @allowed_statuses, :edit_allowed => @edit_allowed} %>
+  <% end %>
+  <div class="detail_issue issue">  
+    <%= render :partial => 'issue', :locals => {:issue => @issue} %>
+  </div>
+  <% if editable_for_project? %>
+    <%= render :partial => '/s2b_notes/form_new', :locals => {:issue => @issue, :project => @project} %>
+  <% end %>
+  <div id="history">
+  <div id="div_notes">
+    <%= render :partial => '/s2b_notes/show', :locals => { :issue => @issue, :journals => @journals, :project => @project } %>
+  </div>
+</div>
+
+<style>
+  .form_edit_issue {
+    display:none;
+  }
+</style>
+<script>
+$(document).ready(function() { 
+    $("#detail_issue").dialog({
+      width:1000,
+      height:800,
+      modal: true,
+      resizable: false,
+      close: function() {
+        var issue_id = $("#detail_issue").attr('value');
+        var project_id = '<%= @project.id %>';
+        var slide_value = $("#slider" + issue_id).attr("value");
+        $("#detail_issue").remove();
+        $.ajax({
+          url : '/s2b_boards/draw_issue',
+          type : "POST",
+          data : 'issue_id=' + issue_id + '&project_id=' + project_id,
+          dataType : "json",
+          success : function(data) {
+            $("#issue" + issue_id).replaceWith(data.content);
+            makeSlider(issue_id, slide_value);
+            editDate(issue_id); 
+            show_and_hide_close_issue_icon();
+            $("#progress" + issue_id).progressbar({
+              value:parseInt($("#progress" + issue_id).attr("value"))
+            });
+          }
+        });
+        
+        return false;
+      }
+    });
+    
+    $('.ui-widget-overlay').live("click",function(){
+      $('#detail_issue' ).dialog( "close" );
+    })
+    
+    $( "#new_date_start").datepicker({
+      showOn: "button",
+      buttonImage: "../images/calendar.png",
+      buttonImageOnly: true
+    });
+    $( "#new_date_end").datepicker({
+          showOn: "button",
+          buttonImage: "../images/calendar.png",
+          buttonImageOnly: true
+        });
+    $( "#new_date_start").datepicker("option", "dateFormat", "yy-mm-dd");
+    $( "#new_date_end").datepicker("option", "dateFormat", "yy-mm-dd");
+    
+    $('.btn_cancel_update').live("click",function(){
+      $('.form_edit_issue').hide();
+      $('.detail_issue').show();
+      $('.tabular_notes').show();
+      $('#history').show();
+    })  
+    
+    $(".edit_notes").live("click",function(){
+      $(this).hide();
+      $(this).parent().find(".notes").hide();
+      $(this).parent().find(".form_notes_edit").show();
+    });
+    
+    $(".btn_cancel_edit_notes").live("click",function(){
+      $(this).parent().hide();
+      $(this).parent().parent().find(".notes").show();
+      $(this).parent().parent().find(".edit_notes").show();
+    });
+    
+    $(".btn_submit_edit_notes").live("click",function(){     
+      var notes_id = $(this).attr("notes_id");
+      var form = $('.form_notes_' + notes_id )
+      $.ajax({
+        url : '/s2b_notes/update',
+        beforeSend : function(xhr) {
+              xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+              },
+        type : "POST",
+        data : form.serialize(),
+        dataType : "script",
+        success : function() {}
+      });
+      return false;      
+    });
+  })
+  
+  function edit_issue (){
+    $('.form_edit_issue').show();
+    $('.detail_issue').hide();
+    $('.tabular_notes').hide();
+    $('#history').hide();
+  }
+    
+  function delete_issue(issue_id){
+    if(confirm("Do you want to delete?")) { 
+        var issue_id = issue_id;
+        var project_id = '<%= @project.id %>';
+        $.ajax({
+          url : '/s2b_issues/delete',
+          type : "POST",
+          data : 'issue_id=' + issue_id + '&project_id=' + project_id,
+          dataType : "json",
+          success : function(data) {
+            if(data.result == 'success'){
+             $('#issue' + issue_id).hide();
+             $("#detail_issue").dialog( "close" );
+            }else{
+              alert(data.result);
+            }
+          }
+        });}else{
+          return false;
+       }    
+    } 
+    
+    function delete_attach(attach_id,issue_id){
+    if(confirm("Do you want to delete?")) { 
+        var attach_id = attach_id;
+        var project_id = '<%= @project.id %>';
+        var issue_id = issue_id;
+        $.ajax({
+          url : '/s2b_issues/delete_attach',
+          beforeSend : function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type : "POST",
+          data : 'attach_id=' + attach_id + '&project_id=' + project_id + '&issue_id=' + issue_id,
+          dataType : "script",
+          success : function() {}
+        });
+      }else{
+        return false;
+      }    
+    } 
+  
+    function delete_note(note_id){
+      if(confirm("Are you sure ?")){
+        var notes_id = note_id;
+        var project_id = <%= @project.id %> 
+        var issue_id = <%= @issue.id %> 
+        $.ajax({
+          url : '/s2b_notes/delete',
+          beforeSend : function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type : "POST",
+          data : 'notes_id=' + notes_id + '&project_id=' + project_id + '&issue_id=' + issue_id,
+          dataType : "script",
+          success : function() {}
+        });
+      }else {
+            return false;
+      }
+    }
+</script>

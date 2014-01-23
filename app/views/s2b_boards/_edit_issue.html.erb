@@ -1,0 +1,110 @@
+<div class="edit_form clearfix" id="edit_issue_<%= issue.id %>" value="<%= issue.id %>">
+  <form name="screen-board" id="update_issue_<%= issue.id %>" novalidate="novalidate">
+  	<% if issue.id %>
+   	  <input type="hidden" name="issue[id]" value="<%= issue.id %>"/>
+  	<% end %>
+  	<input type="hidden" name="project_id" value="<%= @project.id %>"/>
+    <input type="hidden" name="issue[project_id]" value="<%= issue.id ? issue.project_id : @project.id %>"/>
+  	<input type="hidden" name="issue[author_id]" value="<%= User.current.id %>"/>
+  
+    <input name="issue[subject]" class="value_content issue_subject required"  type="text" value="<%= issue.subject %>">
+    <textarea name="issue[description]" class="value_content issue_description"  style="height: 100px;margin-top:0;"><%= issue.description %></textarea></p>
+    <div id="p_sprint_<%= issue.id %>">
+      <div class="col-50">
+        <label class="text-left"><%= l(:label_tracker) %></label>
+        <select class="value_content right-filter width-100 width-100" name="issue[tracker_id]"  >
+          <% @tracker.each do |tracker| %>
+              <option value="<%= tracker.id %>" <%= "selected" if tracker.id == issue.tracker_id %>><%= tracker.name %></option>
+          <% end %>
+        </select>
+      </div>
+      <div class="col-50">
+        <label class="text-left"><%= l(:label_sprint) %></label>
+        <% if issue.id %>
+          <%= select_tag l(:label_sprint),version_options_for_select(issue.assignable_versions, issue.fixed_version), :class => 'value_content right-filter width-100', :name => 'issue[fixed_version_id]'  %>
+        <% else %>
+          <select class="value_content right-filter width-100" name="issue[fixed_version_id]" >
+            <option></option>
+              <% @sprints.each do |sprint| %>
+                <option value="<%= sprint.id %>"  <%= "selected" if sprint.id == issue.fixed_version_id %>><%= sprint.name %></option>
+              <% end %>
+          </select>
+        <% end %>
+      </div>
+    </div>
+      
+    <div id="p_assignee_<%= issue.id %>">
+      <div class="col-50">
+         <label class="text-left"><%= l(:label_head_issue_assignee) %> </label>
+         <select class="value_content right-filter width-100" name="issue[assigned_to_id]" >
+           <option></option>
+           <option value="<%= User.current.id %>" <%= "selected" if issue.assigned_to_id == User.current.id %>><%= l(:label_me) %></option>
+           <% if issue.id %>
+              <% issue.project.assignable_users.each do |assignee| %>
+                <option value="<%= assignee.id %>"  <%= "selected" if assignee.id == issue.assigned_to_id %>><%= assignee.name %></option>
+             <% end %>
+           <% else %>
+             <% @members.each do |assignee| %>
+                <option value="<%= assignee.id %>"  <%= "selected" if assignee.id == issue.assigned_to_id %>><%= assignee.name %></option>
+             <% end %>
+           <% end %>
+         </select>
+       </div>
+       <div class="col-50">
+          <label class="text-left"><%= l(:label_priority) %> </label>
+          <select class="value_content right-filter width-100" name="issue[priority_id]" >
+            <% @priority.each do |priority| %>
+                <option value="<%= priority.id %>" <%= "selected" if priority.id == issue.priority_id %>><%= priority.name %></option>
+            <% end %>
+          </select>
+       </div>
+    </div>
+
+    <div>
+      <div class="col-50">
+        <label class="text-left"><%= l(:label_start_date) %></label>
+        <input class="value_content right-filter width-100 " name="issue[start_date]" id="new_date_start_<%= issue.id %>"  value="<%= format_date(issue.start_date) %>" style="width: 100px">     
+      </div>
+      <div class="col-50">
+        <label class="text-left" ><%= l(:label_end_date) %></label>
+        <input class="value_content right-filter width-100 " name="issue[due_date]"  id="new_date_end_<%= issue.id %>" value="<%= format_date(issue.due_date) %>" style="width: 100px" />    
+      </div>
+    </div>
+    
+    <div  class="col-50" id="p_time_<%= issue.id %>" >
+      <div style="padding:0">
+        <label class="text-left" ><%= l(:label_head_issue_est_time) %> </label>
+        <input class="value_content right-filter width-100 est_time number" min="1"  name="issue[estimated_hours]" id="new_time_<%= issue.id %>"  value="<%= issue.estimated_hours %>"  />
+      </div>
+    </div>
+    <br />
+    <br />
+    <div class="submit_new_issue clearfix" value = "<%= issue.id %>" style="width: 100%">
+      <button type="button" class="submit_issue btn-mini btn-primary">
+        <%= l(:label_board_edit_btn_submit) %>
+      </button>
+      <button type="button" class="cancel_issue btn-mini btn-danger">
+        <%= l(:label_board_edit_btn_cancel) %>
+      </button>
+      <a href="#" class="float-right" onClick="edit_detail(<%= issue.id %>)"> <%= l(:label_edit_detail) %></a>
+    </div>
+  </form>
+</div>
+
+<script>
+  function edit_detail(issue_id){
+    var project_id = '<%= @project.id %>';
+    $.ajax({
+      url : '/s2b_issues/show',
+      type : "POST",
+      data : 'issue_id=' + issue_id + '&project_id=' + project_id,
+      dataType : "script",
+      success : function() {
+        $('.form_edit_issue').show();
+        $('.detail_issue').hide();
+        $('.tabular_notes').hide();
+        $('#history').hide();
+      }
+    }); 
+  }
+</script>
