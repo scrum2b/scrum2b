@@ -1,10 +1,27 @@
 require 'redmine'
 #require 'application_helper_patch'
 
+Dir[File.join(File.dirname(__FILE__),'vendor','plugins','*')].each do |dir|
+  path = File.join(dir, 'lib')
+  $LOAD_PATH << path
+  Dependencies.load_paths << path
+  Dependencies.load_once_paths.delete(path)
+end
+
+require 'issue_patch'
+
+  ActionDispatch::Callbacks.to_prepare do
+    require_dependency 'issue'
+
+    Issue.send(:include, IssuePatch)
+  
+  # Needed for the compatibility check
+
+end
+
 #Rails.configuration.to_prepare do
 #  ApplicationHelper.send(:include, PluginName::Patches::ApplicationtHelperPatch) unless ApplicationHelper.included_modules.include? PluginName::Patches::ApplicationtHelperPatch
 #end
-
 Redmine::Plugin.register :scrum2b do
   name 'Scrum2B Plugin'
   author 'ScrumTobe Team'
