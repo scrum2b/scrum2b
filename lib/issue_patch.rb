@@ -30,9 +30,27 @@ module IssuePatch
     #   be removed
     def save_to_logs
       self.reload
-      logs = S2bLogsVersion.new
-      Rails.logger.info "TEST #{self}"
-      return true
+      issue_number = []
+      total_process = 0
+      Issue.where(:project_id => self.project_id).each_with_index do |issue, index|
+        total_process += issue.done_ratio 
+        issue_number << index
+      end
+        Rails.logger.info "total #{total_process}"
+        max_index = issue_number.last + 1
+        total_done_ratio = total_process/max_index
+      #save to log version table
+        unless S2bLogsVersion.existed.present?
+          S2bLogsVersion.create(:done_ratio => total_done_ratio, :sprint => self.project_id,:working_days =>Time.now.utc.strftime("%Y,%m,%d")  )  
+        else
+          S2bLogsVersion.existed.first.update_attributes(:done_ratio => total_done_ratio, :sprint => self.project_id,:working_days => Time.now.utc.strftime("%Y,%m,%d"))
+        end
+        
     end
+    
+    def total_percent 
+      return save_to_logs 
+    end
+    
   end      
 end

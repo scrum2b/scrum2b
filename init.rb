@@ -11,8 +11,10 @@ end
 require 'issue_patch'
 
   ActionDispatch::Callbacks.to_prepare do
+    require_dependency 'project'
     require_dependency 'issue'
-
+    
+    Project.send(:include, ProjectPatch)
     Issue.send(:include, IssuePatch)
   
   # Needed for the compatibility check

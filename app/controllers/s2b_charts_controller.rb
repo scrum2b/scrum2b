@@ -30,9 +30,16 @@ class S2bChartsController < S2bApplicationController
       total_hours += issue.estimated_hours if issue.estimated_hours
       done_ratio += issue.done_ratio 
     end
-    Rails.logger.info "not dont #{done_ratio}"
-    @not_complete << 100-done_ratio
+    data = []
+    chart_index = ["",""]
+    S2bLogsVersion.all.each do |f| 
+      chart_index = "[Date.UTC(#{f.working_days}), #{100 - f.done_ratio.to_i}]"
+      data << chart_index
+    end
+    Rails.logger.info "TEST #{data}"
+    @not_complete = "[#{data.join(",\n")}]"
   end
+  
   
   def find_issues
     all_versions = @project.versions.select(&:effective_date).sort_by(&:effective_date) 
@@ -44,7 +51,6 @@ class S2bChartsController < S2bApplicationController
              # where fixed_version_id = :version_id and start_date is not NULL and
                # estimated_hours is not NULL order by start_date asc",
                  # {:version_id => version.id}])
-    Rails.logger.info "TEST #{all_issues}"
     return all_issues
   end
   
