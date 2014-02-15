@@ -198,7 +198,8 @@ class S2bBoardsController < S2bApplicationController
     @issue = Issue.new
     @priority = IssuePriority.all
     @tracker = Tracker.all
-    @status = IssueStatus.where("id IN (?)" , DEFAULT_STATUS_IDS['status_no_start'])
+    #@status = IssueStatus.where("id IN (?)" , DEFAULT_STATUS_IDS['status_no_start'])
+    @status = IssueStatus.all
     @sprints = @project.versions.where(:status => "open")
   end
   

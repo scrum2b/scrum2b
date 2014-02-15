@@ -1,0 +1,13 @@
+<div class="form">
+  <label for="project_name"> <%= l(:label_project_name)%>: </label>
+  <%= @project.name%>
+</div>
+
+<div class="form">
+  <label for="version"> <%= l(:label_sprint)%>: </label>
+  <%= select("version", "version_id", @project.versions.collect {|p| [ p.name, p.id ] }) %>
+</div>
+
+<button class="button_to" style="float: right; margin: 5px">
+  Show Chart
+</button>

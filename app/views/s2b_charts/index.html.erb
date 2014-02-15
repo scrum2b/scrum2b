@@ -1,0 +1,33 @@
+<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+<%= Time.now.utc%>
+<% content_for :header_tags do %>
+    <%= javascript_include_tag "highcharts.js", :plugin => "scrum2b", :media => "screen" %>
+    <%= javascript_include_tag "exporting.js", :plugin => "scrum2b", :media => "screen" %>
+<% end %>
+<%= render :partial => "/shared/plugin_header", :locals => {:is_board => true} %>
+<div class="" style="width: 80%" >
+	<div class="project_details clearfix"><%= render :partial => "/s2b_charts/project_details", :locals => { :project => @project, :version => @version}%></div>
+	<div id="orders_chart" style="width: 600px; height: 400px; border: 1px solid #BAE0BA;float: right"></div>
+</div>
+<script>
+$(function () {
+	 $('#orders_chart').highcharts({
+		    chart: { renderTo: 'orders_chart' },
+		    title: { text: 'Estimate by Day' },
+        xAxis: {
+            type: 'datetime'
+        },
+		    yAxis: {
+		      title: { text: 'Sum of Task Estimates' }
+		    },
+        
+        series: [{
+        		pointInterval: <%= 1.day * 1000 %>,
+        		pointStart: <%= @start_date.at_midnight.to_i * 1000 %>,
+            data: <%= @not_complete %>
+        }]
+    });
+});
+</script>
+
+

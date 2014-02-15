@@ -31,3 +31,7 @@ post "s2b_notes/update" => "s2b_notes#update"
 post "s2b_notes/delete" => "s2b_notes#delete"
 post "s2b_notes/create" => "s2b_notes#create"
 
+#For S2B Chart
+
+get "s2b_charts/index" => "s2b_charts#index"
+post "s2b_charts/index" => "s2b_charts#index"

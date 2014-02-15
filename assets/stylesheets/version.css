@@ -354,3 +354,22 @@ span.error {
   float: left;
   display:block;
 }
+.contextual .button_to {
+	float:left
+}
+
+.switch_screen_a {
+	float:left;
+	width: 50%
+}
+.switch_screen_b {
+	float:right;
+	width:50%;
+}
+.project_details{
+	border: 1px solid #DFF0D8;
+	width: 30%;
+	padding: 20px;
+	line-height: 30px;
+	float: left;
+}
