@@ -11,7 +11,7 @@ The newest version (2.0) is completed with more features:
 
 **You could see the demo version at:**
 - *http://scrum2b.com/projects/scrum2b-demo*
-- *http://scrum2b.com/scrum2b/board?project_id=scrum2b-demo*
+- *http://scrum2b.com/s2b_boards/index?project_id=scrum2b-demo*
 
 (Please login with username/password: **demo/demo1234** to get more detail how Scrum2B works)
 
