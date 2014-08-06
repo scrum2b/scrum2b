@@ -1,13 +1,9 @@
 SUMMARY
 -------
 
-**Scrum2B tool** (www.scrum2b.com) is a Project Management application, developed by ScrumTobe Team (www.scrumtobe.com), is an Opensource - plugin of Redmine (www.redmine.org) and free to use in Scrum/Agile projects for Software development.
-The newest version (2.0) is completed with more features:
+**Scrum2B Tool** (www.scrum2b.com) is a Project Management application, developed by ScrumTobe Team (www.scrumtobe.com), is an Opensource - plugin of Redmine (www.redmine.org) and free to use in Scrum/Agile projects for Software development.
 
-1. The ScrumBoard: based on another Redmine plugin with a board, but we completed more features, allow teams could treat like a REAL BOARD. Users could drad and drop a task to sort/organizate the Sprint.
-2. The Backlog Sprint: list all issues based on the sort from ScrumBoard, move issues to another sprints. The screen is designed mostly focus on managers and make it more simple than Issue Tracking in Redmine.
-3. Users could show and edit detail information of issues, like Attach files, comments.
-4. The plugin could run with many Redmine themes.
+**NOTE: we are developing the new UX/UI styles for Scrum2B Tool at:** https://github.com/scrum2b/scrum2b-mockup 
 
 **You could see the demo version at:**
 - *http://scrum2b.com/projects/scrum2b-demo*
