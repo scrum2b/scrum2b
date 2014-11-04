@@ -1,17 +1,12 @@
 class S2bIssuesController < S2bApplicationController
 
-  #before_filter :check_before, :only => [:index]
   before_filter :get_members, :only => [:index, :get_data, :load_data]
+  before_filter :find_issue, :only => [:destroy, :update, :update_status, :update_version, :update_progress, :get_files, :upload_file, :get_comments]
   before_filter lambda { check_permission(:edit) }, :only => [:index, :update]
   before_filter lambda { check_permission(:view) }, :only => [:index]
   
   def index
-    # issues = Issue.all
-    # issues.each do |is|
-      # is.destroy
-    # end
-    # issues = Issue.last
-    # issues.update_attributes(:status_id => 3)
+
   end
   
   def get_data
@@ -37,16 +32,16 @@ class S2bIssuesController < S2bApplicationController
   def create
     #Creat new issue
     logger.info "params issue #{params[:issue]}"
-    @issue = Issue.new(params[:issue])
-    if @issue.save
-      render :json => {:result => "create_success", :issue => @issue}
+    issue = Issue.new(params[:issue])
+    if issue.save
+      render :json => {:result => "create_success", :issue => issue}
     else
-      render :json => {:result => @issue.errors.full_messages}
+      render :json => {:result => issue.errors.full_messages}
     end
   end
 
   def destroy
-    @issue = Issue.find(params[:id])
+    return unless @issue
     if @issue.destroy
       render :json => {:result => "success"}
     else
@@ -55,11 +50,14 @@ class S2bIssuesController < S2bApplicationController
   end
 
   def update
-    logger.info "Prams Issue #{params[:issue]}"
-    @issue = Issue.find(params[:issue][:id])
-    if @issue.update_attributes(:subject => params[:issue][:subject], :description => params[:issue][:description], :estimated_hours => params[:issue][:estimated_hours],
-                                :priority_id => params[:issue][:priority_id], :assigned_to_id => params[:issue][:assigned_to_id],
-                                :start_date => params[:issue][:start_date], :due_date => params[:issue][:due_date],:tracker_id => params[:issue][:tracker_id])
+    if @issue.update_attributes(:subject => params[:issue][:subject],
+                                :description => params[:issue][:description], 
+                                :estimated_hours => params[:issue][:estimated_hours],
+                                :priority_id => params[:issue][:priority_id], 
+                                :assigned_to_id => params[:issue][:assigned_to_id],
+                                :start_date => params[:issue][:start_date], 
+                                :due_date => params[:issue][:due_date],
+                                :tracker_id => params[:issue][:tracker_id])
       render :json => {:result => "edit_success",:issue => @issue}
     else
       render :json => {:result => @issue.errors.full_messages}
@@ -67,8 +65,8 @@ class S2bIssuesController < S2bApplicationController
   end
 
   def update_status
-    logger.info "update status #{params}"
-    @issue = Issue.find(params[:id])
+    return unless @issue
+    #@issue.update_status(params[:status_id], params[:fixed_version_id]) 
     if @issue.update_attributes(:status_id => params[:status_id], :fixed_version_id => params[:fixed_version_id])
       render :json => {:result => "update_success",:issue => @issue}
     else
@@ -77,8 +75,7 @@ class S2bIssuesController < S2bApplicationController
   end
 
   def update_version
-    logger.info "update version #{params}"
-    @issue = Issue.find(params[:id])
+    return unless @issue
     if @issue.update_attributes(:fixed_version_id => params[:fixed_version_id])
       render :json => {:result => "update_success",:issue => @issue}
     else
@@ -87,8 +84,7 @@ class S2bIssuesController < S2bApplicationController
   end
   
   def update_progress
-    logger.info "update version #{params}"
-    @issue = Issue.find(params[:id])
+    return unless @issue
     if @issue.update_attributes(:done_ratio => params[:done_ratio])
       render :json => {:result => "update_success",:issue => @issue}
     else
@@ -104,7 +100,7 @@ class S2bIssuesController < S2bApplicationController
   end
   
   def get_files
-    @issue = Issue.find(params[:issue_id])
+    return unless @issue
     @attachments = @issue.attachments
     logger.info "Array file #{@attachments}"
     render :json => {:attachments => @attachments}
@@ -120,15 +116,15 @@ class S2bIssuesController < S2bApplicationController
   end
   
   def upload_file
-    issue = Issue.find(params[:id])
-    if issue.save_attachments(params[:file])
+    return unless @issue
+    if @issue.save_attachments(params[:file])
       render :json => {:result => "success"}
     end
   end
   
   def get_comments
-    issue = Issue.find(params[:issue_id])
-    @journals = issue.journals.where(:journalized_type => "Issue")
+    return unless @issue
+    @journals = @issue.journals.where(:journalized_type => "Issue")
     render :json => {:journals => @journals}
   end
   
@@ -149,7 +145,14 @@ class S2bIssuesController < S2bApplicationController
       render :json => {:result => @comment.errors.full_messages}
     end
   end
+
   def create_comment
     render :json => {:result => "update_success"}
   end
+
+  def find_issue
+    issue_id = params[:issue_id] || params[:id] || (params[:issue] && params[:issue][:id]) || (params[:issue] && params[:issue][:issue_id])
+    @issue = Issue.find(issue_id) rescue nil
+  end
+
 end

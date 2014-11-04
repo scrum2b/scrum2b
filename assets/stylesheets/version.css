@@ -20,6 +20,9 @@
     height: 1%; 
   }
 
+  /* helper class*/
+  .pointer_cursor {cursor: pointer;}
+
   #content {
     padding: 5px 0px !important;
     font-family: Helvetica Neue;

@@ -12,9 +12,11 @@
 <style type="text/css">
 	
 </style>
-
+<%= render :partial => "s2b_issues/angular_service" %>
+<%= render :partial => "s2b_issues/angular_issue" %>
+<%= render :partial => "s2b_issues/angular_comment" %>
+<%= render :partial => "s2b_issues/angular_file" %>
 <%= render :partial => "s2b_issues/angular" %>
-
 <div ng-app="scrum2b" >
   <div class="content full_mode" ng-controller="BoardsCtrl" >
 

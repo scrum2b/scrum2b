@@ -1,6 +1,6 @@
 <div class="issue_{{issue.id}}">
 <div class="title_issue">
-  <a href="/issues/{{issue.id}}" target="_blank">#{{ issue.id }}</a> {{ issue.subject }}
+  <a href="/issues/{{issue.id}}" target="_blank">#{{ issue.id }}:</a> {{ issue.subject | limitTo : 40 }}{{issue.subject.length > 40 ? "..." : ""  }}
   <span class="icon_config" ><i class="fa fa-cog"></i></span> 
 
 </div><!--end title issue -->
