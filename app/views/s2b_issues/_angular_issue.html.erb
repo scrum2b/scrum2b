@@ -92,9 +92,9 @@ var scrum2b = angular.module('issue', []);
             if(data.result == 'create_success'){
               angular.forEach(data.issue, function(value) {
                 if(value.fixed_version_id == null){
-                  $scope.issuesBacklog.push(value);
+                  $scope.issuesBacklog.unshift(value);
                 }else{
-                  $scope.allIssues.push(value);
+                  $scope.allIssues.unshift(value);
                   console.log ("issue new add  " + value.assigned_to_id);
                   $scope.getIssues($scope.versionSelected,$scope.memberActiveShow);
                 }
@@ -147,7 +147,6 @@ var scrum2b = angular.module('issue', []);
             
           }else{
             console.log (data.result);
-            console.log (data.result)
           }
         }
       );

@@ -24,14 +24,11 @@ class S2bIssuesController < S2bApplicationController
   end
 
   def get_issues_backlog
-    logger.info ""
     @issues = version.fixed_issues # <- not too useful
     render :json => {:issues => @issues}
   end
   
   def create
-    #Creat new issue
-    logger.info "params issue #{params[:issue]}"
     issue = Issue.new(params[:issue])
     if issue.save
       render :json => {:result => "create_success", :issue => issue}
@@ -50,14 +47,7 @@ class S2bIssuesController < S2bApplicationController
   end
 
   def update
-    if @issue.update_attributes(:subject => params[:issue][:subject],
-                                :description => params[:issue][:description], 
-                                :estimated_hours => params[:issue][:estimated_hours],
-                                :priority_id => params[:issue][:priority_id], 
-                                :assigned_to_id => params[:issue][:assigned_to_id],
-                                :start_date => params[:issue][:start_date], 
-                                :due_date => params[:issue][:due_date],
-                                :tracker_id => params[:issue][:tracker_id])
+    if @issue.update_issue(params[:issue])
       render :json => {:result => "edit_success",:issue => @issue}
     else
       render :json => {:result => @issue.errors.full_messages}
@@ -65,8 +55,7 @@ class S2bIssuesController < S2bApplicationController
   end
 
   def update_status
-    return unless @issue
-    #@issue.update_status(params[:status_id], params[:fixed_version_id]) 
+    return unless @issue 
     if @issue.update_attributes(:status_id => params[:status_id], :fixed_version_id => params[:fixed_version_id])
       render :json => {:result => "update_success",:issue => @issue}
     else
