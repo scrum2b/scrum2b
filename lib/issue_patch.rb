@@ -1,22 +1,20 @@
 require_dependency 'issue'
 module IssuePatch
-  def self.included(base) # :nodoc:
-    base.extend(ClassMethods)
+  def self.included(base)
     base.send(:include, S2bIssue)
-    base.class_eval do
-      unloadable
-    end
   end
 
-  module ClassMethods
-
-  end
   
   module S2bIssue
-    def update_status(status_id, version_id)
-      Rails.logger.info "AAAAAAAAAAAAAAAA #{params}"
-      return true if self.update_attributes(:status_id => status_id, :fixed_version_id => version_id)
+    def update_issue(params_issue)
+      return true if self.update_attributes(:subject => params_issue[:subject],
+                                            :description => params_issue[:description], 
+                                            :estimated_hours => params_issue[:estimated_hours],
+                                            :priority_id => params_issue[:priority_id], 
+                                            :assigned_to_id => params_issue[:assigned_to_id],
+                                            :start_date => params_issue[:start_date], 
+                                            :due_date => params_issue[:due_date],
+                                            :tracker_id => params_issue[:tracker_id])
     end
   end    
 end
-Issue.send(:include, IssuePatch)

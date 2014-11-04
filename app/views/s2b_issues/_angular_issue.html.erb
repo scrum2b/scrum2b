@@ -92,9 +92,9 @@ var scrum2b = angular.module('issue', []);
             if(data.result == 'create_success'){
               angular.forEach(data.issue, function(value) {
                 if(value.fixed_version_id == null){
-                  $scope.issuesBacklog.push(value);
+                  $scope.issuesBacklog.unshift(value);
                 }else{
-                  $scope.allIssues.push(value);
+                  $scope.allIssues.unshift(value);
                   console.log ("issue new add  " + value.assigned_to_id);
                   $scope.getIssues($scope.versionSelected,$scope.memberActiveShow);
                 }
@@ -147,7 +147,6 @@ var scrum2b = angular.module('issue', []);
             
           }else{
             console.log (data.result);
-            console.log (data.result)
           }
         }
       );
@@ -317,9 +316,17 @@ var scrum2b = angular.module('issue', []);
       return $filter('filter')($scope.members, {id: author_id})[0].firstname;
     }
     
-    $scope.updateProgress = function(issue_id, value){
-      issue =  $filter('filter')($scope.allIssues, {id: issue_id})[0];
-      issue.done_ratio = value;
+    $scope.updateProgress = function(issue){
+      IssueService.updateProgress(issue.id,issue.progress).then(
+        function(data){
+          if (data.result == "update_success") {
+            issue =  $filter('filter')($scope.allIssues, {id: issue.id})[0];
+            issue.done_ratio = issue.progress;
+          }else{
+            alert(data.result);
+          }
+        }
+      )
     }
     
     $scope.setUnActiveVersion = function(version){

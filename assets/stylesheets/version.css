@@ -22,7 +22,9 @@
 
   /* helper class*/
   .pointer_cursor {cursor: pointer;}
-
+  .border {
+    border: 1px solid #d7d7d7;
+  }
   #content {
     padding: 5px 0px !important;
     font-family: Helvetica Neue;
@@ -125,7 +127,7 @@
   .backlog_mode .issue_closed { display: none;}
   .backlog_mode .open_sprint_closed { display: none; }
   /*.backlog_mode .icon_add_issue {display: block;}*/
-  .backlog_mode .add_new_issue {display: none;}
+  .backlog_mode .add_new_issue {display: none; }
   /*hien 3 trang thai chinh*/
   .basic_mode .backlog { display: none;}
   .basic_mode .issue_closed { display: none;}
@@ -296,22 +298,20 @@
   .issue_closed .content_issue, .issue_closed .detail_issue { display: none; }
   .issue_closed .issue { }
 
-
-  .from_add_edit_issue { border: 1px solid #cccccc; background: #f6f6f6; padding: 5px 5px; font-size: 12px; color: #54626d !important; }
+  .add_new_issue { padding: 5px !important; }
+  .from_add_edit_issue { font-size: 12px; color: #54626d !important; }
   .from_add_edit_issue table span { font-size: 12px; line-height: 20px; }
   .from_add_edit_issue table { width: 100%; }
   .from_add_edit_issue table tr { margin: 2px 0px; }
   .from_add_edit_issue table tr td { width: 50%; }
-  .from_add_edit_issue .title_issue { 
-    width: 96%;
-    margin-left: 0px;
-  }
+  .from_add_edit_issue .title_issue { width: 93%; margin-left: 0px; }
   .from_add_edit_issue .issue_description { 
     margin-left: 0px;
-    width: 95%;
-    height: 80px; 
+    width: 98%;
+    min-height: 80px; 
     font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif; 
   }
+
   .from_add_edit_issue .end, 
   .from_add_edit_issue .begin, 
   .from_add_edit_issue .time { 
@@ -334,6 +334,33 @@
   .from_add_edit_issue .select_assign ul li {padding-left: 5px;}
   .from_add_edit_issue .select_assign ul li:hover {background: #666 }
   
+  .from_edit_issue table { display: block;}
+  .from_edit_issue table tbody { display: block;}
+  .from_edit_issue table tr { display: block;}
+  .editable-textarea, .editable-text { width: 100%; }
+  .editable-wrap .editable-controls, .editable-text .editable-controls {
+    width: 100%;
+  }
+  input[name="subject"] {
+    width: 98%;
+  }
+  textarea[name="description"] {
+    width: 97.5%;
+  }
+  select[name="tracker_id"], select[name="priority_id"], select[name="assigned_to_id"] {
+    width: 70px;
+  }
+  .estimated_hours .editable-text {
+    width: 68px;
+    float: right;
+    margin-right: 4px;
+  }
+  input[name="estimated_hours"] {
+    width: 68px;
+  }
+  .editable-select {
+    float: right;
+  }
   .absolute_backlog { position: absolute;}
   .fixed_backlog { position: fixed; top: 0px;}
 

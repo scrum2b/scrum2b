@@ -46,19 +46,21 @@
   <!-- a href="#" class="avata" title=""><%= image_tag('avata.png', :plugin => 'scrum2b') %></a -->
   <%#= avatar(@review.user, :size => "64") %>
   <div class="progress_issue">
-    <div class="value_progess">
-      <!-- <span><input type="text" class="amount" readonly value="{{issue.done_ratio}}"  >%</span> -->
-      <span><input type="text" class="amount" readonly  readonly value="{{issue.done_ratio}}" >%</span>
-      <i class="fa fa-caret-down"></i>
-    </div>
-    <div class="select_progess_issue hide">
-      <div class="triangle"></div>
-      <div slider issue-id="{{issue.id}}" config="sliderConfig" model="done_ratio" value="{{issue.done_ratio}}" class="cdbl-slider slider-vertical" ></div>
 
-      <!-- Price: {{issue.done_ratio}} -->
-      <!-- <div slider config="sliderConfig" model="issue.done_ratio" value="{{issue.done_ratio}}" class="cdbl-slider slider-vertical"></div> -->
-      
-    </div>
+    <select id="select_progess" ng-model="issue.progress" ng-init="issue.id= issue.id" ng-change="updateProgress(issue)" id="updateprogress" style="margin: 10px 0px 0px 0px;">
+      <option value="0" ng-selected="issue.done_ratio == 0">0 %</option>
+      <option value="10" ng-selected="issue.done_ratio == 10">10 %</option>
+      <option value="20" ng-selected="issue.done_ratio == 20">20 %</option>
+      <option value="30" ng-selected="issue.done_ratio == 30">30 %</option>
+      <option value="40" ng-selected="issue.done_ratio == 40">40 %</option>
+      <option value="50" ng-selected="issue.done_ratio == 50">50 %</option>
+      <option value="60" ng-selected="issue.done_ratio == 60">60 %</option>
+      <option value="70" ng-selected="issue.done_ratio == 70">70 %</option>
+      <option value="80" ng-selected="issue.done_ratio == 80">80 %</option>
+      <option value="90" ng-selected="issue.done_ratio == 90">90 %</option>
+      <option value="100" ng-selected="issue.done_ratio == 100">100 %</option>
+    </select>
+
     <br>
     <span class="icon_down"><i issue="123" class="fa fa-angle-double-down fa-lg"></i></span>
   </div>

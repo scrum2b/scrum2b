@@ -8,13 +8,13 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-				  <span editable-textarea="issue.description" e-name="description"  e-rows="5" e-cols="36">{{ issue.description || 'empty' }}</span>
+				  <span editable-textarea="issue.description" e-name="description" e-rows="5" >{{ issue.description || 'empty' }}</span>
 				</td>
 			</tr>
-			<tr>
+			<tr style="display: inline-flex; width: 100%;">
 				<td>
 					<span>Tracker:</span>
-					<span class="value_content" editable-select="issue.tracker_id" e-name="tracker_id" e-ng-options="tracker.id as tracker.name for tracker in trackers">
+					<span editable-select="issue.tracker_id" e-name="tracker_id" e-ng-options="tracker.id as tracker.name for tracker in trackers">
             {{ (trackers | filter:{id: issue.tracker_id})[0].name || 'Not set' }}
           </span>
 				</td>
@@ -25,25 +25,25 @@
           </span>
 				</td>
 			</tr>
-			<tr>
+			<tr style="display: inline-flex; width: 100%;">
 				<td>
 					<span>Assign:</span>
 					<span class="value_content" editable-select="issue.assigned_to_id" e-name="assigned_to_id" e-ng-options="member.id as member.firstname for member in members">
             {{ (members | filter:{id: issue.member})[0].firstname || 'Not set' }}
           </span>
 				</td>
-				<td>
+				<td class="estimated_hours">
 					<span>Est. Hour:</span>
 					<span editable-text="issue.estimated_hours" e-name="estimated_hours">{{ issue.estimated_hours || 'empty' }}</span>
 					
 				</td>
 			</tr>
-			<tr>
+			<tr style="display: inline-flex; width: 100%;" >
 				<td>
 					<span>Start: </span>
 					<input type="date" ng-model="issue.start_date" value="{{ issue.start_date | date: 'yyyy-MM-dd' }}" class="start_date"/>
 				</td>
-				<td >
+				<td>
 					<span>Due to:</span>
 					<input type="date" ng-model="issue.due_date" value="{{ issue.due_date | date: 'yyyy-MM-dd' }}" class="due_date"/>
 					<!-- <span editable-date="issue.due_date"  e-name="due_date" e-datepicker-popup="yyyy-MM-dd">{{issue.due_date</span> -->

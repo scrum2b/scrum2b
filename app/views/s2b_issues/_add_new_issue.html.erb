@@ -1,57 +1,59 @@
 <div class="add_new_issue from_add_edit_issue hide" >
-	<form ng-submit="addIssue()" class="form_add_new_issue">
-	  <input type="hidden" ng-init="newissue.project_id=<%= @project.id %>" >
-	  <input type="hidden" ng-init="newissue.author_id=<%= User.current.id %>" >
-	  <span style="color:red;font-weight:100">{{errorDateAddNew}}</span>
-		<table >
-			<tr>
-				<td colspan="2"><input type="text" ng-model="newissue.subject"  class="title_issue" placeholder="Enter Issue Subject" required></td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<textarea ng-model="newissue.description" class="issue_description " placeholder="Enter Issue Description"></textarea>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<span>Tracker</span>
-					<select class="value_content" ng-model="newissue.tracker_id" ng-options="tracker.id as tracker.name for tracker in trackers" ng-init="newissue.tracker_id = trackers[0].id">
-					</select>
-				</td>
-				<td>
-					<span>Priority</span>
-					<select class="value_content" ng-model="newissue.priority_id" ng-options="priority.id as priority.name for priority in priorities" ng-init="newissue.priority_id = priorities[0].id">
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<span>Assign</span>
-					<select class="value_content" ng-model="newissue.assigned_to_id" ng-options="member.id as member.firstname for member in members">
-					  <option value="" selected="">Please Choose</option>
-					</select>
-				</td>
-				<td>
-					<span>Est.H</span>
-					<input type="number" ng-model="newissue.estimated_hours" class="time" placeholder="Hour">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<span>Start</span>
-					<input type="date" ng-model="newissue.start_date" class="begin" >
-				</td>
-				<td>
-					<span>Due to</span>
-					<input type="date" ng-model="newissue.due_date" class="end" >
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<input type="submit" class="submit_issue" value="Add">
-					<input type="button" class="cancel_add_issue" value="Cancel">
-				</td>
-			</tr>
-		</table>
-	</form>
+	<div class="borderss" >
+		<form ng-submit="addIssue()" class="form_add_new_issue">
+		  <input type="hidden" ng-init="newissue.project_id=<%= @project.id %>" >
+		  <input type="hidden" ng-init="newissue.author_id=<%= User.current.id %>" >
+		  <span style="color:red;font-weight:100">{{errorDateAddNew}}</span>
+			<table >
+				<tr>
+					<td colspan="2"><input type="text" ng-model="newissue.subject" class="title_issue" placeholder="Enter Issue Subject" required></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<textarea ng-model="newissue.description" class="issue_description" placeholder="Enter Issue Description"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span>Tracker</span>
+						<select class="value_content" ng-model="newissue.tracker_id" ng-options="tracker.id as tracker.name for tracker in trackers" ng-init="newissue.tracker_id = trackers[0].id">
+						</select>
+					</td>
+					<td>
+						<span>Priority</span>
+						<select class="value_content" ng-model="newissue.priority_id" ng-options="priority.id as priority.name for priority in priorities" ng-init="newissue.priority_id = priorities[0].id">
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span>Assign</span>
+						<select class="value_content" ng-model="newissue.assigned_to_id" ng-options="member.id as member.firstname for member in members">
+						  <option value="" selected="">Please Choose</option>
+						</select>
+					</td>
+					<td>
+						<span>Est.H</span>
+						<input type="number" ng-model="newissue.estimated_hours" class="time" placeholder="Hour">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span>Start</span>
+						<input type="date" ng-model="newissue.start_date" class="begin" >
+					</td>
+					<td>
+						<span>Due to</span>
+						<input type="date" ng-model="newissue.due_date" class="end" >
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="submit" class="submit_issue" value="Add">
+						<input type="button" class="cancel_add_issue" value="Cancel">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
 </div><!--end add new issue -->
