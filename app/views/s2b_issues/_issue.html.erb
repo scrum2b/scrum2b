@@ -1,78 +1,124 @@
-<div class="show_form">
-  <%= render :partial => 'action_menu' , :locals => {:issue => @issue} %>
-  <h2><%= @issue.subject %></h2>
-  <p class="author">
-    <%= authoring @issue.created_on, @issue.author %>.
-    <% if @issue.created_on != @issue.updated_on %>
-    <%= l(:label_updated_time, time_tag(@issue.updated_on)).html_safe %>.
-    <% end %>
-  </p>
-  <table class="attributes">
-    <%= issue_fields_rows do |rows|
-      rows.left l(:field_status), h(@issue.status.name), :class => 'status'
-      rows.left l(:field_priority), h(@issue.priority.name), :class => 'priority'
-    
-      unless @issue.disabled_core_fields.include?('assigned_to_id')
-        rows.left l(:field_assigned_to), avatar(@issue.assigned_to, :size => "14").to_s.html_safe + (@issue.assigned_to ? link_to_user(@issue.assigned_to) : "-"), :class => 'assigned-to'
-      end
-      unless @issue.disabled_core_fields.include?('category_id')
-        rows.left l(:field_category), h(@issue.category ? @issue.category.name : "-"), :class => 'category'
-      end
-      unless @issue.disabled_core_fields.include?('fixed_version_id')
-        rows.left l(:field_fixed_version), (@issue.fixed_version ? link_to_version(@issue.fixed_version) : "-"), :class => 'fixed-version'
-      end
-    
-      unless @issue.disabled_core_fields.include?('start_date')
-        rows.right l(:field_start_date), format_date(@issue.start_date), :class => 'start-date'
-      end
-      unless @issue.disabled_core_fields.include?('due_date')
-        rows.right l(:field_due_date), format_date(@issue.due_date), :class => 'due-date'
-      end
-      unless @issue.disabled_core_fields.include?('done_ratio')
-        rows.right l(:field_done_ratio), progress_bar(@issue.done_ratio, :width => '80px', :legend => "#{@issue.done_ratio}%"), :class => 'progress'
-      end
-      unless @issue.disabled_core_fields.include?('estimated_hours')
-        unless @issue.estimated_hours.nil?
-          rows.right l(:field_estimated_hours), l_hours(@issue.estimated_hours), :class => 'estimated-hours'
-        end
-      end
-      if User.current.allowed_to?(:view_time_entries, @project)
-        rows.right l(:label_spent_time), (@issue.total_spent_hours > 0 ? (link_to l_hours(@issue.total_spent_hours), {:controller => 'timelog', :action => 'index', :project_id => @project, :issue_id => @issue}) : "-"), :class => 'spent-time'
-      end
-    end %>
-    <%= render_custom_fields_rows(@issue) %>
-    <%= call_hook(:view_issues_show_details_bottom, :issue => @issue) %>
-  </table>
-  <% if @issue.description? || @issue.attachments.any? -%>
-    <hr />
-    <% if @issue.description? %>
-      <div class="description">
-        <p><strong><%= l(:field_description) %></strong></p>
-        <br />
-        <div class="wiki">
-        <%= textilizable @issue, :description, :attachments => @issue.attachments %>
-        </div>
-      </div>
-    <% end %>
-    <br />
-    <br />
-    <% if @issue.attachments.any? %>
-      <% @issue.attachments.each do |attach| %>
-        <p>
-          <a href="/attachments/download/<%= attach.id %>" class="icon icon-attachment"><%= attach.filename %></a>
-          <% if attach.is_text? %>
-            <%= link_to image_tag('magnifier.png'),
-                        :controller => 'attachments', :action => 'show',
-                        :id => attach, :filename => attach.filename %>
-          <% end %>
-          <%= attach.description unless attach.description.blank? %>
-          <span class="size">(<%= number_to_human_size attach.filesize %>)</span>
-          <% if User.current.member_of?(@project) || User.current.admin %>
-          <a href="#" onClick="delete_attach(<%= attach.id%>,<%= @issue.id %>)" class="icon icon-del delete" title="Delete"></a>
-          <% end %>
-          <span class="author"><%= h(attach.author) %>, <%= format_time(attach.created_on) %></span>
-        </p>
-      <% end %>
-    <% end %>
-  <% end -%>
+<div class="issue_{{issue.id}}">
+<div class="title_issue">
+  <a href="/issues/{{issue.id}}" target="_blank">#{{ issue.id }}</a> {{ issue.subject }}
+  <span class="icon_config" ><i class="fa fa-cog"></i></span> 
+
+</div><!--end title issue -->
+<div class="setting hide">
+  <ul>
+    <li>
+      <a href="/issues/{{issue.id}}" target="_blank">View Detail</a>
+    </li>
+    <li>
+      <a href="" class="edit_issue" issue_id="{{issue.id}}" ng-click="editableForm.$show()">Edit</a>
+    </li>
+    <li class="sprint_li">
+      <a href="">Change sprint</a>
+      <ul class="change_sprint">
+        <li ng-repeat="version in versions" ng-hide="isActiveVersion(version)" >
+          <a href="" ng-click="updateVersion(issue, version.id)" version-id="{{version.id}}" issue-id="{{issue.id}}" >{{version.name}}</a>
+        </li>
+      </ul>
+    </li>
+    <li class="status_li">
+      <a href="">Change status</a>
+      <ul class="change_status">
+        <li ng-hide="issue.status_id===statusIds.status_no_start">
+          <a href="" ng-click="changeStatus(issue, statusIds.status_no_start, version.id)" class="">New issue</a>
+        </li>
+        <li ng-hide="issue.status_id===statusIds.status_inprogress">
+          <a href="" ng-click="changeStatus(issue, statusIds.status_inprogress, version.id)" class="">In Progess</a>
+        </li>
+        <li ng-hide="issue.status_id===statusIds.status_completed">
+          <a href="" ng-click="changeStatus(issue, statusIds.status_completed, version.id)" class="">Resolved</a>
+        </li>
+        <li ng-hide="issue.status_id===statusIds.status_closed">
+          <a href="" ng-click="changeStatus(issue, statusIds.status_closed, version.id)" class="">Close</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a href="" ng-click="deleteIssue(issue)" >Delete</a>
+    </li>
+  </ul>
 </div>
+<div class="content_issue">
+  <!-- a href="#" class="avata" title=""><%= image_tag('avata.png', :plugin => 'scrum2b') %></a -->
+  <%#= avatar(@review.user, :size => "64") %>
+  <div class="progress_issue">
+    <div class="value_progess">
+      <!-- <span><input type="text" class="amount" readonly value="{{issue.done_ratio}}"  >%</span> -->
+      <span><input type="text" class="amount" readonly  readonly value="{{issue.done_ratio}}" >%</span>
+      <i class="fa fa-caret-down"></i>
+    </div>
+    <div class="select_progess_issue hide">
+      <div class="triangle"></div>
+      <div slider issue-id="{{issue.id}}" config="sliderConfig" model="done_ratio" value="{{issue.done_ratio}}" class="cdbl-slider slider-vertical" ></div>
+
+      <!-- Price: {{issue.done_ratio}} -->
+      <!-- <div slider config="sliderConfig" model="issue.done_ratio" value="{{issue.done_ratio}}" class="cdbl-slider slider-vertical"></div> -->
+      
+    </div>
+    <br>
+    <span class="icon_down"><i issue="123" class="fa fa-angle-double-down fa-lg"></i></span>
+  </div>
+</div><!--end content issue-->
+<div class="detail_issue">
+  <div class="detail">
+    <p>
+      {{issue.description}}
+    </p>
+  </div>
+  <!-- div class="file_comment">
+    <ul>
+      <li>
+        <span class="open_file" ng-click="getFiles(issue)">File</span>
+      </li>
+      <li>
+        <span class="open_comment" ng-click="getComments(issue)">Comment</span>
+      </li>
+    </ul>
+  </div-->
+
+  <!-- div class="file" style="min-height: 50px">
+    <ul>
+      <li ng-repeat="attach in issue.attachments">
+        <p>
+          <a href="/attachments/download/{{attach.id}}" class="icon icon-attachment">{{attach.filename}}</a>
+          <span class="size">({{bytesToSize(attach.filesize)}})</span>
+          <% if User.current.member_of?(@project) || User.current.admin %>
+            <a href="" ng-click="deleteFiles(attach,issue)" class="icon icon-del delete" title="Delete"></a>
+          <% end %>
+          <span class="author">{{author(attach.author_id)}} , {{attach.created_on | date: 'yyyy/MM/dd hh:mm'}}</span>
+        </p>
+      </li>
+    </ul>
+  </div--><!--end file-->
+  <div class="comment" style="min-height: 50px">
+    <ul style="display: inline-block">
+      <li ng-repeat="comment in issue.comments" ng-if="comment.notes != ''">
+        <!-- <a href="#" style="display: inline-block;float: left;margin-left: 10px;" class="avata"><%= image_tag('avata.png', :plugin => 'scrum2b') %></a> -->
+        <span class="author">{{author(comment.user_id)}} :</span>
+        <span editable-text="comment.notes" e-form="textBtnForm" onaftersave="editComment(comment.id,$data)" e-required>
+          {{ comment.notes || 'empty' }}
+        </span>
+        
+        <!-- <a href="" ng-click="textBtnForm.$show()" ng-if="<%= User.current.id %> == comment.user_id" ng-hide="textBtnForm.$visible" class="icon icon-edit edit_comment"></a>
+        <a href="" ng-click="deleteComment(issue,comment)" class="icon icon-del delete" title="Delete" ng-hide="textBtnForm.$visible"></a>
+       -->
+      </li>
+    </ul><br />
+    <!-- <form ng-submit="createComment(newcomment)">
+      <input type="hidden" ng-init="newcomment.journalized_type"  value="Issue" />
+      <input type="hidden" ng-init="newcomment.journalized_id"  value="{{issue.id}}" />
+      <input type="hidden" ng-init="newcomment.user_id" value="<%= User.current.id %>" />
+      <input type="text" ng-model="newcomment.notes" required/>
+      <input type="submit" value="Create"/>
+    </form> -->
+  </div><!--end comment-->
+
+</div><!--end detail issue-->
+</div>
+
+<!-- from edit issue -->
+<%= render :partial => "s2b_issues/edit_issue" %>

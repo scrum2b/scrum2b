@@ -22,7 +22,6 @@ class S2bApplicationController < ApplicationController
   include RepositoriesHelper
   helper :sort
   include SortHelper
-  include IssuesHelper
   helper :timelog
   include Redmine::Export::PDF
   helper :issues
@@ -43,6 +42,7 @@ class S2bApplicationController < ApplicationController
                           :closed => 6,
                           :all => 7}
   
+ 
   def editable_for_project?
     return @editable_for_project if @editable_for_project.present?
     @viewable_for_project = true and return true if User.current.admin?
@@ -66,7 +66,7 @@ class S2bApplicationController < ApplicationController
     end
     return @viewable_for_project
   end
-
+  
   def check_permission(permission_type = :view)
     redirect_to :back if permission_type == :view && !viewable_for_project?
     redirect_to :back if permission_type == :edit && !editable_for_project?
@@ -76,12 +76,14 @@ class S2bApplicationController < ApplicationController
   
   def opened_versions_list
     find_project unless @project
-    return @project.versions.where(:status => "open")
+    versions = Version.open.where("project_id IN (?)", @hierarchy_project_id).where('effective_date IS NOT NULL').order(:effective_date)
+    versions2 = Version.open.where("project_id IN (?)", @hierarchy_project_id).where('effective_date IS NULL')
+    return versions + versions2
   end
   
   def closed_versions_list 
     find_project unless @project
-    return @project.versions.where(:status => "closed")
+    return @project.shared_versions.where(:status => "closed")
   end
   
   def find_project

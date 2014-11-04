@@ -1,4 +1,6 @@
 require 'redmine'
+require 'gravatar'
+
 #require 'application_helper_patch'
 
 #Rails.configuration.to_prepare do
@@ -19,10 +21,13 @@ Redmine::Plugin.register :scrum2b do
   settings :default => {'status_no_start'=> {}, 'status_inprogress' => {}, 'status_completed' => {}, 'status_closed' => {} }, :partial => 'settings/scrum2b'
   
   project_module :scrum2b do
-    permission :s2b_view_issue, {:s2b_lists => [:index, :filter_issues],:s2b_boards => [:index, :filter_issues]}
-    permission :s2b_edit_issue, {:s2b_lists => [:index, :filter_issues, :close_on_list , :change_sprint],
-                                 :s2b_boards => [:index, :filter_issues,:create, :update, :close_issue ,:sort, :update_progress, :update_status],
-                                 :s2b_notes => [:create, :update, :delete]}           
+    permission :s2b_view_issue, {:s2b_issues => [:index, :get_data, :load_data, :get_files, :get_comments] }
+    permission :s2b_edit_issue, {:s2b_issues => [:index, :get_data, :load_data, :get_files, :get_comments,
+                                                 :get_issues_version, :get_issues_backlog, 
+                                                 :delete_file, :upload_file,
+                                                 :delete_comment, :edit_comment, :create_comment,
+                                                 :update_status, :update_version, :update_progress, 
+                                                 :create, :destroy, :update] }   
   end
-  menu :project_menu, :s2b_lists, { :controller => :s2b_lists, :action => :index }, :caption => :label_scrum2b, :after => :activity, :param => :project_id
+  menu :project_menu, :s2b_issues, { :controller => :s2b_issues, :action => :index }, :caption => :label_scrum2b, :after => :activity, :param => :project_id
 end
