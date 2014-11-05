@@ -29,6 +29,10 @@
           $(this).removeClass("background_sortover");
         });
 
+        $(jqueryElm).on( "sortstart", function( event, ui ) {
+          $('.setting').hide();
+        });
+
         $(jqueryElm).on( "sortstop", function( event, ui ) {
            $( ".location_start_issue" ).remove();
           check_height_max_angular();
@@ -41,11 +45,7 @@
           var statusID = $('.move_issue').parent().attr('status-id');
           var versionID = $('.move_issue').parent().attr('version-id');
           $('.move_issue').removeClass('move_issue');
-          // if(div_end == "sortable_backlog"){
-            // $('.move_issue').remove();
-          // }else{
-            // $('.move_issue').removeClass('move_issue');
-          // }
+
           if(statusID){
             updateStatus(issueID,statusID,versionID);
             scope.sortStop(issueID,statusID,versionID);

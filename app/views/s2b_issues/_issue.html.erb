@@ -43,11 +43,24 @@
   </ul>
 </div>
 <div class="content_issue">
-  <!-- a href="#" class="avata" title=""><%= image_tag('avata.png', :plugin => 'scrum2b') %></a -->
+  <a href="#" class="avata" title=""><%= image_tag('avata.png', :plugin => 'scrum2b') %></a>
+  <!-- <span>{{ issue.assigned_to_id }}</span> -->
   <%#= avatar(@review.user, :size => "64") %>
+  <!-- <span>Assign: {{ (members | filter:{id: 4 }).id || 'Not set' }}</span> -->
+
+
+   <!-- Assign: {{ (members | filter:{ id: issue.member })[issue.assigned_to_id].firstname || 'Not set' }} -->
+ 
+   <!-- Assign: {{ (members | filter: members.id == issue.assigned_to_id].firstname || 'Not set' }} -->
+
+  <!-- <span e-ng-options="member.id as member.firstname for member in members" style="display: inline-block; line-height: 44px;">
+    Assign: {{ (members | filter: members.id == issue.assigned_to_id].firstname || 'Not set' }}
+  </span> -->
+
+
   <div class="progress_issue">
 
-    <select id="select_progess" ng-model="issue.progress" ng-init="issue.id= issue.id" ng-change="updateProgress(issue)" id="updateprogress" style="margin: 10px 0px 0px 0px;">
+    <select id="select_progess" ng-model="issue.progress" ng-init="issue.id= issue.id" ng-change="updateProgress(issue)" id="updateprogress" style="margin: 10px 0px 0px 0px; width: 100%;">
       <option value="0" ng-selected="issue.done_ratio == 0">0 %</option>
       <option value="10" ng-selected="issue.done_ratio == 10">10 %</option>
       <option value="20" ng-selected="issue.done_ratio == 20">20 %</option>
@@ -68,10 +81,10 @@
 <div class="detail_issue">
   <div class="detail">
     <p>
-      {{issue.description}}
+      {{ issue.description }}
     </p>
   </div>
-  <!-- div class="file_comment">
+  <div class="file_comment">
     <ul>
       <li>
         <span class="open_file" ng-click="getFiles(issue)">File</span>
@@ -80,10 +93,11 @@
         <span class="open_comment" ng-click="getComments(issue)">Comment</span>
       </li>
     </ul>
-  </div-->
+    <span class="icon_top "><i class="fa fa-angle-double-up fa-lg"></i></span>
+  </div>
 
-  <!-- div class="file" style="min-height: 50px">
-    <ul>
+  <div class="file background_blue" style="min-height: 50px">
+    <ul style="display: inline-block">
       <li ng-repeat="attach in issue.attachments">
         <p>
           <a href="/attachments/download/{{attach.id}}" class="icon icon-attachment">{{attach.filename}}</a>
@@ -95,12 +109,12 @@
         </p>
       </li>
     </ul>
-  </div--><!--end file-->
-  <div class="comment" style="min-height: 50px">
-    <ul style="display: inline-block">
-      <li ng-repeat="comment in issue.comments" ng-if="comment.notes != ''">
-        <!-- <a href="#" style="display: inline-block;float: left;margin-left: 10px;" class="avata"><%= image_tag('avata.png', :plugin => 'scrum2b') %></a> -->
-        <span class="author">{{author(comment.user_id)}} :</span>
+  </div><!--end file-->
+  <div class="comment background_blue" style="min-height: 50px">
+    <ul style="display: inline-block; margin: 0px; width: 100%;">
+      <li ng-repeat="comment in issue.comments" ng-if="comment.notes != ''" style="padding: 3px;" >
+        <!-- <a href="#" style="display: inline-block;float: left;margin-left: 10px;" class="avata">< %= image_tag('avata.png', :plugin => 'scrum2b') %></a> -->
+        <span class="author">{{author(comment.user_id)}}:</span>
         <span editable-text="comment.notes" e-form="textBtnForm" onaftersave="editComment(comment.id,$data)" e-required>
           {{ comment.notes || 'empty' }}
         </span>
