@@ -307,8 +307,8 @@
   .from_add_edit_issue table span { font-size: 12px; line-height: 20px; }
   .from_add_edit_issue table { width: 100%; }
   .from_add_edit_issue table tr { margin: 2px 0px; }
-  .from_add_edit_issue table tr td { width: 50%; }
-  .from_add_edit_issue .title_issue { width: 92.5%; margin-left: 0px; }
+  .from_add_edit_issue table tr td { width: 50%; padding-right: 0px}
+  .from_add_edit_issue .title_issue { width: 98%; margin-left: 0px; padding-right: 2px }
   .from_add_edit_issue .issue_description { 
     margin-left: 0px;
     width: 98%;

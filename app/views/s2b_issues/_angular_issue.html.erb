@@ -64,8 +64,8 @@ var scrum2b = angular.module('issue', []);
         $scope.versionsLoaded = arrayVersionLoaded;
         $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
       }
-
     );
+
     $scope.activeVersion = function(version){
       $scope.getIssues(version,$scope.memberActiveShow);
       //set active or unactive version
@@ -123,8 +123,6 @@ var scrum2b = angular.module('issue', []);
     };
     
     $scope.checkParamsEditIssue = function(data) {
-      console.log ("start " + $filter('date')(data.start_date, "yyyy-MM-dd"));
-      console.log ("end "+$filter('date')(data.due_date, "yyyy-MM-dd"));
       if ($filter('date')(data.start_date, "yyyy-MM-dd") > $filter('date')(data.due_date, "yyyy-MM-dd")) {
         $scope.errorDate =  "Due date must be greater than start date";
         return "Due date must be greater than start date";
@@ -133,18 +131,25 @@ var scrum2b = angular.module('issue', []);
     $scope.editIssue = function(issue){
       $scope.errorDate = '';
       console.log ("params edit issue " + issue.start_date);
-      issue.start_date = $filter('date')(issue.start_date, "yyyy-MM-dd");
-      issue.due_date = $filter('date')(issue.due_date, "yyyy-MM-dd");
+      issue.start_date = $filter('date')(issue.start_date, "yyyy-MM-dd") || null;
+      issue.due_date = $filter('date')(issue.due_date, "yyyy-MM-dd") || null;
       IssueService.editIssue(issue).then(
         function(data){
           if (data.result == "edit_success") {
-            issue.start_date = new Date(Date.parse(issue.start_date));
-            issue.due_date = new Date(Date.parse(issue.due_date));
+            if(issue.start_date != null && issue.start_date != ""){
+              issue.start_date = new Date(Date.parse(issue.start_date));
+            }else{
+              issue.start_date = null
+            }
+            if(issue.due_date != null && issue.due_date != ""){
+              issue.due_date = new Date(Date.parse(issue.due_date));
+            }else{
+              issue.due_date = null
+            }
             $scope.getIssues($scope.versionSelected,$scope.memberActiveShow);
             var id = issue.id
             $(".from_edit_issue_" + id ).hide();
             $('.issue_' + id).show();
-            
           }else{
             console.log (data.result);
           }
