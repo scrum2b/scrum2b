@@ -1,5 +1,5 @@
 <div ng-repeat="version in versions" >
-	<h3 class="title_sprint" ng-class="{'title_sprint_active': isActiveVersion(version)}" ng-click="activeVersion(version)" >
+	<h3 class="title_sprint" ng-class="{'title_sprint_active': isActiveVersion(version)}" click-sprint="activeVersion(version)" >
 		{{version.name}} - {{version.effective_date}}
     <span class="quantity_issue" ng-if="isActiveVersion(version)">{{numberIssuesOfVersionActive}}</span> 
 		<a href="/versions/{{version.id}} " target="_blank">See Detail</a>

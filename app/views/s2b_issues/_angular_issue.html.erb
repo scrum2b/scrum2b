@@ -183,12 +183,35 @@ var scrum2b = angular.module('issue', []);
       );
     };
 
+    $scope.updateStatus = function(issue_id, status_id, version_id) {
+      IssueService.updateStatus(issue_id, status_id, version_id).then(
+        function(data){
+          issue =  $filter('filter')($scope.allIssues, {id: issue_id})[0];
+          if (data.result == "update_success") {
+            issue.status_id = status_id;
+          }else if(data.result == "update_success_completed"){
+            issue.done_ratio = 100;
+            issue.status_id = status_id;
+          }else{
+            alert(data.result);
+          }
+        }
+      )
+    };
+    
     $scope.changeStatus = function(issue, status_id, version_id) {
-      console.log ("changeStatus")
+      console.log ("changeStatus");
       IssueService.changeStatus(issue.id,status_id, version_id).then(
          function(data){
+          if (data.result == "update_success_completed") {
+            console.log ("update_success_completed thanh cong ");
+            issue.done_ratio = 100;
+            issue.status_id = status_id;
+            $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
+          };
+
           if (data.result == "update_success") {
-            console.log ("update status thanh cong ");
+            console.log ("update status thanh cong");
             issue.status_id = status_id;
             $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
           };
@@ -406,5 +429,17 @@ var scrum2b = angular.module('issue', []);
       else if(bytes < 1073741824) return(bytes / 1048576).toFixed(3) + " MB";
       else return(bytes / 1073741824).toFixed(3) + " GB";
     };
+
+    $scope.check_height_max_angular = function(){
+      $(".sprint-active .check_height").css("height","auto");
+      var height1 = $(".active #sortable1").height();
+      var height2 = $(".active #sortable2").height();
+      var height3 = $(".active #sortable3").height();
+      var height4 = $(".active #sortable4").height();
+      var array_height = [height1, height2, height3, height4];
+      var max_height = Math.max.apply(Math, array_height);
+      $(".sprint-active .check_height").css("height",max_height);
+    }
+
   });
 </script>

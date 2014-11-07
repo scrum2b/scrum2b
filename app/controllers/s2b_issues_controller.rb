@@ -57,7 +57,13 @@ class S2bIssuesController < S2bApplicationController
   def update_status
     return unless @issue 
     if @issue.update_attributes(:status_id => params[:status_id], :fixed_version_id => params[:fixed_version_id])
-      render :json => {:result => "update_success",:issue => @issue}
+      
+      if STATUS_IDS['status_completed'].include?( params[:status_id].to_i) || STATUS_IDS['status_closed'].include?( params[:status_id].to_i)
+        @issue.update_attributes(:done_ratio => 100)
+        render :json => {:result => "update_success_completed",:issue => @issue}
+      else
+        render :json => {:result => "update_success",:issue => @issue}
+      end
     else
       render :json => {:result => @issue.errors.full_messages}
     end

@@ -1,4 +1,4 @@
-<div class="issue_{{issue.id}}">
+<div class="issue_{{issue.id}}" repeat-issue >
 <div class="title_issue">
   <a href="/issues/{{issue.id}}" target="_blank">#{{ issue.id }}:</a> {{ issue.subject | limitTo : 40 }}{{issue.subject.length > 40 ? "..." : ""  }}
   <span class="icon_config" ><i class="fa fa-cog"></i></span> 
@@ -44,20 +44,9 @@
 </div>
 <div class="content_issue">
   <a href="#" class="avata" title=""><%= image_tag('avata.png', :plugin => 'scrum2b') %></a>
-  <!-- <span>{{ issue.assigned_to_id }}</span> -->
-  <%#= avatar(@review.user, :size => "64") %>
-  <!-- <span>Assign: {{ (members | filter:{id: 4 }).id || 'Not set' }}</span> -->
-
-
-   <!-- Assign: {{ (members | filter:{ id: issue.member })[issue.assigned_to_id].firstname || 'Not set' }} -->
- 
-   <!-- Assign: {{ (members | filter: members.id == issue.assigned_to_id].firstname || 'Not set' }} -->
-
-  <!-- <span e-ng-options="member.id as member.firstname for member in members" style="display: inline-block; line-height: 44px;">
-    Assign: {{ (members | filter: members.id == issue.assigned_to_id].firstname || 'Not set' }}
-  </span> -->
-
-
+  <span e-ng-options="member.id as member.firstname for member in members" style="display: inline-block;">
+    {{(members | filter:{id: issue.assigned_to_id})[0].firstname || 'Not set' }}
+  </span>
   <div class="progress_issue">
 
     <select id="select_progess" ng-model="issue.progress" ng-init="issue.id= issue.id" ng-change="updateProgress(issue)" id="updateprogress" style="margin: 10px 0px 0px 0px; width: 100%;">

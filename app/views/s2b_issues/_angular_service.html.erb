@@ -208,6 +208,23 @@ scrum2b.service('IssueService', function($http, $q){
     return( request.then( handleSuccess, handleError ) );
   }
 
+  function updateStatus(id, status_id, version_id){
+    var request = $http({
+      method: "post",
+      url: "update_status",
+      params: {
+        action: "get"
+      },
+      data: {
+        id: id,
+        status_id : status_id,
+        fixed_version_id : version_id,
+        project_id: "<%= @project.id %>"
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+
   function updateProgress(issue_id, progress){
     var request = $http({
       method: "post",
@@ -240,6 +257,7 @@ scrum2b.service('IssueService', function($http, $q){
     editComment: editComment,
     createComment: createComment,
     updateProgress: updateProgress,
+    updateStatus: updateStatus,
   }
   
   function handleError ( response ){
