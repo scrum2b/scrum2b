@@ -1,0 +1,278 @@
+<script>
+var scrum2b = angular.module('issueService', []);
+scrum2b.service('IssueService', function($http, $q){
+  function getIssues(version_id){
+     var request = $http({
+      method: "post",
+      url: "get_issues_version",
+      params: {
+        action: "get"
+      },
+      data: {
+        project_id: "<%= @project.id %>",
+        version_id: version_id,
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+  
+  function getFiles(issue){
+     var request = $http({
+      method: "post",
+      url: "get_files",
+      params: {
+        action: "get"
+      },
+      data: {
+        project_id: "<%= @project.id %>",
+        issue_id: issue.id,
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+  
+  function getComments(issue){
+     var request = $http({
+      method: "post",
+      url: "get_comments",
+      params: {
+        action: "get"
+      },
+      data: {
+        project_id: "<%= @project.id %>",
+        issue_id: issue.id,
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+  
+  function deleteFile(file){
+    var request = $http({
+      method: "post",
+      url: "delete_file",
+      params: {
+        action: "get"
+      },
+      data: {
+        project_id: "<%= @project.id %>",
+        file_id: file.id,
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+  
+  function getData(callback){
+      var request = $http({
+      method: "post",
+      url: "get_data",
+      params: {
+        action: "get"
+      },
+      data: {
+        project_id: "<%= @project.id %>"
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+  
+  function addIssue(issue){
+    var request = $http({
+      method: "post",
+      url: "create",
+      params: {
+        action: "get"
+      },
+      data: {
+        issue: issue,
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+  
+  function deleteIssue(issue){
+    var request = $http({
+      method: "post",
+      url: "destroy",
+      params: {
+        id: issue.id
+      },
+      data: {
+        issue: issue,
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+
+  function editIssue(issue){
+    var request = $http({
+      method: "post",
+      url: "update",
+      data: {
+        issue: issue,
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+
+  function updateVersion(issue_id, version_id){
+    var request = $http({
+      method: "post",
+      url: "update_version",
+      params: {
+        action: "get"
+      },
+      data: {
+        id: issue_id,
+        fixed_version_id : version_id,
+        project_id: "<%= @project.id %>"
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+
+  function changeStatus(issue_id, status_id, version_id){
+    var request = $http({
+      method: "post",
+      url: "update_status",
+      params: {
+        action: "get"
+      },
+      data: {
+        id: issue_id,
+        status_id : status_id,
+        fixed_version_id : version_id,
+        project_id: "<%= @project.id %>"
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+  
+  function uploadFile(file,issue){
+    var request = $http({
+      method: "post",
+      url: "update_file",
+      params: {
+        action: "get"
+      },
+      data: {
+        id: issue.id,
+        file : file,
+        project_id: "<%= @project.id %>"
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+  function deleteComment(comment){
+    var request = $http({
+      method: "post",
+      url: "delete_comment",
+      params: {
+        action: "get"
+      },
+      data: {
+        id: comment.id,
+        project_id: "<%= @project.id %>"
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+  
+  function editComment(id, notes){
+    var request = $http({
+      method: "post",
+      url: "edit_comment",
+      params: {
+        action: "get"
+      },
+      data: {
+        id: id,
+        notes: notes,
+        project_id: "<%= @project.id %>"
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+  
+  function createComment(notes){
+    var request = $http({
+      method: "post",
+      url: "create_comment",
+      params: {
+        action: "get"
+      },
+      data: {
+        notes: notes,
+        project_id: "<%= @project.id %>"
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+
+  function updateStatus(id, status_id, version_id){
+    var request = $http({
+      method: "post",
+      url: "update_status",
+      params: {
+        action: "get"
+      },
+      data: {
+        id: id,
+        status_id : status_id,
+        fixed_version_id : version_id,
+        project_id: "<%= @project.id %>"
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+
+  function updateProgress(issue_id, progress){
+    var request = $http({
+      method: "post",
+      url: "update_progress",
+      params: {
+        action: "get"
+      },
+      data: {
+        id: issue_id,
+        done_ratio : progress,
+        project_id: "<%= @project.id %>"
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+
+  return {
+    list: getData,
+    getIssues: getIssues,
+    addIssue: addIssue,
+    deleteIssue: deleteIssue,
+    editIssue: editIssue,
+    updateVersion: updateVersion,
+    changeStatus: changeStatus,
+    getFiles: getFiles,
+    deleteFile: deleteFile,
+    uploadFile: uploadFile,
+    getComments: getComments,
+    deleteComment: deleteComment,
+    editComment: editComment,
+    createComment: createComment,
+    updateProgress: updateProgress,
+    updateStatus: updateStatus,
+  }
+  
+  function handleError ( response ){
+    if (
+        ! angular.isObject( response.data ) ||
+        ! response.data.message
+      ) {
+      return ( $q.reject("false") );
+    };
+
+    return ( $q.reject( response.data.message ) );
+  }
+
+  function  handleSuccess( response ){
+    return ( response.data );
+  }
+});
+</script>

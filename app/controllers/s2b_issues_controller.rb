@@ -1,113 +1,153 @@
 class S2bIssuesController < S2bApplicationController
+
+  before_filter :get_members, :only => [:index, :get_data, :load_data]
+  before_filter :find_issue, :only => [:destroy, :update, :update_status, :update_version, :update_progress, :get_files, :upload_file, :get_comments]
+  before_filter lambda { check_permission(:edit) }, :only => [:index, :update]
+  before_filter lambda { check_permission(:view) }, :only => [:index]
   
-  skip_before_filter :verify_authenticity_token
-  before_filter :find_project
-  before_filter :find_issue_from_param
-  before_filter :check_before
-  before_filter lambda { check_permission(:edit) }, :only => [:update, :delete_attach, :delete]
+  def index
 
-  rescue_from Query::StatementInvalid, :with => :query_statement_invalid
-
-  helper :journals
-  helper :projects
-  include ProjectsHelper
-  helper :custom_fields
-  include CustomFieldsHelper
-  helper :issue_relations
-  include IssueRelationsHelper
-  helper :watchers
-  include WatchersHelper
-  helper :attachments
-  include AttachmentsHelper
-  helper :queries
-  include QueriesHelper
-  helper :repositories
-  include RepositoriesHelper
-  helper :sort
-  include SortHelper
-  include IssuesHelper
-  helper :timelog
-  include Redmine::Export::PDF
-  helper :issues
-  include IssuesHelper
-
-  def show
-    return unless find_issue_from_param
-    respond_to do |format|
-      format.js {
-        @return_content = render_to_string(:partial => "/s2b_issues/detail_issue", :locals => {:issue => @issue, :project => @project, :journals => @journals})
-      }
-    end
   end
   
-  def edit
-    return unless find_issue_from_param
+  def get_data
+    load_data
+    @issues = opened_versions_list.first.fixed_issues
+    @issues_backlog = Issue.where(:fixed_version_id => nil).where("project_id IN (?)",@hierarchy_project_id)
+    render :json => {:versions => @versions, :issues => @issues, :issues_backlog => @issues_backlog, :tracker => @tracker, :priority => @priority, :status => @status, :members => @members, :status_ids => DEFAULT_STATUS_IDS}
   end
   
-  def update
-    return unless find_issue_from_param 
-    @issue.save_attachments(params[:attachments] || (params[:issue] && params[:issue][:uploads]))
-    
-    if @issue.update_attributes(params[:issue])
-      redirect_to :controller => "s2b_boards",:action => "index", :project_id => @project.id
-      flash[:notice] = "Successfully update issue #{@issue.id}"
-      flash[:show_detail] = "#{@issue.id}"
+  def get_issues_version
+    logger.info "Params version id  #{params[:version_id]}"
+    version = Version.find(params[:version_id])
+    @issues = version.fixed_issues # <- not too useful
+    render :json => {:issues => @issues}
+  end
+
+  def get_issues_backlog
+    @issues = version.fixed_issues # <- not too useful
+    render :json => {:issues => @issues}
+  end
+  
+  def create
+    issue = Issue.new(params[:issue])
+    if issue.save
+      render :json => {:result => "create_success", :issue => issue}
     else
-      redirect_to :controller => "s2b_boards",:action => "index", :project_id => @project.id
-      flash[:error] = "Error update issue #{@issue.id}"
-      flash[:show_detail] = "#{@issue.id}"
+      render :json => {:result => issue.errors.full_messages}
     end
-    
-  end
-  
-  def delete_attach
-    return unless params[:attach_id]
-    @attachment = Attachment.find(params[:attach_id])
-      if @attachment.destroy()
-       respond_to do |format|
-        format.js {
-          @return_content = render_to_string(:partial => "/s2b_issues/detail_issue", :locals => {:issue => @issue, :project => @project})
-        }
-      end
-    else
-      render :json => {:result => "error"}
-    end
-    
   end
 
-  def delete
-    @issue = Issue.find(params[:issue_id])
-    unless @issue
-      render :json => {:result => "error", :message => "Unknow issue"}
-      return 
-    end
-    if @issue.destroy()
+  def destroy
+    return unless @issue
+    if @issue.destroy
       render :json => {:result => "success"}
     else
-      render :json => {:result => "error"}
+      render :json => {:result => @issue.errors.full_messages}
+    end
+  end
+
+  def update
+    if @issue.update_issue(params[:issue])
+      render :json => {:result => "edit_success",:issue => @issue}
+    else
+      render :json => {:result => @issue.errors.full_messages}
+    end
+  end
+
+  def update_status
+    return unless @issue 
+    if @issue.update_attributes(:status_id => params[:status_id], :fixed_version_id => params[:fixed_version_id])
+      
+      if STATUS_IDS['status_completed'].include?( params[:status_id].to_i) || STATUS_IDS['status_closed'].include?( params[:status_id].to_i)
+        @issue.update_attributes(:done_ratio => 100)
+        render :json => {:result => "update_success_completed",:issue => @issue}
+      else
+        render :json => {:result => "update_success",:issue => @issue}
+      end
+    else
+      render :json => {:result => @issue.errors.full_messages}
+    end
+  end
+
+  def update_version
+    return unless @issue
+    if @issue.update_attributes(:fixed_version_id => params[:fixed_version_id])
+      render :json => {:result => "update_success",:issue => @issue}
+    else
+      render :json => {:result => @issue.errors.full_messages}
     end
   end
   
-  protected
-  
-  def find_issue_from_param
-    issue_id = params[:issue_id] || params[:id] || params[:issue][:id]
-    @issue = Issue.find(issue_id)
-    return true if @issue
-  
-    render :json => {:result => "error", :message => "Unknow issue"}
-    return false
+  def update_progress
+    return unless @issue
+    if @issue.update_attributes(:done_ratio => params[:done_ratio])
+      render :json => {:result => "update_success",:issue => @issue}
+    else
+      render :json => {:result => @issue.errors.full_messages}
+    end
+  end
+
+  def load_data
+    @versions =  opened_versions_list
+    @priority = IssuePriority.all
+    @tracker = Tracker.all
+    @status = IssueStatus.where("id IN (?)" , DEFAULT_STATUS_IDS['status_no_start'])
   end
   
-  def check_before
-    @journals = @issue.journals.includes(:user, :details).reorder("#{Journal.table_name}.id ASC").all
-    @journals.each_with_index {|j,i| j.indice = i+1}
-    @journals.reject!(&:private_notes?) unless User.current.allowed_to?(:view_private_notes, @issue.project)
-    @journals.reverse! if User.current.wants_comments_in_reverse_order? 
-    
-    @allowed_statuses = @issue.new_statuses_allowed_to(User.current)
-    @edit_allowed = User.current.allowed_to?(:edit_issues, @project)
-    @priorities = IssuePriority.active
-    @time_entry = TimeEntry.new(:issue => @issue, :project => @issue.project)
+  def get_files
+    return unless @issue
+    @attachments = @issue.attachments
+    logger.info "Array file #{@attachments}"
+    render :json => {:attachments => @attachments}
   end
+  
+  def delete_file
+    attachment = Attachment.find(params[:file_id])
+    if attachment.destroy
+      render :json => {:result => "success"}
+    else
+      render :json => {:result => attachment.errors.full_messages}
+    end
+  end
+  
+  def upload_file
+    return unless @issue
+    if @issue.save_attachments(params[:file])
+      render :json => {:result => "success"}
+    end
+  end
+  
+  def get_comments
+    return unless @issue
+    @journals = @issue.journals.where(:journalized_type => "Issue")
+    render :json => {:journals => @journals}
+  end
+  
+  def delete_comment
+    comment = Journal.find(params[:id])
+    if comment.destroy
+      render :json => {:result => "success"}
+    else
+      render :json => {:result => comment.errors.full_messages}
+    end
+  end
+  
+  def edit_comment
+    @comment = Journal.find(params[:id])
+    if @comment.update_attributes(:notes => params[:notes])
+      render :json => {:result => "update_success",:comment => @comment}
+    else
+      render :json => {:result => @comment.errors.full_messages}
+    end
+  end
+
+  def create_comment
+    render :json => {:result => "update_success"}
+  end
+
+  def find_issue
+    issue_id = params[:issue_id] || params[:id] || (params[:issue] && params[:issue][:id]) || (params[:issue] && params[:issue][:issue_id])
+    @issue = Issue.find(issue_id) rescue nil
+  end
+
 end

@@ -1,0 +1,85 @@
+<script>
+
+  var scrum2b = angular.module('scrum2b', ['xeditable', 'issueService', 'issue', 'comment_issue', 'file_issue']);
+  scrum2b.directive('sortable', function($http) {
+    return {
+      restrict: 'A',
+      link: function(scope, elm, attrs) {
+        var jqueryElm = $(elm[0]);
+        $(jqueryElm).sortable({
+          connectWith: ".connectedSortable"
+        }).disableSelection()
+
+        $(jqueryElm).on( "sortout", function( event, ui ) { 
+          $('.content').find('.hide_backlog').find('.content_issue').show();
+        });
+
+        $(jqueryElm).on( "sortover", function( event, ui ) {
+          $(this).addClass('background_sortover');
+          $('.ui-sortable-helper').addClass('move_issue');
+          $('.ui-sortable-helper').addClass('div_ui');
+          a = $(this).attr('class');
+          if ($('.location_start_issue').length == 0 ) {
+            $("<div class='location_start_issue'></div>").insertAfter(".move_issue");
+          };
+          scope.check_height_max_angular();
+        });
+
+        $(jqueryElm).on( "sortout", function( event, ui ) {
+          $(this).removeClass("background_sortover");
+        });
+
+        $(jqueryElm).on( "sortstart", function( event, ui ) {
+          $('.setting').hide();
+        });
+
+        $(jqueryElm).on( "sortstop", function( event, ui ) {
+          $( ".location_start_issue" ).remove();
+          scope.check_height_max_angular();
+        });
+      
+        $(jqueryElm).on( "sortbeforestop", function( event, ui ) {
+          var div_start = $(this).attr('id');
+          var div_end = $('.move_issue').parent().attr('id');
+          var issueID = $('.move_issue').attr('issue-id');
+          var statusID = $('.move_issue').parent().attr('status-id');
+          var versionID = $('.move_issue').parent().attr('version-id');
+          $('.move_issue').removeClass('move_issue');
+
+          if(statusID){
+            scope.updateStatus(issueID,statusID,versionID);
+            scope.sortStop(issueID,statusID,versionID);
+          }
+          if( div_start == "sortable_backlog" || div_end == "sortable_backlog"){
+            scope.getNumberIssuesAfter(versionID);
+          }
+        });
+
+      }
+    };
+  })
+
+  scrum2b.directive('clickSprint', function() {
+    return function (scope, element, attrs) {
+      element.bind("click", function () {
+        scope.$apply(attrs.clickSprint);
+      })
+    }
+  });
+
+  scrum2b.directive('clickSprint', function() {
+    return function (scope, element, attrs) {
+      if (scope.$last) setTimeout(function(){
+        scope.check_height_max_angular();
+      }, 1);
+    }
+  });
+
+  scrum2b.directive('repeatIssue', function() {
+    return function (scope, element, attrs) {
+      if (scope.$last) setTimeout(function(){
+        scope.check_height_max_angular();
+      }, 1);
+    }
+  });
+</script>

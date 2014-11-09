@@ -1,4 +1,4 @@
-class S2bApplicationController < ApplicationController
+class ProjectController < ApplicationController
   unloadable
 
   skip_before_filter :verify_authenticity_token
@@ -76,14 +76,12 @@ class S2bApplicationController < ApplicationController
   
   def opened_versions_list
     find_project unless @project
-    versions = Version.open.where("project_id IN (?)", @hierarchy_project_id).where('effective_date IS NOT NULL').order(:effective_date)
-    versions2 = Version.open.where("project_id IN (?)", @hierarchy_project_id).where('effective_date IS NULL')
-    return versions + versions2
+    return @project.versions.where(:status => "open")
   end
   
   def closed_versions_list 
     find_project unless @project
-    return @project.shared_versions.where(:status => "closed")
+    return @project.versions.where(:status => "closed")
   end
   
   def find_project

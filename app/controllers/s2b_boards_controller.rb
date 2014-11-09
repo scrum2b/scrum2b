@@ -1,6 +1,6 @@
 class S2bBoardsController < S2bApplicationController
 
-  before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues, :update, :create, :draw_issue]
+  before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues, :create, :draw_issue]
   before_filter :get_issues, :only => [:index]
   before_filter :get_members, :only => [:index, :filter_issues]
   before_filter lambda { check_permission(:edit) }, :only => [:update, :update_status, :update_progress, :create, :sort, :close_issue]

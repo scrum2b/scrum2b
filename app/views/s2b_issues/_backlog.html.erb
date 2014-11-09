@@ -1,0 +1,17 @@
+<div class="backlog ">
+  <div class="">
+    <p class="title_backlog">
+      <span class="closed_backlog button" ><i class="fa fa-minus-circle"></i>Hide</span>
+      <span class="span_backlog">Backlog</span>
+      <span class="icon_add_issue button" ng-click="setParamsAddIssue(statusIds.status_no_start,'')"><i class="fa fa-plus-circle"></i>Add</span>
+    </p>
+    
+    <%= render :partial => "s2b_issues/add_new_issue" %>
+
+    <div class="connectedSortable" status-id="{{statusIds.status_no_start}}" version-id="" id="sortable_backlog" sortable >
+      <div class="issue ui-state-default small_mode" issue-id="{{issue.id}}" ng-repeat="issue in issuesBacklog" >
+        <%= render :partial => "/s2b_issues/issue" %>
+      </div>
+    </div><!--end connectedSortable-->
+  </div>
+</div><!--end backlog-->
