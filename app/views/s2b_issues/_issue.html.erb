@@ -1,4 +1,4 @@
-<div class="issue_{{issue.id}}">
+<div class="issue_{{issue.id}}" repeat-issue >
 <div class="title_issue">
   <a href="/issues/{{issue.id}}" target="_blank">#{{ issue.id }}:</a> {{ issue.subject | limitTo : 40 }}{{issue.subject.length > 40 ? "..." : ""  }}
   <span class="icon_config" ><i class="fa fa-cog"></i></span> 
@@ -43,22 +43,26 @@
   </ul>
 </div>
 <div class="content_issue">
-  <!-- a href="#" class="avata" title=""><%= image_tag('avata.png', :plugin => 'scrum2b') %></a -->
-  <%#= avatar(@review.user, :size => "64") %>
+  <a href="#" class="avata" title=""><%= image_tag('avata.png', :plugin => 'scrum2b') %></a>
+  <span e-ng-options="member.id as member.firstname for member in members" style="display: inline-block;">
+    {{(members | filter:{id: issue.assigned_to_id})[0].firstname || 'Not set' }}
+  </span>
   <div class="progress_issue">
-    <div class="value_progess">
-      <!-- <span><input type="text" class="amount" readonly value="{{issue.done_ratio}}"  >%</span> -->
-      <span><input type="text" class="amount" readonly  readonly value="{{issue.done_ratio}}" >%</span>
-      <i class="fa fa-caret-down"></i>
-    </div>
-    <div class="select_progess_issue hide">
-      <div class="triangle"></div>
-      <div slider issue-id="{{issue.id}}" config="sliderConfig" model="done_ratio" value="{{issue.done_ratio}}" class="cdbl-slider slider-vertical" ></div>
 
-      <!-- Price: {{issue.done_ratio}} -->
-      <!-- <div slider config="sliderConfig" model="issue.done_ratio" value="{{issue.done_ratio}}" class="cdbl-slider slider-vertical"></div> -->
-      
-    </div>
+    <select id="select_progess" ng-model="issue.progress" ng-init="issue.id= issue.id" ng-change="updateProgress(issue)" id="updateprogress" style="margin: 10px 0px 0px 0px; width: 100%;">
+      <option value="0" ng-selected="issue.done_ratio == 0">0 %</option>
+      <option value="10" ng-selected="issue.done_ratio == 10">10 %</option>
+      <option value="20" ng-selected="issue.done_ratio == 20">20 %</option>
+      <option value="30" ng-selected="issue.done_ratio == 30">30 %</option>
+      <option value="40" ng-selected="issue.done_ratio == 40">40 %</option>
+      <option value="50" ng-selected="issue.done_ratio == 50">50 %</option>
+      <option value="60" ng-selected="issue.done_ratio == 60">60 %</option>
+      <option value="70" ng-selected="issue.done_ratio == 70">70 %</option>
+      <option value="80" ng-selected="issue.done_ratio == 80">80 %</option>
+      <option value="90" ng-selected="issue.done_ratio == 90">90 %</option>
+      <option value="100" ng-selected="issue.done_ratio == 100">100 %</option>
+    </select>
+
     <br>
     <span class="icon_down"><i issue="123" class="fa fa-angle-double-down fa-lg"></i></span>
   </div>
@@ -66,10 +70,10 @@
 <div class="detail_issue">
   <div class="detail">
     <p>
-      {{issue.description}}
+      {{ issue.description }}
     </p>
   </div>
-  <!-- div class="file_comment">
+  <div class="file_comment">
     <ul>
       <li>
         <span class="open_file" ng-click="getFiles(issue)">File</span>
@@ -78,10 +82,11 @@
         <span class="open_comment" ng-click="getComments(issue)">Comment</span>
       </li>
     </ul>
-  </div-->
+    <span class="icon_top "><i class="fa fa-angle-double-up fa-lg"></i></span>
+  </div>
 
-  <!-- div class="file" style="min-height: 50px">
-    <ul>
+  <div class="file background_blue" style="min-height: 50px">
+    <ul style="display: inline-block">
       <li ng-repeat="attach in issue.attachments">
         <p>
           <a href="/attachments/download/{{attach.id}}" class="icon icon-attachment">{{attach.filename}}</a>
@@ -93,12 +98,12 @@
         </p>
       </li>
     </ul>
-  </div--><!--end file-->
-  <div class="comment" style="min-height: 50px">
-    <ul style="display: inline-block">
-      <li ng-repeat="comment in issue.comments" ng-if="comment.notes != ''">
-        <!-- <a href="#" style="display: inline-block;float: left;margin-left: 10px;" class="avata"><%= image_tag('avata.png', :plugin => 'scrum2b') %></a> -->
-        <span class="author">{{author(comment.user_id)}} :</span>
+  </div><!--end file-->
+  <div class="comment background_blue" style="min-height: 50px">
+    <ul style="display: inline-block; margin: 0px; width: 100%;">
+      <li ng-repeat="comment in issue.comments" ng-if="comment.notes != ''" style="padding: 3px;" >
+        <!-- <a href="#" style="display: inline-block;float: left;margin-left: 10px;" class="avata">< %= image_tag('avata.png', :plugin => 'scrum2b') %></a> -->
+        <span class="author">{{author(comment.user_id)}}:</span>
         <span editable-text="comment.notes" e-form="textBtnForm" onaftersave="editComment(comment.id,$data)" e-required>
           {{ comment.notes || 'empty' }}
         </span>

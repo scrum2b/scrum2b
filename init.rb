@@ -1,6 +1,10 @@
 require 'redmine'
 require 'gravatar'
 
+require 'issue_patch'
+Issue.send(:include, IssuePatch)
+
+
 #Rails.configuration.to_prepare do
 #  ApplicationHelper.send(:include, PluginName::Patches::ApplicationtHelperPatch) unless ApplicationHelper.included_modules.include? PluginName::Patches::ApplicationtHelperPatch
 #end

@@ -22,16 +22,20 @@
           if ($('.location_start_issue').length == 0 ) {
             $("<div class='location_start_issue'></div>").insertAfter(".move_issue");
           };
-          check_height_max_angular();
+          scope.check_height_max_angular();
         });
 
         $(jqueryElm).on( "sortout", function( event, ui ) {
           $(this).removeClass("background_sortover");
         });
 
+        $(jqueryElm).on( "sortstart", function( event, ui ) {
+          $('.setting').hide();
+        });
+
         $(jqueryElm).on( "sortstop", function( event, ui ) {
-           $( ".location_start_issue" ).remove();
-          check_height_max_angular();
+          $( ".location_start_issue" ).remove();
+          scope.check_height_max_angular();
         });
       
         $(jqueryElm).on( "sortbeforestop", function( event, ui ) {
@@ -41,13 +45,9 @@
           var statusID = $('.move_issue').parent().attr('status-id');
           var versionID = $('.move_issue').parent().attr('version-id');
           $('.move_issue').removeClass('move_issue');
-          // if(div_end == "sortable_backlog"){
-            // $('.move_issue').remove();
-          // }else{
-            // $('.move_issue').removeClass('move_issue');
-          // }
+
           if(statusID){
-            updateStatus(issueID,statusID,versionID);
+            scope.updateStatus(issueID,statusID,versionID);
             scope.sortStop(issueID,statusID,versionID);
           }
           if( div_start == "sortable_backlog" || div_end == "sortable_backlog"){
@@ -55,102 +55,31 @@
           }
         });
 
-        function updateStatus(id, status_id, version_id){
-          var request = $http({
-            method: "post",
-            url: "update_status",
-            params: {
-              action: "get"
-            },
-            data: {
-              id: id,
-              status_id : status_id,
-              fixed_version_id : version_id,
-              project_id: "<%= @project.id %>"
-            },
-          });
-
-          function  handleSuccess( response ){
-            return ( response.data );
-          }
-        }
-        
-        function check_height_max_angular(){
-          $(".sprint-active .check_height").css("height","auto");
-          var height1 = $(".active #sortable1").height();
-          var height2 = $(".active #sortable2").height();
-          var height3 = $(".active #sortable3").height();
-          var height4 = $(".active #sortable4").height();
-          var array_height = [height1, height2, height3, height4];
-          var max_height = Math.max.apply(Math, array_height);
-          $(".sprint-active .check_height").css("height",max_height);
-        }
       }
     };
   })
 
-  scrum2b.directive('datepicker', function () {
-    return {
-      restrict: 'A',
-      require: 'ngModel',
-      link: function (scope, element, attrs, ngModelCtrl) {
-        element.datepicker({
-          dateFormat: 'yy-mm-dd',
-          onSelect: function (date) {
-            scope.date = date;
-            scope.$apply();
-          }
-        });
-      }
-    };
-  });
-
-  scrum2b.directive('slider', function($http) {
-    return {
-      link: function(scope, elem,attrs) {
-        $(elem).ready(function(){
-          var a = $(elem).val();
-          $(elem).slider({
-            orientation: "vertical",
-            range: "min",
-            min: 0,
-            max: 100,
-            step: 10,
-            value: 0,
-            slide: function( event, ui ) {
-              $(this).parent().parent().find( ".amount" ).val( ui.value );
-            } 
-          });
-
-          $(elem).on( "slidestop", function( event, ui ) {
-            var value = ui.value;
-            var issue_id = $(this).attr('issue-id');
-            updateProgress(issue_id, value)
-            scope.updateProgress(issue_id,value);
-          });
-
-          function updateProgress(issue_id, value){
-            var request = $http({
-              method: "post",
-              url: "update_progress",
-              params: {
-                action: "get"
-              },
-              data: {
-                id: issue_id,
-                done_ratio : value,
-                project_id: "<%= @project.id %>"
-              },
-            });
-
-            function  handleSuccess( response ){
-              return ( response.data );
-            }
-          }
-
-        });    
-      }
+  scrum2b.directive('clickSprint', function() {
+    return function (scope, element, attrs) {
+      element.bind("click", function () {
+        scope.$apply(attrs.clickSprint);
+      })
     }
   });
 
+  scrum2b.directive('clickSprint', function() {
+    return function (scope, element, attrs) {
+      if (scope.$last) setTimeout(function(){
+        scope.check_height_max_angular();
+      }, 1);
+    }
+  });
+
+  scrum2b.directive('repeatIssue', function() {
+    return function (scope, element, attrs) {
+      if (scope.$last) setTimeout(function(){
+        scope.check_height_max_angular();
+      }, 1);
+    }
+  });
 </script>

@@ -1,1 +1,0 @@
-require "lib/issue_patch"

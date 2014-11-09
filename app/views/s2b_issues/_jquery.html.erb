@@ -1,6 +1,6 @@
 <script>
 $(document).ready(function(){
-  
+
   function check_height_max(){
     $(".sprint-active .check_height").css("height","auto");
     var height1 = $(".active #sortable1").height();
@@ -25,15 +25,10 @@ $(document).ready(function(){
     form.find('.status_id').attr('ng-init','newissue.status_id=new')
     
   });
-
-  // $("body").on('click', '.icon_add_issue', function(){
-  //   // append div new issue 
-  //   $(this).parent().next().append( html_new_question );
-  // });
   
   $("body").on('click', '.cancel_add_issue',function(){
-    $(this).parent().parent().parent().parent().parent().parent().hide();
-    $(this).parent().parent().parent().parent().parent().parent().find('form').trigger("reset");
+    $(this).parent().parent().parent().parent().parent().parent().parent().hide();
+    $(this).parent().parent().parent().parent().parent().parent().parent().find('form').trigger("reset");
   });
 
   $("body").on('click', document , function(e){
@@ -88,16 +83,16 @@ $(document).ready(function(){
   $("body").on('click', '.open_file', function(){
     $(this).parent().parent().parent().parent().find(".file").toggle();
     $(this).parent().parent().parent().parent().find(".comment").hide();
-    $(this).parent().toggleClass("background_d");
-    $(this).parent().parent().find('.open_comment').parent().removeClass("background_d");
+    $(this).parent().toggleClass("background_blue");
+    $(this).parent().parent().find('.open_comment').parent().removeClass("background_blue");
     check_height_max();
   });
 
   $("body").on('click', '.open_comment', function(){
     $(this).parent().parent().parent().parent().find(".file").hide();
     $(this).parent().parent().parent().parent().find(".comment").toggle();
-    $(this).parent().toggleClass("background_d");
-    $(this).parent().parent().find('.open_file').parent().removeClass("background_d");
+    $(this).parent().toggleClass("background_blue");
+    $(this).parent().parent().find('.open_file').parent().removeClass("background_blue");
     check_height_max();
   });
 
