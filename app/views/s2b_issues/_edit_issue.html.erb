@@ -4,14 +4,14 @@
 		<span style="color: red;font-weight: 100;">{{errorDate}}</span>
 		<table >
 			<tr>
-				<td colspan="2"><span editable-text="issue.subject" e-name="subject" e-required>{{ issue.subject || 'empty' }}</span></td>
+				<td colspan="2" style="display: block; width: 98%;"><span editable-text="issue.subject" e-name="subject" e-required>{{ issue.subject || 'empty' }}</span></td>
 			</tr>
 			<tr>
-				<td colspan="2">
-				  <span editable-textarea="issue.description" e-name="description" e-rows="5" >{{ issue.description || 'empty' }}</span>
+				<td colspan="2" style="display: block; width: 98%;">
+				  <span editable-textarea="issue.description" e-name="description" e-rows="5" placeholder='enter username' >{{ issue.description || 'empty' }}</span>
 				</td>
 			</tr>
-			<tr style="display: inline-flex; width: 100%;">
+			<tr style="display: inline-flex; width: 98%;">
 				<td>
 					<span>Tracker:</span>
 					<span editable-select="issue.tracker_id" e-name="tracker_id" e-ng-options="tracker.id as tracker.name for tracker in trackers">
@@ -25,9 +25,9 @@
           </span>
 				</td>
 			</tr>
-			<tr style="display: inline-flex; width: 100%;">
+			<tr style="display: inline-flex; width: 98%;">
 				<td>
-					<span>Assign:</span>
+					<span>Asigned To:</span>
 					<span class="value_content" editable-select="issue.assigned_to_id" e-name="assigned_to_id" e-ng-options="member.id as member.firstname for member in members">
             {{ (members | filter:{id: issue.member})[0].firstname || 'Not set' }}
           </span>
@@ -38,26 +38,20 @@
 					
 				</td>
 			</tr>
-			<tr style="display: inline-flex; width: 100%;" >
+			<tr style="display: inline-flex; width: 98%;" >
 				<td>
 					<span>Start: </span>
 					<input type="date" ng-model="issue.start_date" value="{{ issue.start_date | date: 'yyyy-MM-dd' }}" class="start_date"/>
 				</td>
 				<td>
 					<span>Due to:</span>
-					<input type="date" ng-model="issue.due_date" value="{{ issue.due_date | date: 'yyyy-MM-dd' }}" class="due_date"/>
-					<!-- <span editable-date="issue.due_date"  e-name="due_date" e-datepicker-popup="yyyy-MM-dd">{{issue.due_date</span> -->
-					
+					<input type="date" ng-model="issue.due_date" value="{{ issue.due_date | date: 'yyyy-MM-dd' }}" class="due_date"/>					
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2">
-				  <button type="submit" class="submit_edit_issue" issue_id='{{issue.id}}' ng-disabled="editableForm.$waiting">
-            Save
-          </button>
-          <button type="button" class="cancel_edit_issue" issue_id='{{issue.id}}' ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()">
-            Cancel
-          </button>
+					<input type="submit" class="submit_edit_issue" issue_id='{{issue.id}}' ng-disabled="editableForm.$waiting" value="Save">
+					<input type="button" class="cancel_edit_issue" issue_id='{{issue.id}}' ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()" value="Cancel">
 				</td>
 			</tr>
 		</table>

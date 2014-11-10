@@ -176,9 +176,6 @@
   .small_mode .file {display: none;}
   .small_mode .comment {display: none;}
 
-  .normal_mode {
-    min-height: 100px;
-  }
   .normal_mode .title_issue .icon_config { display: block;}
   .normal_mode .content_issue {display: block;}
   .normal_mode .detail_issue {display: block;}
@@ -186,7 +183,7 @@
   .normal_mode .file {display: none;}
   .normal_mode .comment {display: none;}
 
-  .setting { position: absolute; top: 25px; right: 5px; background: #fff; z-index: 9999; width: 100px; }
+  .setting { position: absolute; top: 21px; right: 3px; background: #fff; z-index: 9999; width: 100px; }
   .setting ul { list-style: none; margin: 0px; padding: 2px; border: 1px solid; }
   .setting ul li { font-size: 14px; padding: 3px 0px; }
   .setting ul li:hover { background: #ddd; }
@@ -237,8 +234,7 @@
   .progress_issue {
     width: 20%; 
     float: right; 
-    text-align: right; 
-    margin-top: -10px;
+    text-align: right;
   }
   .progress_issue span { font-size: 14px; color: #e77315; float: left; }
   .progress_issue .value_progess {
@@ -256,6 +252,12 @@
   .progress_issue .value_progess i {
     font-size: 17px;
     margin-top: 7px;
+  }
+  #select_progess {
+    margin: 0px;
+    width: 100%;
+    padding: 0px;
+    height: auto;
   }
   .detail h4 { font-size: 15px; margin-top: 10px; margin-bottom: 10px; }
   .detail p { font-size: 13px; margin: 4px 0px; }
@@ -301,7 +303,6 @@
   .issue_closed .content_issue, .issue_closed .detail_issue { display: none; }
   .issue_closed .issue { min-height: 35px !important; }
 
-  .add_new_issue { padding: 5px !important; }
   .add_new_issue span { font-weight: bold;}
   .from_add_edit_issue { font-size: 12px; color: #54626d !important; }
   .from_add_edit_issue table span { font-size: 12px; line-height: 20px; }
@@ -350,6 +351,7 @@
   }
   .from_add_edit_issue textarea[name="description"] {
     width: 98.5%;
+    font-family: Arial;
   }
   .from_add_edit_issue select[name="tracker_id"],
   .from_add_edit_issue select[name="priority_id"],

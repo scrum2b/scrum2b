@@ -6,44 +6,44 @@
 		  <span style="color:red;font-weight:100">{{errorDateAddNew}}</span>
 			<table >
 				<tr>
-					<td colspan="2"><input type="text" ng-model="newissue.subject" class="title_issue" placeholder="Enter Issue Subject" required></td>
+					<td colspan="2" style="display: block; width: 98%; " ><input type="text" ng-model="newissue.subject" class="title_issue" placeholder="Enter Issue Subject" required></td>
 				</tr>
 				<tr>
-					<td colspan="2">
+					<td colspan="2" style="display: block; width: 98%;">
 						<textarea ng-model="newissue.description" class="issue_description" placeholder="Enter Issue Description"></textarea>
 					</td>
 				</tr>
-				<tr style="display: inline-flex; width: 100%;">
+				<tr style="display: inline-flex; width: 98%;">
 					<td>
-						<span>Tracker</span>
+						<span>Tracker:</span>
 						<select class="value_content" ng-model="newissue.tracker_id" ng-options="tracker.id as tracker.name for tracker in trackers" ng-init="newissue.tracker_id = trackers[0].id">
 						</select>
 					</td>
 					<td>
-						<span>Priority</span>
+						<span>Priority:</span>
 						<select class="value_content" ng-model="newissue.priority_id" ng-options="priority.id as priority.name for priority in priorities" ng-init="newissue.priority_id = priorities[0].id">
 						</select>
 					</td>
 				</tr>
-				<tr style="display: inline-flex; width: 100%;">
+				<tr style="display: inline-flex; width: 98%;">
 					<td>
-						<span>Assign</span>
+						<span>Asigned To:</span>
 						<select class="value_content" ng-model="newissue.assigned_to_id" ng-options="member.id as member.firstname for member in members">
 						  <option value="" selected="">Please Choose</option>
 						</select>
 					</td>
 					<td>
-						<span>Est.H</span>
+						<span>Est.H:</span>
 						<input type="number" ng-model="newissue.estimated_hours" class="time" placeholder="Hour">
 					</td>
 				</tr>
-				<tr style="display: inline-flex; width: 100%;">
+				<tr style="display: inline-flex; width: 98%;">
 					<td>
-						<span>Start</span>
+						<span>Start:</span>
 						<input type="date" ng-model="newissue.start_date" class="begin" >
 					</td>
 					<td>
-						<span>Due to</span>
+						<span>Due to:</span>
 						<input type="date" ng-model="newissue.due_date" class="end" >
 					</td>
 				</tr>

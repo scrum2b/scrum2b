@@ -43,13 +43,14 @@
   </ul>
 </div>
 <div class="content_issue">
-  <a href="#" class="avata" title=""><%= image_tag('avata.png', :plugin => 'scrum2b') %></a>
-  <span e-ng-options="member.id as member.firstname for member in members" style="display: inline-block;">
-    {{(members | filter:{id: issue.assigned_to_id})[0].firstname || 'Not set' }}
+  <span ng-if="issue.assigned_to_id != nil ">
+    <span e-ng-options="member.id as member.firstname for member in members" style="display: inline-block; text-transform: capitalize;">
+     Asigned To: {{( members | filter:{id: issue.assigned_to_id})[0].firstname }}
+    </span>
   </span>
   <div class="progress_issue">
 
-    <select id="select_progess" ng-model="issue.progress" ng-init="issue.id= issue.id" ng-change="updateProgress(issue)" id="updateprogress" style="margin: 10px 0px 0px 0px; width: 100%;">
+    <select id="select_progess" ng-model="issue.progress" ng-init="issue.id= issue.id" ng-change="updateProgress(issue)" id="updateprogress" >
       <option value="0" ng-selected="issue.done_ratio == 0">0 %</option>
       <option value="10" ng-selected="issue.done_ratio == 10">10 %</option>
       <option value="20" ng-selected="issue.done_ratio == 20">20 %</option>
