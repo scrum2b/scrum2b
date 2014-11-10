@@ -10,12 +10,12 @@
 	      <div class="border_status">
 	        <div class="status_sprint">
 	          <span>New Issue</span>
-	          <span class="icon_add_issue button" ng-click="setParamsAddIssue(statusIds.status_no_start,version.id)"><i class="fa fa-plus-circle"></i>Add</span>
+	          <span class="icon_add_issue button" add-new-issue="setParamsAddIssue(statusIds.status_no_start,version.id)"><i class="fa fa-plus-circle"></i>Add</span>
 	        </div>
 	        <!-- add new issue -->
-	        <%= render :partial => "/s2b_issues/add_new_issue" %> 
-
-	        <div class="connectedSortable check_height" status-id="{{statusIds.status_no_start}}" version-id="{{version.id}}" id="sortable1" sortable >  
+	        <div class="connectedSortable check_height" status-id="{{statusIds.status_no_start}}" 
+	        version-id="{{version.id}}" id="sortable1" sortable >  
+	          <%= render :partial => "/s2b_issues/add_new_issue" %> 
           	<div class="issue ui-state-default small_mode" issue-id="{{issue.id}}"  ng-repeat="issue in issuesNew" >
         	  	<%= render :partial => "/s2b_issues/issue" %>
         	  </div>
@@ -28,10 +28,11 @@
 	    	<div class="border_status">
 	        <div class="status_sprint">
 	          <span>In Progess</span>
-	          <span class="icon_add_issue button" ng-click="setParamsAddIssue(statusIds.status_inprogress,version.id)"><i class="fa fa-plus-circle"></i>Add</span>
+	          <span class="icon_add_issue button" add-new-issue="setParamsAddIssue(statusIds.status_inprogress,version.id)"><i class="fa fa-plus-circle"></i>Add</span>
 	        </div>
-	        <%= render :partial => "/s2b_issues/add_new_issue" %>
+	        
 	        <div class="connectedSortable check_height" status-id="{{statusIds.status_inprogress}}" version-id="{{version.id}}" id="sortable2" sortable >
+	        	<%= render :partial => "/s2b_issues/add_new_issue" %>
 	        	<div class="issue ui-state-default small_mode" issue-id="{{issue.id}}" ng-repeat="issue in issuesInProgess">
               <%= render :partial => "/s2b_issues/issue" %>
             </div>

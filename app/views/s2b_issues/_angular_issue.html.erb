@@ -108,6 +108,7 @@ var scrum2b = angular.module('issue', []);
         );
       }
       $('.form_add_new_issue').trigger("reset");
+      $scope.check_height_max_angular();
     };
 
     $scope.deleteIssue = function(issue) {

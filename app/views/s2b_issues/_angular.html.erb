@@ -67,6 +67,20 @@
     }
   });
 
+  scrum2b.directive('addNewIssue', function() {
+    return function (scope, element, attrs) {
+      element.bind("click", function () {
+        scope.$apply(attrs.addNewIssue);
+        $('.add_new_issue').hide();
+        $('.add_new_issue form').trigger("reset");
+        element.parent().parent().find('.add_new_issue').show();
+        setTimeout(function(){
+          scope.check_height_max_angular();
+        }, 1);
+      })
+    }
+  });
+
   scrum2b.directive('clickSprint', function() {
     return function (scope, element, attrs) {
       if (scope.$last) setTimeout(function(){
@@ -80,6 +94,18 @@
       if (scope.$last) setTimeout(function(){
         scope.check_height_max_angular();
       }, 1);
+    }
+  });
+
+  scrum2b.directive('deleteIssue', function() {
+    return function (scope, element, attrs) {
+      msg = "Are you sure?"
+      element.bind("click", function () {
+        if (window.confirm(msg)){
+          scope.$apply(attrs.deleteIssue);
+          scope.check_height_max_angular()
+        }
+      })
     }
   });
 </script>
