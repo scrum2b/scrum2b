@@ -127,7 +127,7 @@
   }
   /*chi hien 3 sprint dau an colose*/
   .backlog_mode .backlog { display: block;}
-  .backlog_mode .issue_closed { display: none;}
+  /*.backlog_mode .issue_closed { display: none;}*/
   .backlog_mode .open_sprint_closed { display: none; }
   /*.backlog_mode .icon_add_issue {display: block;}*/
   .backlog_mode .add_new_issue {display: none; }
@@ -191,7 +191,7 @@
   .setting ul li { font-size: 14px; padding: 3px 0px; }
   .setting ul li:hover { background: #ddd; }
   .setting ul li a {display: block;}
-  .setting ul ul {display: none; z-index: 200; position: absolute; width: 90px; left: -93px;  background: #fff;}
+  .setting ul ul {display: none; z-index: 200; position: absolute; width: 90px; left: -94px;  background: #fff;}
   .setting .change_sprint {top: 47px;}
   .setting .change_status {top: 68px;}
 

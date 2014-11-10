@@ -13,10 +13,11 @@
 	          <span class="icon_add_issue button" add-new-issue="setParamsAddIssue(statusIds.status_no_start,version.id)"><i class="fa fa-plus-circle"></i>Add</span>
 	        </div>
 	        <!-- add new issue -->
+	        <%= render :partial => "/s2b_issues/add_new_issue" %> 
 	        <div class="connectedSortable check_height" status-id="{{statusIds.status_no_start}}" 
 	        version-id="{{version.id}}" id="sortable1" sortable >  
-	          <%= render :partial => "/s2b_issues/add_new_issue" %> 
-          	<div class="issue ui-state-default small_mode" issue-id="{{issue.id}}"  ng-repeat="issue in issuesNew" >
+	          
+          	<div class="issue ui-state-default" ng-class="{mini_mode: showIssueBacklog, small_mode: !showIssueBacklog}" issue-id="{{issue.id}}"  ng-repeat="issue in issuesNew" >
         	  	<%= render :partial => "/s2b_issues/issue" %>
         	  </div>
 	        </div><!--end connectedSortable-->
@@ -30,10 +31,10 @@
 	          <span>In Progess</span>
 	          <span class="icon_add_issue button" add-new-issue="setParamsAddIssue(statusIds.status_inprogress,version.id)"><i class="fa fa-plus-circle"></i>Add</span>
 	        </div>
-	        
+	        <%= render :partial => "/s2b_issues/add_new_issue" %>
 	        <div class="connectedSortable check_height" status-id="{{statusIds.status_inprogress}}" version-id="{{version.id}}" id="sortable2" sortable >
-	        	<%= render :partial => "/s2b_issues/add_new_issue" %>
-	        	<div class="issue ui-state-default small_mode" issue-id="{{issue.id}}" ng-repeat="issue in issuesInProgess">
+	        	
+	        	<div class="issue ui-state-default " ng-class="{mini_mode: showIssueBacklog, small_mode: !showIssueBacklog}" issue-id="{{issue.id}}" ng-repeat="issue in issuesInProgess">
               <%= render :partial => "/s2b_issues/issue" %>
             </div>
 	        </div><!--end connectedSortable-->  
@@ -47,14 +48,14 @@
 	          <span>Resolved</span>
 	        </div>
 	        <div class="connectedSortable check_height" status-id="{{statusIds.status_completed}}" version-id="{{version.id}}" id="sortable3" sortable >
-	          <div class="issue ui-state-default small_mode" issue-id="{{issue.id}}" ng-repeat="issue in issuesResolved">
+	          <div class="issue ui-state-default" ng-class="{mini_mode: showIssueBacklog, small_mode: !showIssueBacklog}" issue-id="{{issue.id}}" ng-repeat="issue in issuesResolved">
               <%= render :partial => "/s2b_issues/issue" %>
             </div>
 	        </div><!--end connectedSortable-->  
 	      </div><!--end padding 5 -->
 	    </div><!--end border status-->
 	  </div><!--end sprint 3-->
-	  <div class="s2b_column_3 issue_closed" id="issue_closed">
+	  <div class="s2b_column_3 issue_closed" id="issue_closed" ng-class="{hide: showIssueBacklog, show: !showIssueBacklog}">
 	    <div class="padding_5">
 	    	<div class="border_status">
 	      <div class="status_sprint">
