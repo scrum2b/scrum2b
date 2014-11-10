@@ -41,8 +41,7 @@ class S2bApplicationController < ApplicationController
                           :completed => 5,
                           :closed => 6,
                           :all => 7}
-  
- 
+                          
   def editable_for_project?
     return @editable_for_project if @editable_for_project.present?
     @viewable_for_project = true and return true if User.current.admin?

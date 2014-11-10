@@ -47,7 +47,15 @@ class S2bIssuesController < S2bApplicationController
   end
 
   def update
-    if @issue.update_issue(params[:issue])
+    params = {'subject' => params[:issue][:subject],
+             'description' => params[:issue][:description], 
+             'estimated_hours' => params[:issue][:estimated_hours],
+             'priority_id' => params[:issue][:priority_id], 
+             'assigned_to_id' => params[:issue][:assigned_to_id],
+             'start_date' => params[:issue][:start_date], 
+             'due_date' => params[:issue][:due_date],
+             'tracker_id' => params[:issue][:tracker_id]}
+    if @issue.update_issue(params)
       render :json => {:result => "edit_success",:issue => @issue}
     else
       render :json => {:result => @issue.errors.full_messages}
@@ -56,10 +64,9 @@ class S2bIssuesController < S2bApplicationController
 
   def update_status
     return unless @issue 
-    if @issue.update_attributes(:status_id => params[:status_id], :fixed_version_id => params[:fixed_version_id])
-      
+    if @issue.update_issue({'status_id' => params[:status_id], 'fixed_version_id' => params[:fixed_version_id]})
       if STATUS_IDS['status_completed'].include?( params[:status_id].to_i) || STATUS_IDS['status_closed'].include?( params[:status_id].to_i)
-        @issue.update_attributes(:done_ratio => 100)
+        @issue.completed_done_radio
         render :json => {:result => "update_success_completed",:issue => @issue}
       else
         render :json => {:result => "update_success",:issue => @issue}
@@ -71,7 +78,7 @@ class S2bIssuesController < S2bApplicationController
 
   def update_version
     return unless @issue
-    if @issue.update_attributes(:fixed_version_id => params[:fixed_version_id])
+    if @issue.update_issue({'fixed_version_id' => params[:fixed_version_id]})
       render :json => {:result => "update_success",:issue => @issue}
     else
       render :json => {:result => @issue.errors.full_messages}
@@ -80,7 +87,7 @@ class S2bIssuesController < S2bApplicationController
   
   def update_progress
     return unless @issue
-    if @issue.update_attributes(:done_ratio => params[:done_ratio])
+    if @issue.update_issue({'done_ratio' => params[:done_ratio]})
       render :json => {:result => "update_success",:issue => @issue}
     else
       render :json => {:result => @issue.errors.full_messages}
