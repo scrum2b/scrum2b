@@ -82,12 +82,6 @@ class S2bIssuesController < S2bApplicationController
   end
   
   private
-  
-    def set_issue
-      issue_id = params[:issue_id] || params[:id] || (params[:issue] && params[:issue][:id]) || (params[:issue] && params[:issue][:issue_id])
-      #TODO: check permission for this issue's instance with @hierarchy_projects
-      @issue = Issue.find(issue_id) rescue nil
-    end
 
     def issue_params
       params.require(:issue).permit(:tracker_id, :subject, :author_id, :description, :due_date, :status_id, :project_id, :assigned_to_id, :priority_id, :fixed_version_id, :start_date, :done_ratio, :estimated_hours)

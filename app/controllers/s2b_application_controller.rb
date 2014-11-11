@@ -120,4 +120,21 @@ class S2bApplicationController < ApplicationController
         redirect_to "/projects/#{@project.to_param}"
       end
     end
+
+    def set_issue
+      issue_id = params[:issue_id] || params[:id] || (params[:issue] && params[:issue][:id]) || (params[:issue] && params[:issue][:issue_id])
+      #TODO: check permission for this issue's instance with @hierarchy_projects
+      @issue = Issue.find(issue_id) rescue nil
+    end
+
+    def set_attachment
+      #TODO: check permission for this comment's instance with @hierarchy_projects
+      @attachment = Attachment.find(params[:file_id])
+    end
+    
+    def set_comment
+      #TODO: check permission for this comment's instance with @hierarchy_projects
+      @comment = Journal.find(params[:id])
+    end
+
 end
