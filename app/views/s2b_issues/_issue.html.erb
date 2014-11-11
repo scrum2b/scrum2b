@@ -1,4 +1,4 @@
-<div class="issue_{{issue.id}}" repeat-issue >
+<div class="issue_{{issue.id}} loop_issue" repeat-issue >
 <div class="title_issue">
   <a href="/issues/{{issue.id}}" target="_blank">#{{ issue.id }}:</a> {{ issue.subject | limitTo : 40 }}{{issue.subject.length > 40 ? "..." : ""  }}
   <span class="icon_config" ><i class="fa fa-cog"></i></span> 
@@ -23,16 +23,16 @@
     <li class="status_li">
       <a href="">Change status</a>
       <ul class="change_status">
-        <li ng-hide="issue.status_id===statusIds.status_no_start">
+        <li ng-hide="issue.status_id==statusIds.status_no_start">
           <a href="" ng-click="changeStatus(issue, statusIds.status_no_start, version.id)" class="">New issue</a>
         </li>
-        <li ng-hide="issue.status_id===statusIds.status_inprogress">
+        <li ng-hide="issue.status_id==statusIds.status_inprogress">
           <a href="" ng-click="changeStatus(issue, statusIds.status_inprogress, version.id)" class="">In Progess</a>
         </li>
-        <li ng-hide="issue.status_id===statusIds.status_completed">
+        <li ng-hide="issue.status_id==statusIds.status_completed">
           <a href="" ng-click="changeStatus(issue, statusIds.status_completed, version.id)" class="">Resolved</a>
         </li>
-        <li ng-hide="issue.status_id===statusIds.status_closed">
+        <li ng-hide="issue.status_id==statusIds.status_closed">
           <a href="" ng-click="changeStatus(issue, statusIds.status_closed, version.id)" class="">Close</a>
         </li>
       </ul>
@@ -103,24 +103,12 @@
   <div class="comment background_blue" style="min-height: 50px">
     <ul style="display: inline-block; margin: 0px; width: 100%;">
       <li ng-repeat="comment in issue.comments" ng-if="comment.notes != ''" style="padding: 3px;" >
-        <!-- <a href="#" style="display: inline-block;float: left;margin-left: 10px;" class="avata">< %= image_tag('avata.png', :plugin => 'scrum2b') %></a> -->
         <span class="author">{{author(comment.user_id)}}:</span>
         <span editable-text="comment.notes" e-form="textBtnForm" onaftersave="editComment(comment.id,$data)" e-required>
           {{ comment.notes || 'empty' }}
         </span>
-        
-        <!-- <a href="" ng-click="textBtnForm.$show()" ng-if="<%= User.current.id %> == comment.user_id" ng-hide="textBtnForm.$visible" class="icon icon-edit edit_comment"></a>
-        <a href="" ng-click="deleteComment(issue,comment)" class="icon icon-del delete" title="Delete" ng-hide="textBtnForm.$visible"></a>
-       -->
       </li>
     </ul><br />
-    <!-- <form ng-submit="createComment(newcomment)">
-      <input type="hidden" ng-init="newcomment.journalized_type"  value="Issue" />
-      <input type="hidden" ng-init="newcomment.journalized_id"  value="{{issue.id}}" />
-      <input type="hidden" ng-init="newcomment.user_id" value="<%= User.current.id %>" />
-      <input type="text" ng-model="newcomment.notes" required/>
-      <input type="submit" value="Create"/>
-    </form> -->
   </div><!--end comment-->
 
 </div><!--end detail issue-->

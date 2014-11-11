@@ -79,7 +79,6 @@ var scrum2b = angular.module('issue', []);
       $scope.getIssues(version,$scope.memberActiveShow);
       //set active or unactive version
       $scope.setUnActiveVersion(version);
-      //$scope.loadIssueBacklog();
     }
     
     $scope.setParamsAddIssue = function(status_id,version_id){
@@ -92,6 +91,7 @@ var scrum2b = angular.module('issue', []);
       $scope.newissue.due_date = $filter('date')($scope.newissue.due_date, "yyyy-MM-dd");
       $scope.newissue.status_id = $scope.paramsStatusId;
       $scope.newissue.fixed_version_id = $scope.paramsVersionId;
+
       if($scope.newissue.start_date > $scope.newissue.due_date){
         $scope.errorDateAddNew = "Due date must be greater than start date"
         return "Due date must be greater than start date"
@@ -138,6 +138,7 @@ var scrum2b = angular.module('issue', []);
         return "Due date must be greater than start date";
       }
     }; 
+    
     $scope.editIssue = function(issue){
       $scope.errorDate = '';
       console.log ("params edit issue " + issue.start_date);
@@ -282,7 +283,7 @@ var scrum2b = angular.module('issue', []);
       IssueService.getComments(issue).then(
          function(data){
            issue.comments = [];
-           angular.forEach(data.journals, function(value) {
+           angular.forEach(data.comments, function(value) {
              angular.forEach(value, function(comment,key) {
                console.log ("comment "+ comment.notes)
                issue.comments.push(comment);
