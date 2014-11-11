@@ -63,19 +63,36 @@ var scrum2b = angular.module('issue', []);
         arrayVersionLoaded.push(arrayVersions[0].id);
         $scope.versionsLoaded = arrayVersionLoaded;
         $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
+        $scope.showIssueBacklog = false
       }
     );
+    
+    $scope.activeShowIssueBacklog = function(){
+      $scope.showIssueBacklog = true
+    }
+
+    $scope.hideBacklog = function(){
+      $scope.showIssueBacklog = false
+    }
 
     $scope.activeVersion = function(version){
       $scope.getIssues(version,$scope.memberActiveShow);
       //set active or unactive version
       $scope.setUnActiveVersion(version);
-      //$scope.loadIssueBacklog();
     }
     
     $scope.setParamsAddIssue = function(status_id,version_id){
       $scope.paramsStatusId = status_id
       $scope.paramsVersionId = version_id
+
+      $scope.newissue.subject = ""
+      $scope.newissue.description = ""
+      $scope.newissue.start_date = ""
+      $scope.newissue.due_date = ""
+      $scope.newissue.tracker_id = $scope.trackers[0].id
+      $scope.newissue.priority_id = $scope.priorities[0].id
+      $scope.newissue.assigned_to_id = ""
+      $scope.newissue.estimated_hours = ""
     }
     
     $scope.addIssue = function(){
@@ -83,6 +100,7 @@ var scrum2b = angular.module('issue', []);
       $scope.newissue.due_date = $filter('date')($scope.newissue.due_date, "yyyy-MM-dd");
       $scope.newissue.status_id = $scope.paramsStatusId;
       $scope.newissue.fixed_version_id = $scope.paramsVersionId;
+
       if($scope.newissue.start_date > $scope.newissue.due_date){
         $scope.errorDateAddNew = "Due date must be greater than start date"
         return "Due date must be greater than start date"
@@ -108,6 +126,7 @@ var scrum2b = angular.module('issue', []);
         );
       }
       $('.form_add_new_issue').trigger("reset");
+      $scope.check_height_max_angular();
     };
 
     $scope.deleteIssue = function(issue) {
@@ -128,6 +147,7 @@ var scrum2b = angular.module('issue', []);
         return "Due date must be greater than start date";
       }
     }; 
+
     $scope.editIssue = function(issue){
       $scope.errorDate = '';
       console.log ("params edit issue " + issue.start_date);
@@ -194,9 +214,9 @@ var scrum2b = angular.module('issue', []);
           issue =  $filter('filter')($scope.allIssues, {id: issue_id})[0];
           if (data.result == "update_success") {
             issue.status_id = status_id;
-          }else if(data.result == "update_success_completed"){
-            issue.done_ratio = 100;
+          }else if (data.result == "update_success_completed"){
             issue.status_id = status_id;
+            issue.done_ratio = 100;
           }else{
             alert(data.result);
           }
@@ -208,18 +228,17 @@ var scrum2b = angular.module('issue', []);
       console.log ("changeStatus");
       IssueService.changeStatus(issue.id,status_id, version_id).then(
          function(data){
-          if (data.result == "update_success_completed") {
-            console.log ("update_success_completed thanh cong ");
-            issue.done_ratio = 100;
-            issue.status_id = status_id;
-            $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
-          };
-
+          issue.status_id = status_id;
           if (data.result == "update_success") {
-            console.log ("update status thanh cong");
             issue.status_id = status_id;
-            $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
-          };
+          }else if (data.result == "update_success_completed") {
+            issue.status_id = status_id;
+            issue.done_ratio = 100;
+          }else{
+            alert(data.result);
+          }
+          $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
+          $scope.check_height_max_angular();
          }
       );
     };
@@ -273,7 +292,7 @@ var scrum2b = angular.module('issue', []);
       IssueService.getComments(issue).then(
          function(data){
            issue.comments = [];
-           angular.forEach(data.journals, function(value) {
+           angular.forEach(data.comments, function(value) {
              angular.forEach(value, function(comment,key) {
                console.log ("comment "+ comment.notes)
                issue.comments.push(comment);
