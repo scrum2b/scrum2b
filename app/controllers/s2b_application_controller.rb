@@ -3,8 +3,9 @@ class S2bApplicationController < ApplicationController
 
   skip_before_filter :verify_authenticity_token
   before_filter :set_status_settings
-  before_filter :find_project
-  
+  before_filter :set_project
+  before_filter :set_members
+
   helper :journals
   helper :projects
   include ProjectsHelper
@@ -26,104 +27,97 @@ class S2bApplicationController < ApplicationController
   include Redmine::Export::PDF
   helper :issues
   include IssuesHelper
+
   helper_method :editable_for_project?
   helper_method :viewable_for_project?
+
   self.allow_forgery_protection = false
   
   DEFAULT_STATUS_IDS = {}
   STATUS_IDS = {'status_no_start' => [], 'status_inprogress' => [], 
                 'status_completed' => [], 'status_closed' => []}
                 
-  SELECT_ISSUE_OPTIONS = {:all_working => 1,
-                          :my => 2, 
-                          :my_completed => 3, 
-                          :new => 4, 
-                          :completed => 5,
-                          :closed => 6,
-                          :all => 7}
-  
- 
+#  SELECT_ISSUE_OPTIONS = {:all_working => 1,
+#                          :my => 2, 
+#                          :my_completed => 3, 
+#                          :new => 4, 
+#                          :completed => 5,
+#                          :closed => 6,
+#                          :all => 7}
+                         
   def editable_for_project?
     return @editable_for_project if @editable_for_project.present?
-    @viewable_for_project = true and return true if User.current.admin?
-
-    @user_roles = @user_roles || User.current.roles_for_project(@project)
-    @editable_for_project = false
-    @user_roles.each do |role|
-      @editable_for_project = true and break if role.permissions.include?(:s2b_edit_issue)
-    end
+    @viewable_for_project = validate_permission_for?(:edit)
     return @editable_for_project  
   end
   
   def viewable_for_project?
     return @viewable_for_project if @viewable_for_project.present? 
-    @viewable_for_project = true and return true if User.current.admin?
-    
-    @user_roles = @user_roles || User.current.roles_for_project(@project)
-    @viewable_for_project = false
-    @user_roles.each do |role|
-      @viewable_for_project = true and break if role.permissions.include?(:s2b_view_issue)
-    end
+    @viewable_for_project = validate_permission_for?(:view)
     return @viewable_for_project
   end
-  
-  def check_permission(permission_type = :view)
-    redirect_to :back if permission_type == :view && !viewable_for_project?
-    redirect_to :back if permission_type == :edit && !editable_for_project?
-  end
-      
+    
   protected
-  
-  def opened_versions_list
-    find_project unless @project
-    versions = Version.open.where("project_id IN (?)", @hierarchy_project_id).where('effective_date IS NOT NULL').order(:effective_date)
-    versions2 = Version.open.where("project_id IN (?)", @hierarchy_project_id).where('effective_date IS NULL')
-    return versions + versions2
-  end
-  
-  def closed_versions_list 
-    find_project unless @project
-    return @project.shared_versions.where(:status => "closed")
-  end
-  
-  def find_project
-    # @project variable must be set before calling the authorize filter
-    project_id = params[:project_id] || (params[:issue] && params[:issue][:project_id])
-    @project = Project.find(project_id)
-    @hierarchy_project = Project.where(:parent_id => @project.id) << @project
-    @hierarchy_project_id = @hierarchy_project.collect{|project| project.id}
-  end
-  
-  def get_members
-    @members = []
-    @hierarchy_project.each do |project|
-      project.assignable_users.each do |user|
-        @members.push(user) unless @members.include?(user)
+
+    def validate_permission_for? permission_type
+      return true if User.current.admin?
+      User.current.roles_for_project(@project).each do |role|
+        return true if role.permissions.include?(permission_type == :edit ? :s2b_edit_issue : :s2b_view_issue)
+      end
+      return false
+    end
+    
+    def opened_versions_list
+      set_project unless @project
+      versions = Version.open.where("project_id IN (?)", @hierarchy_project_ids).where('effective_date IS NOT NULL').order(:effective_date)
+      versions2 = Version.open.where("project_id IN (?)", @hierarchy_project_ids).where('effective_date IS NULL')
+      return versions + versions2
+    end
+    
+    def closed_versions_list 
+      set_project unless @project
+      return @project.shared_versions.where(:status => "closed")
+    end
+    
+    def set_project
+      # @project variable must be set before calling the authorize filter
+      project_id = params[:project_id] || (params[:issue] && params[:issue][:project_id])
+      @project = Project.find(project_id)
+      @hierarchy_projects = Project.where(:parent_id => @project.id) << @project
+      @hierarchy_project_ids = @hierarchy_projects.collect{|project| project.id}
+    end
+    
+    def set_members
+      @members = []
+      @hierarchy_projects.each do |project|
+        project.assignable_users.each do |user|
+          @members.push(user) unless @members.include?(user)
+        end
       end
     end
-  end
-  
-  def set_status_settings
-    @plugin = Redmine::Plugin.find("scrum2b")
-    @settings = Setting["plugin_#{@plugin.id}"]   
-    # Loop to set default of settings items
-    need_to_resetting = false
-    STATUS_IDS.keys.each do |column_name|
-      @settings[column_name].keys.each { |setting| 
-        STATUS_IDS[column_name].push(setting.to_i) 
-      } if @settings[column_name]
+    
+    def set_status_settings
+      @plugin = Redmine::Plugin.find("scrum2b")
+      @settings = Setting["plugin_#{@plugin.id}"]   
       
-      if STATUS_IDS[column_name].empty?
-        need_to_resetting = true;
-      else
-        DEFAULT_STATUS_IDS[column_name] = STATUS_IDS[column_name].first.to_i
+      # Loop to set default of settings items
+      need_to_resetting = false
+      STATUS_IDS.keys.each do |column_name|
+        @settings[column_name].keys.each { |setting| 
+          STATUS_IDS[column_name].push(setting.to_i) 
+        } if @settings[column_name]
+        
+        if STATUS_IDS[column_name].empty?
+          need_to_resetting = true;
+        else
+          DEFAULT_STATUS_IDS[column_name] = STATUS_IDS[column_name].first.to_i
+        end
+      end
+       
+      if need_to_resetting
+        flash[:notice] = "The system has not been setup to use Scrum2B Tool. Please contact to Administrator " + 
+                         "or go to the Settings page of the plugin: <a href='/settings/plugin/scrum2b'>/settings/plugin/scrum2b</a> to config."
+        redirect_to "/projects/#{@project.to_param}"
       end
     end
-     
-    if need_to_resetting
-      flash[:notice] = "The system has not been setup to use Scrum2B Tool. Please contact to Administrator " + 
-                       "or go to the Settings page of the plugin: <a href='/settings/plugin/scrum2b'>/settings/plugin/scrum2b</a> to config."
-      redirect_to "/projects/#{@project.to_param}"
-    end
-  end
 end
