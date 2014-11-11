@@ -4,14 +4,14 @@
 		<span style="color: red;font-weight: 100;">{{errorDate}}</span>
 		<table >
 			<tr>
-				<td colspan="2" style="display: block; width: 98%;"><span editable-text="issue.subject" e-name="subject" e-required>{{ issue.subject || 'empty' }}</span></td>
+				<td colspan="2" style="display: block; width: 100%;"><span editable-text="issue.subject" e-name="subject" e-required>{{ issue.subject || 'empty' }}</span></td>
 			</tr>
 			<tr>
-				<td colspan="2" style="display: block; width: 98%;">
+				<td colspan="2" style="display: block; width: 100%;">
 				  <span editable-textarea="issue.description" e-name="description" e-rows="5" placeholder='enter username' >{{ issue.description || 'empty' }}</span>
 				</td>
 			</tr>
-			<tr style="display: inline-flex; width: 98%;">
+			<tr style="display: inline-flex; width: 100%;">
 				<td>
 					<span>Tracker:</span>
 					<span editable-select="issue.tracker_id" e-name="tracker_id" e-ng-options="tracker.id as tracker.name for tracker in trackers">
@@ -19,13 +19,13 @@
           </span>
 				</td>
 				<td>
-					<span>Priority:</span>
+					<span style="padding-left: 4px" >Priority:</span>
 					<span class="value_content" editable-select="issue.priority_id" e-name="priority_id" e-ng-options="priority.id as priority.name for priority in priorities">
             {{ (priorities | filter:{id: issue.priority})[0].name || 'Not set' }}
           </span>
 				</td>
 			</tr>
-			<tr style="display: inline-flex; width: 98%;">
+			<tr style="display: inline-flex; width: 100%;">
 				<td>
 					<span>Asigned To:</span>
 					<span class="value_content" editable-select="issue.assigned_to_id" e-name="assigned_to_id" e-ng-options="member.id as member.firstname for member in members">
@@ -33,18 +33,18 @@
           </span>
 				</td>
 				<td class="estimated_hours">
-					<span>Est. Hour:</span>
+					<span style="padding-left: 4px">Est. Hour:</span>
 					<span editable-text="issue.estimated_hours" e-name="estimated_hours">{{ issue.estimated_hours || 'empty' }}</span>
 					
 				</td>
 			</tr>
-			<tr style="display: inline-flex; width: 98%;" >
+			<tr style="display: inline-flex; width: 100%;" >
 				<td>
 					<span>Start: </span>
 					<input type="date" ng-model="issue.start_date" value="{{ issue.start_date | date: 'yyyy-MM-dd' }}" class="start_date"/>
 				</td>
 				<td>
-					<span>Due to:</span>
+					<span style="padding-left: 4px">Due to:</span>
 					<input type="date" ng-model="issue.due_date" value="{{ issue.due_date | date: 'yyyy-MM-dd' }}" class="due_date"/>					
 				</td>
 			</tr>

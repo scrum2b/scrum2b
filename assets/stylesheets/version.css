@@ -38,6 +38,9 @@
     font-family: Helvetica Neue !important;
     font-weight: normal;
   }
+  .padding-see-detail {
+    padding-right: 110px;
+  }
 
   .padding_5 {
     padding: 5px;
@@ -60,7 +63,7 @@
     float: left;
   }
   .s2b_column_5 {
-    width: 31.97% !important;
+    width: 33.33% !important;
     float: left;
   }
   .background_d {
@@ -72,6 +75,9 @@
   }
   .background_sortover {
     background: #B8CCCD !important;
+  }
+  .padding-2 {
+    padding: 3px;
   }
   .width_75 {
     width: 74.5%;
@@ -136,7 +142,7 @@
   .basic_mode .issue_closed { display: none;}
   .basic_mode .open_sprint_closed { display: block; }
   /*hien du 4 cai*/
-  .full_mode .issue_closed { display: block;}
+  /*.full_mode .issue_closed { display: block;}*/
   .full_mode .backlog { display: none;}
   .full_mode .open_sprint_closed { display: none; }
   .full_mode .closed_backlog {display: none;}
@@ -262,7 +268,7 @@
   .detail h4 { font-size: 15px; margin-top: 10px; margin-bottom: 10px; }
   .detail p { font-size: 13px; margin: 4px 0px; }
 
-  .file_comment { height: 22px; }
+  .file_comment { height: 22px; margin-top: 12px; }
   .file_comment ul { background: #999999; display: inline-flex; list-style: none; float: left; margin: 0px; padding: 0px;}
   .file_comment ul li { font-size: 13px; padding: 3px; margin-left: 1px; background: #63BAC2;}
   .file_comment ul li:first-child {margin-left: 0px !important;}
@@ -282,50 +288,54 @@
   .file .icon_file img { height: 30px; width: 30px; }
   .file ul li span { font-size: 12px; }
   .file .view_file { color: #598DC1; font-size: 12px; cursor: pointer; }
-
+  .show {display: block;}
   .hide { display: none; }
   .open_sprint_closed { 
-    float: right;
-    color: #ebebeb; 
-    font-weight: bold; 
-    margin-top: 10px; 
-    border: 1px; 
-    line-height: 20px !important; 
-    padding: 1px 2px; 
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#9cc3e8), to(#275888)); 
-    font-size: 13px !important; 
-    width: 45px !important; 
+    position: absolute;
+    z-index: 99999;
+    right: 0px;
+    color: #ebebeb;
+    font-weight: bold;
+    margin-top: -35px;
+    border: 1px;
+    line-height: 20px !important;
+    padding: 1px 2px;
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#9cc3e8), to(#275888));
+    font-size: 13px !important;
     text-align: right;
     cursor: pointer;
+  }
+  .open_sprint_closed span {
+    display: block;
+    padding: 0px 2px;
   }
   .test { z-index: 101 !important; top: 310px !important; left: 339px !important; }
   .connectedSortable { min-height: 75px; padding: 5px !important; background: #f4f4f4;}
   .issue_closed .content_issue, .issue_closed .detail_issue { display: none; }
   .issue_closed .issue { min-height: 35px !important; }
 
+  .add_new_issue {padding: 5px !important}
   .add_new_issue span { font-weight: bold;}
   .from_add_edit_issue { font-size: 12px; color: #54626d !important; }
   .from_add_edit_issue table span { font-size: 12px; line-height: 20px; }
   .from_add_edit_issue table { width: 100%; }
   .from_add_edit_issue table tr { margin: 2px 0px; }
-  .from_add_edit_issue table tr td { width: 50%; padding-right: 0px}
+  .from_add_edit_issue table tr td { width: 50%; padding: 2px 0px !important; }
   .from_add_edit_issue .title_issue { width: 98%; margin-left: 0px; padding-right: 2px }
-  .from_add_edit_issue .issue_description { 
+  .from_add_edit_issue .issue_description {
     margin-left: 0px;
     width: 98%;
     min-height: 80px; 
     font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif; 
   }
-
-  .from_add_edit_issue .end, 
-  .from_add_edit_issue .begin, 
+ 
   .from_add_edit_issue .time { 
-    width: 95px; 
+    width: 76px; 
     float: right; 
   }
   .from_add_edit_issue .value_content { 
     float: right; 
-    width: 95px;
+    width: 80px;
   }
   .from_add_edit_issue .assign_up {position: relative;}
   .from_add_edit_issue .assign {border: 1px solid; height: 33px; padding-left: 5px}
@@ -347,24 +357,24 @@
     width: 100%;
   }
   .from_add_edit_issue input[name="subject"] {
-    width: 99%;
+    width: 98%;
   }
   .from_add_edit_issue textarea[name="description"] {
-    width: 98.5%;
+    width: 98%;
     font-family: Arial;
   }
   .from_add_edit_issue select[name="tracker_id"],
   .from_add_edit_issue select[name="priority_id"],
   .from_add_edit_issue select[name="assigned_to_id"] {
-    width: 70px;
+    width: 80px;
   }
   .from_add_edit_issue .estimated_hours .editable-text {
-    width: 68px;
+    width: 76px;
     float: right;
     margin-right: 4px;
   }
   .from_add_edit_issue input[name="estimated_hours"] {
-    width: 68px;
+    width: 76px;
   }
   .from_add_edit_issue .editable-select {
     float: right;

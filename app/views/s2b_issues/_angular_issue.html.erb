@@ -84,6 +84,15 @@ var scrum2b = angular.module('issue', []);
     $scope.setParamsAddIssue = function(status_id,version_id){
       $scope.paramsStatusId = status_id
       $scope.paramsVersionId = version_id
+
+      $scope.newissue.subject = ""
+      $scope.newissue.description = ""
+      $scope.newissue.start_date = ""
+      $scope.newissue.due_date = ""
+      $scope.newissue.tracker_id = $scope.trackers[0].id
+      $scope.newissue.priority_id = $scope.priorities[0].id
+      $scope.newissue.assigned_to_id = ""
+      $scope.newissue.estimated_hours = ""
     }
     
     $scope.addIssue = function(){
@@ -138,7 +147,7 @@ var scrum2b = angular.module('issue', []);
         return "Due date must be greater than start date";
       }
     }; 
-    
+
     $scope.editIssue = function(issue){
       $scope.errorDate = '';
       console.log ("params edit issue " + issue.start_date);

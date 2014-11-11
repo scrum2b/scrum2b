@@ -122,6 +122,8 @@
         $('.normal_mode').removeClass('normal_mode');
         $('.sprint_total').find('.s2b_column_4').addClass('width_33');
         $('.add_new_issue').hide();
+        $('.open_sprint_closed').hide();
+        $('.see-detail-sprint').removeClass('padding-see-detail');
         scope.check_height_max_angular();
       })
     }
@@ -139,6 +141,7 @@
         $('.content').find('.sprint_total').removeClass('width_75');
         $('.content').find('.sprint_total').find('.s2b_column_4').removeClass('width_33');
         $('.content').find('.sprint_total').find('.s2b_column_4').removeClass('s2b_column_5');
+        $('.issue_closed').show();
         $('.add_new_issue').hide();
         scope.check_height_max_angular();
       })

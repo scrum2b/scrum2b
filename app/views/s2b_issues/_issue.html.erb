@@ -43,8 +43,9 @@
   </ul>
 </div>
 <div class="content_issue">
-  <span ng-if="issue.assigned_to_id != nil ">
-    <span e-ng-options="member.id as member.firstname for member in members" style="display: inline-block; text-transform: capitalize;">
+
+  <span style="display: inline-block; width: 50%;">
+    <span ng-if="issue.assigned_to_id != nil" e-ng-options="member.id as member.firstname for member in members" style="display: inline-block; text-transform: capitalize;">
      Asigned To: {{( members | filter:{id: issue.assigned_to_id})[0].firstname }}
     </span>
   </span>

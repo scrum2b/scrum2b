@@ -127,16 +127,19 @@ $(document).ready(function(){
   });*/
 
   $("body").on('click', '.closed_issue', function(){
-    $('.content').removeClass('full_mode');
-    $('.content').addClass('basic_mode');
-    $('.content').find('.s2b_column_4').addClass("s2b_column_5");
+    $(this).parent().parent().parent().parent().parent().parent().find('.issue_closed').hide();
+    $(this).parent().parent().parent().parent().parent().parent().find('.s2b_column_4').addClass("s2b_column_5");
+    $(this).parent().parent().parent().parent().parent().parent().find('.open_sprint_closed').show();
+    $(this).parent().parent().parent().parent().parent().parent().find('.see-detail-sprint').addClass('padding-see-detail');
+    
     check_height_max();
   });
 
   $("body").on('click', '.open_sprint_closed', function(){
-    $('.content').removeClass('basic_mode');
-    $('.content').addClass('full_mode');
-    $('.content').find('.s2b_column_4').removeClass("s2b_column_5");
+    $(this).hide();
+    $(this).parent().find('.see-detail-sprint').removeClass('padding-see-detail');
+    $(this).parent().find('.s2b_column_4').removeClass("s2b_column_5");
+    $(this).parent().find('.issue_closed').show();
   });
 
   $("body").on('click', document, function(e){

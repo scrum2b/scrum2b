@@ -2,8 +2,11 @@
 	<h3 class="title_sprint" ng-class="{'title_sprint_active': isActiveVersion(version)}" click-sprint="activeVersion(version)" >
 		{{version.name}} - {{version.effective_date}}
     <span class="quantity_issue" ng-if="isActiveVersion(version)">{{numberIssuesOfVersionActive}}</span> 
-		<a href="/versions/{{version.id}} " target="_blank">See Detail</a>
+		<a href="/versions/{{version.id}} " target="_blank" class="see-detail-sprint" >See Detail</a>
 	</h3>	
+	<div class="open_sprint_closed" >
+    <span><i class="fa fa-angle-left fa-lg pointer_cursor"></i> Closed Column</span>
+  </div>
 	<div class="sprint_1 sprint sprint-active clearfix" ng-class="{'active': isActiveVersion(version)}">
 	  <div class="s2b_column_4 hide_backlog">
 	    <div class="padding_5 ">
@@ -58,20 +61,17 @@
 	  <div class="s2b_column_3 issue_closed" id="issue_closed" ng-class="{hide: showIssueBacklog, show: !showIssueBacklog}">
 	    <div class="padding_5">
 	    	<div class="border_status column_status_close">
-	      <div class="status_sprint">
-	        <span>Close</span>
-	        <span class="closed_issue button"><i class="fa fa-minus-circle"></i>Hide</span> 
-	      </div>
-	      <div class="connectedSortable check_height" status-id="{{statusIds.status_closed}}" version-id="{{version.id}}" id="sortable4" sortable >
-	        <div class="issue ui-state-default small_mode" issue-id="{{issue.id}}" ng-repeat="issue in issuesClose">
-              <%= render :partial => "/s2b_issues/issue" %>
-          </div>
-	      </div><!--end connectedSortable-->  
+		      <div class="status_sprint">
+		        <span>Close</span>
+		        <span class="closed_issue button"><i class="fa fa-minus-circle"></i>Hide</span> 
+		      </div>
+		      <div class="connectedSortable check_height" status-id="{{statusIds.status_closed}}" version-id="{{version.id}}" id="sortable4" sortable >
+		        <div class="issue ui-state-default small_mode" issue-id="{{issue.id}}" ng-repeat="issue in issuesClose">
+	              <%= render :partial => "/s2b_issues/issue" %>
+	          </div>
+		      </div><!--end connectedSortable-->  
 	      </div>
 	    </div><!--end padding 5 -->
 	  </div><!--end sprint 4-->
-	  <div class="open_sprint_closed">
-	    <span><i class="fa fa-angle-left fa-lg pointer_cursor"></i> Close</span>
-	  </div>
 	</div>
 </div>
