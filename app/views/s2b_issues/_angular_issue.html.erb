@@ -154,8 +154,7 @@ var scrum2b = angular.module('issue', []);
               })
 
             }else{
-              console.log (data.result);
-              alert(data.result);
+              alert(data.message);
             }
           }
         );
@@ -171,7 +170,6 @@ var scrum2b = angular.module('issue', []);
       IssueService.deleteIssue(issue).then(
         function(data){
           if (data.result == "success") {
-            console.log ("xoa thanh cong ");
             $scope.allIssues.splice($scope.allIssues.indexOf(issue), 1);
             $scope.getIssues($scope.versionSelected,$scope.memberActiveShow);
           };
@@ -193,7 +191,7 @@ var scrum2b = angular.module('issue', []);
       var id = issue.id
       IssueService.editIssue(issue).then(
         function(data){
-          if (data.result == "update_success") {
+          if (data.result == "update_success" || data.result == "update_success_completed") {
             if(issue.start_date != null && issue.start_date != ""){
               issue.start_date = new Date(Date.parse(issue.start_date));
             }else{
@@ -241,10 +239,12 @@ var scrum2b = angular.module('issue', []);
       var issue = {"id" : curr_issue.id, "fixed_version_id" : version_id}
       IssueService.updateIssue(issue).then(
          function(data){
-          if (data.result == "update_success") {
+          if (data.result == "update_success" || data.result == "update_success_completed") {
             curr_issue.fixed_version_id = version_id;
             $scope.issues.splice($scope.issues.indexOf(curr_issue), 1);
             $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
+          }else{
+            alert(data.message);
           };
          }
       );
@@ -253,12 +253,15 @@ var scrum2b = angular.module('issue', []);
     $scope.drowChangeStatus = function(issue) {
       IssueService.updateIssue(issue).then(
         function(data){
-          curr_issue =  $filter('filter')($scope.allIssues, {id: issue["id"]})[0];
+          curr_issue =  $filter('filter')($scope.issues, {id: issue["id"]})[0];
+          issueInAllIssue = $filter('filter')($scope.allIssues, {id: curr_issue.id})[0];
           if (data.result == "update_success") {
             curr_issue.status_id = issue["status_id"];
+            issueInAllIssue.status_id = issue["status_id"];
           }else if (data.result == "update_success_completed"){
             curr_issue.status_id = issue["status_id"];
             curr_issue.done_ratio = 100;
+            issueInAllIssue.done_ratio = 100;
           }else{
             alert(data.message);
           }
@@ -342,7 +345,7 @@ var scrum2b = angular.module('issue', []);
           if (data.result == "update_success") {
             console.log ("edit comment success");
           }else{
-            alert(data.result);
+            alert(data.message);
           }
         }
       )
@@ -376,7 +379,7 @@ var scrum2b = angular.module('issue', []);
       var issue = {"id" : curr_issue.id, "done_ratio" : curr_issue.progress }
       IssueService.updateIssue(issue).then(
         function(data){
-          if (data.result == "update_success") {
+          if (data.result == "update_success" || data.result == "update_success_completed") {
             curr_issue.done_ratio = curr_issue.progress;
           }else{
             alert(data.message);
