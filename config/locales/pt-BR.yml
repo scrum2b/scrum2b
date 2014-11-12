@@ -1,63 +1,50 @@
 # Portuguese strings go here for Rails i18n
 pt-BR:
+  label_supported_by: "Supported by"
+  label_scrum2b_tool: "Scrum2B Tool"
+  label_version_tool: "Brand: 2-1-stable, desktop only"
+  label_scrumTobe_software: "ScrumTobe Software"
   label_scrum2b: "Scrum2B"
 
-  label_scrum2b_board: "Scrum Board"
-  label_scrum2b_list: "Sprint Backlogs"
-  label_close_all_issues: "Fechar"
-  label_select_issues_all_working: "Todas Tarefas Em Andamento"
-  label_select_issues_my: "Minhas Tarefas"
-  label_select_issues_my_completed: "Minhas tarefas concluídas"
-  label_select_issues_new: "Todas tarefas novas"
-  label_select_issues_completed: "Todas tarefas concluídas"
-  label_select_issues_closed: "Todas tarefas fechadas"
-  label_select_issues_all: "Todas tarefas"
-  
-  label_select_all_versions_working: "Todas sprints Em Andamento" 
-  label_select_all_versions: "Todas Sprints"
-  label_select_backlog: "Backlog" 
-  label_btn_submit_selected: "Filtro"
-  label_group_closed_sprin: "Sprint Fechada"
+  label_filter: "Filter"
 
-  label_head_issue_status: "Status"
-  label_head_issue_subject: "Título"
-  label_head_issue_assignee: "Atribuída"
-  label_head_issue_updated: "Atualizada"
-  label_head_issue_est_time: "Tempo Estimado"
-  label_head_issue_done: "% Realizada"
-  
-  
-  label_version_backlog: "Backlog"
+  label_new_issue: "New issue"
+  label_in_progress: "In Progess"
+  label_resolved: "Resolved"
+  label_close: "Close"
 
-  label_select_all_member: "Todos Membros"
-  label_select_me: "Eu"
-  label_board_status_new: "Novas Tarefas"
-  label_board_status_inprogress: "Em Andamento"
-  label_board_status_completed: "Concluída"
-  
-  label_board_issue_text_close_issue: "Fechar Tarefa"
-  label_board_issue_text_edit_issue: "Editar Tarefa"
-  label_board_issue_time: "Tempo Estimado:"
-  label_board_issue_description: "Descrição"
-  label_board_issue_new_issue: "Nova Tarefa"
-  label_board_edit_btn_submit: "Submeter"
-  label_board_edit_btn_cancel: "Cancelar"
-  label_board_show_detail_issue: "View Detail"
-  label_readmore: "Ler mais"
-  label_hide: "Omitir"
-  
-  label_tracker: "Tipo"
-  label_priority: "Prioridade"
-  label_start_date: "Início"
-  label_end_date: "Término"
+  label_see_detail: "See Detail"
+  label_add: "Add"
+
+  label_all_member: "All Member"
+
+  label_close_colunn: "Closed Column"
+  label_please_choose: "Please Choose"
+
+  label_backlog: "Backlog"
+
+  label_btn_submit: "Submit"
+  label_btn_cancel: "Cancel"
+  label_btn_add: "Add"
+  label_btn_save: "Save"
+  label_hide: "Hide"
+
+  label_file: "File"
+  label_comment: "Comment"
+
+  label_tracker: "Tracker"
+  label_priority: "Priority"
+  label_est_hour: "Est. Hour"
+  label_start_date: "Start"
+  label_due_to: "Due to"
+  label_asigned_to: "Asigned To"
 
   label_sprint: "Sprint"
-  label_me: "<< Eu >>"
-  
-  label_change_sprint: "Mudar Sprint"
-  label_move_issues: "Mover para"
-  label_error_select_issues: "Por favor selecione uma tarefa..."
-  permission_view_issue: "View Issue"
-  label_sure_to_close_issues: "Are you sure to close the issues"
-  label_sure_to_delete_issues: "Are you sure to delete the issues"
-  label_sure_to_delete_notes: "Are you sure to delete the notes"
+
+  label_change_sprint: "Change Sprint"
+  label_change_status: "Change Status"
+  label_view_detail: "View Detail"
+  label_edit: "Edit"
+  label_delete: "Delete"
+
+  label_error_due_date_must_be_greater_than_start_date: "Due date must be greater than start date!"

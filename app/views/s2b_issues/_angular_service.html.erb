@@ -103,44 +103,15 @@ scrum2b.service('IssueService', function($http, $q){
     return( request.then( handleSuccess, handleError ) );
   }
 
-  function editIssue(issue){
+  function updateIssue(issue){
     var request = $http({
       method: "post",
       url: "update",
+      params: {
+        action: "get"
+      },
       data: {
         issue: issue,
-      },
-    });
-    return( request.then( handleSuccess, handleError ) );
-  }
-
-  function updateVersion(issue_id, version_id){
-    var request = $http({
-      method: "post",
-      url: "update_version",
-      params: {
-        action: "get"
-      },
-      data: {
-        id: issue_id,
-        fixed_version_id : version_id,
-        project_id: "<%= @project.id %>"
-      },
-    });
-    return( request.then( handleSuccess, handleError ) );
-  }
-
-  function changeStatus(issue_id, status_id, version_id){
-    var request = $http({
-      method: "post",
-      url: "update_status",
-      params: {
-        action: "get"
-      },
-      data: {
-        id: issue_id,
-        status_id : status_id,
-        fixed_version_id : version_id,
         project_id: "<%= @project.id %>"
       },
     });
@@ -208,47 +179,12 @@ scrum2b.service('IssueService', function($http, $q){
     return( request.then( handleSuccess, handleError ) );
   }
 
-  function updateStatus(id, status_id, version_id){
-    var request = $http({
-      method: "post",
-      url: "update_status",
-      params: {
-        action: "get"
-      },
-      data: {
-        id: id,
-        status_id : status_id,
-        fixed_version_id : version_id,
-        project_id: "<%= @project.id %>"
-      },
-    });
-    return( request.then( handleSuccess, handleError ) );
-  }
-
-  function updateProgress(issue_id, progress){
-    var request = $http({
-      method: "post",
-      url: "update_progress",
-      params: {
-        action: "get"
-      },
-      data: {
-        id: issue_id,
-        done_ratio : progress,
-        project_id: "<%= @project.id %>"
-      },
-    });
-    return( request.then( handleSuccess, handleError ) );
-  }
-
   return {
     list: getData,
     getIssues: getIssues,
     addIssue: addIssue,
     deleteIssue: deleteIssue,
-    editIssue: editIssue,
-    updateVersion: updateVersion,
-    changeStatus: changeStatus,
+    updateIssue: updateIssue,
     getFiles: getFiles,
     deleteFile: deleteFile,
     uploadFile: uploadFile,
@@ -256,8 +192,6 @@ scrum2b.service('IssueService', function($http, $q){
     deleteComment: deleteComment,
     editComment: editComment,
     createComment: createComment,
-    updateProgress: updateProgress,
-    updateStatus: updateStatus,
   }
   
   function handleError ( response ){

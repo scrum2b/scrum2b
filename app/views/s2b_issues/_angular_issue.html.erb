@@ -14,42 +14,42 @@ var scrum2b = angular.module('issue', []);
         var arrayMembers = [];
         $scope.paramsStatusId = '';
         $scope.memberActiveShow = 'all';
-        $scope.statusIds = data.status_ids
-          angular.forEach(data.issues, function(value) {
-            angular.forEach(value, function(value,key) {
-              arrayIssues.push(value);
-            })
+        $scope.statusIds = data.status_ids;
+        angular.forEach(data.issues, function(value) {
+          angular.forEach(value, function(value,key) {
+            arrayIssues.push(value);
           })
-          angular.forEach(data.issues_backlog, function(value) {
-            angular.forEach(value, function(value,key) {
-              arrayIssuesBacklog.push(value);
-            })
+        })
+        angular.forEach(data.issues_backlog, function(value) {
+          angular.forEach(value, function(value,key) {
+            arrayIssuesBacklog.push(value);
           })
-          angular.forEach(data.versions, function(value) {
-            angular.forEach(value, function(value,key) {
-              arrayVersions.push(value);
-            })
+        })
+        angular.forEach(data.versions, function(value) {
+          angular.forEach(value, function(value,key) {
+            arrayVersions.push(value);
           })
-          angular.forEach(data.status, function(value) {
-            angular.forEach(value, function(value,key) {
-              arrayStatus.push(value);
-            })
+        })
+        angular.forEach(data.status, function(value) {
+          angular.forEach(value, function(value,key) {
+            arrayStatus.push(value);
           })
-          angular.forEach(data.tracker, function(value) {
-            angular.forEach(value, function(value,key) {
-              arrayTracker.push(value);
-            })
+        })
+        angular.forEach(data.tracker, function(value) {
+          angular.forEach(value, function(value,key) {
+            arrayTracker.push(value);
           })
-          angular.forEach(data.priority, function(value) {
-            angular.forEach(value, function(value,key) {
-              arrayPriority.push(value);
-            })
+        })
+        angular.forEach(data.priority, function(value) {
+          angular.forEach(value, function(value,key) {
+            arrayPriority.push(value);
           })
-          angular.forEach(data.members, function(value) {
-            angular.forEach(value, function(value,key) {
-              arrayMembers.push(value);
-            })
+        })
+        angular.forEach(data.members, function(value) {
+          angular.forEach(value, function(value,key) {
+            arrayMembers.push(value);
           })
+        })
 
         $scope.versions = arrayVersions;
         $scope.issues = arrayIssues;
@@ -63,185 +63,9 @@ var scrum2b = angular.module('issue', []);
         arrayVersionLoaded.push(arrayVersions[0].id);
         $scope.versionsLoaded = arrayVersionLoaded;
         $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
-        $scope.showIssueBacklog = false
+        $scope.showIssueBacklog = false;
       }
     );
-    
-    $scope.activeShowIssueBacklog = function(){
-      $scope.showIssueBacklog = true
-    }
-
-    $scope.hideBacklog = function(){
-      $scope.showIssueBacklog = false
-    }
-
-    $scope.activeVersion = function(version){
-      $scope.getIssues(version,$scope.memberActiveShow);
-      //set active or unactive version
-      $scope.setUnActiveVersion(version);
-    }
-    
-    $scope.setParamsAddIssue = function(status_id,version_id){
-      $scope.paramsStatusId = status_id
-      $scope.paramsVersionId = version_id
-
-      $scope.newissue.subject = ""
-      $scope.newissue.description = ""
-      $scope.newissue.start_date = ""
-      $scope.newissue.due_date = ""
-      $scope.newissue.tracker_id = $scope.trackers[0].id
-      $scope.newissue.priority_id = $scope.priorities[0].id
-      $scope.newissue.assigned_to_id = ""
-      $scope.newissue.estimated_hours = ""
-    }
-    
-    $scope.addIssue = function(){
-      $scope.newissue.start_date = $filter('date')($scope.newissue.start_date, "yyyy-MM-dd");
-      $scope.newissue.due_date = $filter('date')($scope.newissue.due_date, "yyyy-MM-dd");
-      $scope.newissue.status_id = $scope.paramsStatusId;
-      $scope.newissue.fixed_version_id = $scope.paramsVersionId;
-
-      if($scope.newissue.start_date > $scope.newissue.due_date){
-        $scope.errorDateAddNew = "Due date must be greater than start date"
-        return "Due date must be greater than start date"
-      }else{
-        IssueService.addIssue($scope.newissue).then(
-          function(data){
-            if(data.result == 'create_success'){
-              angular.forEach(data.issue, function(value) {
-                if(value.fixed_version_id == null){
-                  $scope.issuesBacklog.unshift(value);
-                }else{
-                  $scope.allIssues.unshift(value);
-                  console.log ("issue new add  " + value.assigned_to_id);
-                  $scope.getIssues($scope.versionSelected,$scope.memberActiveShow);
-                }
-                $('.add_new_issue').hide();
-              })
-            }else{
-              console.log (data.result);
-              alert(data.result);
-            }
-          }
-        );
-      }
-      $('.form_add_new_issue').trigger("reset");
-      $scope.check_height_max_angular();
-    };
-
-    $scope.deleteIssue = function(issue) {
-      IssueService.deleteIssue(issue).then(
-        function(data){
-          if (data.result == "success") {
-            console.log ("xoa thanh cong ");
-            $scope.allIssues.splice($scope.allIssues.indexOf(issue), 1);
-            $scope.getIssues($scope.versionSelected,$scope.memberActiveShow);
-          };
-        }
-      );
-    };
-    
-    $scope.checkParamsEditIssue = function(data) {
-      if ($filter('date')(data.start_date, "yyyy-MM-dd") > $filter('date')(data.due_date, "yyyy-MM-dd")) {
-        $scope.errorDate =  "Due date must be greater than start date";
-        return "Due date must be greater than start date";
-      }
-    }; 
-
-    $scope.editIssue = function(issue){
-      $scope.errorDate = '';
-      console.log ("params edit issue " + issue.start_date);
-      issue.start_date = $filter('date')(issue.start_date, "yyyy-MM-dd") || null;
-      issue.due_date = $filter('date')(issue.due_date, "yyyy-MM-dd") || null;
-      IssueService.editIssue(issue).then(
-        function(data){
-          if (data.result == "edit_success") {
-            if(issue.start_date != null && issue.start_date != ""){
-              issue.start_date = new Date(Date.parse(issue.start_date));
-            }else{
-              issue.start_date = null
-            }
-            if(issue.due_date != null && issue.due_date != ""){
-              issue.due_date = new Date(Date.parse(issue.due_date));
-            }else{
-              issue.due_date = null
-            }
-            $scope.getIssues($scope.versionSelected,$scope.memberActiveShow);
-            var id = issue.id
-            $(".from_edit_issue_" + id ).hide();
-            $('.issue_' + id).show();
-          }else{
-            console.log (data.result);
-          }
-        }
-      );
-    };
-    
-    $scope.filterIssues = function(){
-      if(!angular.isUndefined($scope.filterversion)){
-        $scope.versionFiltered = $filter('filter')($scope.versions, {id: angular.fromJson($scope.filterversion).id})[0];
-        console.log ($scope.versionSelected === $scope.versionFiltered);
-        $scope.versionSelected = $scope.versionFiltered;
-      }
-      if(!angular.isUndefined($scope.filtermember)){
-        if($scope.filtermember == 'all'){
-          $scope.memberActiveShow = 'all';
-        }else{
-          $scope.memberActiveShow = angular.fromJson($scope.filtermember).id;
-        }
-      }else{
-        $scope.memberActiveShow = $scope.memberActiveShow;
-      }
-      $scope.getIssues($scope.versionSelected,$scope.memberActiveShow);
-    };
-    
-    $scope.updateVersion = function(issue, version_id) {
-      console.log ("updateVersion")
-      IssueService.updateVersion(issue.id,version_id).then(
-         function(data){
-          if (data.result == "update_success") {
-            $scope.issues.splice($scope.issues.indexOf(issue), 1);
-            $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
-            issue.fixed_version_id = version_id;
-          };
-         }
-      );
-    };
-
-    $scope.updateStatus = function(issue_id, status_id, version_id) {
-      IssueService.updateStatus(issue_id, status_id, version_id).then(
-        function(data){
-          issue =  $filter('filter')($scope.allIssues, {id: issue_id})[0];
-          if (data.result == "update_success") {
-            issue.status_id = status_id;
-          }else if (data.result == "update_success_completed"){
-            issue.status_id = status_id;
-            issue.done_ratio = 100;
-          }else{
-            alert(data.result);
-          }
-        }
-      )
-    };
-    
-    $scope.changeStatus = function(issue, status_id, version_id) {
-      console.log ("changeStatus");
-      IssueService.changeStatus(issue.id,status_id, version_id).then(
-         function(data){
-          issue.status_id = status_id;
-          if (data.result == "update_success") {
-            issue.status_id = status_id;
-          }else if (data.result == "update_success_completed") {
-            issue.status_id = status_id;
-            issue.done_ratio = 100;
-          }else{
-            alert(data.result);
-          }
-          $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
-          $scope.check_height_max_angular();
-         }
-      );
-    };
     
     $scope.getIssues = function(version, member_id){
       var indexOfVersion  = $scope.versionsLoaded.indexOf(version.id)
@@ -273,9 +97,193 @@ var scrum2b = angular.module('issue', []);
         )
       }
     }
+
+    $scope.activeShowIssueBacklog = function(){
+      $scope.showIssueBacklog = true
+    }
+
+    $scope.hideBacklog = function(){
+      $scope.showIssueBacklog = false
+    }
+
+    $scope.activeVersion = function(version){
+      $scope.getIssues(version,$scope.memberActiveShow);
+      //set active or unactive version
+      $scope.setUnActiveVersion(version);
+    }
+    
+    $scope.setParamsAddIssue = function(status_id,version_id){
+      $scope.paramsStatusId = status_id
+      $scope.paramsVersionId = version_id
+
+      $scope.newissue.subject = ""
+      $scope.newissue.description = ""
+      $scope.newissue.start_date = ""
+      $scope.newissue.due_date = ""
+      $scope.newissue.tracker_id = $scope.trackers[0].id
+      $scope.newissue.priority_id = $scope.priorities[0].id
+      $scope.newissue.assigned_to_id = ""
+      $scope.newissue.estimated_hours = ""
+      $('.submit_issue').show();
+      $('.cancel_add_issue').show();
+      $('.add-loader').hide();
+    }
+    
+    $scope.addIssue = function(){
+      $scope.newissue.start_date = $filter('date')($scope.newissue.start_date, "yyyy-MM-dd");
+      $scope.newissue.due_date = $filter('date')($scope.newissue.due_date, "yyyy-MM-dd");
+      $scope.newissue.status_id = $scope.paramsStatusId;
+      $scope.newissue.fixed_version_id = $scope.paramsVersionId;
+
+      if($scope.newissue.start_date > $scope.newissue.due_date){
+        alert("<%= l(:label_error_due_date_must_be_greater_than_start_date) %>")
+        return "Due date must be greater than start date"
+      }else{
+        IssueService.addIssue($scope.newissue).then(
+          function(data){
+            if(data.result == 'create_success'){
+              angular.forEach(data.issue, function(value) {
+                if(value.fixed_version_id == null){
+                  $scope.issuesBacklog.unshift(value);
+                }else{
+                  $scope.allIssues.unshift(value);
+                  $scope.getIssues($scope.versionSelected,$scope.memberActiveShow);
+                }
+                $('.add_new_issue').hide();
+              })
+            }else{
+              alert(data.message);
+            }
+          }
+        );
+        $('.submit_issue').hide();
+        $('.cancel_add_issue').hide();
+        $('.add-loader').show();
+        $('.form_add_new_issue').trigger("reset");
+        $scope.check_height_max_angular();
+      }
+    };
+
+    $scope.deleteIssue = function(issue) {
+      IssueService.deleteIssue(issue).then(
+        function(data){
+          if (data.result == "success") {
+            $scope.allIssues.splice($scope.allIssues.indexOf(issue), 1);
+            $scope.getIssues($scope.versionSelected,$scope.memberActiveShow);
+          };
+        }
+      );
+    };
+    
+    $scope.checkParamsEditIssue = function(data) {
+      if ($filter('date')(data.start_date, "yyyy-MM-dd") > $filter('date')(data.due_date, "yyyy-MM-dd")) {
+        alert("<%= l(:label_error_due_date_must_be_greater_than_start_date) %>");
+        return "Due date must be greater than start date";
+      }
+    }; 
+
+    $scope.editIssue = function(issue){
+      issue.start_date = $filter('date')(issue.start_date, "yyyy-MM-dd") || null;
+      issue.due_date = $filter('date')(issue.due_date, "yyyy-MM-dd") || null;
+      var id = issue.id
+      IssueService.updateIssue(issue).then(
+        function(data){
+          if (data.result == "update_success" || data.result == "update_success_completed") {
+            if(issue.start_date != null && issue.start_date != ""){
+              issue.start_date = new Date(Date.parse(issue.start_date));
+            }else{
+              issue.start_date = null
+            }
+            if(issue.due_date != null && issue.due_date != ""){
+              issue.due_date = new Date(Date.parse(issue.due_date));
+            }else{
+              issue.due_date = null
+            }
+            $scope.getIssues($scope.versionSelected,$scope.memberActiveShow);
+            $(".from_edit_issue_" + id ).hide();
+            $('.issue_' + id).show();
+
+          }else{
+            alert(data.message);
+          }
+        }
+      );
+      $('.submit_edit_issue_' + id ).hide();
+      $('.cancel_edit_issue_' + id ).hide();
+      $('.edit_loader_' + id ).show();
+    };
+    
+    $scope.filterIssues = function(){
+      if(!angular.isUndefined($scope.filterversion)){
+        $scope.versionFiltered = $filter('filter')($scope.versions, {id: angular.fromJson($scope.filterversion).id})[0];
+        console.log ($scope.versionSelected === $scope.versionFiltered);
+        $scope.versionSelected = $scope.versionFiltered;
+      }
+      if(!angular.isUndefined($scope.filtermember)){
+        if($scope.filtermember == 'all'){
+          $scope.memberActiveShow = 'all';
+        }else{
+          $scope.memberActiveShow = angular.fromJson($scope.filtermember).id;
+        }
+      }else{
+        $scope.memberActiveShow = $scope.memberActiveShow;
+      }
+      $scope.getIssues($scope.versionSelected,$scope.memberActiveShow);
+    };
+    
+    $scope.updateVersion = function(curr_issue, version_id) {
+      var issue = {"id" : curr_issue.id, "fixed_version_id" : version_id}
+      IssueService.updateIssue(issue).then(
+         function(data){
+          if (data.result == "update_success" || data.result == "update_success_completed") {
+            curr_issue.fixed_version_id = version_id;
+            $scope.issues.splice($scope.issues.indexOf(curr_issue), 1);
+            $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
+          }else{
+            alert(data.message);
+          };
+         }
+      );
+    };
+
+    $scope.drowChangeStatus = function(issue) {
+      IssueService.updateIssue(issue).then(
+        function(data){
+          curr_issue =  $filter('filter')($scope.issues, {id: issue["id"]})[0];
+          issueInAllIssue = $filter('filter')($scope.allIssues, {id: curr_issue.id})[0];
+          if (data.result == "update_success") {
+            curr_issue.status_id = issue["status_id"];
+            issueInAllIssue.status_id = issue["status_id"];
+          }else if (data.result == "update_success_completed"){
+            curr_issue.status_id = issue["status_id"];
+            curr_issue.done_ratio = 100;
+            issueInAllIssue.done_ratio = 100;
+          }else{
+            alert(data.message);
+          }
+        }
+      )
+    };
+    
+    $scope.changeStatus = function(curr_issue, status_id, version_id) {
+      var issue = {"id" : curr_issue.id, "status_id" : status_id, "fixed_version_id" : version_id}
+      IssueService.updateIssue(issue).then(
+         function(data){
+          if (data.result == "update_success") {
+            curr_issue.status_id = status_id;
+          }else if (data.result == "update_success_completed") {
+            curr_issue.status_id = status_id;
+            curr_issue.done_ratio = 100;
+          }else{
+            alert(data.message);
+          }
+          $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
+          $scope.check_height_max_angular();
+         }
+      );
+    };
     
     $scope.getFiles = function(issue){
-      console.log ("issue "+ issue.id)
       IssueService.getFiles(issue).then(
          function(data){
            issue.attachments = [];
@@ -333,7 +341,7 @@ var scrum2b = angular.module('issue', []);
           if (data.result == "update_success") {
             console.log ("edit comment success");
           }else{
-            alert(data.result);
+            alert(data.message);
           }
         }
       )
@@ -363,14 +371,14 @@ var scrum2b = angular.module('issue', []);
       return $filter('filter')($scope.members, {id: author_id})[0].firstname;
     }
     
-    $scope.updateProgress = function(issue){
-      IssueService.updateProgress(issue.id,issue.progress).then(
+    $scope.updateProgress = function(curr_issue){
+      var issue = {"id" : curr_issue.id, "done_ratio" : curr_issue.progress }
+      IssueService.updateIssue(issue).then(
         function(data){
-          if (data.result == "update_success") {
-            issue =  $filter('filter')($scope.allIssues, {id: issue.id})[0];
-            issue.done_ratio = issue.progress;
+          if (data.result == "update_success" || data.result == "update_success_completed") {
+            curr_issue.done_ratio = curr_issue.progress;
           }else{
-            alert(data.result);
+            alert(data.message);
           }
         }
       )

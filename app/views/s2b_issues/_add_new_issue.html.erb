@@ -3,7 +3,6 @@
 		<form ng-submit="addIssue()" class="form_add_new_issue">
 		  <input type="hidden" ng-init="newissue.project_id=<%= @project.id %>" >
 		  <input type="hidden" ng-init="newissue.author_id=<%= User.current.id %>" >
-		  <span style="color:red;font-weight:100">{{errorDateAddNew}}</span>
 			<table >
 				<tr>
 					<td colspan="2" style="display: block; width: 100%; " ><input type="text" ng-model="newissue.subject" class="title_issue" placeholder="Enter Issue Subject" required></td>
@@ -15,42 +14,45 @@
 				</tr>
 				<tr style="display: inline-flex; width: 100%;">
 					<td>
-						<span>Tracker:</span>
+						<span><%= l(:label_tracker) %>:</span>
 						<select class="value_content" ng-model="newissue.tracker_id" ng-options="tracker.id as tracker.name for tracker in trackers" ng-init="newissue.tracker_id = trackers[0].id">
 						</select>
 					</td>
 					<td>
-						<span style="padding-left: 4px">Priority:</span>
+						<span style="padding-left: 4px"><%= l(:label_priority) %>:</span>
 						<select class="value_content" ng-model="newissue.priority_id" ng-options="priority.id as priority.name for priority in priorities" ng-init="newissue.priority_id = priorities[0].id">
 						</select>
 					</td>
 				</tr>
 				<tr style="display: inline-flex; width: 100%;">
 					<td>
-						<span>Asigned To:</span>
+						<span><%= l(:label_asigned_to) %>:</span>
 						<select class="value_content" ng-model="newissue.assigned_to_id" ng-options="member.id as member.firstname for member in members">
-						  <option value="" selected="">Please Choose</option>
+						  <option value="" selected=""><%= l(:label_please_choose) %></option>
 						</select>
 					</td>
 					<td>
-						<span style="padding-left: 4px">Est.H:</span>
+						<span style="padding-left: 4px"><%= l(:label_est_hour) %>:</span>
 						<input type="number" ng-model="newissue.estimated_hours" class="time" placeholder="Hour">
 					</td>
 				</tr>
 				<tr style="display: inline-flex; width: 100%;">
 					<td>
-						<span>Start:</span>
+						<span><%= l(:label_start_date) %>:</span>
 						<input type="date" ng-model="newissue.start_date" class="begin" >
 					</td>
 					<td>
-						<span style="padding-left: 4px"> Due to:</span>
+						<span style="padding-left: 4px"><%= l(:label_due_to) %>:</span>
 						<input type="date" ng-model="newissue.due_date" class="end" >
 					</td>
 				</tr>
-				<tr >
-					<td colspan="2">
-						<input type="submit" class="submit_issue" value="Add" >
-						<input type="button" class="cancel_add_issue" value="Cancel">
+				<tr>
+					<td colspan="2" style="display: inline-block; width: 100%;" >
+						<input type="submit" class="submit_issue" value="<%= l(:label_btn_add) %>" >
+						<input type="button" class="cancel_add_issue" value="<%= l(:label_btn_cancel) %>">
+						<p class="text-center add-loader hide">
+							<%= image_tag('bx_loader.gif', :plugin => 'scrum2b', :style => 'width: 20px;') %>
+						</p>
 					</td>
 				</tr>
 			</table>
