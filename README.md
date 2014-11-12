@@ -1,13 +1,16 @@
 SUMMARY
 -------
 
-**Scrum2B Tool** (www.scrum2b.com) is a Project Management application, developed by ScrumTobe Team (www.scrumtobe.com), is an Opensource - plugin of Redmine (www.redmine.org) and free to use in Scrum/Agile projects for Software development.
+[![Build Status](https://travis-ci.org/scrum2b/scrum2b.png)](https://travis-ci.org/scrum2b/scrum2b)
+[![Code Climate](https://codeclimate.com/github/scrum2b/scrum2b.png)](https://codeclimate.com/github/scrum2b/scrum2b)
+[![Coverage Status](https://coveralls.io/repos/scrum2b/scrum2b/badge.png?branch=master)](https://coveralls.io/r/scrum2b/scrum2b)
+[![Dependency Status](https://gemnasium.com/scrum2b/scrum2b.png?travis)](https://gemnasium.com/scrum2b/scrum2b)
 
-**NOTE: we are developing the new UX/UI styles for Scrum2B Tool at:** https://github.com/scrum2b/scrum2b-mockup 
+**Scrum2B Tool** (www.scrum2b.com) is a Project Management application, developed by ScrumTobe Team (www.scrumtobe.com), is an Opensource - plugin of Redmine (www.redmine.org) and free to use in Scrum/Agile projects for Software development.
 
 **You could see the demo version at:**
 - *http://scrum2b.com/projects/scrum2b-demo*
-- *http://scrum2b.com/s2b_boards/index?project_id=scrum2b-demo*
+- *http://scrum2b.com/s2b_issues/index?project_id=scrum2b-demo*
 
 (Please login with username/password: **demo/demo1234** to get more detail how Scrum2B works)
 

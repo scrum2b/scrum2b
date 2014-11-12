@@ -16,7 +16,7 @@ class S2bCommentsController < S2bApplicationController
     if @comment.present? && @comment.destroy
       render :json => {result: "success"}
     else
-      render :json => {result: "error", message: comment.errors.full_messages}
+      render :json => {result: "error", message: @comment.errors.full_messages}
     end
   end
   
@@ -32,18 +32,5 @@ class S2bCommentsController < S2bApplicationController
     #TODO: need to implement this action
     render :json => {result: "draft_action"}
   end
-
-  private
-
-    def set_issue
-      issue_id = params[:issue_id] || params[:id] || (params[:issue] && params[:issue][:id]) || (params[:issue] && params[:issue][:issue_id])
-      #TODO: check permission for this issue's instance with @hierarchy_projects
-      @issue = Issue.find(issue_id) rescue nil
-    end
-    
-    def set_comment
-      #TODO: check permission for this comment's instance with @hierarchy_projects
-      @comment = Journal.find(params[:id])
-    end
 
 end

@@ -45,9 +45,9 @@
           var statusID = $('.move_issue').parent().attr('status-id');
           var versionID = $('.move_issue').parent().attr('version-id');
           $('.move_issue').removeClass('move_issue');
-
+          var issue = {"id" : issueID, "status_id" : statusID, "fixed_version_id" : versionID}
           if(statusID){
-            scope.updateStatus(issueID,statusID,versionID);
+            scope.drowChangeStatus(issue);
             scope.sortStop(issueID,statusID,versionID);
           }
           if( div_start == "sortable_backlog" || div_end == "sortable_backlog"){
