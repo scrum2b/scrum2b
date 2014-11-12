@@ -7,7 +7,6 @@
     </p>
     <%= render :partial => "s2b_issues/add_new_issue" %>
     <div class="connectedSortable" status-id="{{statusIds.status_no_start}}" version-id="" id="sortable_backlog" sortable >
-      
       <div class="issue ui-state-default mini_mode" issue-id="{{issue.id}}" ng-repeat="issue in issuesBacklog" >
         <%= render :partial => "/s2b_issues/issue" %>
       </div>

@@ -14,42 +14,42 @@ var scrum2b = angular.module('issue', []);
         var arrayMembers = [];
         $scope.paramsStatusId = '';
         $scope.memberActiveShow = 'all';
-        $scope.statusIds = data.status_ids
-          angular.forEach(data.issues, function(value) {
-            angular.forEach(value, function(value,key) {
-              arrayIssues.push(value);
-            })
+        $scope.statusIds = data.status_ids;
+        angular.forEach(data.issues, function(value) {
+          angular.forEach(value, function(value,key) {
+            arrayIssues.push(value);
           })
-          angular.forEach(data.issues_backlog, function(value) {
-            angular.forEach(value, function(value,key) {
-              arrayIssuesBacklog.push(value);
-            })
+        })
+        angular.forEach(data.issues_backlog, function(value) {
+          angular.forEach(value, function(value,key) {
+            arrayIssuesBacklog.push(value);
           })
-          angular.forEach(data.versions, function(value) {
-            angular.forEach(value, function(value,key) {
-              arrayVersions.push(value);
-            })
+        })
+        angular.forEach(data.versions, function(value) {
+          angular.forEach(value, function(value,key) {
+            arrayVersions.push(value);
           })
-          angular.forEach(data.status, function(value) {
-            angular.forEach(value, function(value,key) {
-              arrayStatus.push(value);
-            })
+        })
+        angular.forEach(data.status, function(value) {
+          angular.forEach(value, function(value,key) {
+            arrayStatus.push(value);
           })
-          angular.forEach(data.tracker, function(value) {
-            angular.forEach(value, function(value,key) {
-              arrayTracker.push(value);
-            })
+        })
+        angular.forEach(data.tracker, function(value) {
+          angular.forEach(value, function(value,key) {
+            arrayTracker.push(value);
           })
-          angular.forEach(data.priority, function(value) {
-            angular.forEach(value, function(value,key) {
-              arrayPriority.push(value);
-            })
+        })
+        angular.forEach(data.priority, function(value) {
+          angular.forEach(value, function(value,key) {
+            arrayPriority.push(value);
           })
-          angular.forEach(data.members, function(value) {
-            angular.forEach(value, function(value,key) {
-              arrayMembers.push(value);
-            })
+        })
+        angular.forEach(data.members, function(value) {
+          angular.forEach(value, function(value,key) {
+            arrayMembers.push(value);
           })
+        })
 
         $scope.versions = arrayVersions;
         $scope.issues = arrayIssues;
@@ -63,7 +63,7 @@ var scrum2b = angular.module('issue', []);
         arrayVersionLoaded.push(arrayVersions[0].id);
         $scope.versionsLoaded = arrayVersionLoaded;
         $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
-        $scope.showIssueBacklog = false
+        $scope.showIssueBacklog = false;
       }
     );
     
