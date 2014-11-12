@@ -41,7 +41,9 @@
   .padding-see-detail {
     padding-right: 110px;
   }
-
+  .text-center {
+    text-align: center;
+  }
   .padding_5 {
     padding: 5px;
   }
@@ -91,11 +93,10 @@
     float: right;
     border: 1px;
     line-height: 20px !important;
-    padding: 1px 4px;
+    padding: 1px 6px;
     margin: 3px 5px;
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#9cc3e8), to(#275888));
     font-size: 14px !important;
-    width: 50px !important;
     text-align: center;
   }
   .button i { margin-right: 4px; }
@@ -119,7 +120,7 @@
   .filter .filter_right ul li select,.filter .filter_right ul li input  {border-radius: 2px; height: 20px;padding: 0 5px;border: none}
   {border-radius: 2px; height: 20px;padding: 0 5px}
 
-  .icon_backlog {cursor: pointer; background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#9cc3e8), to(#275888)); line-height: 15px; padding: 5px 5px; margin: 0px 6px; display: block; width: 70px; margin: 5px; color: #ebebeb; font-size: 14px; font-weight: bold; text-align: center;}
+  .icon_backlog {cursor: pointer; background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#9cc3e8), to(#275888)); line-height: 15px; padding: 5px 10px; margin: 0px 6px; display: inline-block; margin: 5px; color: #ebebeb; font-size: 14px; font-weight: bold; text-align: center;}
   .icon_backlog i {margin-left: 4px;}
   .message { width: 30%; height: 100px; text-align: center; position: fixed; top: 10px; left: 440px; z-index: 1001;background: #C18888; opacity: 0.5;}
   .message span { position: fixed; top: 13px; z-index: 1010; left: 808px;  }

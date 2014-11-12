@@ -16,7 +16,7 @@ class S2bFilesController < S2bApplicationController
     if @attachment.present? && @attachment.destroy
       render :json => {:result => "success"}
     else
-      render :json => {result: "error", message: comment.errors.full_messages}
+      render :json => {result: "error", message: @attachment.errors.full_messages}
     end
   end
   
@@ -25,18 +25,5 @@ class S2bFilesController < S2bApplicationController
       render :json => {:result => "success"}
     end
   end
-
-  private
-
-    def set_issue
-      issue_id = params[:issue_id] || params[:id] || (params[:issue] && params[:issue][:id]) || (params[:issue] && params[:issue][:issue_id])
-      #TODO: check permission for this issue's instance with @hierarchy_projects
-      @issue = Issue.find(issue_id) rescue nil
-    end
-
-    def set_attachment
-      #TODO: check permission for this comment's instance with @hierarchy_projects
-      @attachment = Attachment.find(params[:file_id])
-    end
 
 end

@@ -21,8 +21,9 @@
   <div class="content full_mode" ng-controller="BoardsCtrl" >
   	<div class="filter" >
       <div class="filter_left">
-        <h3><a style="color: white;" href="https://github.com/scrum2b/scrum2b/tree/2-1-stable" target="_blank">Scrum2B Tool</a> (Brand: 2-1-stable, desktop only)</h3>
-        <p>Supported by <a style="color: white;" href="http://www.scrumtobe.com" target="_blank">ScrumTobe Software</a></p>
+        <h3><a style="color: white;" href="https://github.com/scrum2b/scrum2b/tree/2-1-stable" target="_blank"><%=l(:label_scrum2b_tool)%></a> ( <%=l(:label_version_tool)%> )</h3>
+        <p><%=l(:label_supported_by)%> <a style="color: white;" href="http://www.scrumtobe.com" target="_blank"><%=l(:label_scrumTobe_software)%></a></p>
+
       </div>
 
 	    <div class="filter_right">
@@ -35,18 +36,18 @@
 	        </li>
 	        <li>
 	          <select name="select_member" id="select_member" ng-model='filtermember'>
-	            <option value="all" ng-selected="memberActiveShow == 'all'" ><%= l(:label_select_all_member)%></option>
+	            <option value="all" ng-selected="memberActiveShow == 'all'" ><%= l(:label_all_member)%></option>
 	            <option ng-repeat="member in members" value=" {{ member}}" ng-selected="memberActiveShow==member.id">{{ member.firstname }}</option>
 	          </select>
 	        </li>
 	        <li>
-	        	<input type="submit" value="Search">
+	        	<input type="submit" value="<%= l(:label_filter) %>">
 	        </li>
 	      </ul>
 	      </form>
 	    </div>
 	  </div> <!--end filter-->
-	  <span class="icon_backlog" active-show-backlog="activeShowIssueBacklog()">Backlog<i class="fa fa-angle-right fa-lg"></i></span>
+	  <span class="icon_backlog" active-show-backlog="activeShowIssueBacklog()"><%= l(:label_backlog) %><i class="fa fa-angle-right fa-lg"></i></span>
 	  
 	  <!-- Backlog -->
 	  <%= render :partial => "s2b_issues/backlog" %>

@@ -8,18 +8,18 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="display: block; width: 100%;">
-				  <span editable-textarea="issue.description" e-name="description" e-rows="5" placeholder='enter username' >{{ issue.description || 'empty' }}</span>
+				  <span style="white-space: pre;" editable-textarea="issue.description" e-name="description" e-rows="5" placeholder='enter username' >{{ issue.description || 'empty' }}</span>
 				</td>
 			</tr>
 			<tr style="display: inline-flex; width: 100%;">
 				<td>
-					<span>Tracker:</span>
+					<span><%= l(:label_tracker) %>:</span>
 					<span editable-select="issue.tracker_id" e-name="tracker_id" e-ng-options="tracker.id as tracker.name for tracker in trackers">
             {{ (trackers | filter:{id: issue.tracker_id})[0].name || 'Not set' }}
           </span>
 				</td>
 				<td>
-					<span style="padding-left: 4px" >Priority:</span>
+					<span style="padding-left: 4px" ><%= l(:label_priority) %>:</span>
 					<span class="value_content" editable-select="issue.priority_id" e-name="priority_id" e-ng-options="priority.id as priority.name for priority in priorities">
             {{ (priorities | filter:{id: issue.priority})[0].name || 'Not set' }}
           </span>
@@ -27,31 +27,34 @@
 			</tr>
 			<tr style="display: inline-flex; width: 100%;">
 				<td>
-					<span>Asigned To:</span>
+					<span><%= l(:label_asigned_to) %>:</span>
 					<span class="value_content" editable-select="issue.assigned_to_id" e-name="assigned_to_id" e-ng-options="member.id as member.firstname for member in members">
             {{ (members | filter:{id: issue.member})[0].firstname || 'Not set' }}
           </span>
 				</td>
 				<td class="estimated_hours">
-					<span style="padding-left: 4px">Est. Hour:</span>
+					<span style="padding-left: 4px"><%= l(:label_est_hour) %>:</span>
 					<span editable-text="issue.estimated_hours" e-name="estimated_hours">{{ issue.estimated_hours || 'empty' }}</span>
 					
 				</td>
 			</tr>
 			<tr style="display: inline-flex; width: 100%;" >
 				<td>
-					<span>Start: </span>
+					<span><%= l(:label_start_date) %>: </span>
 					<input type="date" ng-model="issue.start_date" value="{{ issue.start_date | date: 'yyyy-MM-dd' }}" class="start_date"/>
 				</td>
 				<td>
-					<span style="padding-left: 4px">Due to:</span>
+					<span style="padding-left: 4px"><%= l(:label_due_to) %>:</span>
 					<input type="date" ng-model="issue.due_date" value="{{ issue.due_date | date: 'yyyy-MM-dd' }}" class="due_date"/>					
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">
-					<input type="submit" class="submit_edit_issue" issue_id='{{issue.id}}' ng-disabled="editableForm.$waiting" value="Save">
-					<input type="button" class="cancel_edit_issue" issue_id='{{issue.id}}' ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()" value="Cancel">
+				<td colspan="2"style="display: inline-block; width: 100%;" >
+					<input type="submit" class="submit_edit_issue submit_edit_issue_{{issue.id}}" issue_id='{{issue.id}}' ng-disabled="editableForm.$waiting" value="<%= l(:label_btn_save) %>">
+					<input type="button" class="cancel_edit_issue cancel_edit_issue_{{issue.id}}" issue_id='{{issue.id}}' ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()" value="<%= l(:label_btn_cancel) %>">
+					<p class="text-center edit_loader_{{issue.id}} hide">
+							<%= image_tag('bx_loader.gif', :plugin => 'scrum2b', :style => 'width: 20px;') %>
+					</p>
 				</td>
 			</tr>
 		</table>

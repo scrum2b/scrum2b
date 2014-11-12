@@ -37,6 +37,9 @@ $(document).ready(function(){
     $('.from_edit_issue').find('input[name="subject"]') .attr('placeholder','Enter Issue Subject');
     $('.from_edit_issue').find('textarea[name="description"]') .attr('placeholder','Enter Issue Description');
     var id = $(this).attr("issue_id");
+    $('.submit_edit_issue_' + id ).show();
+    $('.cancel_edit_issue_' + id ).show();
+    $('.edit_loader_' + id ).hide();
     $(".from_edit_issue_" + id).show();
     $('.issue_' + id).hide();
     check_height_max();

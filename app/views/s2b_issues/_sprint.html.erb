@@ -2,18 +2,18 @@
 	<h3 class="title_sprint" ng-class="{'title_sprint_active': isActiveVersion(version)}" click-sprint="activeVersion(version)" >
 		{{version.name}} - {{version.effective_date}}
     <span class="quantity_issue" ng-if="isActiveVersion(version)">{{numberIssuesOfVersionActive}}</span> 
-		<a href="/versions/{{version.id}} " target="_blank" class="see-detail-sprint" >See Detail</a>
+		<a href="/versions/{{version.id}} " target="_blank" class="see-detail-sprint" ><%= l(:label_see_detail)%></a>
 	</h3>	
 	<div class="open_sprint_closed" >
-    <span><i class="fa fa-angle-left fa-lg pointer_cursor"></i> Closed Column</span>
+    <span><i class="fa fa-angle-left fa-lg pointer_cursor"></i> <%= l(:label_close_colunn) %></span>
   </div>
 	<div class="sprint_1 sprint sprint-active clearfix" ng-class="{'active': isActiveVersion(version)}">
 	  <div class="s2b_column_4 hide_backlog">
 	    <div class="padding_5 ">
 	      <div class="border_status column_status_new">
 	        <div class="status_sprint">
-	          <span>New Issue</span>
-	          <span class="icon_add_issue button" add-new-issue="setParamsAddIssue(statusIds.status_no_start,version.id)"><i class="fa fa-plus-circle"></i>Add</span>
+	          <span><%= l(:label_new_issue) %></span>
+	          <span class="icon_add_issue button" add-new-issue="setParamsAddIssue(statusIds.status_no_start,version.id)"><i class="fa fa-plus-circle"></i><%= l(:label_add) %></span>
 	        </div>
 	        <!-- add new issue -->
 	        <%= render :partial => "/s2b_issues/add_new_issue" %> 
@@ -31,8 +31,8 @@
 	    <div class="padding_5">
 	    	<div class="border_status column_status_in_progess">
 	        <div class="status_sprint">
-	          <span>In Progess</span>
-	          <span class="icon_add_issue button" add-new-issue="setParamsAddIssue(statusIds.status_inprogress,version.id)"><i class="fa fa-plus-circle"></i>Add</span>
+	          <span><%= l(:label_in_progress) %></span>
+	          <span class="icon_add_issue button" add-new-issue="setParamsAddIssue(statusIds.status_inprogress,version.id)"><i class="fa fa-plus-circle"></i><%= l(:label_add) %></span>
 	        </div>
 	        <%= render :partial => "/s2b_issues/add_new_issue" %>
 	        <div class="connectedSortable check_height" status-id="{{statusIds.status_inprogress}}" version-id="{{version.id}}" id="sortable2" sortable >
@@ -48,7 +48,7 @@
 	  	<div class="padding_5">
 	    	<div class="border_status column_status_resolved">
 	        <div class="status_sprint">
-	          <span>Resolved</span>
+	          <span><%= l(:label_resolved) %></span>
 	        </div>
 	        <div class="connectedSortable check_height" status-id="{{statusIds.status_completed}}" version-id="{{version.id}}" id="sortable3" sortable >
 	          <div class="issue ui-state-default" ng-class="{mini_mode: showIssueBacklog, small_mode: !showIssueBacklog}" issue-id="{{issue.id}}" ng-repeat="issue in issuesResolved">
@@ -62,8 +62,8 @@
 	    <div class="padding_5">
 	    	<div class="border_status column_status_close">
 		      <div class="status_sprint">
-		        <span>Close</span>
-		        <span class="closed_issue button"><i class="fa fa-minus-circle"></i>Hide</span> 
+		        <span><%= l(:label_close) %></span>
+		        <span class="closed_issue button"><i class="fa fa-minus-circle"></i><%= l(:label_hide) %></span> 
 		      </div>
 		      <div class="connectedSortable check_height" status-id="{{statusIds.status_closed}}" version-id="{{version.id}}" id="sortable4" sortable >
 		        <div class="issue ui-state-default small_mode" issue-id="{{issue.id}}" ng-repeat="issue in issuesClose">
