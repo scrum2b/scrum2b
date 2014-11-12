@@ -34,6 +34,7 @@
 				</td>
 				<td class="estimated_hours">
 					<span style="padding-left: 4px">Est. Hour:</span>
+					
 					<span editable-text="issue.estimated_hours" e-name="estimated_hours">{{ issue.estimated_hours || 'empty' }}</span>
 					
 				</td>
@@ -41,6 +42,7 @@
 			<tr style="display: inline-flex; width: 100%;" >
 				<td>
 					<span>Start: </span>
+					<!-- <span editable-date="issue.start_date" e-name="start_date">{{ issue.start_date | date: 'yyyy-MM-dd' }}</span> -->
 					<input type="date" ng-model="issue.start_date" value="{{ issue.start_date | date: 'yyyy-MM-dd' }}" class="start_date"/>
 				</td>
 				<td>

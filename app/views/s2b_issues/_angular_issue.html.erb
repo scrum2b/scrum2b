@@ -147,12 +147,10 @@ var scrum2b = angular.module('issue', []);
                   $scope.issuesBacklog.unshift(value);
                 }else{
                   $scope.allIssues.unshift(value);
-                  console.log ("issue new add  " + value.assigned_to_id);
                   $scope.getIssues($scope.versionSelected,$scope.memberActiveShow);
                 }
                 $('.add_new_issue').hide();
               })
-
             }else{
               alert(data.message);
             }
@@ -162,8 +160,8 @@ var scrum2b = angular.module('issue', []);
         $('.cancel_add_issue').hide();
         $('.add-loader').show();
         $('.form_add_new_issue').trigger("reset");
+        $scope.check_height_max_angular();
       }
-      $scope.check_height_max_angular();
     };
 
     $scope.deleteIssue = function(issue) {
@@ -185,11 +183,10 @@ var scrum2b = angular.module('issue', []);
     }; 
 
     $scope.editIssue = function(issue){
-      console.log ("params edit issue " + issue.start_date);
       issue.start_date = $filter('date')(issue.start_date, "yyyy-MM-dd") || null;
       issue.due_date = $filter('date')(issue.due_date, "yyyy-MM-dd") || null;
       var id = issue.id
-      IssueService.editIssue(issue).then(
+      IssueService.updateIssue(issue).then(
         function(data){
           if (data.result == "update_success" || data.result == "update_success_completed") {
             if(issue.start_date != null && issue.start_date != ""){
@@ -207,7 +204,7 @@ var scrum2b = angular.module('issue', []);
             $('.issue_' + id).show();
 
           }else{
-            console.log (data.result);
+            alert(data.message);
           }
         }
       );
