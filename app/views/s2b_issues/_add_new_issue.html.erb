@@ -3,7 +3,6 @@
 		<form ng-submit="addIssue()" class="form_add_new_issue">
 		  <input type="hidden" ng-init="newissue.project_id=<%= @project.id %>" >
 		  <input type="hidden" ng-init="newissue.author_id=<%= User.current.id %>" >
-		  <span style="color:red;font-weight:100">{{errorDateAddNew}}</span>
 			<table >
 				<tr>
 					<td colspan="2" style="display: block; width: 100%; " ><input type="text" ng-model="newissue.subject" class="title_issue" placeholder="Enter Issue Subject" required></td>
@@ -47,10 +46,13 @@
 						<input type="date" ng-model="newissue.due_date" class="end" >
 					</td>
 				</tr>
-				<tr >
-					<td colspan="2">
+				<tr>
+					<td colspan="2" style="display: inline-block; width: 100%;" >
 						<input type="submit" class="submit_issue" value="Add" >
 						<input type="button" class="cancel_add_issue" value="Cancel">
+						<p class="text-center add-loader hide">
+							<%= image_tag('bx_loader.gif', :plugin => 'scrum2b', :style => 'width: 20px;') %>
+						</p>
 					</td>
 				</tr>
 			</table>

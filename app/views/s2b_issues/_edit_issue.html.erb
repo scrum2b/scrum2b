@@ -49,9 +49,12 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">
-					<input type="submit" class="submit_edit_issue" issue_id='{{issue.id}}' ng-disabled="editableForm.$waiting" value="Save">
-					<input type="button" class="cancel_edit_issue" issue_id='{{issue.id}}' ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()" value="Cancel">
+				<td colspan="2"style="display: inline-block; width: 100%;" >
+					<input type="submit" class="submit_edit_issue submit_edit_issue_{{issue.id}}" issue_id='{{issue.id}}' ng-disabled="editableForm.$waiting" value="Save">
+					<input type="button" class="cancel_edit_issue cancel_edit_issue_{{issue.id}}" issue_id='{{issue.id}}' ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()" value="Cancel">
+					<p class="text-center edit_loader_{{issue.id}} hide">
+							<%= image_tag('bx_loader.gif', :plugin => 'scrum2b', :style => 'width: 20px;') %>
+					</p>
 				</td>
 			</tr>
 		</table>

@@ -41,7 +41,9 @@
   .padding-see-detail {
     padding-right: 110px;
   }
-
+  .text-center {
+    text-align: center;
+  }
   .padding_5 {
     padding: 5px;
   }
