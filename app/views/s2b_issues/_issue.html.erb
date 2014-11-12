@@ -7,13 +7,13 @@
 <div class="setting hide">
   <ul>
     <li>
-      <a href="/issues/{{issue.id}}" target="_blank">View Detail</a>
+      <a href="/issues/{{issue.id}}" target="_blank"><%= l(:label_view_detail) %></a>
     </li>
     <li>
-      <a href="" class="edit_issue" issue_id="{{issue.id}}" ng-click="editableForm.$show()">Edit</a>
+      <a href="" class="edit_issue" issue_id="{{issue.id}}" ng-click="editableForm.$show()"><%= l(:label_edit) %></a>
     </li>
     <li class="sprint_li">
-      <a href="">Change sprint</a>
+      <a href=""><%= l(:label_change_sprint) %></a>
       <ul class="change_sprint">
         <li ng-repeat="version in versions" ng-hide="isActiveVersion(version)" >
           <a href="" ng-click="updateVersion(issue, version.id)" version-id="{{version.id}}" issue-id="{{issue.id}}" >{{version.name}}</a>
@@ -21,24 +21,24 @@
       </ul>
     </li>
     <li class="status_li">
-      <a href="">Change status</a>
+      <a href=""><%= l(:label_change_status) %></a>
       <ul class="change_status">
         <li ng-hide="issue.status_id==statusIds.status_no_start">
-          <a href="" ng-click="changeStatus(issue, statusIds.status_no_start, version.id)" class="">New issue</a>
+          <a href="" ng-click="changeStatus(issue, statusIds.status_no_start, version.id)" class=""><%= l(:label_new_issue) %></a>
         </li>
         <li ng-hide="issue.status_id==statusIds.status_inprogress">
-          <a href="" ng-click="changeStatus(issue, statusIds.status_inprogress, version.id)" class="">In Progess</a>
+          <a href="" ng-click="changeStatus(issue, statusIds.status_inprogress, version.id)" class=""><%= l(:label_in_progress) %></a>
         </li>
         <li ng-hide="issue.status_id==statusIds.status_completed">
-          <a href="" ng-click="changeStatus(issue, statusIds.status_completed, version.id)" class="">Resolved</a>
+          <a href="" ng-click="changeStatus(issue, statusIds.status_completed, version.id)" class=""><%= l(:label_resolved) %></a>
         </li>
         <li ng-hide="issue.status_id==statusIds.status_closed">
-          <a href="" ng-click="changeStatus(issue, statusIds.status_closed, version.id)" class="">Close</a>
+          <a href="" ng-click="changeStatus(issue, statusIds.status_closed, version.id)" class=""><%= l(:label_close) %></a>
         </li>
       </ul>
     </li>
     <li>
-      <a href="" delete-issue="deleteIssue(issue)">Delete</a>
+      <a href="" delete-issue="deleteIssue(issue)"><%= l(:label_delete) %></a>
     </li>
   </ul>
 </div>
@@ -46,7 +46,7 @@
 
   <span style="display: inline-block; width: 50%;">
     <span ng-if="issue.assigned_to_id != nil" e-ng-options="member.id as member.firstname for member in members" style="display: inline-block; text-transform: capitalize;">
-     Asigned To: {{( members | filter:{id: issue.assigned_to_id})[0].firstname }}
+     <%= l(:label_asigned_to) %>: {{( members | filter:{id: issue.assigned_to_id})[0].firstname }}
     </span>
   </span>
   <div class="progress_issue">
@@ -76,10 +76,10 @@
   <div class="file_comment">
     <ul>
       <li>
-        <span class="open_file" ng-click="getFiles(issue)">File</span>
+        <span class="open_file" ng-click="getFiles(issue)"><%= l(:label_file) %></span>
       </li>
       <li>
-        <span class="open_comment" ng-click="getComments(issue)">Comment</span>
+        <span class="open_comment" ng-click="getComments(issue)"><%= l(:label_comment) %></span>
       </li>
     </ul>
     <span class="icon_top "><i class="fa fa-angle-double-up fa-lg"></i></span>

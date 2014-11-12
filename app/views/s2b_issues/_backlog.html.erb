@@ -1,13 +1,13 @@
 <div class="backlog ">
   <div class="">
     <p class="title_backlog">
-      <span class="closed_backlog button" hide-backlog="hideBacklog()" ><i class="fa fa-minus-circle"></i>Hide</span>
-      <span class="span_backlog">Backlog</span>
-      <span class="icon_add_issue button" add-new-issue="setParamsAddIssue(statusIds.status_no_start,'')"><i class="fa fa-plus-circle"></i>Add</span>
+      <span class="closed_backlog button" hide-backlog="hideBacklog()" ><i class="fa fa-minus-circle"></i><%= l(:label_hide) %></span>
+      <span class="span_backlog"><%= l(:label_backlog) %></span>
+      <span class="icon_add_issue button" add-new-issue="setParamsAddIssue(statusIds.status_no_start,'')"><i class="fa fa-plus-circle"></i><%= l(:label_btn_add) %></span>
     </p>
     <%= render :partial => "s2b_issues/add_new_issue" %>
     <div class="connectedSortable" status-id="{{statusIds.status_no_start}}" version-id="" id="sortable_backlog" sortable >
-      <div class="issue ui-state-default mini_mode" issue-id="{{issue.id}}" ng-repeat="issue in issuesBacklog" >
+      <div class="issue ui-state-default" ng-class="{mini_mode: showIssueBacklog, small_mode: !showIssueBacklog}" issue-id="{{issue.id}}" ng-repeat="issue in issuesBacklog" >
         <%= render :partial => "/s2b_issues/issue" %>
       </div>
     </div><!--end connectedSortable-->

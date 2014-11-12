@@ -136,7 +136,7 @@ var scrum2b = angular.module('issue', []);
       $scope.newissue.fixed_version_id = $scope.paramsVersionId;
 
       if($scope.newissue.start_date > $scope.newissue.due_date){
-        alert("Due date must be greater than start date")
+        alert("<%= l(:label_error_due_date_must_be_greater_than_start_date) %>")
         return "Due date must be greater than start date"
       }else{
         IssueService.addIssue($scope.newissue).then(
@@ -177,7 +177,7 @@ var scrum2b = angular.module('issue', []);
     
     $scope.checkParamsEditIssue = function(data) {
       if ($filter('date')(data.start_date, "yyyy-MM-dd") > $filter('date')(data.due_date, "yyyy-MM-dd")) {
-        alert("Due date must be greater than start date");
+        alert("<%= l(:label_error_due_date_must_be_greater_than_start_date) %>");
         return "Due date must be greater than start date";
       }
     }; 
@@ -211,7 +211,6 @@ var scrum2b = angular.module('issue', []);
       $('.submit_edit_issue_' + id ).hide();
       $('.cancel_edit_issue_' + id ).hide();
       $('.edit_loader_' + id ).show();
-
     };
     
     $scope.filterIssues = function(){
