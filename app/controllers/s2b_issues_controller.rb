@@ -31,11 +31,11 @@ class S2bIssuesController < S2bApplicationController
   end
   
   def create
-    issue = Issue.new(issue_params)
+    issue = Issue.new(Rails::VERSION::MAJOR >= 4 ? issue_params : params[:issue])
     if issue.save
       render :json => {:result => "create_success", :issue => issue}
     else
-      render :json => {:result => issue.errors.full_messages}
+      render :json => {result: "error", message: issue.errors.full_messages}
     end
   end
 
@@ -48,7 +48,7 @@ class S2bIssuesController < S2bApplicationController
   end
 
   def update
-    if @issue.present? && @issue.update_issue(issue_params, STATUS_IDS)
+    if @issue.present? && Rails::VERSION::MAJOR >= 4 ? @issue.update_issue(issue_params, STATUS_IDS) : @issue.update_issue(params[:issue], STATUS_IDS)
       render :json => {result: @issue.completed?(STATUS_IDS) ? "update_success_completed" : "update_success", issue: @issue}
     else
       render :json => {result: "error", message: @issue.nil? ? "Invalid Issue!" : @issue.errors.full_messages}
