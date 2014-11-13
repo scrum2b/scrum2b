@@ -1,65 +1,50 @@
 vi:
+  label_supported_by: "Hỗ trợ bởi"
+  label_scrum2b_tool: "Scrum2B Tool"
+  label_version_tool: "Phiên bản: 2-1-stable, desktop"
+  label_scrumTobe_software: "ScrumTobe Software"
   label_scrum2b: "Scrum2B"
-  label_menu_issue: "Vấn Đề"
-  label_scrum2b_board: "Bảng "
-  label_scrum2b_list: "Danh Sách"
-  label_close_all_issues: "Đóng Vấn Đề"
 
-  label_select_issues_all_working: "Vấn Đề Đang Làm"
-  label_select_issues_my: "Vấn Đề Của Tôi"
-  label_select_issues_my_completed: "Vấn Đề Của Tôi Đã Hoàn Thành"
-  label_select_issues_new: "Tất Cả Vấn Đề Mới"
-  label_select_issues_completed: "Vấn Đề Của Đã Hoàn Thành"
-  label_select_issues_closed: "Vấn Đề Của Đã Đóng"
-  label_select_issues_all: "Tất Cả Vấn Đề"
+  label_filter: "Lọc"
 
-  
-  label_select_all_versions_working: "Phiên Bản Đang Làm Việc" 
-  label_select_all_versions: "Tất Cả Phiên Bản"
-  label_select_backlog: "Không Phiên Bản" 
-  label_btn_submit_selected: "Lọc"
-  label_group_closed_sprin: "Phiên Bản Đã Đóng"
-  
-  label_head_issue_status: "Trạng Thái"
-  label_head_issue_subject: "Chủ Đề"
-  label_head_issue_assignee: "Gán Cho"
-  label_head_issue_updated: "Cập Nhật"
-  label_head_issue_est_time: "Thời Gian"
-  label_head_issue_done: "% Hoàn Thành"
-  
-  label_version_backlog: "Không Phiên Bản"
- 
-  label_select_all_member: "Tất Cả Thành Viên"
-  label_select_me: "Tôi"
-  label_board_status_new: "Vấn Đề Mới"
-  label_board_status_inprogress: "Vấn Đề Đang Làm"
-  label_board_status_completed: "Vấn Đề Đã Hoàn Thanh"
-  
-  label_board_issue_text_close_issue: "Đóng"
-  label_board_issue_text_edit_issue: "Chỉnh Sửa"
-  label_board_issue_time: "Thời Gian:"
-  label_board_issue_description: "Nội Dung"
-  label_board_issue_new_issue: "Tạo Mới"
-  label_board_edit_btn_submit: "Đồng Ý"
-  label_board_edit_btn_cancel: "Hủy Bỏ"
-  label_board_show_detail_issue: "Xem Chi Tiết"
-  label_readmore: "Xem Thêm"
+  label_new_issue: "Vẫn đề mới"
+  label_in_progress: "Đang thực hiện"
+  label_resolved: "Đã giải quyết"
+  label_close: "Đã đóng"
+
+  label_see_detail: "Xem chi tiết"
+  label_add: "Thêm"
+
+  label_all_member: "Tất cả thành viên"
+
+  label_close_colunn: "Cột đã đóng"
+  label_please_choose: "Lựa chọn"
+
+  label_backlog: "Việc tồn đọng"
+
+  label_btn_submit: "Giử"
+  label_btn_cancel: "Hủy"
+  label_btn_add: "Thêm"
+  label_btn_save: "Lưu"
   label_hide: "Ẩn"
-  
-  label_tracker: "Dòng vấn đề"
-  label_priority: "Ưu tiên"
-  label_start_date: "Bắt Đầu"
 
-  label_end_date: "Kết Thúc"
-  label_sprint: "Phiên Bản"
-  label_me: "<< Tôi >>"
-  
-  label_change_sprint: "Đổi Phiên Bản"
-  label_move_issues: "Chuyển Tới"
-  label_error_select_issues: "Hãy chon một vấn đề "
-  permission_view_issue: "View Issue"
-  label_sure_to_close_issues: "Bạn chắc chắn muốn xóa vấn đề"
-  label_sure_to_delete_issues: "Bạn chắc chắn muốn xóa vấn đề"
-  label_sure_to_delete_notes: "Bạn chắc chắn muốn xóa ghi chú"
-  label_edit_detail: "Chỉnh Sửa"
+  label_file: "Tệp tin"
+  label_comment: "Bình luận"
+
+  label_tracker: "Kiểu vấn đề"
+  label_priority: "Trạng thái"
+  label_est_hour: "Thời gian ước lượng"
+  label_start_date: "Bắt đầu"
+  label_due_to: "Hết hạn"
+  label_asigned_to: "Phân công cho"
+
+  label_sprint: "Phiên bản"
+
+  label_change_sprint: "Thay đổi phiên bản"
+  label_change_status: "Thay đổi trạng thái"
+  label_view_detail: "Xem chi tiết"
+  label_edit: "Sửa"
+  label_delete: "Xóa"
+
+  label_error_due_date_must_be_greater_than_start_date: "Thời hạn phải lớn hơn ngày bắt đầu!"
 

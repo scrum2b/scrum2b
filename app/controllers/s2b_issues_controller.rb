@@ -15,7 +15,7 @@ class S2bIssuesController < S2bApplicationController
     @tracker = Tracker.all
     @status = IssueStatus.where("id IN (?)" , DEFAULT_STATUS_IDS['status_no_start'])
     @issues = opened_versions_list.first.fixed_issues
-    @issues_backlog = Issue.where(:fixed_version_id => nil).where("project_id IN (?)",@hierarchy_project_id)
+    @issues_backlog = Issue.where(:fixed_version_id => nil).where("project_id IN (?)",@hierarchy_project_ids)
     render :json => {:versions => @versions, :issues => @issues, :issues_backlog => @issues_backlog, :tracker => @tracker, :priority => @priority, :status => @status, :members => @members, :status_ids => DEFAULT_STATUS_IDS}
   end
   
@@ -49,33 +49,7 @@ class S2bIssuesController < S2bApplicationController
 
   def update
     if @issue.present? && @issue.update_issue(issue_params, STATUS_IDS)
-      render :json => {result: "edit_success", issue: @issue}
-    else
-      render :json => {result: "error", message: @issue.nil? ? "Invalid Issue!" : @issue.errors.full_messages}
-    end
-  end
-
-  def update_status
-    update_params = {'status_id' => params[:status_id], 'fixed_version_id' => params[:fixed_version_id]}
-
-    if @issue.present? && @issue.update_issue(update_params, STATUS_IDS)
       render :json => {result: @issue.completed?(STATUS_IDS) ? "update_success_completed" : "update_success", issue: @issue}
-    else
-      render :json => {result: "error", message: @issue.nil? ? "Invalid Issue!" : @issue.errors.full_messages}
-    end
-  end
-
-  def update_version
-    if @issue.present? && @issue.update_issue({'fixed_version_id' => params[:fixed_version_id]})
-      render :json => {result: "update_success", issue: @issue}
-    else
-      render :json => {result: "error", message: @issue.nil? ? "Invalid Issue!" : @issue.errors.full_messages}
-    end
-  end
-  
-  def update_progress
-    if @issue.present? && @issue.update_issue({'done_ratio' => params[:done_ratio]})
-      render :json => {result: "update_success", issue: @issue}
     else
       render :json => {result: "error", message: @issue.nil? ? "Invalid Issue!" : @issue.errors.full_messages}
     end

@@ -25,16 +25,11 @@
           scope.check_height_max_angular();
         });
 
-        $(jqueryElm).on( "sortout", function( event, ui ) {
-          $(this).removeClass("background_sortover");
-        });
-
         $(jqueryElm).on( "sortstart", function( event, ui ) {
           $('.setting').hide();
         });
 
         $(jqueryElm).on( "sortstop", function( event, ui ) {
-          $( ".location_start_issue" ).remove();
           scope.check_height_max_angular();
         });
       
@@ -45,14 +40,18 @@
           var statusID = $('.move_issue').parent().attr('status-id');
           var versionID = $('.move_issue').parent().attr('version-id');
           $('.move_issue').removeClass('move_issue');
-
+          $(".location_start_issue" ).remove();
+          $(".ui-sortable-placeholder").remove();
+          $(".background_sortover").removeClass("background_sortover");
+          var issue = {"id" : issueID, "status_id" : statusID, "fixed_version_id" : versionID}
           if(statusID){
-            scope.updateStatus(issueID,statusID,versionID);
+            scope.drowChangeStatus(issue);
             scope.sortStop(issueID,statusID,versionID);
           }
           if( div_start == "sortable_backlog" || div_end == "sortable_backlog"){
             scope.getNumberIssuesAfter(versionID);
           }
+
         });
       }
     };
