@@ -74,32 +74,32 @@
     <p style="white-space: pre;">{{ issue.description }}</p>
   </div>
   <div class="file_comment">
-    <ul>
+    <!-- <ul>
       <li>
-        <span class="open_file" ng-click="getFiles(issue)"><%= l(:label_file) %></span>
+        <span class="open_file" ng-click="getFiles(issue)">< %= l(:label_file) %></span>
       </li>
       <li>
-        <span class="open_comment" ng-click="getComments(issue)"><%= l(:label_comment) %></span>
+        <span class="open_comment" ng-click="getComments(issue)">< %= l(:label_comment) %></span>
       </li>
-    </ul>
+    </ul> -->
     <span class="icon_top "><i class="fa fa-angle-double-up fa-lg"></i></span>
   </div>
 
-  <div class="file background_blue" style="min-height: 50px">
+  <!-- <div class="file background_blue" style="min-height: 50px">
     <ul style="display: inline-block">
       <li ng-repeat="attach in issue.attachments">
         <p>
           <a href="/attachments/download/{{attach.id}}" class="icon icon-attachment">{{attach.filename}}</a>
           <span class="size">({{bytesToSize(attach.filesize)}})</span>
-          <% if User.current.member_of?(@project) || User.current.admin %>
+          < % if User.current.member_of?(@project) || User.current.admin %>
             <a href="" ng-click="deleteFiles(attach,issue)" class="icon icon-del delete" title="Delete"></a>
-          <% end %>
+          < % end %>
           <span class="author">{{author(attach.author_id)}} , {{attach.created_on | date: 'yyyy/MM/dd hh:mm'}}</span>
         </p>
       </li>
     </ul>
-  </div><!--end file-->
-  <div class="comment background_blue" style="min-height: 50px">
+  </div> --><!--end file-->
+  <!-- <div class="comment background_blue" style="min-height: 50px">
     <ul style="display: inline-block; margin: 0px; width: 100%;">
       <li ng-repeat="comment in issue.comments" ng-if="comment.notes != ''" style="padding: 3px;" >
         <span class="author">{{author(comment.user_id)}}:</span>
@@ -108,7 +108,7 @@
         </span>
       </li>
     </ul><br />
-  </div><!--end comment-->
+  </div> --><!--end comment-->
 
 </div><!--end detail issue-->
 </div>

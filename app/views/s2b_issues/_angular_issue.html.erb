@@ -139,7 +139,8 @@ var scrum2b = angular.module('issue', []);
         alert("<%= l(:label_error_due_date_must_be_greater_than_start_date) %>")
         return "Due date must be greater than start date"
       }else{
-        IssueService.addIssue($scope.newissue).then(
+        var new_issue = {"id" : $scope.newissue.id, "start_date" : $scope.newissue.start_date,"due_date" : $scope.newissue.due_date, "estimated_hours" : $scope.newissue.estimated_hours, "description" : $scope.newissue.description, "subject" : $scope.newissue.subject, "tracker_id" : $scope.newissue.tracker_id, "assigned_to_id" : $scope.newissue.assigned_to_id, "priority_id" : $scope.newissue.priority_id, "status_id" :  $scope.newissue.status_id, "fixed_version_id" : $scope.newissue.fixed_version_id, "project_id" : $scope.newissue.project_id, "author_id" : $scope.newissue.author_id}
+        IssueService.addIssue(new_issue).then(
           function(data){
             if(data.result == 'create_success'){
               angular.forEach(data.issue, function(value) {
@@ -182,10 +183,11 @@ var scrum2b = angular.module('issue', []);
       }
     }; 
 
-    $scope.editIssue = function(issue){
-      issue.start_date = $filter('date')(issue.start_date, "yyyy-MM-dd") || null;
-      issue.due_date = $filter('date')(issue.due_date, "yyyy-MM-dd") || null;
-      var id = issue.id
+    $scope.editIssue = function(curr_issue){
+      curr_issue.start_date = $filter('date')(curr_issue.start_date, "yyyy-MM-dd") || null;
+      curr_issue.due_date = $filter('date')(curr_issue.due_date, "yyyy-MM-dd") || null;
+      var id = curr_issue.id
+      var issue = {"id" : curr_issue.id, "start_date" : curr_issue.start_date,"due_date" : curr_issue.due_date, "estimated_hours" : curr_issue.estimated_hours, "description" : curr_issue.description, "subject" : curr_issue.subject, "tracker_id" : curr_issue.tracker_id, "assigned_to_id" : curr_issue.assigned_to_id, "priority_id" : curr_issue.priority_id}
       IssueService.updateIssue(issue).then(
         function(data){
           if (data.result == "update_success" || data.result == "update_success_completed") {

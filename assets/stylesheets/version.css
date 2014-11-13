@@ -109,7 +109,7 @@
   .title_backlog {text-align: center; height: 30px; background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#a6752d), to(#b88a46)); margin-top: 0px; margin-bottom: 0px; color: #ebebeb }
   .title_backlog .span_backlog {line-height: 30px !important; }
   /*filter*/
-  .filter { height: 60px; background: #275888; color: #ebebeb; margin-bottom: 5px;}
+  .filter { height: 60px; background: #275888; color: #ebebeb;}
   .filter h3,.filter p {color: #ebebeb;margin:0px;padding:0px;}
   .filter h3 {margin-top:5px;line-height: 28px}
   .filter .filter_left { width: 30%; float: left;text-align: center }
@@ -148,10 +148,11 @@
   .full_mode .open_sprint_closed { display: none; }
   .full_mode .closed_backlog {display: none;}
 
-  .title_sprint_active {background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#a6752d), to(#b88a46)) !important; }
-
-  .title_sprint {text-transform: capitalize; font-weight: bold !important; cursor: pointer;background: #275888; border-radius: 0px !important; color: #ebebeb; padding: 10px;margin: 0px 0px 5px 0px; }
-  .title_sprint a {float: right; color: #ebebeb;}
+  .title_sprint_active {background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#a6752d), to(#b88a46)); border: none !important; color: #ebebeb !important; }
+  .title_sprint_active a { color: #ebebeb !important}
+  .title_sprint {text-transform: capitalize; font-weight: bold !important; cursor: pointer; border-radius: 0px !important; color: #606060; border-bottom: 1px dashed #b88a46; padding: 10px;margin: 0px 0px 5px 0px; }
+  .title_sprint a {float: right; color: #169;}
+  .title_sprint:hover {background: rgb(225, 181, 118) !important; }
 
   .quantity_issue {background: rgb(150, 55, 188); padding: 1px 4px; margin-left: 10px; border-radius: 2px; }
 
@@ -369,7 +370,7 @@
   .from_add_edit_issue select[name="assigned_to_id"] {
     width: 80px;
   }
-  .from_add_edit_issue .estimated_hours .editable-text {
+  .from_add_edit_issue .estimated_hours .editable-text, .from_add_edit_issue .editable-number  {
     width: 76px;
     float: right;
     margin-right: 4px;
