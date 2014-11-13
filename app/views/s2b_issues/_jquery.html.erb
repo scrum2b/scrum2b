@@ -36,6 +36,7 @@ $(document).ready(function(){
   $("body").on('click', '.edit_issue', function(){
     $('.from_edit_issue').find('input[name="subject"]') .attr('placeholder','Enter Issue Subject');
     $('.from_edit_issue').find('textarea[name="description"]') .attr('placeholder','Enter Issue Description');
+    $('.from_edit_issue').find('input[name="estimated_hours"]') .attr('min','0');
     var id = $(this).attr("issue_id");
     $('.submit_edit_issue_' + id ).show();
     $('.cancel_edit_issue_' + id ).show();

@@ -48,3 +48,4 @@ pt-BR:
   label_delete: "Delete"
 
   label_error_due_date_must_be_greater_than_start_date: "Due date must be greater than start date!"
+  label_message_are_you_sure: "Are you sure?"

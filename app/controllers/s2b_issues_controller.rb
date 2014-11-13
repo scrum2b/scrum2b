@@ -12,7 +12,7 @@ class S2bIssuesController < S2bApplicationController
   def get_data
     @versions =  opened_versions_list
     @priority = IssuePriority.all
-    @tracker = Tracker.all
+    @tracker = @project.trackers
     @status = IssueStatus.where("id IN (?)" , DEFAULT_STATUS_IDS['status_no_start'])
     @issues = opened_versions_list.first.fixed_issues
     @issues_backlog = Issue.where(:fixed_version_id => nil).where("project_id IN (?)",@hierarchy_project_ids)
