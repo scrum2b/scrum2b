@@ -27,9 +27,15 @@
 
         $(jqueryElm).on( "sortstart", function( event, ui ) {
           $('.setting').hide();
+          scope.check_height_max_angular();
+        });
+
+        $(jqueryElm).on( "sortout", function( event, ui ) {
+          $(this).removeClass("background_sortover");
         });
 
         $(jqueryElm).on( "sortstop", function( event, ui ) {
+           $( ".location_start_issue" ).remove();
           scope.check_height_max_angular();
         });
       
@@ -51,7 +57,7 @@
           if( div_start == "sortable_backlog" || div_end == "sortable_backlog"){
             scope.getNumberIssuesAfter(versionID);
           }
-
+          scope.check_height_max_angular();
         });
       }
     };
@@ -122,6 +128,7 @@
         $('.normal_mode').removeClass('normal_mode');
         $('.sprint_total').find('.s2b_column_4').addClass('width_33');
         $('.add_new_issue').hide();
+        $('.issue_closed').hide();
         $('.open_sprint_closed').hide();
         $('.see-detail-sprint').removeClass('padding-see-detail');
         scope.check_height_max_angular();
