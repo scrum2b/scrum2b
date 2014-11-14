@@ -1,6 +1,20 @@
 <script>
 $(document).ready(function(){
 
+  $( "body" ).on('click', '.icon-imformation',function(){
+    $( ".imformation" ).animate({
+      opacity: 1,
+      right: "+=300",
+      width: "toggle"
+    }, 500, function() {
+      // Animation complete.
+    });
+  });
+
+  $("body").on('click', '.issue',function(){
+    $(this).toggleClass('select_issue');
+  });
+
   function check_height_max(){
     $(".sprint-active .check_height").css("height","auto");
     var height1 = $(".active #sortable1").height();
