@@ -134,10 +134,9 @@ var scrum2b = angular.module('issue', []);
       $scope.newissue.due_date = $filter('date')($scope.newissue.due_date, "yyyy-MM-dd");
       $scope.newissue.status_id = $scope.paramsStatusId;
       $scope.newissue.fixed_version_id = $scope.paramsVersionId;
-
-      if($scope.newissue.start_date > $scope.newissue.due_date){
+      
+      if($scope.newissue.start_date != "" && $scope.newissue.due_date != "" && $scope.newissue.start_date > $scope.newissue.due_date){
         alert("<%= l(:label_error_due_date_must_be_greater_than_start_date) %>")
-        return "Due date must be greater than start date"
       }else{
         var new_issue = {"id" : $scope.newissue.id, "start_date" : $scope.newissue.start_date,"due_date" : $scope.newissue.due_date, "estimated_hours" : $scope.newissue.estimated_hours, "description" : $scope.newissue.description, "subject" : $scope.newissue.subject, "tracker_id" : $scope.newissue.tracker_id, "assigned_to_id" : $scope.newissue.assigned_to_id, "priority_id" : $scope.newissue.priority_id, "status_id" :  $scope.newissue.status_id, "fixed_version_id" : $scope.newissue.fixed_version_id, "project_id" : $scope.newissue.project_id, "author_id" : $scope.newissue.author_id}
         IssueService.addIssue(new_issue).then(
@@ -179,7 +178,7 @@ var scrum2b = angular.module('issue', []);
     $scope.checkParamsEditIssue = function(data) {
       if ($filter('date')(data.start_date, "yyyy-MM-dd") > $filter('date')(data.due_date, "yyyy-MM-dd")) {
         alert("<%= l(:label_error_due_date_must_be_greater_than_start_date) %>");
-        return "Due date must be greater than start date";
+        return "<%= l(:label_error_due_date_must_be_greater_than_start_date) %>";
       }
     }; 
 
@@ -191,15 +190,15 @@ var scrum2b = angular.module('issue', []);
       IssueService.updateIssue(issue).then(
         function(data){
           if (data.result == "update_success" || data.result == "update_success_completed") {
-            if(issue.start_date != null && issue.start_date != ""){
-              issue.start_date = new Date(Date.parse(issue.start_date));
+            if(curr_issue.start_date != null && curr_issue.start_date != ""){
+              curr_issue.start_date = new Date(Date.parse(curr_issue.start_date));
             }else{
-              issue.start_date = null
+              curr_issue.start_date = null
             }
-            if(issue.due_date != null && issue.due_date != ""){
-              issue.due_date = new Date(Date.parse(issue.due_date));
+            if(curr_issue.due_date != null && curr_issue.due_date != ""){
+              curr_issue.due_date = new Date(Date.parse(curr_issue.due_date));
             }else{
-              issue.due_date = null
+              curr_issue.due_date = null
             }
             $scope.getIssues($scope.versionSelected,$scope.memberActiveShow);
             $(".from_edit_issue_" + id ).hide();
