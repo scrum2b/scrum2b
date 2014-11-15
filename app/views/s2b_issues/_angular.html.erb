@@ -45,6 +45,7 @@
           var issueID = $('.move_issue').attr('issue-id');
           var statusID = $('.move_issue').parent().attr('status-id');
           var versionID = $('.move_issue').parent().attr('version-id');
+          $('.move_issue').removeClass('select_issue');
           $('.move_issue').removeClass('move_issue');
           $(".location_start_issue" ).remove();
           $(".ui-sortable-placeholder").remove();
