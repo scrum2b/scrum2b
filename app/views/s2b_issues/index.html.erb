@@ -2,16 +2,13 @@
   <%= stylesheet_link_tag 'xeditable', :plugin => 'scrum2b' %>
   <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
   <%= stylesheet_link_tag 'application', :plugin => 'scrum2b' %>
-  <%= javascript_include_tag "angular", :plugin => 'scrum2b' %>
   <%= javascript_include_tag "application", :plugin => 'scrum2b' %>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
   <%= javascript_include_tag "jquery-ui", :plugin => 'scrum2b' %>
   <%= javascript_include_tag "xeditable", :plugin => 'scrum2b' %>
 <% end %>
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
-<style type="text/css">
-	
-</style>
 <%= render :partial => "s2b_issues/angular_service" %>
 <%= render :partial => "s2b_issues/angular_issue" %>
 <%= render :partial => "s2b_issues/angular_comment" %>
@@ -23,7 +20,6 @@
       <div class="filter_left">
         <h3><a style="color: white;" href="https://github.com/scrum2b/scrum2b/tree/2-1-stable" target="_blank"><%=l(:label_scrum2b_tool)%></a> ( <%=l(:label_version_tool)%> )</h3>
         <p><%=l(:label_supported_by)%> <a style="color: white;" href="http://www.scrumtobe.com" target="_blank"><%=l(:label_scrumTobe_software)%></a></p>
-
       </div>
 
 	    <div class="filter_right">
@@ -37,7 +33,7 @@
 	        <li>
 	          <select name="select_member" id="select_member" ng-model='filtermember'>
 	            <option value="all" ng-selected="memberActiveShow == 'all'" ><%= l(:label_all_member)%></option>
-	            <option ng-repeat="member in members" value=" {{ member}}" ng-selected="memberActiveShow==member.id">{{ member.firstname }}</option>
+	            <option ng-repeat="member in members" value="{{ member}}" ng-selected="memberActiveShow==member.id">{{ member.firstname }}</option>
 	          </select>
 	        </li>
 	        <li>

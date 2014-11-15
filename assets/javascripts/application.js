@@ -3,5 +3,4 @@
 //= require jquery-ui
 //= require bootstap.min
 //= require jquery.ui.slider.
-//= require angularjs
 //= require_tree .

@@ -15,6 +15,7 @@ var scrum2b = angular.module('issue', []);
         $scope.paramsStatusId = '';
         $scope.memberActiveShow = 'all';
         $scope.statusIds = data.status_ids;
+
         angular.forEach(data.issues, function(value) {
           angular.forEach(value, function(value,key) {
             arrayIssues.push(value);
@@ -110,6 +111,7 @@ var scrum2b = angular.module('issue', []);
       $scope.getIssues(version,$scope.memberActiveShow);
       //set active or unactive version
       $scope.setUnActiveVersion(version);
+      $scope.check_height_max_angular(version.id);
     }
     
     $scope.setParamsAddIssue = function(status_id,version_id){
@@ -127,6 +129,7 @@ var scrum2b = angular.module('issue', []);
       $('.submit_issue').show();
       $('.cancel_add_issue').show();
       $('.add-loader').hide();
+      /*$scope.check_height_max_angular(version_id);*/
     }
     
     $scope.addIssue = function(){
@@ -159,7 +162,6 @@ var scrum2b = angular.module('issue', []);
         $('.submit_issue').hide();
         $('.cancel_add_issue').hide();
         $('.add-loader').show();
-        $scope.check_height_max_angular();
       }
     };
 
@@ -278,7 +280,7 @@ var scrum2b = angular.module('issue', []);
             alert(data.message);
           }
           $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
-          $scope.check_height_max_angular();
+          $scope.check_height_max_angular($scope.versionSelected.id);
          }
       );
     };
@@ -462,12 +464,12 @@ var scrum2b = angular.module('issue', []);
       else return(bytes / 1073741824).toFixed(3) + " GB";
     };
 
-    $scope.check_height_max_angular = function(){
+    $scope.check_height_max_angular = function(version_id){
       $(".sprint-active .check_height").css("height","auto");
-      var height1 = $(".active #sortable1").height();
-      var height2 = $(".active #sortable2").height();
-      var height3 = $(".active #sortable3").height();
-      var height4 = $(".active #sortable4").height();
+      var height1 = $(".active #sortable_new_" + version_id).height();
+      var height2 = $(".active #sortable_start_" + version_id).height();
+      var height3 = $(".active #sortable_completed_" + version_id).height();
+      var height4 = $(".active #sortable_closed_" + version_id).height();
       var array_height = [height1, height2, height3, height4];
       var max_height = Math.max.apply(Math, array_height);
       $(".sprint-active .check_height").css("height",max_height);

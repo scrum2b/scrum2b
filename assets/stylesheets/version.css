@@ -167,7 +167,6 @@
   .issue:hover {border: 1px solid #848484; }
 
   /*cac trang thai cua issue*/
-  .mini_mode .title_issue .icon_config { display: none;}
   .mini_mode .content_issue {display: none;}
   .mini_mode .detail_issue {display: none;}
   .mini_mode .file_comment {display: none;}

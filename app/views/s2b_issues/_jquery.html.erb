@@ -2,11 +2,12 @@
 $(document).ready(function(){
 
   function check_height_max(){
+    var version_id = $(".title_sprint_active").attr("versionid");
     $(".sprint-active .check_height").css("height","auto");
-    var height1 = $(".active #sortable1").height();
-    var height2 = $(".active #sortable2").height();
-    var height3 = $(".active #sortable3").height();
-    var height4 = $(".active #sortable4").height();
+    var height1 = $(".active #sortable_new_" + version_id).height();
+    var height2 = $(".active #sortable_start_" + version_id).height();
+    var height3 = $(".active #sortable_completed_" + version_id).height();
+    var height4 = $(".active #sortable_closed_" + version_id).height();
     var array_height = [height1, height2, height3, height4];
     var max_height = Math.max.apply(Math, array_height);
     $(".sprint-active .check_height").css("height",max_height);

@@ -22,12 +22,12 @@
           if ($('.location_start_issue').length == 0 ) {
             $("<div class='location_start_issue'></div>").insertAfter(".move_issue");
           };
-          scope.check_height_max_angular();
+          scope.check_height_max_angular(scope.versionSelected.id);
         });
 
         $(jqueryElm).on( "sortstart", function( event, ui ) {
           $('.setting').hide();
-          scope.check_height_max_angular();
+          scope.check_height_max_angular(scope.versionSelected.id);
         });
 
         $(jqueryElm).on( "sortout", function( event, ui ) {
@@ -36,7 +36,7 @@
 
         $(jqueryElm).on( "sortstop", function( event, ui ) {
            $( ".location_start_issue" ).remove();
-          scope.check_height_max_angular();
+          scope.check_height_max_angular(scope.versionSelected.id);
         });
       
         $(jqueryElm).on( "sortbeforestop", function( event, ui ) {
@@ -57,7 +57,7 @@
           if( div_start == "sortable_backlog" || div_end == "sortable_backlog"){
             scope.getNumberIssuesAfter(versionID);
           }
-          scope.check_height_max_angular();
+          scope.check_height_max_angular(scope.versionSelected.id);
         });
       }
     };
@@ -67,6 +67,9 @@
     return function (scope, element, attrs) {
       element.bind("click", function () {
         scope.$apply(attrs.clickSprint);
+        setTimeout(function(){
+          scope.check_height_max_angular(scope.versionSelected.id);
+        }, 1);
       })
     }
   });
@@ -78,9 +81,7 @@
         $('.add_new_issue').hide();
         $('.add_new_issue form').trigger("reset");
         element.parent().parent().find('.add_new_issue').show();
-        /*setTimeout(function(){
-          scope.check_height_max_angular();
-        }, 1);*/
+        
       })
     }
   });
@@ -88,15 +89,7 @@
   scrum2b.directive('clickSprint', function() {
     return function (scope, element, attrs) {
       if (scope.$last) setTimeout(function(){
-        scope.check_height_max_angular();
-      }, 1);
-    }
-  });
-
-  scrum2b.directive('repeatIssue', function() {
-    return function (scope, element, attrs) {
-      if (scope.$last) setTimeout(function(){
-        scope.check_height_max_angular();
+        scope.check_height_max_angular(scope.versionSelected.id);
       }, 1);
     }
   });
@@ -107,7 +100,7 @@
       element.bind("click", function () {
         if (window.confirm(msg)){
           scope.$apply(attrs.deleteIssue);
-          scope.check_height_max_angular()
+          scope.check_height_max_angular(scope.versionSelected.id);
         }
       })
     }
@@ -131,7 +124,7 @@
         $('.issue_closed').hide();
         $('.open_sprint_closed').hide();
         $('.see-detail-sprint').removeClass('padding-see-detail');
-        scope.check_height_max_angular();
+        scope.check_height_max_angular(scope.versionSelected.id);
       })
     }
   });
@@ -150,7 +143,7 @@
         $('.content').find('.sprint_total').find('.s2b_column_4').removeClass('s2b_column_5');
         $('.issue_closed').show();
         $('.add_new_issue').hide();
-        scope.check_height_max_angular();
+        scope.check_height_max_angular(scope.versionSelected.id);
       })
     }
   });
