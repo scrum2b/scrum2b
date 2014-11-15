@@ -82,7 +82,17 @@
         $('.add_new_issue').hide();
         $('.add_new_issue form').trigger("reset");
         element.parent().parent().find('.add_new_issue').show();
-        
+      })
+    }
+  });
+
+  scrum2b.directive('submitAddNewIssue', function() {
+    return function (scope, element, attrs) {
+      element.bind("submit", function () {
+        scope.$apply(attrs.submitAddNewIssue);
+        setTimeout(function(){
+          scope.check_height_max_angular(scope.versionSelected.id);
+        }, 500);
       })
     }
   });

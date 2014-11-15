@@ -1,6 +1,6 @@
 <div class="add_new_issue from_add_edit_issue hide" >
 	<div class="border padding-2" >
-		<form ng-submit="addIssue()" class="form_add_new_issue">
+		<form submit-add-new-issue="addIssue()" class="form_add_new_issue">
 		  <input type="hidden" ng-init="newissue.project_id=<%= @project.id %>" >
 		  <input type="hidden" ng-init="newissue.author_id=<%= User.current.id %>" >
 			<table >
