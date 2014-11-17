@@ -1,116 +1,115 @@
+<div class="background-issue" issue-select></div>
 <div class="issue_{{issue.id}} loop_issue" repeat-issue >
-<div class="title_issue">
-  <a href="/issues/{{issue.id}}" target="_blank">#{{ issue.id }}:</a> {{ issue.subject | limitTo : 40 }}{{issue.subject.length > 40 ? "..." : ""  }}
-  <span class="icon_config" ><i class="fa fa-cog"></i></span> 
+  <div class="title_issue">
+    <a href="/issues/{{issue.id}}" target="_blank">#{{ issue.id }}:</a> {{ issue.subject | limitTo : 40 }}{{issue.subject.length > 40 ? "..." : ""  }}
+    <span class="icon_config" ><i class="fa fa-cog"></i></span> 
+  </div><!--end title issue -->
 
-</div><!--end title issue -->
-<div class="setting hide">
-  <ul>
-    <li>
-      <a href="/issues/{{issue.id}}" target="_blank"><%= l(:label_view_detail) %></a>
-    </li>
-    <li>
-      <a href="" class="edit_issue" issue_id="{{issue.id}}" ng-click="editableForm.$show()"><%= l(:label_edit) %></a>
-    </li>
-    <li class="sprint_li">
-      <a href=""><%= l(:label_change_sprint) %></a>
-      <ul class="change_sprint">
-        <li ng-repeat="version in versions" ng-hide="isActiveVersion(version)" >
-          <a href="" ng-click="updateVersion(issue, version.id)" version-id="{{version.id}}" issue-id="{{issue.id}}" >{{version.name}}</a>
-        </li>
-      </ul>
-    </li>
-    <li class="status_li">
-      <a href=""><%= l(:label_change_status) %></a>
-      <ul class="change_status">
-        <li ng-hide="issue.status_id==statusIds.status_no_start">
-          <a href="" ng-click="changeStatus(issue, statusIds.status_no_start, version.id)" class=""><%= l(:label_new_issue) %></a>
-        </li>
-        <li ng-hide="issue.status_id==statusIds.status_inprogress">
-          <a href="" ng-click="changeStatus(issue, statusIds.status_inprogress, version.id)" class=""><%= l(:label_in_progress) %></a>
-        </li>
-        <li ng-hide="issue.status_id==statusIds.status_completed">
-          <a href="" ng-click="changeStatus(issue, statusIds.status_completed, version.id)" class=""><%= l(:label_resolved) %></a>
-        </li>
-        <li ng-hide="issue.status_id==statusIds.status_closed">
-          <a href="" ng-click="changeStatus(issue, statusIds.status_closed, version.id)" class=""><%= l(:label_close) %></a>
-        </li>
-      </ul>
-    </li>
-    <li>
-      <a href="" delete-issue="deleteIssue(issue)"><%= l(:label_delete) %></a>
-    </li>
-  </ul>
-</div>
-<div class="content_issue">
-
-  <span style="display: inline-block; width: 50%;">
-    <span ng-if="issue.assigned_to_id != nil" e-ng-options="member.id as member.firstname for member in members" style="display: inline-block; text-transform: capitalize;">
-     <%= l(:label_asigned_to) %>: {{( members | filter:{id: issue.assigned_to_id})[0].firstname }}
-    </span>
-  </span>
-  <div class="progress_issue">
-
-    <select id="select_progess" ng-model="issue.progress" ng-init="issue.id= issue.id" ng-change="updateProgress(issue)" id="updateprogress" >
-      <option value="0" ng-selected="issue.done_ratio == 0">0 %</option>
-      <option value="10" ng-selected="issue.done_ratio == 10">10 %</option>
-      <option value="20" ng-selected="issue.done_ratio == 20">20 %</option>
-      <option value="30" ng-selected="issue.done_ratio == 30">30 %</option>
-      <option value="40" ng-selected="issue.done_ratio == 40">40 %</option>
-      <option value="50" ng-selected="issue.done_ratio == 50">50 %</option>
-      <option value="60" ng-selected="issue.done_ratio == 60">60 %</option>
-      <option value="70" ng-selected="issue.done_ratio == 70">70 %</option>
-      <option value="80" ng-selected="issue.done_ratio == 80">80 %</option>
-      <option value="90" ng-selected="issue.done_ratio == 90">90 %</option>
-      <option value="100" ng-selected="issue.done_ratio == 100">100 %</option>
-    </select>
-
-    <br>
-    <span class="icon_down"><i issue="123" class="fa fa-angle-double-down fa-lg"></i></span>
-  </div>
-</div><!--end content issue-->
-<div class="detail_issue">
-  <div class="detail">
-    <p style="white-space: pre;">{{ issue.description }}</p>
-  </div>
-  <div class="file_comment">
-    <!-- <ul>
+  <div class="setting hide">
+    <ul>
       <li>
-        <span class="open_file" ng-click="getFiles(issue)">< %= l(:label_file) %></span>
+        <a href="/issues/{{issue.id}}" target="_blank"><%= l(:label_view_detail) %></a>
       </li>
       <li>
-        <span class="open_comment" ng-click="getComments(issue)">< %= l(:label_comment) %></span>
+        <a href="" class="edit_issue" issue_id="{{issue.id}}" ng-click="editableForm.$show()"><%= l(:label_edit) %></a>
       </li>
-    </ul> -->
-    <span class="icon_top "><i class="fa fa-angle-double-up fa-lg"></i></span>
-  </div>
-
-  <!-- <div class="file background_blue" style="min-height: 50px">
-    <ul style="display: inline-block">
-      <li ng-repeat="attach in issue.attachments">
-        <p>
-          <a href="/attachments/download/{{attach.id}}" class="icon icon-attachment">{{attach.filename}}</a>
-          <span class="size">({{bytesToSize(attach.filesize)}})</span>
-          < % if User.current.member_of?(@project) || User.current.admin %>
-            <a href="" ng-click="deleteFiles(attach,issue)" class="icon icon-del delete" title="Delete"></a>
-          < % end %>
-          <span class="author">{{author(attach.author_id)}} , {{attach.created_on | date: 'yyyy/MM/dd hh:mm'}}</span>
-        </p>
+      <li class="sprint_li">
+        <a href=""><%= l(:label_change_sprint) %></a>
+        <ul class="change_sprint">
+          <li ng-repeat="version in versions" ng-hide="isActiveVersion(version)" >
+            <a href="" ng-click="updateVersion(issue, version.id)" version-id="{{version.id}}" issue-id="{{issue.id}}" >{{version.name}}</a>
+          </li>
+        </ul>
+      </li>
+      <li class="status_li">
+        <a href=""><%= l(:label_change_status) %></a>
+        <ul class="change_status">
+          <li ng-hide="issue.status_id==statusIds.status_no_start">
+            <a href="" ng-click="changeStatus(issue, statusIds.status_no_start, version.id)" class=""><%= l(:label_new_issue) %></a>
+          </li>
+          <li ng-hide="issue.status_id==statusIds.status_inprogress">
+            <a href="" ng-click="changeStatus(issue, statusIds.status_inprogress, version.id)" class=""><%= l(:label_in_progress) %></a>
+          </li>
+          <li ng-hide="issue.status_id==statusIds.status_completed">
+            <a href="" ng-click="changeStatus(issue, statusIds.status_completed, version.id)" class=""><%= l(:label_resolved) %></a>
+          </li>
+          <li ng-hide="issue.status_id==statusIds.status_closed">
+            <a href="" ng-click="changeStatus(issue, statusIds.status_closed, version.id)" class=""><%= l(:label_close) %></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="" delete-issue="deleteIssue(issue)"><%= l(:label_delete) %></a>
       </li>
     </ul>
-  </div> --><!--end file-->
-  <!-- <div class="comment background_blue" style="min-height: 50px">
-    <ul style="display: inline-block; margin: 0px; width: 100%;">
-      <li ng-repeat="comment in issue.comments" ng-if="comment.notes != ''" style="padding: 3px;" >
-        <span class="author">{{author(comment.user_id)}}:</span>
-        <span editable-text="comment.notes" e-form="textBtnForm" onaftersave="editComment(comment.id,$data)" e-required>
-          {{ comment.notes || 'empty' }}
-        </span>
-      </li>
-    </ul><br />
-  </div> --><!--end comment-->
+  </div>
 
-</div><!--end detail issue-->
+  <div class="content_issue">
+    <span style="display: inline-block; width: 50%;">
+      <span ng-if="issue.assigned_to_id != nil" e-ng-options="member.id as member.firstname for member in members" style="display: inline-block; text-transform: capitalize;">
+       <%= l(:label_asigned_to) %>: {{( members | filter:{id: issue.assigned_to_id})[0].firstname }}
+      </span>
+    </span>
+    <div class="progress_issue">
+      <select id="select_progess" ng-model="issue.progress" ng-init="issue.id= issue.id" ng-change="updateProgress(issue)" id="updateprogress" >
+        <option value="0" ng-selected="issue.done_ratio == 0">0 %</option>
+        <option value="10" ng-selected="issue.done_ratio == 10">10 %</option>
+        <option value="20" ng-selected="issue.done_ratio == 20">20 %</option>
+        <option value="30" ng-selected="issue.done_ratio == 30">30 %</option>
+        <option value="40" ng-selected="issue.done_ratio == 40">40 %</option>
+        <option value="50" ng-selected="issue.done_ratio == 50">50 %</option>
+        <option value="60" ng-selected="issue.done_ratio == 60">60 %</option>
+        <option value="70" ng-selected="issue.done_ratio == 70">70 %</option>
+        <option value="80" ng-selected="issue.done_ratio == 80">80 %</option>
+        <option value="90" ng-selected="issue.done_ratio == 90">90 %</option>
+        <option value="100" ng-selected="issue.done_ratio == 100">100 %</option>
+      </select>
+
+      <br>
+      <span class="icon_down"><i issue="123" class="fa fa-angle-double-down fa-lg"></i></span>
+    </div>
+  </div><!--end content issue-->
+  <div class="detail_issue">
+    <div class="detail">
+      <p style="white-space: pre;">{{ issue.description }}</p>
+    </div>
+    <div class="file_comment">
+      <!-- <ul>
+        <li>
+          <span class="open_file" ng-click="getFiles(issue)">< %= l(:label_file) %></span>
+        </li>
+        <li>
+          <span class="open_comment" ng-click="getComments(issue)">< %= l(:label_comment) %></span>
+        </li>
+      </ul> -->
+      <span class="icon_top "><i class="fa fa-angle-double-up fa-lg"></i></span>
+    </div>
+
+    <!-- <div class="file background_blue" style="min-height: 50px">
+      <ul style="display: inline-block">
+        <li ng-repeat="attach in issue.attachments">
+          <p>
+            <a href="/attachments/download/{{attach.id}}" class="icon icon-attachment">{{attach.filename}}</a>
+            <span class="size">({{bytesToSize(attach.filesize)}})</span>
+            < % if User.current.member_of?(@project) || User.current.admin %>
+              <a href="" ng-click="deleteFiles(attach,issue)" class="icon icon-del delete" title="Delete"></a>
+            < % end %>
+            <span class="author">{{author(attach.author_id)}} , {{attach.created_on | date: 'yyyy/MM/dd hh:mm'}}</span>
+          </p>
+        </li>
+      </ul>
+    </div> --><!--end file-->
+    <!-- <div class="comment background_blue" style="min-height: 50px">
+      <ul style="display: inline-block; margin: 0px; width: 100%;">
+        <li ng-repeat="comment in issue.comments" ng-if="comment.notes != ''" style="padding: 3px;" >
+          <span class="author">{{author(comment.user_id)}}:</span>
+          <span editable-text="comment.notes" e-form="textBtnForm" onaftersave="editComment(comment.id,$data)" e-required>
+            {{ comment.notes || 'empty' }}
+          </span>
+        </li>
+      </ul><br />
+    </div> --><!--end comment-->
+  </div><!--end detail issue-->
 </div>
 
 <!-- from edit issue -->

@@ -6,13 +6,7 @@ $(document).ready(function(){
       opacity: 1,
       right: "+=300",
       width: "toggle"
-    }, 500, function() {
-      // Animation complete.
-    });
-  });
-
-  $("body").on('click', '.issue',function(){
-    $(this).toggleClass('select_issue');
+    }, 500 );
   });
 
   function check_height_max(){
@@ -113,37 +107,6 @@ $(document).ready(function(){
     $(this).parent().parent().find(".file ul li").toggle();
     check_height_max();
   });
-
-  /*$("body").on('click', '.icon_backlog', function(){
-    $(this).hide();
-    $('.s2b_column_4').removeClass('hide_backlog');
-    $('.closed_backlog').show();
-    $('.content').removeClass('full_mode');
-    $('.content').removeClass('basic_mode');
-    $('.content').addClass('backlog_mode');
-    $('.sprint_total').addClass('width_75');
-    $('.issue').removeClass('small_mode');
-    $('.issue').removeClass('normal_mode');
-    $('.issue').addClass('mini_mode');
-    $('.sprint_total').find('.s2b_column_4').addClass('width_33');
-    $('.add_new_issue').hide();
-    check_height_max();
-  });*/
-
-  /*$("body").on('click', '.closed_backlog', function(){
-    $(this).hide();
-    $('.s2b_column_4').addClass('hide_backlog');
-    $('.icon_backlog').show();
-    $('.content').removeClass('backlog_mode');
-    $('.content').addClass('full_mode');
-    $('.content').find('.sprint_total').removeClass('width_75');
-    $('.content').find('.sprint_total').find('.s2b_column_4').removeClass('width_33');
-    $('.content').find('.sprint_total').find('.s2b_column_4').removeClass('s2b_column_5');
-    $('.issue').removeClass('mini_mode');
-    $('.issue').addClass('small_mode');
-    $('.add_new_issue').hide();
-    check_height_max();
-  });*/
 
   $("body").on('click', '.closed_issue', function(){
     $(this).parent().parent().parent().parent().parent().parent().find('.issue_closed').hide();

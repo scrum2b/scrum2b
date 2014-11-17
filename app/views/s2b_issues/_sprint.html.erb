@@ -37,7 +37,7 @@
 	        <%= render :partial => "/s2b_issues/add_new_issue" %>
 	        <div class="connectedSortable check_height" status-id="{{statusIds.status_inprogress}}" version-id="{{version.id}}" id="sortable_start_{{version.id}}" sortable >
 	        	
-	        	<div class="issue ui-state-default " ng-class="{mini_mode: showIssueBacklog, small_mode: !showIssueBacklog}" issue-id="{{issue.id}}" ng-repeat="issue in issuesInProgess">
+	        	<div class="issue ui-state-default " ng-class="{mini_mode: showIssueBacklog, small_mode: !showIssueBacklog}" issue-id="{{issue.id}}" ng-repeat="issue in issuesInProgess" >
               <%= render :partial => "/s2b_issues/issue" %>
             </div>
 	        </div><!--end connectedSortable-->  
@@ -51,7 +51,7 @@
 	          <span><%= l(:label_resolved) %></span>
 	        </div>
 	        <div class="connectedSortable check_height" status-id="{{statusIds.status_completed}}" version-id="{{version.id}}" id="sortable_completed_{{version.id}}" sortable >
-	          <div class="issue ui-state-default" ng-class="{mini_mode: showIssueBacklog, small_mode: !showIssueBacklog}" issue-id="{{issue.id}}" ng-repeat="issue in issuesResolved">
+	          <div class="issue ui-state-default" ng-class="{mini_mode: showIssueBacklog, small_mode: !showIssueBacklog}" issue-id="{{issue.id}}" ng-repeat="issue in issuesResolved" >
               <%= render :partial => "/s2b_issues/issue" %>
             </div>
 	        </div><!--end connectedSortable-->  
@@ -66,7 +66,7 @@
 		        <span class="closed_issue button"><i class="fa fa-minus-circle"></i><%= l(:label_hide) %></span> 
 		      </div>
 		      <div class="connectedSortable check_height" status-id="{{statusIds.status_closed}}" version-id="{{version.id}}" id="sortable_closed_{{version.id}}" sortable >
-		        <div class="issue ui-state-default small_mode" issue-id="{{issue.id}}" ng-repeat="issue in issuesClose">
+		        <div class="issue ui-state-default small_mode" issue-id="{{issue.id}}" ng-repeat="issue in issuesClose" >
 	              <%= render :partial => "/s2b_issues/issue" %>
 	          </div>
 		      </div><!--end connectedSortable-->  

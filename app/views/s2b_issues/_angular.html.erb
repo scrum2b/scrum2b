@@ -97,6 +97,17 @@
     }
   });
 
+  scrum2b.directive('submitEditIssue', function() {
+    return function (scope, element, attrs) {
+      element.bind("submit", function () {
+        scope.$apply(attrs.submitEditIssue);
+        setTimeout(function(){
+          scope.check_height_max_angular(scope.versionSelected.id);
+        }, 500);
+      })
+    }
+  });
+
   scrum2b.directive('clickSprint', function() {
     return function (scope, element, attrs) {
       if (scope.$last) setTimeout(function(){
@@ -111,11 +122,12 @@
       element.bind("click", function () {
         if (window.confirm(msg)){
           scope.$apply(attrs.deleteIssue);
-          scope.check_height_max_angular(scope.versionSelected.id);
+          setTimeout(function(){
+            scope.check_height_max_angular(scope.versionSelected.id);
+          }, 500);
         }
       })
     }
-    
   });
 
   scrum2b.directive('activeShowBacklog', function() {
@@ -155,6 +167,43 @@
         $('.issue_closed').show();
         $('.add_new_issue').hide();
         scope.check_height_max_angular(scope.versionSelected.id);
+      })
+    }
+  });
+
+  scrum2b.directive('issueSelect', function() {
+    return function (scope, element, attrs) {
+      element.bind("click", function () {
+        if ( $( ".content" ).find(".issue").hasClass( "select_issue" ) ) {
+          var status = $('.select_issue').first().parent().attr('status-id');
+          var version = $('.select_issue').first().parent().attr('version-id');
+          var status_id = $(this).parent().parent().attr('status-id');
+          var version_id = $(this).parent().parent().attr('version-id');
+          
+          if (status_id == status && version_id == version ) {
+            $(this).parent().toggleClass('select_issue');
+          }else{
+            var answer = confirm ("<%= l(:label_you_have_selected_in_other_column) %>")
+            if (answer){
+              $('.select_issue').removeClass('select_issue');
+              $(this).parent().addClass('select_issue');
+            }
+          };
+        }else{
+          $(this).parent().toggleClass('select_issue');
+        };
+      })
+    }
+  });
+
+  scrum2b.directive('deleteManyIssue', function() {
+    return function (scope, element, attrs) {
+      element.bind("click", function () {
+        alert(33);  
+        $( ".content .select_issue" ).each(function(){
+          alert($(this).attr('issue-id'));
+        });
+
       })
     }
   });

@@ -17,30 +17,42 @@
 <div ng-app="scrum2b" >
   <div class="content full_mode" ng-controller="BoardsCtrl" >
   	<div class="filter" >
-      <div class="filter_left">
-        <h3><a style="color: white;" href="https://github.com/scrum2b/scrum2b/tree/2-1-stable" target="_blank"><%=l(:label_scrum2b_tool)%></a> ( <%=l(:label_version_tool)%> )</h3>
-        <p><%=l(:label_supported_by)%> <a style="color: white;" href="http://www.scrumtobe.com" target="_blank"><%=l(:label_scrumTobe_software)%></a></p>
-      </div>
-
+      
 	    <div class="filter_right">
-	      <form ng-submit="filterIssues()">
-	      <ul >
-	        <li>
-	          <select ng-model="filterversion">
-	            <option ng-repeat="version in versions" value="{{version}}" ng-selected="isActiveVersion(version)">{{ version.name }}</option>
-	          </select>
-	        </li>
-	        <li>
-	          <select name="select_member" id="select_member" ng-model='filtermember'>
-	            <option value="all" ng-selected="memberActiveShow == 'all'" ><%= l(:label_all_member)%></option>
-	            <option ng-repeat="member in members" value="{{ member}}" ng-selected="memberActiveShow==member.id">{{ member.firstname }}</option>
-	          </select>
-	        </li>
-	        <li>
-	        	<input type="submit" value="<%= l(:label_filter) %>">
-	        </li>
-	      </ul>
-	      </form>
+	    	<div style="width: 50%; float: left;">
+	    		<span class="icon_backlog" active-show-backlog="activeShowIssueBacklog()"><%= l(:label_backlog) %><i class="fa fa-angle-right fa-lg"></i></span>
+	    		<ul style="float:left; margin-left: 10px " >
+	    			<li>Change Sprint</li>
+	    			<li>Change Status</li>
+	    			<li delete-many-issue >Delete</li>
+	    		</ul>
+	    	</div>
+	    	<div style="width: 50%; float: left;">
+	    		<span class="icon-imformation"><%= image_tag('icon-imformation.png', :plugin => 'scrum2b', :style => 'width: 30px;') %></span>
+	    		<div class="imformation hide" >
+			    	<h3><a href="https://github.com/scrum2b/scrum2b/tree/2-1-stable" target="_blank"><%=l(:label_scrum2b_tool)%></a></h3>
+		        <p><%=l(:label_supported_by)%> <a href="http://www.scrumtobe.com" target="_blank"><%=l(:label_scrumTobe_software)%></a></p>
+			    </div>
+
+	    		<form ng-submit="filterIssues()">
+			      <ul >
+			        <li>
+			          <select ng-model="filterversion">
+			            <option ng-repeat="version in versions" value="{{version}}" ng-selected="isActiveVersion(version)">{{ version.name }}</option>
+			          </select>
+			        </li>
+			        <li>
+			          <select name="select_member" id="select_member" ng-model='filtermember'>
+			            <option value="all" ng-selected="memberActiveShow == 'all'" ><%= l(:label_all_member)%></option>
+			            <option ng-repeat="member in members" value=" {{ member}}" ng-selected="memberActiveShow==member.id">{{ member.firstname }}</option>
+			          </select>
+			        </li>
+			        <li>
+			        	<input type="submit" value="<%= l(:label_filter) %>">
+			        </li>
+			      </ul>
+			    </form>
+	    	</div>
 	    </div>
 
 	  </div> <!--end filter-->
