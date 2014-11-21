@@ -22,15 +22,21 @@
           if ($('.location_start_issue').length == 0 ) {
             $("<div class='location_start_issue'></div>").insertAfter(".move_issue");
           };
-          scope.check_height_max_angular();
+          scope.check_height_max_angular(scope.versionSelected.id);
         });
 
         $(jqueryElm).on( "sortstart", function( event, ui ) {
           $('.setting').hide();
+          scope.check_height_max_angular(scope.versionSelected.id);
+        });
+
+        $(jqueryElm).on( "sortout", function( event, ui ) {
+          $(this).removeClass("background_sortover");
         });
 
         $(jqueryElm).on( "sortstop", function( event, ui ) {
-          scope.check_height_max_angular();
+           $( ".location_start_issue" ).remove();
+          scope.check_height_max_angular(scope.versionSelected.id);
         });
       
         $(jqueryElm).on( "sortbeforestop", function( event, ui ) {
@@ -39,6 +45,7 @@
           var issueID = $('.move_issue').attr('issue-id');
           var statusID = $('.move_issue').parent().attr('status-id');
           var versionID = $('.move_issue').parent().attr('version-id');
+          $('.move_issue').removeClass('select_issue');
           $('.move_issue').removeClass('move_issue');
           $(".location_start_issue" ).remove();
           $(".ui-sortable-placeholder").remove();
@@ -51,7 +58,7 @@
           if( div_start == "sortable_backlog" || div_end == "sortable_backlog"){
             scope.getNumberIssuesAfter(versionID);
           }
-
+          scope.check_height_max_angular(scope.versionSelected.id);
         });
       }
     };
@@ -61,6 +68,9 @@
     return function (scope, element, attrs) {
       element.bind("click", function () {
         scope.$apply(attrs.clickSprint);
+        setTimeout(function(){
+          scope.check_height_max_angular(scope.versionSelected.id);
+        }, 1);
       })
     }
   });
@@ -72,9 +82,28 @@
         $('.add_new_issue').hide();
         $('.add_new_issue form').trigger("reset");
         element.parent().parent().find('.add_new_issue').show();
-        /*setTimeout(function(){
-          scope.check_height_max_angular();
-        }, 1);*/
+      })
+    }
+  });
+
+  scrum2b.directive('submitAddNewIssue', function() {
+    return function (scope, element, attrs) {
+      element.bind("submit", function () {
+        scope.$apply(attrs.submitAddNewIssue);
+        setTimeout(function(){
+          scope.check_height_max_angular(scope.versionSelected.id);
+        }, 500);
+      })
+    }
+  });
+
+  scrum2b.directive('submitEditIssue', function() {
+    return function (scope, element, attrs) {
+      element.bind("submit", function () {
+        scope.$apply(attrs.submitEditIssue);
+        setTimeout(function(){
+          scope.check_height_max_angular(scope.versionSelected.id);
+        }, 500);
       })
     }
   });
@@ -82,15 +111,7 @@
   scrum2b.directive('clickSprint', function() {
     return function (scope, element, attrs) {
       if (scope.$last) setTimeout(function(){
-        scope.check_height_max_angular();
-      }, 1);
-    }
-  });
-
-  scrum2b.directive('repeatIssue', function() {
-    return function (scope, element, attrs) {
-      if (scope.$last) setTimeout(function(){
-        scope.check_height_max_angular();
+        scope.check_height_max_angular(scope.versionSelected.id);
       }, 1);
     }
   });
@@ -101,11 +122,12 @@
       element.bind("click", function () {
         if (window.confirm(msg)){
           scope.$apply(attrs.deleteIssue);
-          scope.check_height_max_angular()
+          setTimeout(function(){
+            scope.check_height_max_angular(scope.versionSelected.id);
+          }, 500);
         }
       })
     }
-    
   });
 
   scrum2b.directive('activeShowBacklog', function() {
@@ -122,9 +144,10 @@
         $('.normal_mode').removeClass('normal_mode');
         $('.sprint_total').find('.s2b_column_4').addClass('width_33');
         $('.add_new_issue').hide();
+        $('.issue_closed').hide();
         $('.open_sprint_closed').hide();
         $('.see-detail-sprint').removeClass('padding-see-detail');
-        scope.check_height_max_angular();
+        scope.check_height_max_angular(scope.versionSelected.id);
       })
     }
   });
@@ -143,7 +166,44 @@
         $('.content').find('.sprint_total').find('.s2b_column_4').removeClass('s2b_column_5');
         $('.issue_closed').show();
         $('.add_new_issue').hide();
-        scope.check_height_max_angular();
+        scope.check_height_max_angular(scope.versionSelected.id);
+      })
+    }
+  });
+
+  scrum2b.directive('issueSelect', function() {
+    return function (scope, element, attrs) {
+      element.bind("click", function () {
+        if ( $( ".content" ).find(".issue").hasClass( "select_issue" ) ) {
+          var status = $('.select_issue').first().parent().attr('status-id');
+          var version = $('.select_issue').first().parent().attr('version-id');
+          var status_id = $(this).parent().parent().attr('status-id');
+          var version_id = $(this).parent().parent().attr('version-id');
+          
+          if (status_id == status && version_id == version ) {
+            $(this).parent().toggleClass('select_issue');
+          }else{
+            var answer = confirm ("<%= l(:label_you_have_selected_in_other_column) %>")
+            if (answer){
+              $('.select_issue').removeClass('select_issue');
+              $(this).parent().addClass('select_issue');
+            }
+          };
+        }else{
+          $(this).parent().toggleClass('select_issue');
+        };
+      })
+    }
+  });
+
+  scrum2b.directive('deleteManyIssue', function() {
+    return function (scope, element, attrs) {
+      element.bind("click", function () {
+        alert(33);  
+        $( ".content .select_issue" ).each(function(){
+          alert($(this).attr('issue-id'));
+        });
+
       })
     }
   });

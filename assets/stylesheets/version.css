@@ -99,6 +99,18 @@
     font-size: 14px !important;
     text-align: center;
   }
+  .background-issue { width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 0;
+  }
+  .select_issue {
+    background: rgb(255, 212, 130) !important;
+    border: 1px solid red !important;
+  }
+
   .button i { margin-right: 4px; }
   .sprint { display: none;}
   .sprint_1, .sprint_2, .sprint_3, .sprint_4 {height: auto !important; /*padding-bottom: 50px !important;*/}
@@ -109,18 +121,20 @@
   .title_backlog {text-align: center; height: 30px; background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#a6752d), to(#b88a46)); margin-top: 0px; margin-bottom: 0px; color: #ebebeb }
   .title_backlog .span_backlog {line-height: 30px !important; }
   /*filter*/
-  .filter { height: 60px; background: #275888; color: #ebebeb;}
-  .filter h3,.filter p {color: #ebebeb;margin:0px;padding:0px;}
+  .filter { height: 60px; color: #169;}
+  .filter h3,.filter p {margin:0px;padding:0px;}
   .filter h3 {margin-top:5px;line-height: 28px}
-  .filter .filter_left { width: 30%; float: left;text-align: center }
-  .filter .filter_right { width: 70%; float: left; }
+  .filter .filter_left { width: 25%; float: left;text-align: center }
+  .filter .filter_right { width: 100%; float: left; }
   .filter .filter_left ul { display: inline-flex; list-style: none; margin:0;padding: 0px }
   .filter .filter_right ul { float: right; text-align: right; display: inline-flex; list-style: none; margin: 0 5px  0 0;padding: 0px }
   .filter .filter_right ul li { margin-left: 10px; line-height: 60px}
   .filter .filter_right ul li select,.filter .filter_right ul li input  {border-radius: 2px; height: 20px;padding: 0 5px;border: none}
   {border-radius: 2px; height: 20px;padding: 0 5px}
 
-  .icon_backlog {cursor: pointer; background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#9cc3e8), to(#275888)); line-height: 15px; padding: 5px 10px; margin: 0px 6px; display: inline-block; margin: 5px; color: #ebebeb; font-size: 14px; font-weight: bold; text-align: center;}
+  .imformation { width: 230px; border: 1px solid; height: 53px; float: right; margin-left: 10px; text-align: center; }
+  .icon-imformation { float: right; margin-top: 14px; margin-left: 10px; margin-right: 10px;}
+  .icon_backlog {cursor: pointer; background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#9cc3e8), to(#275888)); line-height: 15px; padding: 5px 10px; margin: 0px 6px; display: inline-block; margin: 5px; color: #ebebeb; font-size: 14px; font-weight: bold; text-align: center; margin-top: 15px; float: left;}
   .icon_backlog i {margin-left: 4px;}
   .message { width: 30%; height: 100px; text-align: center; position: fixed; top: 10px; left: 440px; z-index: 1001;background: #C18888; opacity: 0.5;}
   .message span { position: fixed; top: 13px; z-index: 1010; left: 808px;  }
@@ -161,13 +175,12 @@
   .icon_add_issue { }
   .title_issue { position: relative; padding-right: 20px;}
   .title_issue a{ line-height: 0px !important; color: #54626d !important; padding:}
-  .title_issue .icon_config{ position: absolute; top: 0px; right: 0px; font-size: 18px;cursor: pointer;}
+  .title_issue .icon_config { position: absolute; top: 0px; right: 0px; font-size: 18px;cursor: pointer; z-index: 9990; }
   .title_issue a { font-size: 14px; line-height: 40px; }
-  .issue {background: #f3f3d1 !important; border: 1px solid; padding: 3px; position: relative; margin-bottom: 5px; margin-top: 5px; min-height: 35px;}
+  .issue { background: #f3f3d1 !important; border: 1px solid; padding: 3px; position: relative; margin-bottom: 5px; margin-top: 5px; min-height: 35px;}
   .issue:hover {border: 1px solid #848484; }
 
   /*cac trang thai cua issue*/
-  .mini_mode .title_issue .icon_config { display: none;}
   .mini_mode .content_issue {display: none;}
   .mini_mode .detail_issue {display: none;}
   .mini_mode .file_comment {display: none;}
