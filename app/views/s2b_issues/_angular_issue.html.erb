@@ -2,66 +2,65 @@
 var scrum2b = angular.module('issue', []);
 
   scrum2b.controller('BoardsCtrl', function ($scope, IssueService,$filter){
-    IssueService.list().then(
+    IssueService.getData().then(
       function(data){
-        var arrayVersionLoaded = [];
-        var arrayIssues = [];
-        var arrayIssuesBacklog = [];
-        var arrayVersions = [];
-        var arrayStatus = [];
-        var arrayTracker = [];
-        var arrayPriority = [];
-        var arrayMembers = [];
+        $scope.versionsLoaded = [];
+        $scope.issues = [];
+        $scope.issuesBacklog = [];
+        $scope.versions = [];
+        $scope.status = [];
+        $scope.trackers = [];
+        $scope.priorities = [];
+        $scope.members = [];
         $scope.paramsStatusId = '';
         $scope.memberActiveShow = 'all';
         $scope.statusIds = data.status_ids;
+
         angular.forEach(data.issues, function(value) {
           angular.forEach(value, function(value,key) {
-            arrayIssues.push(value);
-          })
-        })
-        angular.forEach(data.issues_backlog, function(value) {
-          angular.forEach(value, function(value,key) {
-            arrayIssuesBacklog.push(value);
-          })
-        })
-        angular.forEach(data.versions, function(value) {
-          angular.forEach(value, function(value,key) {
-            arrayVersions.push(value);
-          })
-        })
-        angular.forEach(data.status, function(value) {
-          angular.forEach(value, function(value,key) {
-            arrayStatus.push(value);
-          })
-        })
-        angular.forEach(data.tracker, function(value) {
-          angular.forEach(value, function(value,key) {
-            arrayTracker.push(value);
-          })
-        })
-        angular.forEach(data.priority, function(value) {
-          angular.forEach(value, function(value,key) {
-            arrayPriority.push(value);
-          })
-        })
-        angular.forEach(data.members, function(value) {
-          angular.forEach(value, function(value,key) {
-            arrayMembers.push(value);
+            $scope.issues.push(value);
           })
         })
 
-        $scope.versions = arrayVersions;
-        $scope.issues = arrayIssues;
-        $scope.issuesBacklog = arrayIssuesBacklog
-        $scope.priorities = arrayPriority;
-        $scope.trackers = arrayTracker;
-        $scope.status = arrayStatus;
-        $scope.allIssues = arrayIssues.concat(arrayIssuesBacklog);
-        $scope.members = arrayMembers;
-        $scope.versionSelected = arrayVersions[0];
-        arrayVersionLoaded.push(arrayVersions[0].id);
-        $scope.versionsLoaded = arrayVersionLoaded;
+        angular.forEach(data.issues_backlog, function(value) {
+          angular.forEach(value, function(value,key) {
+            $scope.issuesBacklog.push(value);
+          })
+        })
+
+        angular.forEach(data.versions, function(value) {
+          angular.forEach(value, function(value,key) {
+            $scope.versions.push(value);
+          })
+        })
+
+        angular.forEach(data.status, function(value) {
+          angular.forEach(value, function(value,key) {
+            $scope.status.push(value);
+          })
+        })
+
+        angular.forEach(data.tracker, function(value) {
+          angular.forEach(value, function(value,key) {
+            $scope.trackers.push(value);
+          })
+        })
+
+        angular.forEach(data.priority, function(value) {
+          angular.forEach(value, function(value,key) {
+            $scope.priorities.push(value);
+          })
+        })
+
+        angular.forEach(data.members, function(value) {
+          angular.forEach(value, function(value,key) {
+            $scope.members.push(value);
+          })
+        })
+
+        $scope.allIssues = $scope.issues.concat($scope.issuesBacklog);
+        $scope.versionSelected = $scope.versions[0];
+        $scope.versionsLoaded.push($scope.versions[0].id);
         $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
         $scope.showIssueBacklog = false;
       }
@@ -69,29 +68,24 @@ var scrum2b = angular.module('issue', []);
     
     $scope.getIssues = function(version, member_id){
       var indexOfVersion  = $scope.versionsLoaded.indexOf(version.id)
+      $scope.issues = [];
       if (indexOfVersion >= 0){
-        var arrayIssues = [];
         angular.forEach($scope.allIssues, function(value) {
           if(value.fixed_version_id == version.id){
-            arrayIssues.push(value);
+            $scope.issues.push(value);
           }
          })
-        $scope.issues = arrayIssues;
         $scope.filterStatusIssues($scope.issues,member_id)
       }else{
         $scope.versionsLoaded.push(version.id);
         IssueService.getIssues(version.id).then(
           function(data){
-            var arrayIssues = [];
-            angular.forEach(data, function(value) {
+            angular.forEach(data.issues, function(value) {
               angular.forEach(value, function(value,key) {
-                angular.forEach(value, function(value,key) {
-                  arrayIssues.push(value);
-                  $scope.allIssues.push(value);
-                })
+                $scope.issues.push(value);
+                $scope.allIssues.push(value);
               })
             })
-            $scope.issues = arrayIssues;
             $scope.filterStatusIssues($scope.issues,member_id);
           }
         )
@@ -110,12 +104,12 @@ var scrum2b = angular.module('issue', []);
       $scope.getIssues(version,$scope.memberActiveShow);
       //set active or unactive version
       $scope.setUnActiveVersion(version);
+      $scope.check_height_max_angular(version.id);
     }
     
     $scope.setParamsAddIssue = function(status_id,version_id){
       $scope.paramsStatusId = status_id
       $scope.paramsVersionId = version_id
-
       $scope.newissue.subject = ""
       $scope.newissue.description = ""
       $scope.newissue.start_date = ""
@@ -127,6 +121,7 @@ var scrum2b = angular.module('issue', []);
       $('.submit_issue').show();
       $('.cancel_add_issue').show();
       $('.add-loader').hide();
+      /*$scope.check_height_max_angular(version_id);*/
     }
     
     $scope.addIssue = function(){
@@ -159,8 +154,6 @@ var scrum2b = angular.module('issue', []);
         $('.submit_issue').hide();
         $('.cancel_add_issue').hide();
         $('.add-loader').show();
-        $('.form_add_new_issue').trigger("reset");
-        $scope.check_height_max_angular();
       }
     };
 
@@ -203,7 +196,6 @@ var scrum2b = angular.module('issue', []);
             $scope.getIssues($scope.versionSelected,$scope.memberActiveShow);
             $(".from_edit_issue_" + id ).hide();
             $('.issue_' + id).show();
-
           }else{
             alert(data.message);
           }
@@ -279,7 +271,7 @@ var scrum2b = angular.module('issue', []);
             alert(data.message);
           }
           $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
-          $scope.check_height_max_angular();
+          $scope.check_height_max_angular($scope.versionSelected.id);
          }
       );
     };
@@ -463,12 +455,12 @@ var scrum2b = angular.module('issue', []);
       else return(bytes / 1073741824).toFixed(3) + " GB";
     };
 
-    $scope.check_height_max_angular = function(){
+    $scope.check_height_max_angular = function(version_id){
       $(".sprint-active .check_height").css("height","auto");
-      var height1 = $(".active #sortable1").height();
-      var height2 = $(".active #sortable2").height();
-      var height3 = $(".active #sortable3").height();
-      var height4 = $(".active #sortable4").height();
+      var height1 = $(".active #sortable_new_" + version_id).height();
+      var height2 = $(".active #sortable_start_" + version_id).height();
+      var height3 = $(".active #sortable_completed_" + version_id).height();
+      var height4 = $(".active #sortable_closed_" + version_id).height();
       var array_height = [height1, height2, height3, height4];
       var max_height = Math.max.apply(Math, array_height);
       $(".sprint-active .check_height").css("height",max_height);
