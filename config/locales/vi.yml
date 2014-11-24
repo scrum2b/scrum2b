@@ -48,4 +48,4 @@ vi:
 
   label_error_due_date_must_be_greater_than_start_date: "Thời hạn phải lớn hơn ngày bắt đầu!"
   label_message_are_you_sure: "Bạn chắc chắc xóa?"
-
+  label_you_have_selected_in_other_column: "Bạn đã chọn trong cột khác. Bạn có muốn tiếp tục để bỏ chọn cột cuối cùng?"

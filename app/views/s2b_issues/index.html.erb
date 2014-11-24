@@ -2,53 +2,89 @@
   <%= stylesheet_link_tag 'xeditable', :plugin => 'scrum2b' %>
   <%= stylesheet_link_tag 'version', :plugin => 'scrum2b' %>
   <%= stylesheet_link_tag 'application', :plugin => 'scrum2b' %>
-  <%= javascript_include_tag "angular", :plugin => 'scrum2b' %>
   <%= javascript_include_tag "application", :plugin => 'scrum2b' %>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
   <%= javascript_include_tag "jquery-ui", :plugin => 'scrum2b' %>
   <%= javascript_include_tag "xeditable", :plugin => 'scrum2b' %>
 <% end %>
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
-<style type="text/css">
-	
-</style>
 <%= render :partial => "s2b_issues/angular_service" %>
 <%= render :partial => "s2b_issues/angular_issue" %>
 <%= render :partial => "s2b_issues/angular_comment" %>
 <%= render :partial => "s2b_issues/angular_file" %>
 <%= render :partial => "s2b_issues/angular" %>
-<div ng-app="scrum2b" >
-  <div class="content full_mode" ng-controller="BoardsCtrl" >
+<div ng-app="scrum2b" class="s2b-content" >
+  <div class="content basic_mode" ng-controller="BoardsCtrl" >
   	<div class="filter" >
-      <div class="filter_left">
-        <h3><a style="color: white;" href="https://github.com/scrum2b/scrum2b/tree/2-1-stable" target="_blank"><%=l(:label_scrum2b_tool)%></a> ( <%=l(:label_version_tool)%> )</h3>
-        <p><%=l(:label_supported_by)%> <a style="color: white;" href="http://www.scrumtobe.com" target="_blank"><%=l(:label_scrumTobe_software)%></a></p>
-
-      </div>
-
+      
 	    <div class="filter_right">
-	      <form ng-submit="filterIssues()">
-	      <ul >
-	        <li>
-	          <select ng-model="filterversion">
-	            <option ng-repeat="version in versions" value="{{version}}" ng-selected="isActiveVersion(version)">{{ version.name }}</option>
-	          </select>
-	        </li>
-	        <li>
-	          <select name="select_member" id="select_member" ng-model='filtermember'>
-	            <option value="all" ng-selected="memberActiveShow == 'all'" ><%= l(:label_all_member)%></option>
-	            <option ng-repeat="member in members" value=" {{ member}}" ng-selected="memberActiveShow==member.id">{{ member.firstname }}</option>
-	          </select>
-	        </li>
-	        <li>
-	        	<input type="submit" value="<%= l(:label_filter) %>">
-	        </li>
-	      </ul>
-	      </form>
+	    	<div style="width: 50%; float: left;">
+	    		<span class="icon_backlog" active-show-backlog="activeShowIssueBacklog()"><%= l(:label_backlog) %><i class="fa fa-angle-right fa-lg"></i></span>
+	    		<div class="show-menu hide">
+		    		<ul class="menu-issue">
+		    			<li class="menu-change-sprint">
+		    				<a href=""><%= l(:label_change_sprint) %></a>
+		    				<ul class="menu-change hide" >
+		    					<li class="change-sprint-main" ng-repeat="version in versions" ng-hide="isActiveVersion(version)" >
+				            <a href="" change-version-issues version-id="{{version.id}}" >{{version.name}}</a>
+				          </li>
+				          <!-- <li class="change-sprint-blacklog" ng-repeat="version in versions" >
+				            <a href="" change-version-issues version-id="{{version.id}}" >{{version.name}}</a>
+				          </li> -->
+		    				</ul>
+		    			</li>
+		    			<li class="menu-change-status">
+		    				<a href=""><%= l(:label_change_status) %></a>
+		    				<ul class="menu-change hide" >
+				          <li ng-hide="">
+				            <a href="" change-status-issues status-id="{{statusIds.status_no_start}}" class=""><%= l(:label_new_issue) %></a>
+				          </li>
+				          <li ng-hide="">
+				            <a href="" change-status-issues status-id="{{statusIds.status_inprogress}}" class=""><%= l(:label_in_progress) %></a>
+				          </li>
+				          <li ng-hide="">
+				            <a href="" change-status-issues status-id="{{statusIds.status_completed}}" class=""><%= l(:label_resolved) %></a>
+				          </li>
+				          <li ng-hide="">
+				            <a href="" change-status-issues status-id="{{statusIds.status_closed}}" class=""><%= l(:label_close) %></a>
+				          </li>
+				        </ul>
+		    			</li>
+		    			<li ><a delete-many-issue href=""><%= l(:label_delete) %></a></li>
+		    		</ul>
+	    		</div>
+	    	</div>
+	    	<div style="width: 50%; float: right;">
+	    		<span class="icon-imformation"><%= image_tag('icon-imformation.png', :plugin => 'scrum2b', :style => 'width: 30px;') %></span>
+	    		<div class="imformation hide" >
+			    	<h3><a href="https://github.com/scrum2b/scrum2b/tree/2-1-stable" target="_blank"><%=l(:label_scrum2b_tool)%></a></h3>
+		        <p><%=l(:label_supported_by)%> <a href="http://www.scrumtobe.com" target="_blank"><%=l(:label_scrumTobe_software)%></a></p>
+			    </div>
+
+	    		<form ng-submit="filterIssues()">
+			      <ul class="filter-ul" >
+			        <li>
+			          <select ng-model="filterversion">
+			            <option ng-repeat="version in versions" value="{{version}}" ng-selected="isActiveVersion(version)">{{ version.name }}</option>
+			          </select>
+			        </li>
+			        <li>
+			          <select name="select_member" id="select_member" ng-model='filtermember'>
+			            <option value="all" ng-selected="memberActiveShow == 'all'" ><%= l(:label_all_member)%></option>
+			            <option ng-repeat="member in members" value=" {{ member}}" ng-selected="memberActiveShow==member.id">{{ member.firstname }}</option>
+			          </select>
+			        </li>
+			        <li>
+			        	<input type="submit" value="<%= l(:label_filter) %>">
+			        </li>
+			      </ul>
+			    </form>
+	    	</div>
 	    </div>
+
 	  </div> <!--end filter-->
-	  <span class="icon_backlog" active-show-backlog="activeShowIssueBacklog()"><%= l(:label_backlog) %><i class="fa fa-angle-right fa-lg"></i></span>
-	  
+	    
 	  <!-- Backlog -->
 	  <%= render :partial => "s2b_issues/backlog" %>
 	  <!--begin 4 sprint-->
@@ -60,4 +96,3 @@
 
 <!-- jquery -->
 <%= render :partial => "s2b_issues/jquery" %>
-

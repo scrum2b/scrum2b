@@ -1,12 +1,21 @@
 <script>
 $(document).ready(function(){
 
+  $( "body" ).on('click', '.icon-imformation',function(){
+    $( ".imformation" ).animate({
+      opacity: 1,
+      right: "+=300",
+      width: "toggle"
+    }, 500 );
+  });
+
   function check_height_max(){
+    var version_id = $(".title_sprint_active").attr("versionid");
     $(".sprint-active .check_height").css("height","auto");
-    var height1 = $(".active #sortable1").height();
-    var height2 = $(".active #sortable2").height();
-    var height3 = $(".active #sortable3").height();
-    var height4 = $(".active #sortable4").height();
+    var height1 = $(".active #sortable_new_" + version_id).height();
+    var height2 = $(".active #sortable_start_" + version_id).height();
+    var height3 = $(".active #sortable_completed_" + version_id).height();
+    var height4 = $(".active #sortable_closed_" + version_id).height();
     var array_height = [height1, height2, height3, height4];
     var max_height = Math.max.apply(Math, array_height);
     $(".sprint-active .check_height").css("height",max_height);
@@ -38,6 +47,7 @@ $(document).ready(function(){
     $('.from_edit_issue').find('textarea[name="description"]') .attr('placeholder','Enter Issue Description');
     $('.from_edit_issue').find('input[name="estimated_hours"]') .attr('min','0');
     var id = $(this).attr("issue_id");
+    $('.background_issue_' + id).hide();
     $('.submit_edit_issue_' + id ).show();
     $('.cancel_edit_issue_' + id ).show();
     $('.edit_loader_' + id ).hide();
@@ -50,10 +60,13 @@ $(document).ready(function(){
     var id = $(this).attr("issue_id");
     $(".from_edit_issue_" + id).hide();
     $('.issue_' + id).show();
+    $('.background_issue_' + id).show();
     check_height_max();
   });
   
   $("body").on('click', '.submit_edit_issue',function(){
+    var id = $(this).attr("issue_id");
+    $('.background_issue_' + id).show();
     check_height_max();
   });
 
@@ -99,40 +112,9 @@ $(document).ready(function(){
     check_height_max();
   });
 
-  /*$("body").on('click', '.icon_backlog', function(){
-    $(this).hide();
-    $('.s2b_column_4').removeClass('hide_backlog');
-    $('.closed_backlog').show();
-    $('.content').removeClass('full_mode');
-    $('.content').removeClass('basic_mode');
-    $('.content').addClass('backlog_mode');
-    $('.sprint_total').addClass('width_75');
-    $('.issue').removeClass('small_mode');
-    $('.issue').removeClass('normal_mode');
-    $('.issue').addClass('mini_mode');
-    $('.sprint_total').find('.s2b_column_4').addClass('width_33');
-    $('.add_new_issue').hide();
-    check_height_max();
-  });*/
-
-  /*$("body").on('click', '.closed_backlog', function(){
-    $(this).hide();
-    $('.s2b_column_4').addClass('hide_backlog');
-    $('.icon_backlog').show();
-    $('.content').removeClass('backlog_mode');
-    $('.content').addClass('full_mode');
-    $('.content').find('.sprint_total').removeClass('width_75');
-    $('.content').find('.sprint_total').find('.s2b_column_4').removeClass('width_33');
-    $('.content').find('.sprint_total').find('.s2b_column_4').removeClass('s2b_column_5');
-    $('.issue').removeClass('mini_mode');
-    $('.issue').addClass('small_mode');
-    $('.add_new_issue').hide();
-    check_height_max();
-  });*/
-
   $("body").on('click', '.closed_issue', function(){
     $(this).parent().parent().parent().parent().parent().parent().find('.issue_closed').hide();
-    $(this).parent().parent().parent().parent().parent().parent().find('.s2b_column_4').addClass("s2b_column_5");
+    $(this).parent().parent().parent().parent().parent().parent().find('.s2b_column_5').removeClass("s2b_column_4");
     $(this).parent().parent().parent().parent().parent().parent().find('.open_sprint_closed').show();
     $(this).parent().parent().parent().parent().parent().parent().find('.see-detail-sprint').addClass('padding-see-detail');
     
@@ -142,7 +124,7 @@ $(document).ready(function(){
   $("body").on('click', '.open_sprint_closed', function(){
     $(this).hide();
     $(this).parent().find('.see-detail-sprint').removeClass('padding-see-detail');
-    $(this).parent().find('.s2b_column_4').removeClass("s2b_column_5");
+    $(this).parent().find('.s2b_column_5').addClass("s2b_column_4");
     $(this).parent().find('.issue_closed').show();
   });
 
@@ -178,6 +160,14 @@ $(document).ready(function(){
         $('.backlog').addClass('absolute_backlog');
         $('.backlog').removeClass('fixed_backlog');
       }
+    } 
+  });
+  
+  $(window).on('scroll', window, function(){
+    if($(window).scrollTop()  > 112 ){
+      $('.filter').addClass('fixed_filter');
+    } else {
+      $('.filter').removeClass('fixed_filter');
     } 
   });
 

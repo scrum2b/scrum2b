@@ -1,5 +1,5 @@
 <div class="from_add_edit_issue from_edit_issue from_edit_issue_{{issue.id}} hide">
-	<form editable-form name="editableForm" onaftersave="editIssue(issue)" onbeforesave="checkParamsEditIssue(issue)" e-required>
+	<form editable-form name="editableForm" onaftersave="editIssue(issue)" onbeforesave="checkParamsEditIssue(issue)" e-required submit-edit-issue="editIssue()">
 		<input type="hidden" ng-init="issue.id=issue.id" >
 		<span style="color: red;font-weight: 100;">{{errorDate}}</span>
 		<table >
