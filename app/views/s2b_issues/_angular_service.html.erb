@@ -103,6 +103,53 @@ scrum2b.service('IssueService', function($http, $q){
     return( request.then( handleSuccess, handleError ) );
   }
 
+  function deleteManyIssue(array_issue){
+    var request = $http({
+      method: "post",
+      url: "destroy_many",
+      params: {
+        
+      },
+      data: {
+        array_issue: array_issue,
+        project_id: "<%= @project.id %>"
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+
+  function changeVersionIssues(array_issue, version_id ){
+    var request = $http({
+      method: "post",
+      url: "change_version_issues",
+      params: {
+        
+      },
+      data: {
+        array_issue: array_issue,
+        version_id: version_id,
+        project_id: "<%= @project.id %>"
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+
+  function changeStatusIssues(array_issue, status_id ){
+    var request = $http({
+      method: "post",
+      url: "change_status_issues",
+      params: {
+        
+      },
+      data: {
+        array_issue: array_issue,
+        status_id: status_id,
+        project_id: "<%= @project.id %>"
+      },
+    });
+    return( request.then( handleSuccess, handleError ) );
+  }
+
   function updateIssue(issue){
     var request = $http({
       method: "post",
@@ -192,6 +239,9 @@ scrum2b.service('IssueService', function($http, $q){
     deleteComment: deleteComment,
     editComment: editComment,
     createComment: createComment,
+    deleteManyIssue: deleteManyIssue,
+    changeVersionIssues: changeVersionIssues,
+    changeStatusIssues: changeStatusIssues,
   }
   
   function handleError ( response ){

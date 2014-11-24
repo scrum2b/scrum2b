@@ -168,6 +168,62 @@ var scrum2b = angular.module('issue', []);
       );
     };
     
+    $scope.deleteManyIssue = function(array_issue){
+      IssueService.deleteManyIssue(array_issue).then(
+        function(data){
+          if (data.result == "success") {
+            angular.forEach(array_issue, function(issue_id) {
+              issue = $filter('filter')($scope.allIssues, {id: issue_id})[0];
+              $scope.allIssues.splice($scope.allIssues.indexOf(issue), 1);
+              $scope.getIssues($scope.versionSelected,$scope.memberActiveShow);
+            })
+          }else{
+            alert(data.message);
+          }
+        }
+      );
+    };
+
+    $scope.changeVersionIssues = function(array_issue, version_id){
+      IssueService.changeVersionIssues(array_issue, version_id).then(
+        function(data){
+          if (data.result == "success") {
+            angular.forEach(array_issue, function(issue_id) {
+              issue = $filter('filter')($scope.allIssues, {id: issue_id})[0];
+              issue.fixed_version_id = version_id;
+              $scope.issues.splice($scope.issues.indexOf(issue), 1);
+              $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
+            })
+          }else{
+            alert(data.message);
+          }
+        }
+      );
+    };
+
+    $scope.changeStatusIssues = function(array_issue, status_id){
+      IssueService.changeStatusIssues(array_issue, status_id).then(
+        function(data){
+          if (data.result == "update_success") {
+            angular.forEach(array_issue, function(issue_id) {
+              issue = $filter('filter')($scope.allIssues, {id: issue_id})[0];
+              issue.status_id = status_id;
+              $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
+            })
+          }else if (data.result == "update_success_completed") {
+            angular.forEach(array_issue, function(issue_id) {
+              issue = $filter('filter')($scope.allIssues, {id: issue_id})[0];
+              issue.status_id = status_id;
+              issue.done_ratio = 100;
+              $scope.filterStatusIssues($scope.issues,$scope.memberActiveShow);
+            })
+          }else{
+            alert(data.message);
+          }
+        }
+      );
+    };
+
     $scope.checkParamsEditIssue = function(data) {
       if ($filter('date')(data.start_date, "yyyy-MM-dd") > $filter('date')(data.due_date, "yyyy-MM-dd")) {
         alert("<%= l(:label_error_due_date_must_be_greater_than_start_date) %>");
@@ -407,7 +463,6 @@ var scrum2b = angular.module('issue', []);
       }else{
         $scope.numberIssuesOfVersionActive = $scope.numberIssuesOfVersionActive - 1;
       }
-      //$scope.numberIssuesOfVersionActive =  $filter('filter')($scope.allIssues, {fixed_version_id: $scope.versionSelected.id}).length;
     }
     
     $scope.filterStatusIssues = function(issues, member_id) {

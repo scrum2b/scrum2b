@@ -1,4 +1,4 @@
-<div class="background-issue" issue-select></div>
+<div class="background-issue background_issue_{{issue.id}} " issue-select></div>
 <div class="issue_{{issue.id}} loop_issue" repeat-issue >
   <div class="title_issue">
     <a href="/issues/{{issue.id}}" target="_blank">#{{ issue.id }}:</a> {{ issue.subject | limitTo : 40 }}{{issue.subject.length > 40 ? "..." : ""  }}
@@ -71,7 +71,7 @@
   </div><!--end content issue-->
   <div class="detail_issue">
     <div class="detail">
-      <p style="white-space: pre;">{{ issue.description }}</p>
+      <p style="white-space: pre-line;">{{ issue.description }}</p>
     </div>
     <div class="file_comment">
       <!-- <ul>

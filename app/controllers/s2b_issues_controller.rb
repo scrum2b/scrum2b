@@ -47,6 +47,63 @@ class S2bIssuesController < S2bApplicationController
     end
   end
 
+  def destroy_many
+    check = true
+    params[:array_issue].each do |issue_id|
+      issue = Issue.find(issue_id.to_i)
+      if issue.present?
+        issue.destroy
+      else
+        check = false
+      end
+    end
+    if check
+      render :json => {result: "success"}
+    else
+      render :json => {result: "error", message: "Invalid Issue!"}
+    end
+  end
+
+  def change_version_issues
+    check = true
+    params[:array_issue].each do |issue_id|
+      issue = Issue.find(issue_id.to_i)
+      if issue.present?
+        issue.update_attribute(:fixed_version_id,  params[:version_id])
+      else
+        check = false
+      end
+    end
+
+    if check
+      render :json => {result: "success"}
+    else
+      render :json => {result: "error", message: "Invalid Issue!"}
+    end
+  end
+
+  def change_status_issues
+    Rails.logger.info "change_status_issues"
+    check = true
+    completed = false
+    params[:array_issue].each do |issue_id|
+      issue = Issue.find(issue_id.to_i)
+      if issue.present?
+        param = { status_id: params[:status_id]}
+        issue.update_issue(param, STATUS_IDS )
+        completed = true if issue.completed?(STATUS_IDS)
+      else
+        check = false
+      end
+    end
+
+    if check
+      render :json => { result: completed ? "update_success_completed" : "update_success" }
+    else
+      render :json => {result: "error", message: "Invalid Issue!"}
+    end
+  end
+
   def update
     if @issue.present? && Rails::VERSION::MAJOR >= 4 ? @issue.update_issue(issue_params, STATUS_IDS) : @issue.update_issue(params[:issue], STATUS_IDS)
       render :json => {result: @issue.completed?(STATUS_IDS) ? "update_success_completed" : "update_success", issue: @issue}
