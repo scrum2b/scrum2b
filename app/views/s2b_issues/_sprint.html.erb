@@ -1,14 +1,14 @@
-<div ng-repeat="version in versions">
+<div ng-repeat="version in versions" >
 	<h3 class="title_sprint" versionid ="{{version.id}}" ng-class="{'title_sprint_active': isActiveVersion(version)}" click-sprint="activeVersion(version)" >
 		{{version.name}} - {{version.effective_date}}
     <span class="quantity_issue" ng-if="isActiveVersion(version)">{{numberIssuesOfVersionActive}}</span> 
-		<a href="/versions/{{version.id}} " target="_blank" class="see-detail-sprint" ><%= l(:label_see_detail)%></a>
+		<a href="/versions/{{version.id}} " ng-class="{'padding-see-detail': isActiveVersion(version)}" target="_blank" class="see-detail-sprint" ><%= l(:label_see_detail)%></a>
 	</h3>	
-	<div class="open_sprint_closed" >
+	<div class="open_sprint_closed" ng-class="{'show': isActiveVersion(version)}" >
     <span><i class="fa fa-angle-left fa-lg pointer_cursor"></i> <%= l(:label_close_colunn) %></span>
   </div>
 	<div class="sprint_{{version.id}} sprint sprint-active clearfix" ng-class="{'active': isActiveVersion(version)}">
-	  <div class="s2b_column_4 hide_backlog">
+	  <div class="s2b_column_5 hide_backlog">
 	    <div class="padding_5 ">
 	      <div class="border_status column_status_new">
 	        <div class="status_sprint">
@@ -27,7 +27,7 @@
 	      </div><!--end border-->
 	    </div><!--end padding 5 -->
 	  </div><!--end sprint 1-->
-	  <div class="s2b_column_4 hide_backlog">
+	  <div class="s2b_column_5 hide_backlog">
 	    <div class="padding_5">
 	    	<div class="border_status column_status_in_progess">
 	        <div class="status_sprint">
@@ -44,7 +44,7 @@
 	      </div><!--end border status-->
 	    </div><!--end padding 5 -->
 	  </div><!--end sprint 2-->
-	  <div class="s2b_column_4 hide_backlog">
+	  <div class="s2b_column_5 hide_backlog">
 	  	<div class="padding_5">
 	    	<div class="border_status column_status_resolved">
 	        <div class="status_sprint">

@@ -14,20 +14,48 @@
 <%= render :partial => "s2b_issues/angular_comment" %>
 <%= render :partial => "s2b_issues/angular_file" %>
 <%= render :partial => "s2b_issues/angular" %>
-<div ng-app="scrum2b" >
-  <div class="content full_mode" ng-controller="BoardsCtrl" >
+<div ng-app="scrum2b" class="s2b-content" >
+  <div class="content basic_mode" ng-controller="BoardsCtrl" >
   	<div class="filter" >
       
 	    <div class="filter_right">
 	    	<div style="width: 50%; float: left;">
 	    		<span class="icon_backlog" active-show-backlog="activeShowIssueBacklog()"><%= l(:label_backlog) %><i class="fa fa-angle-right fa-lg"></i></span>
-	    		<ul style="float:left; margin-left: 10px " >
-	    			<li>Change Sprint</li>
-	    			<li>Change Status</li>
-	    			<li delete-many-issue >Delete</li>
-	    		</ul>
+	    		<div class="show-menu hide">
+		    		<ul class="menu-issue">
+		    			<li class="menu-change-sprint">
+		    				<a href=""><%= l(:label_change_sprint) %></a>
+		    				<ul class="menu-change hide" >
+		    					<li class="change-sprint-main" ng-repeat="version in versions" ng-hide="isActiveVersion(version)" >
+				            <a href="" change-version-issues version-id="{{version.id}}" >{{version.name}}</a>
+				          </li>
+				          <!-- <li class="change-sprint-blacklog" ng-repeat="version in versions" >
+				            <a href="" change-version-issues version-id="{{version.id}}" >{{version.name}}</a>
+				          </li> -->
+		    				</ul>
+		    			</li>
+		    			<li class="menu-change-status">
+		    				<a href=""><%= l(:label_change_status) %></a>
+		    				<ul class="menu-change hide" >
+				          <li ng-hide="">
+				            <a href="" change-status-issues status-id="{{statusIds.status_no_start}}" class=""><%= l(:label_new_issue) %></a>
+				          </li>
+				          <li ng-hide="">
+				            <a href="" change-status-issues status-id="{{statusIds.status_inprogress}}" class=""><%= l(:label_in_progress) %></a>
+				          </li>
+				          <li ng-hide="">
+				            <a href="" change-status-issues status-id="{{statusIds.status_completed}}" class=""><%= l(:label_resolved) %></a>
+				          </li>
+				          <li ng-hide="">
+				            <a href="" change-status-issues status-id="{{statusIds.status_closed}}" class=""><%= l(:label_close) %></a>
+				          </li>
+				        </ul>
+		    			</li>
+		    			<li ><a delete-many-issue href=""><%= l(:label_delete) %></a></li>
+		    		</ul>
+	    		</div>
 	    	</div>
-	    	<div style="width: 50%; float: left;">
+	    	<div style="width: 50%; float: right;">
 	    		<span class="icon-imformation"><%= image_tag('icon-imformation.png', :plugin => 'scrum2b', :style => 'width: 30px;') %></span>
 	    		<div class="imformation hide" >
 			    	<h3><a href="https://github.com/scrum2b/scrum2b/tree/2-1-stable" target="_blank"><%=l(:label_scrum2b_tool)%></a></h3>
@@ -35,7 +63,7 @@
 			    </div>
 
 	    		<form ng-submit="filterIssues()">
-			      <ul >
+			      <ul class="filter-ul" >
 			        <li>
 			          <select ng-model="filterversion">
 			            <option ng-repeat="version in versions" value="{{version}}" ng-selected="isActiveVersion(version)">{{ version.name }}</option>
@@ -68,4 +96,3 @@
 
 <!-- jquery -->
 <%= render :partial => "s2b_issues/jquery" %>
-

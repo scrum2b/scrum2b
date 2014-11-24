@@ -47,6 +47,7 @@ $(document).ready(function(){
     $('.from_edit_issue').find('textarea[name="description"]') .attr('placeholder','Enter Issue Description');
     $('.from_edit_issue').find('input[name="estimated_hours"]') .attr('min','0');
     var id = $(this).attr("issue_id");
+    $('.background_issue_' + id).hide();
     $('.submit_edit_issue_' + id ).show();
     $('.cancel_edit_issue_' + id ).show();
     $('.edit_loader_' + id ).hide();
@@ -59,10 +60,13 @@ $(document).ready(function(){
     var id = $(this).attr("issue_id");
     $(".from_edit_issue_" + id).hide();
     $('.issue_' + id).show();
+    $('.background_issue_' + id).show();
     check_height_max();
   });
   
   $("body").on('click', '.submit_edit_issue',function(){
+    var id = $(this).attr("issue_id");
+    $('.background_issue_' + id).show();
     check_height_max();
   });
 
@@ -110,7 +114,7 @@ $(document).ready(function(){
 
   $("body").on('click', '.closed_issue', function(){
     $(this).parent().parent().parent().parent().parent().parent().find('.issue_closed').hide();
-    $(this).parent().parent().parent().parent().parent().parent().find('.s2b_column_4').addClass("s2b_column_5");
+    $(this).parent().parent().parent().parent().parent().parent().find('.s2b_column_5').removeClass("s2b_column_4");
     $(this).parent().parent().parent().parent().parent().parent().find('.open_sprint_closed').show();
     $(this).parent().parent().parent().parent().parent().parent().find('.see-detail-sprint').addClass('padding-see-detail');
     
@@ -120,7 +124,7 @@ $(document).ready(function(){
   $("body").on('click', '.open_sprint_closed', function(){
     $(this).hide();
     $(this).parent().find('.see-detail-sprint').removeClass('padding-see-detail');
-    $(this).parent().find('.s2b_column_4').removeClass("s2b_column_5");
+    $(this).parent().find('.s2b_column_5').addClass("s2b_column_4");
     $(this).parent().find('.issue_closed').show();
   });
 
@@ -156,6 +160,14 @@ $(document).ready(function(){
         $('.backlog').addClass('absolute_backlog');
         $('.backlog').removeClass('fixed_backlog');
       }
+    } 
+  });
+  
+  $(window).on('scroll', window, function(){
+    if($(window).scrollTop()  > 112 ){
+      $('.filter').addClass('fixed_filter');
+    } else {
+      $('.filter').removeClass('fixed_filter');
     } 
   });
 
