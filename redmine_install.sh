@@ -244,9 +244,9 @@ if [ "$VERBOSE" = "yes" ]; then echo 'Plugin migrations'; fi
 bundle exec rake $MIGRATE_PLUGINS $TRACE
 
 # install scrum2b
-if [ "$VERBOSE" = "yes" ]; then echo 'Scrum2B install'; fi
-bundle exec rake redmine:scrum2b:install labels=no $TRACE
-
+#if [ "$VERBOSE" = "yes" ]; then echo 'Scrum2B install'; fi
+#bundle exec rake redmine:scrum2b:install labels=no $TRACE
+#
 if [ "$VERBOSE" = "yes" ]; then echo 'Done!'; fi
 }
 
