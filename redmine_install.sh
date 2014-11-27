@@ -128,10 +128,7 @@ run_tests()
     FEATURE=""
   fi
 
-  if [ -n "$CLUSTER" ]; then
-    eval TESTS="\$$CLUSTER"
-    LOG="$WORKSPACE/cuke.cluster.log"
-  elif [ -e "$FEATURE" ]; then
+  if [ -e "$FEATURE" ]; then
     TESTS="$FEATURE"
     LOG=`basename $FEATURE`
     LOG="$WORKSPACE/cuke.$LOG.log"
