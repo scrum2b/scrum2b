@@ -1,0 +1,49 @@
+---
+language: ruby
+release: 1.0.6
+services:
+- mysql
+- postgresql
+rvm:
+- 1.9.3
+- 2.0.0
+env:
+- REDMINE_VER=2.2.4 DB=mysql CLUSTER=CLUSTER1
+- REDMINE_VER=2.2.4 DB=mysql CLUSTER=CLUSTER2
+- REDMINE_VER=2.2.4 DB=postgresql CLUSTER=CLUSTER1
+- REDMINE_VER=2.2.4 DB=postgresql CLUSTER=CLUSTER2
+- REDMINE_VER=2.3.3 DB=postgresql CLUSTER=CLUSTER1
+- REDMINE_VER=2.3.3 DB=postgresql CLUSTER=CLUSTER2
+- REDMINE_VER=2.5.1 DB=postgresql CLUSTER=CLUSTER1
+- REDMINE_VER=2.5.1 DB=postgresql CLUSTER=CLUSTER2
+matrix:
+  allow_failures:
+  - rvm: jruby-18mode
+  - rvm: jruby-19mode
+  exclude:
+  - rvm: 2.0.0
+    env: REDMINE_VER=2.2.4 DB=mysql CLUSTER=CLUSTER1
+  - rvm: 2.0.0
+    env: REDMINE_VER=2.2.4 DB=mysql CLUSTER=CLUSTER2
+  - rvm: 2.0.0
+    env: REDMINE_VER=2.2.4 DB=postgresql CLUSTER=CLUSTER1
+  - rvm: 2.0.0
+    env: REDMINE_VER=2.2.4 DB=postgresql CLUSTER=CLUSTER2
+install: echo skip bundle install
+before_script:
+- sh -c "if [ '$DB' = 'postgresql' ]; then psql -c 'DROP DATABASE IF EXISTS backlogs;'
+  -U postgres; fi"
+- sh -c "if [ '$DB' = 'postgresql' ]; then psql -c 'create database backlogs;' -U
+  postgres; fi"
+- sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS backlogs;';
+  fi"
+script:
+- export WORKSPACE=`pwd`/workspace
+- export PATH_TO_BACKLOGS=`pwd`
+- export PATH_TO_REDMINE=$WORKSPACE/redmine
+- mkdir $WORKSPACE
+- cp config/database.yml.travis $WORKSPACE/database.yml
+- bash -x ./redmine_install.sh -r || exit 1
+- bash -x ./redmine_install.sh -i || exit 1
+- bash -x ./redmine_install.sh -t || exit 1
+- bash -x ./redmine_install.sh -u || exit 1
