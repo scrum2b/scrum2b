@@ -8,38 +8,31 @@ rvm:
 - 1.9.3
 - 2.0.0
 env:
-- REDMINE_VER=2.2.4 DB=mysql CLUSTER=CLUSTER1
-- REDMINE_VER=2.2.4 DB=mysql CLUSTER=CLUSTER2
-- REDMINE_VER=2.2.4 DB=postgresql CLUSTER=CLUSTER1
-- REDMINE_VER=2.2.4 DB=postgresql CLUSTER=CLUSTER2
-- REDMINE_VER=2.3.3 DB=postgresql CLUSTER=CLUSTER1
-- REDMINE_VER=2.3.3 DB=postgresql CLUSTER=CLUSTER2
-- REDMINE_VER=2.5.1 DB=postgresql CLUSTER=CLUSTER1
-- REDMINE_VER=2.5.1 DB=postgresql CLUSTER=CLUSTER2
+- REDMINE_VER=2.2.4 DB=mysql
+- REDMINE_VER=2.2.4 DB=postgresql
+- REDMINE_VER=2.3.3 DB=postgresql
+- REDMINE_VER=2.5.1 DB=postgresql
 matrix:
   allow_failures:
   - rvm: jruby-18mode
   - rvm: jruby-19mode
   exclude:
   - rvm: 2.0.0
-    env: REDMINE_VER=2.2.4 DB=mysql CLUSTER=CLUSTER1
+    env: REDMINE_VER=2.2.4 DB=mysql
   - rvm: 2.0.0
-    env: REDMINE_VER=2.2.4 DB=mysql CLUSTER=CLUSTER2
-  - rvm: 2.0.0
-    env: REDMINE_VER=2.2.4 DB=postgresql CLUSTER=CLUSTER1
-  - rvm: 2.0.0
-    env: REDMINE_VER=2.2.4 DB=postgresql CLUSTER=CLUSTER2
+    env: REDMINE_VER=2.2.4 DB=postgresql
+
 install: echo skip bundle install
 before_script:
-- sh -c "if [ '$DB' = 'postgresql' ]; then psql -c 'DROP DATABASE IF EXISTS backlogs;'
+- sh -c "if [ '$DB' = 'postgresql' ]; then psql -c 'DROP DATABASE IF EXISTS scrum2b;'
   -U postgres; fi"
-- sh -c "if [ '$DB' = 'postgresql' ]; then psql -c 'create database backlogs;' -U
+- sh -c "if [ '$DB' = 'postgresql' ]; then psql -c 'create database scrum2b;' -U
   postgres; fi"
-- sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS backlogs;';
+- sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS scrum2b;';
   fi"
 script:
 - export WORKSPACE=`pwd`/workspace
-- export PATH_TO_BACKLOGS=`pwd`
+- export PATH_TO_SCRUM2B=`pwd`
 - export PATH_TO_REDMINE=$WORKSPACE/redmine
 - mkdir $WORKSPACE
 - cp config/database.yml.travis $WORKSPACE/database.yml
