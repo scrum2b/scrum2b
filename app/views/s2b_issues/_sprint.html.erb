@@ -2,7 +2,7 @@
 	<h3 class="title_sprint" versionid ="{{version.id}}" ng-class="{'title_sprint_active': isActiveVersion(version)}" click-sprint="activeVersion(version)" >
 		{{version.name}} - {{version.effective_date}}
     <span class="quantity_issue" ng-if="isActiveVersion(version)">{{numberIssuesOfVersionActive}}</span> 
-		<a href="/versions/{{version.id}} " ng-class="{'padding-see-detail': isActiveVersion(version)}" target="_blank" class="see-detail-sprint" ><%= l(:label_see_detail)%></a>
+		<a href="<%= version_path('') %>{{version.id}} " ng-class="{'padding-see-detail': isActiveVersion(version)}" target="_blank" class="see-detail-sprint" ><%= l(:label_see_detail)%></a>
 	</h3>	
 	<div class="open_sprint_closed" ng-class="{'show': isActiveVersion(version)}" >
     <span><i class="fa fa-angle-left fa-lg pointer_cursor"></i> <%= l(:label_close_colunn) %></span>

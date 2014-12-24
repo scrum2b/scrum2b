@@ -1,14 +1,14 @@
 <div class="background-issue background_issue_{{issue.id}} " issue-select></div>
 <div class="issue_{{issue.id}} loop_issue" repeat-issue >
   <div class="title_issue">
-    <a href="/issues/{{issue.id}}" target="_blank">#{{ issue.id }}:</a> {{ issue.subject | limitTo : 40 }}{{issue.subject.length > 40 ? "..." : ""  }}
+    <a href="<%= issues_path %>/{{issue.id}}" target="_blank">#{{ issue.id }}:</a> {{ issue.subject | limitTo : 40 }}{{issue.subject.length > 40 ? "..." : ""  }}
     <span class="icon_config" ><i class="fa fa-cog"></i></span> 
   </div><!--end title issue -->
 
   <div class="setting hide">
     <ul>
       <li>
-        <a href="/issues/{{issue.id}}" target="_blank"><%= l(:label_view_detail) %></a>
+        <a href="<%= issues_path %>/{{issue.id}}" target="_blank"><%= l(:label_view_detail) %></a>
       </li>
       <li>
         <a href="" class="edit_issue" issue_id="{{issue.id}}" ng-click="editableForm.$show()"><%= l(:label_edit) %></a>
@@ -89,7 +89,7 @@
       <ul style="display: inline-block">
         <li ng-repeat="attach in issue.attachments">
           <p>
-            <a href="/attachments/download/{{attach.id}}" class="icon icon-attachment">{{attach.filename}}</a>
+            <a href="<%= attachment_path({:id=>''}) %>download/{{attach.id}}" class="icon icon-attachment">{{attach.filename}}</a>
             <span class="size">({{bytesToSize(attach.filesize)}})</span>
             < % if User.current.member_of?(@project) || User.current.admin %>
               <a href="" ng-click="deleteFiles(attach,issue)" class="icon icon-del delete" title="Delete"></a>
