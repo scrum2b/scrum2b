@@ -1,6 +1,8 @@
 SUMMARY
 -------
 
+[![Join the chat at https://gitter.im/scrum2b/scrum2b](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/scrum2b/scrum2b?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/scrum2b/scrum2b.png)](https://travis-ci.org/scrum2b/scrum2b)
 [![Code Climate](https://codeclimate.com/github/scrum2b/scrum2b.png)](https://codeclimate.com/github/scrum2b/scrum2b)
 [![Coverage Status](https://coveralls.io/repos/scrum2b/scrum2b/badge.png?branch=master)](https://coveralls.io/r/scrum2b/scrum2b)
