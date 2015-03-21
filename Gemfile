@@ -17,14 +17,16 @@ rails3 = Gem::Dependency.new('rails', '~>3.0')
 RAILS_VERSION_IS_3 = rails3 =~ deps['rails']
 
 gem 'jquery-ui-rails'
-gem 'strong_parameters'
+if (redmine_version_major < 3)
+  gem 'strong_parameters'
+end
 
 # Choose nokogiri depending on RM version. This is done to avoid conflict with
 # RM 2.3 which pinned nokogiri at "<1.6.0" for group :test.
 if (redmine_version_major == 2 && redmine_version_minor == 3)
   gem "nokogiri", "< 1.6.0"
 else
-  gem "nokogiri"
+  gem "nokogiri", ">= 1.5.10"
 end
 
 group :development do
@@ -37,7 +39,7 @@ group :test do
   gem 'autotest-rails'
   if RAILS_VERSION_IS_3
     unless chiliproject
-      gem 'capybara', "~> 1.1" if ENV['IN_RBL_TESTENV'] == 'true' # redmine 2.3 conflicts
+      gem 'capybara'
       gem "faye-websocket", "~>0.4.7"
       gem "poltergeist", "~>1.0"
     end
@@ -45,7 +47,7 @@ group :test do
     gem "culerity"
   else
     unless chiliproject
-      gem "capybara", "~>1.1.0"
+      gem "capybara"
       gem "poltergeist", "~>0.6.0"
     end
     gem "cucumber", "=1.1.0"
@@ -67,7 +69,7 @@ group :test do
     gem "rspec-rails", "=1.3.3"
   end
   if RUBY_VERSION >= "1.9"
-    gem "simplecov", "~>0.6"
+    gem "simplecov", "~>0.9.1"
   else
     gem "rcov",  "=0.9.11"
   end
