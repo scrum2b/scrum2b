@@ -10,6 +10,7 @@ class S2bIssuesController < S2bApplicationController
   end
   
   def get_data
+    ActiveRecord::Base.include_root_in_json = false
     @versions =  opened_versions_list
     @priority = IssuePriority.all
     @tracker = @project.trackers

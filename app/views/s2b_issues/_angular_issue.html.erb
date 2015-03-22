@@ -17,45 +17,31 @@ var scrum2b = angular.module('issue', []);
         $scope.statusIds = data.status_ids;
 
         angular.forEach(data.issues, function(value) {
-          angular.forEach(value, function(value,key) {
-            $scope.issues.push(value);
-          })
+          $scope.issues.push(value);
         })
 
         angular.forEach(data.issues_backlog, function(value) {
-          angular.forEach(value, function(value,key) {
-            $scope.issuesBacklog.push(value);
-          })
+          $scope.issuesBacklog.push(value);
         })
 
         angular.forEach(data.versions, function(value) {
-          angular.forEach(value, function(value,key) {
-            $scope.versions.push(value);
-          })
+          $scope.versions.push(value);
         })
 
         angular.forEach(data.status, function(value) {
-          angular.forEach(value, function(value,key) {
-            $scope.status.push(value);
-          })
+          $scope.status.push(value);
         })
 
         angular.forEach(data.tracker, function(value) {
-          angular.forEach(value, function(value,key) {
-            $scope.trackers.push(value);
-          })
+          $scope.trackers.push(value);
         })
 
         angular.forEach(data.priority, function(value) {
-          angular.forEach(value, function(value,key) {
-            $scope.priorities.push(value);
-          })
+          $scope.priorities.push(value);
         })
 
         angular.forEach(data.members, function(value) {
-          angular.forEach(value, function(value,key) {
-            $scope.members.push(value);
-          })
+          $scope.members.push(value);
         })
 
         $scope.allIssues = $scope.issues.concat($scope.issuesBacklog);
@@ -81,10 +67,8 @@ var scrum2b = angular.module('issue', []);
         IssueService.getIssues(version.id).then(
           function(data){
             angular.forEach(data.issues, function(value) {
-              angular.forEach(value, function(value,key) {
-                $scope.issues.push(value);
-                $scope.allIssues.push(value);
-              })
+              $scope.issues.push(value);
+              $scope.allIssues.push(value);
             })
             $scope.filterStatusIssues($scope.issues,member_id);
           }
