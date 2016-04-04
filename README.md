@@ -18,9 +18,7 @@ FEATURES
 We are focus to make easier and more simple to practice Scrum in Project management. The main functions are:
 
 - Visual vision for Scrum/Agile Project Management: display issues in Sprint, columns (Backlog, New, In progress, Completed, Close)
-- Easy to drag and drop the issues in columns for planing
-- Multi-select: Easy change Status, Sprint for multi-issues
-- Screen shots: http://scrum2b.com/documents/11
+- Easy to drag and drop the issues in columns for planing and observing
 
 **Demo:**
 - *http://scrum2b.herokuapp.com/projects/scrum2b-demo*
