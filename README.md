@@ -7,7 +7,7 @@ SUMMARY
 [![Code Climate](https://codeclimate.com/github/scrum2b/scrum2b.png)](https://codeclimate.com/github/scrum2b/scrum2b)
 [![Coverage Status](https://coveralls.io/repos/scrum2b/scrum2b/badge.png?branch=master)](https://coveralls.io/r/scrum2b/scrum2b)
 
-**Scrum2B Tool** (www.scrum2b.com) is a Project Management application, specialized in Scrum/Agile projects and Software Development, is using and maintained by ScrumTobe Software (www.scrumtobe.com). Scrum2B Tool is built as a plugin of Redmine (www.redmine.org), free to use.
+**Scrum2B Tool** is a Project Management application, specialized in Scrum/Agile projects and Software Development, is using and maintained by ScrumTobe Software (https://www.facebook.com/ScrumTobe). Scrum2B Tool is built as a plugin of Redmine (www.redmine.org), free to use.
 
 - Technologies: Ruby On Rails 3.x/4.x, Redmine 3.x, 2.4.x, 2.3.x, 2.2.x, 2.1.x, 2.0.x, Postgres/MySQL
 - Methodologies: Scrum/Agile, Continuous Integration
