@@ -213,6 +213,10 @@
   
   function show_detail(id) {
     var issue_id = id;
+    var win = window.open('/issues/' + id, '_blank');
+    win.focus();
+
+    /*
     var project_id = '<%= @project.id %>';
     $.ajax({
       url : '/s2b_issues/show',
@@ -221,6 +225,7 @@
       dataType : "script",
       success : function() {}
     });
+    */
   };
   
   function editDate(id){
