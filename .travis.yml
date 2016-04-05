@@ -11,19 +11,31 @@ rvm:
 env:
 - REDMINE_VER=2.3.3 DB=postgresql
 - REDMINE_VER=2.5.1 DB=postgresql
-- REDMINE_VER=3.0-stable DB=postgresql
-- REDMINE_VER=3.1-stable DB=postgresql
-- REDMINE_VER=3.2-stable DB=postgresql
+- REDMINE_VER=3.0.7 DB=postgresql
+- REDMINE_VER=3.1.4 DB=postgresql
+- REDMINE_VER=3.2.1 DB=postgresql
 matrix:
 matrix:
   allow_failures:
   - rvm: jruby-18mode
   - rvm: jruby-19mode
   exclude:
+  - rvm: 1.9.3
+    env: REDMINE_VER=3.0.7 DB=postgresql
+  - rvm: 1.9.3
+    env: REDMINE_VER=3.1.4 DB=postgresql
+  - rvm: 1.9.3
+    env: REDMINE_VER=3.2.1 DB=postgresql
   - rvm: 2.0.0
-    env: REDMINE_VER=2.2.4 DB=mysql
+    env: REDMINE_VER=3.0.7 DB=postgresql
   - rvm: 2.0.0
-    env: REDMINE_VER=2.2.4 DB=postgresql
+    env: REDMINE_VER=3.1.4 DB=postgresql
+  - rvm: 2.0.0
+    env: REDMINE_VER=3.2.1 DB=postgresql
+  - rvm: 2.2.4
+    env: REDMINE_VER=2.5.1 DB=postgresql
+  - rvm: 2.2.4
+    env: REDMINE_VER=2.3.3 DB=postgresql
 
 install: echo skip bundle install
 before_script:
