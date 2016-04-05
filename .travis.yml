@@ -9,12 +9,11 @@ rvm:
 - 2.0.0
 - 2.2.4
 env:
-- REDMINE_VER=2.2.4 DB=mysql
-- REDMINE_VER=2.2.4 DB=postgresql
 - REDMINE_VER=2.3.3 DB=postgresql
 - REDMINE_VER=2.5.1 DB=postgresql
-- REDMINE_VER=3.0.0 DB=postgresql
-- REDMINE_VER=3.2.0 DB=postgresql
+- REDMINE_VER=3.0-stable DB=postgresql
+- REDMINE_VER=3.1-stable DB=postgresql
+- REDMINE_VER=3.2-stable DB=postgresql
 matrix:
 matrix:
   allow_failures:
