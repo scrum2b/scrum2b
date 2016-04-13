@@ -1,7 +1,7 @@
 <div class="show_form" id="show_issue_<%= issue.id %>" value="<%= issue.id %>">
     <a href="#" onClick="show_detail(<%= issue.id %>)" style="font-size: 15px" title="<%= l(:label_board_show_detail_issue) %>" value="<%= issue.id %>">#<%= issue.id %> <%= raw(issue.subject.truncate(40, :separator => ' ').html_safe.gsub(/\n/, " <br/> ")) %></a>
     <% if editable_for_project? %>
-      <i class="icon_close_issue icon icon-del" issue_id="<%= issue.id %>" title="<%= l(:label_board_issue_text_close_issue) %>">
+      <i class="icon_close_issue icon icon-test" issue_id="<%= issue.id %>" title="<%= l(:label_board_issue_text_close_issue) %>">
       </i>  
       <i class="icon_edit_issue icon icon-edit" title="<%= l(:label_board_issue_text_edit_issue) %>">
       </i>  

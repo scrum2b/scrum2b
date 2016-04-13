@@ -7,9 +7,9 @@ en:
   label_close_all_issues: "Close"
   label_select_issues_all_working: "All Issues Working"
   label_select_issues_my: "My Issues"
-  label_select_issues_my_completed: "My Issues Completed "
+  label_select_issues_my_completed: "My Issues Resolved"
   label_select_issues_new: "All New Issues"
-  label_select_issues_completed: "All Issues Completed "
+  label_select_issues_completed: "All Issues Resolved"
   label_select_issues_closed: "All Issues Closed"
   label_select_issues_all: "All Issues"
   
@@ -33,9 +33,9 @@ en:
   label_select_me: "Me"
   label_board_status_new: "New Issues"
   label_board_status_inprogress: "In Progress"
-  label_board_status_completed: "Completed"
+  label_board_status_completed: "Resolved"
   
-  label_board_issue_text_close_issue: "Close Issue"
+  label_board_issue_text_close_issue: "Close the issue"
   label_board_issue_text_edit_issue: "Edit Issue"
   label_board_issue_time: "Est Time:"
   label_board_issue_description: "Description"

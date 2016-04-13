@@ -203,7 +203,8 @@ table#done tr td.done {
   float: right;
   cursor: pointer;
   display: none;
-  height:10px;
+  height: 10px;
+  margin-bottom: 10px;
 }
 
 .text_new {
