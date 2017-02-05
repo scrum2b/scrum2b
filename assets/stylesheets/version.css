@@ -7,6 +7,9 @@ li {
 .width-100 {
   width: 100px;
 }
+.col-100 {
+  width: 100%;
+}
 .left-filter {
   float:left;
 }
@@ -37,11 +40,12 @@ li {
   display: inline-block;
   text-align: left;
   vertical-align: top;
-  width: 30%;
-  padding: 10px 10px 10px 10px;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
+  width: 32.5%;
+  padding: 1px 2px 1px 1px;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  min-height: 500px;
 }
 
 .boad#div_news{
@@ -82,9 +86,10 @@ li {
 #div_screen_board .board_issue {
   width: 100%;
   padding: 5px 0px 5px 0px;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
+  margin: 0px 0px 0px -1px;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
 }
 
 
@@ -128,7 +133,7 @@ li {
 }
 
 .connectedSortable {
-  padding-bottom: 50px;
+  padding-bottom: 100px;
 }
 
 .submit_edit_issue {

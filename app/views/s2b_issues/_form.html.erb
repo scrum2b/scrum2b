@@ -24,7 +24,7 @@
         <%= f.label :description %>
         <%= f.text_area :description,
                         :cols => 60,
-                        :rows => (@issue.description.blank? ? 10 : [[10, @issue.description.length / 50].max, 100].min),
+                        :rows => (@issue.description.blank? ? 15 : [[10, @issue.description.length / 50].max, 100].min),
                         :accesskey => accesskey(:edit),
                         :class => 'wiki-edit',
                         :no_label => true %>
