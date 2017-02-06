@@ -1,0 +1,64 @@
+# Simplified Chinese strings go here for Rails i18n
+zh:
+  label_scrum2b: "Scrum2B"
+
+  label_scrum2b_board: "Scrum 看板"
+  label_scrum2b_list: "Sprint Backlogs"
+  label_close_all_issues: "关闭"
+  label_select_issues_all_working: "所有处理中的问题"
+  label_select_issues_my: "我的问题"
+  label_select_issues_my_completed: "我的已解决问题"
+  label_select_issues_new: "所有新增的问题"
+  label_select_issues_completed: "所有已解决的问题"
+  label_select_issues_closed: "所有已关闭的问题"
+  label_select_issues_all: "所有问题"
+  
+  label_select_all_versions_working: "所有处理中的 Sprints" 
+  label_select_all_versions: "所有 Sprints"
+  label_select_backlog: "Backlog" 
+  label_btn_submit_selected: "过滤器"
+  label_group_closed_sprin: "已关闭的 Sprint"
+
+  label_head_issue_status: "状态"
+  label_head_issue_subject: "主题"
+  label_head_issue_assignee: "指派给"
+  label_head_issue_updated: "更新于"
+  label_head_issue_est_time: "预估耗时"
+  label_head_issue_done: "% 完成"
+  
+  
+  label_version_backlog: "Backlog"
+
+  label_select_all_member: "所有成员"
+  label_select_me: "我"
+  label_board_status_new: "新增"
+  label_board_status_inprogress: "处理中"
+  label_board_status_completed: "已解决"
+  
+  label_board_issue_text_close_issue: "关闭问题"
+  label_board_issue_text_edit_issue: "编辑问题"
+  label_board_issue_time: "预估耗时："
+  label_board_issue_description: "描述"
+  label_board_issue_new_issue: "新增问题"
+  label_board_edit_btn_submit: "提交"
+  label_board_edit_btn_cancel: "取消"
+  label_board_show_detail_issue: "查看问题详情"
+  label_readmore: "更多..."
+  label_hide: "隐藏"
+  
+  label_tracker: "跟踪"
+  label_priority: "优先级"
+  label_start_date: "开始时间"
+  label_end_date: "结束时间"
+
+  label_sprint: "Sprint"
+  label_me: "<< 我 >>"
+  
+  label_change_sprint: "变更 Sprint"
+  label_move_issues: "移动到"
+  label_error_select_issues: "请选择问题 ..."
+  permission_view_issue: "查看 Scrum2B的问题"
+  label_sure_to_close_issues: "确认关闭这些问题？"
+  label_sure_to_delete_issues: "确认删除这些问题？"
+  label_sure_to_delete_notes: "确认删除这些备注信息？"
+  label_edit_detail: "编辑详情"
