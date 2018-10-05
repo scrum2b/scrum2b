@@ -22,7 +22,7 @@ We are focus to make easier and more simple to practice Scrum in Project managem
 
 **Demo:**
 - *http://scrum2b.herokuapp.com/projects/scrum2b-demo*
-- *Username/password: **demo/demo1234***
+- *Username/password: **demo/demo123***
 
 LICENSE
 -------
