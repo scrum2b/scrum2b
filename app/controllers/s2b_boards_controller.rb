@@ -1,10 +1,11 @@
 class S2bBoardsController < S2bApplicationController
 
-  before_filter :check_before_board, :only => [:index, :close_issue, :filter_issues, :update, :create, :draw_issue]
-  before_filter :get_issues, :only => [:index]
-  before_filter :get_members, :only => [:index, :filter_issues]
-  before_filter lambda { check_permission(:edit) }, :only => [:update, :update_status, :update_progress, :create, :sort, :close_issue]
-  before_filter lambda { check_permission(:view) }, :only => [:index, :filter_issues]
+  protect_from_forgery with: :exception
+  before_action :check_before_board, :only => [:index, :close_issue, :filter_issues, :update, :create, :draw_issue]
+  before_action :get_issues, :only => [:index]
+  before_action :get_members, :only => [:index, :filter_issues]
+  before_action lambda { check_permission(:edit) }, :only => [:update, :update_status, :update_progress, :create, :sort, :close_issue]
+  before_action lambda { check_permission(:view) }, :only => [:index, :filter_issues]
   
   def index
     @max_position_issue = @hierarchy_project.first.issues.maximum(:s2b_position).to_i + 1

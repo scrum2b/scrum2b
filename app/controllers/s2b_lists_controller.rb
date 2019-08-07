@@ -1,9 +1,10 @@
 class S2bListsController < S2bApplicationController
   
-  before_filter :filter_issues, :only => [:index]
-  before_filter :get_members, :only => [:index]
-  before_filter lambda { check_permission(:edit) }, :only => [:change_sprint, :change_sprint]
-  before_filter lambda { check_permission(:view) }, :only => [:index, :filter_issues]               
+  protect_from_forgery with: :exception
+  before_action :filter_issues, :only => [:index]
+  before_action :get_members, :only => [:index]
+  before_action lambda { check_permission(:edit) }, :only => [:change_sprint, :change_sprint]
+  before_action lambda { check_permission(:view) }, :only => [:index, :filter_issues]               
   
   def index
     @select_issue_options = SELECT_ISSUE_OPTIONS

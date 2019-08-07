@@ -1,9 +1,10 @@
 class S2bApplicationController < ApplicationController
   unloadable
 
-  skip_before_filter :verify_authenticity_token
-  before_filter :set_status_settings
-  before_filter :find_project
+  protect_from_forgery with: :exception
+  skip_before_action :verify_authenticity_token
+  before_action :set_status_settings
+  before_action :find_project
   
   helper :journals
   helper :projects
@@ -88,7 +89,7 @@ class S2bApplicationController < ApplicationController
     # @project variable must be set before calling the authorize filter
     project_id = params[:project_id] || (params[:issue] && params[:issue][:project_id])
     @project = Project.find(project_id)
-    @hierarchy_project = Project.where(:parent_id => @project.id) << @project
+    @hierarchy_project =  Project.where(:parent_id => @project.id).to_a << @project; 
     @hierarchy_project_id = @hierarchy_project.collect{|project| project.id}
   end
   
