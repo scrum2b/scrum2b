@@ -133,7 +133,7 @@ class S2bBoardsController < S2bApplicationController
   def draw_issue
     @issue = Issue.find(params[:issue_id])
     unless @issue
-      render :json => {:result => "error", :message => "Unknow issue"}
+      render :json => {:result => "error", :message => "Unknown issue"}
       return 
     end   
     data  = render_to_string(:partial => "/s2b_boards/draw_issue", :locals => {:issue => @issue})
@@ -142,8 +142,11 @@ class S2bBoardsController < S2bApplicationController
   
   def create
     @sort_issue = Issue.where("status_id IS NULL or status_id IN (?)", STATUS_IDS['status_no_start'])
+    @attribs = params.require(:issue).permit(:project_id, :author_id, :subject, :description, :tracker_id, :assigned_to_id, :priority_id)
+    @attribs.merge(:status_id => DEFAULT_STATUS_IDS['status_no_start'], :s2b_position => 0)
+    logger.info(@attribs)
     #Creat new issue
-    @issue = Issue.new(params[:issue].merge(:status_id => DEFAULT_STATUS_IDS['status_no_start'], :s2b_position => 0))
+    @issue = Issue.new(@attribs.to_h)
     if @issue.save
       @sort_issue.each do |issue|
         issue.update_attribute(:s2b_position, issue.s2b_position.to_i + 1)
