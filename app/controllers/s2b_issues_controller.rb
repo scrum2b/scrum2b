@@ -1,10 +1,11 @@
 class S2bIssuesController < S2bApplicationController
   
-  skip_before_filter :verify_authenticity_token
-  before_filter :find_project
-  before_filter :find_issue_from_param
-  before_filter :check_before
-  before_filter lambda { check_permission(:edit) }, :only => [:update, :delete_attach, :delete]
+  protect_from_forgery with: :exception
+  skip_before_action :verify_authenticity_token
+  before_action :find_project
+  before_action :find_issue_from_param
+  before_action :check_before
+  before_action lambda { check_permission(:edit) }, :only => [:update, :delete_attach, :delete]
 
   rescue_from Query::StatementInvalid, :with => :query_statement_invalid
 
